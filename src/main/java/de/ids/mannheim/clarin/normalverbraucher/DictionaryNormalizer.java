@@ -35,8 +35,8 @@ public class DictionaryNormalizer implements WordNormalizer {
 
 
     // where to load dictionaries from:
-    private static final String folksPath = "/main/resources/FOLK_Normalization_Lexicon.xml";
-    private static String derekoPath = "/main/resources/dereko_capital_only.txt";
+    private static final String FOLKS_PATH = "/main/resources/FOLK_Normalization_Lexicon.xml";
+    private static String DEREKO_PATH = "/main/resources/dereko_capital_only.txt";
 
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
@@ -56,8 +56,10 @@ public class DictionaryNormalizer implements WordNormalizer {
     }
     private void loadFolksDict(boolean force) {
         InputStream folkSource = DictionaryNormalizer.class
-                .getResourceAsStream(folksPath);
-        if (folkLoaded && !force) return;
+                .getResourceAsStream(FOLKS_PATH);
+        if (folkLoaded && !force) {
+            return;
+        }
         Document document;
         try {
             document = reader.read(folkSource);
@@ -81,7 +83,7 @@ public class DictionaryNormalizer implements WordNormalizer {
 
     private static BufferedReader getDerekoReader () {
         InputStream derekoStream = DictionaryNormalizer.class
-                .getResourceAsStream(derekoPath);
+                .getResourceAsStream(DEREKO_PATH);
         InputStreamReader derekoReader = new InputStreamReader(derekoStream,
                 Charset.forName("windows-1252"));
         return new BufferedReader(derekoReader);
@@ -91,7 +93,9 @@ public class DictionaryNormalizer implements WordNormalizer {
         loadDerekoDict(false);
     }
     private void loadDerekoDict(boolean force) {
-        if (derekoLoaded && !force) return;
+        if (derekoLoaded && !force) {
+            return;
+        }
         if (debug) {
             // only for statistics at the moment
             Map<String, String> derekoDict = getDerekoReader().lines().parallel()
