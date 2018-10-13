@@ -18,28 +18,42 @@ import java.nio.charset.Charset;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
+/**
+ * A normalizer based on the dictionaries from the EXMARaLDA project,
+ * namely
+ * <ul>
+ * <li>a dictionary of normalizations and frequencies from the FOLK project and</li>
+ * <li>a dictionary of capitalized-only-occurring words from Deutsches Referenzkorpus (DeReKo).</li>
+ * </ul>
+ * @author bfi
+ *
+ */
 public class DictionaryNormalizer implements WordNormalizer {
 
+    // the dictionary:
     private static Map<String, String> folksDict = new ConcurrentHashMap<>();
-    private static boolean folkLoaded = false;
-    private static boolean derekoLoaded = false;
+
+
+    // where to load dictionaries from:
     private static final String folksPath = "/main/resources/FOLK_Normalization_Lexicon.xml";
     private static String derekoPath = "/main/resources/dereko_capital_only.txt";
+
+    private static boolean folkLoaded = false;
+    private static boolean derekoLoaded = false;
     private static final SAXReader reader = new SAXReader();
-    
+
     private static boolean debug;
-    
+
     public final BinaryOperator<String> strCollider =
             (u, v) -> {
-                // throw new IllegalStateException(String.format("Duplicate key «%s»", u));
                 System.err.format("«%s» ignored, already an entry for «%s»\n", v, u);
                 return u;
     };
-    
-    
+
+
     private void loadFolksDict() {
         loadFolksDict(false);
-    }  
+    }
     private void loadFolksDict(boolean force) {
         InputStream folkSource = DictionaryNormalizer.class
                 .getResourceAsStream(folksPath);
@@ -48,9 +62,7 @@ public class DictionaryNormalizer implements WordNormalizer {
         try {
             document = reader.read(folkSource);
         } catch (DocumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return;
+            throw new RuntimeException("Dictionary broken! " + e.getMessage());
         }
         document.getRootElement().elements("entry").parallelStream()
             .forEach(entryN -> {
@@ -67,14 +79,14 @@ public class DictionaryNormalizer implements WordNormalizer {
         folkLoaded = true;
     }
 
-    private BufferedReader getDerekoReader () {
+    private static BufferedReader getDerekoReader () {
         InputStream derekoStream = DictionaryNormalizer.class
                 .getResourceAsStream(derekoPath);
         InputStreamReader derekoReader = new InputStreamReader(derekoStream,
                 Charset.forName("windows-1252"));
         return new BufferedReader(derekoReader);
     }
-    
+
     private void loadDerekoDict() {
         loadDerekoDict(false);
     }
@@ -90,31 +102,36 @@ public class DictionaryNormalizer implements WordNormalizer {
                             strCollider,
                             ConcurrentHashMap::new
             ));
-            System.err.format("DEREKO: %d entries\n", derekoDict.size());    
+            System.err.format("DEREKO: %d entries\n", derekoDict.size());
             System.err.format("FOLK [before]: %d entries\n", folksDict.size());
         }
         getDerekoReader().lines()
             // .parallel() // uncomment if order is irrelevant
             .map(String::trim).forEach(
                         l -> folksDict.putIfAbsent(l.toLowerCase(), l));
-        System.err.format("FOLK [finally]: %d entries\n", folksDict.size());            
+        System.err.format("FOLK [finally]: %d entries\n", folksDict.size());
         derekoLoaded = true;
     }
-    
+
+    /**
+     * reload dictionaries
+     *
+     * TODO: useless at the moment, as dictionaries are loaded from the WAR.
+     */
     public void reloadDict() {
         folksDict = new ConcurrentHashMap<>();
         loadFolksDict(true);
         loadDerekoDict(true);
     }
 
+    @Override
     public String getNormalised(String in) {
         return folksDict.get(in);
     }
-    
+
     public DictionaryNormalizer() {
         this(false);
     }
-
     public DictionaryNormalizer(boolean debugging) {
         debug = debugging;
         loadFolksDict();

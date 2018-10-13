@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>normal</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1-SNAPSHOT</version>
   <name>orthonormalisierer</name>
   <description>Tools for normalizing TEI transcripts</description>
   <properties>
