@@ -3,8 +3,8 @@
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>normal</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>orthonormalverbraucher</name>
-  <description>CLARIN web service for normalizing TEI transcripts</description>
+  <name>orthonormalisierer</name>
+  <description>Tools for normalizing TEI transcripts</description>
   <properties>
     <!-- project settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +30,11 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.8.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.korpora.useful</groupId>
+      <artifactId>utilities</artifactId>
+      <version>0.1</version>
     </dependency>
   </dependencies>
   <build>
