@@ -112,12 +112,12 @@ public class DictionaryNormalizer implements WordNormalizer {
     }
     
     public DictionaryNormalizer() {
-        loadFolksDict();
-        loadDerekoDict();
+        this(false);
     }
 
     public DictionaryNormalizer(boolean debugging) {
-        this();
         debug = debugging;
+        loadFolksDict();
+        loadDerekoDict();
     }
 }

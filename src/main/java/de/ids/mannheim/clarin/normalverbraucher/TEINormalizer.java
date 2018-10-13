@@ -48,7 +48,7 @@ public class TEINormalizer {
                         if (debug) {
                             String before = el.getAttribute("norm");
                             if (!before.equals(normal)) {
-                                System.err.format("%20s -> %s\n", before, normal);
+                                System.err.format("%20s -> %-20s [was: %s]\n", tx, normal, before);
                             }
                         }
                         System.err.format("%20s -> %s\n", tx, normal);

@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 
 public class Runner {
     public static void main(String[] args) {
-        WordNormalizer wn = new DictionaryNormalizer();
+        WordNormalizer wn = new DictionaryNormalizer(true);
         TEINormalizer tn = new TEINormalizer(wn, true);
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
