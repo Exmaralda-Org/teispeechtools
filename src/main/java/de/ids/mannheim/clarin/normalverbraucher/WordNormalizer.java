@@ -9,7 +9,7 @@ public interface WordNormalizer {
 
     /**
      * normalize a single word
-     * @param word
+     * @param word – the form to be normalized
      * @return normalized form
      */
     String getNormalised(String word);

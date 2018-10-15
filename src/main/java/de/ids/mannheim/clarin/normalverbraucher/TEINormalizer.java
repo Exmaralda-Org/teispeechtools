@@ -23,7 +23,8 @@ import org.slf4j.LoggerFactory;
  */
 public class TEINormalizer {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TEINormalizer.class.getName());
+    private final static Logger LOGGER = LoggerFactory.getLogger(
+            TEINormalizer.class.getName());
 
     WordNormalizer norm;
 
@@ -33,8 +34,8 @@ public class TEINormalizer {
 
     /**
      * add a change to the end of the &lt;revisionDesc&gt;
-     * @param doc
-     * @return
+     * @param doc – the document
+     * @return – the document again
      */
     public static Document makeChange(Document doc) {
         String stamp = ZonedDateTime
@@ -55,7 +56,7 @@ public class TEINormalizer {
     /**
      * normalize an XML document using the normalizer {@link #norm}.
      * @param doc – the XML file DOM
-     * @return
+     * @return the document again
      */
     public Document normalize(Document doc) {
         Utilities.toStream(doc.getElementsByTagName("w")).forEach(
