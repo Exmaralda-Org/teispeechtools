@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -17,7 +16,9 @@ import org.dom4j.io.SAXReader;
 import java.nio.charset.Charset;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 /**
  * A normalizer based on the dictionaries from the EXMARaLDA project,
  * namely
@@ -33,6 +34,8 @@ public class DictionaryNormalizer implements WordNormalizer {
     // the dictionary:
     private static Map<String, String> folksDict = new ConcurrentHashMap<>();
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(
+            DictionaryNormalizer.class.getName());
 
     // where to load dictionaries from:
     private static final String FOLKS_PATH = "/main/resources/FOLK_Normalization_Lexicon.xml";
@@ -46,7 +49,7 @@ public class DictionaryNormalizer implements WordNormalizer {
 
     public final BinaryOperator<String> strCollider =
             (u, v) -> {
-                System.err.format("«%s» ignored, already an entry for «%s»\n", v, u);
+                LOGGER.warn("«{}» ignored, already an entry for «{}»", v, u);
                 return u;
     };
 
@@ -64,20 +67,20 @@ public class DictionaryNormalizer implements WordNormalizer {
         try {
             document = reader.read(folkSource);
         } catch (DocumentException e) {
-            throw new RuntimeException("Dictionary broken! " + e.getMessage());
+            throw new RuntimeException("Dictionary broken! – " + e.getMessage());
         }
         document.getRootElement().elements("entry").parallelStream()
             .forEach(entryN -> {
                     Element entry = (Element) entryN;
                     String from = entry.attributeValue("form");
-                    Stream<Element> str = entry.elements("n").parallelStream();
-                    Element maxEl = str.collect(Collectors.maxBy(
-                        Comparator.comparing(
-                            e -> Integer.parseInt(((e.attributeValue("freq"))))))).get();
-                    String to = maxEl.attributeValue("corr");
+                    String to = entry.elements("n").parallelStream()
+                        .collect(Collectors.maxBy(
+                            Comparator.comparing(
+                                e -> Integer.parseInt(e.attributeValue("freq")))))
+                        .get().attributeValue("corr");
                 folksDict.put(from, to);
         });
-        System.err.format("FOLK only: %d entries\n", folksDict.size());
+        LOGGER.info(String.format("FOLK only: %d entries", folksDict.size()));
         folkLoaded = true;
     }
 
@@ -106,14 +109,14 @@ public class DictionaryNormalizer implements WordNormalizer {
                             strCollider,
                             ConcurrentHashMap::new
             ));
-            System.err.format("DEREKO: %d entries\n", derekoDict.size());
-            System.err.format("FOLK [before]: %d entries\n", folksDict.size());
+            LOGGER.info("DEREKO: {} entries", derekoDict.size());
+            LOGGER.info("FOLK [before]: {} entries", folksDict.size());
         }
         getDerekoReader().lines()
             // .parallel() // uncomment if order is irrelevant
-            .map(String::trim).forEach(
-                        l -> folksDict.putIfAbsent(l.toLowerCase(), l));
-        System.err.format("FOLK [finally]: %d entries\n", folksDict.size());
+            .map(String::trim).filter(String::isEmpty).forEach(
+                    l -> folksDict.putIfAbsent(l.toLowerCase(), l));
+        LOGGER.info("FOLK [finally]: {} entries", folksDict.size());
         derekoLoaded = true;
     }
 

@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>normal</artifactId>
@@ -36,6 +38,12 @@
       <artifactId>utilities</artifactId>
       <version>0.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.7.25</version>
+    </dependency>
   </dependencies>
   <build>
     <resources>
@@ -43,6 +51,7 @@
         <directory>src</directory>
         <includes>
           <include>**/*.xml</include>
+          <include>**/*.xsl</include>
           <include>**/*.txt</include>
         </includes>
       </resource>

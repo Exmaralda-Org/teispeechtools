@@ -9,6 +9,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * a normalizer for the TEI transcription format.
  *
@@ -19,6 +22,8 @@ import org.w3c.dom.NodeList;
  *
  */
 public class TEINormalizer {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(TEINormalizer.class.getName());
 
     WordNormalizer norm;
     boolean debug;
@@ -63,20 +68,19 @@ public class TEINormalizer {
                 e -> {
                     Element el = (Element) e;
                     String tx = el.getTextContent();
-                    String normal = norm.getNormalised(tx);
-                    if (normal != null) {
-                        if (debug) {
+                    if (debug) {
+                        String normal = norm.getNormalised(tx);
+                        if (normal != null) {
                             String before = el.getAttribute("norm");
                             if (!before.equals(normal)) {
-                                System.err.format(
-                                        "%20s -> %-20s [was: %s]\n",
+                                LOGGER.info("ReNormalized %s -> %s [was: %s]",
                                         tx, normal, before);
                             }
                         }
-                        System.err.format("%20s -> %s\n", tx, normal);
+                        LOGGER.info("Normalized {}s -> {}", tx, normal);
                         el.setAttribute("norm", normal);
                     } else if (debug) {
-                        System.err.format("Cannot normalize «%s»\n", tx);
+                        LOGGER.info("Cannot normalize «{}».", tx);
                     }
                 });
         makeChange(doc);
