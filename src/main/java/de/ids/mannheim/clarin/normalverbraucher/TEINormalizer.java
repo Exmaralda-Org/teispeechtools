@@ -26,15 +26,9 @@ public class TEINormalizer {
     private final static Logger LOGGER = LoggerFactory.getLogger(TEINormalizer.class.getName());
 
     WordNormalizer norm;
-    boolean debug;
 
     public TEINormalizer(WordNormalizer wn) {
-        this(wn, false);
-    }
-
-    public TEINormalizer(WordNormalizer wn, boolean debugging) {
         norm = wn;
-        debug = debugging;
     }
 
     /**
@@ -68,18 +62,17 @@ public class TEINormalizer {
                 e -> {
                     Element el = (Element) e;
                     String tx = el.getTextContent();
-                    if (debug) {
-                        String normal = norm.getNormalised(tx);
-                        if (normal != null) {
-                            String before = el.getAttribute("norm");
-                            if (!before.equals(normal)) {
-                                LOGGER.info("ReNormalized %s -> %s [was: %s]",
-                                        tx, normal, before);
-                            }
+                    String normal = norm.getNormalised(tx);
+                    if (normal != null) {
+                        String before = el.getAttribute("norm");
+                        if (!before.equals(normal)) {
+                            LOGGER.info("ReNormalized %s -> %s [was: %s]",
+                                    tx, normal, before);
+                        } else {
+                            LOGGER.info("Normalized {}s -> {}", tx, normal);
                         }
-                        LOGGER.info("Normalized {}s -> {}", tx, normal);
                         el.setAttribute("norm", normal);
-                    } else if (debug) {
+                    } else {
                         LOGGER.info("Cannot normalize «{}».", tx);
                     }
                 });

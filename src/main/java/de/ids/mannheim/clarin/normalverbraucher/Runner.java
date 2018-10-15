@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 public class Runner {
     public static void main(String[] args) {
         WordNormalizer wn = new DictionaryNormalizer(true);
-        TEINormalizer tn = new TEINormalizer(wn, true);
+        TEINormalizer tn = new TEINormalizer(wn);
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -27,7 +27,7 @@ public class Runner {
             FileOutputStream out = new FileOutputStream("foo.xml");
             DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
             LSSerializer lsSerializer = domImplementation.createLSSerializer();
-            lsSerializer.writeToURI(doc, "foo.xml");
+            System.out.println(lsSerializer.writeToString(doc));
             out.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
