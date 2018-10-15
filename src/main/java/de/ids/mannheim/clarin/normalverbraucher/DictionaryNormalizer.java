@@ -18,7 +18,6 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 /**
  * A normalizer based on the dictionaries from the EXMARaLDA project,
  * namely
