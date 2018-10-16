@@ -66,11 +66,13 @@ public class TEINormalizer {
                     String normal = norm.getNormalised(tx);
                     if (normal != null) {
                         String before = el.getAttribute("norm");
-                        if (!before.equals(normal)) {
-                            LOGGER.info("ReNormalized %s -> %s [was: %s]",
-                                    tx, normal, before);
+                        if (!before.isEmpty()) {
+                            if (!before.equals(normal)) {
+                                LOGGER.info("ReNormalized {} -> {} [was: {}]",
+                                        tx, normal, before);
+                            }
                         } else {
-                            LOGGER.info("Normalized {}s -> {}", tx, normal);
+                            LOGGER.info("Normalized {} -> {}", tx, normal);
                         }
                         el.setAttribute("norm", normal);
                     } else {

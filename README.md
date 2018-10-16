@@ -30,3 +30,11 @@ based on dictionaries from the FOLK and the DeReKo corpora.
     mvn clean install
     
 installs the package locally with Maven.  Use as a library then.
+
+
+# Compile Dictionary
+
+To speed up loading time, one can compile the dictionary.  From the root directory 
+of the project, execute:
+
+    java -cp 'target/normal-0.1-SNAPSHOT.jar:target/dependency/*' de.ids.mannheim.clarin.normalverbraucher.DictMaker

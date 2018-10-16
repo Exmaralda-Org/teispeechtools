@@ -15,7 +15,14 @@ import org.dom4j.io.SAXReader;
 
 import java.nio.charset.Charset;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -31,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class DictionaryNormalizer implements WordNormalizer {
 
     // the dictionary:
-    private static Map<String, String> folksDict = new ConcurrentHashMap<>();
+    private static Map<String, String> dict = new ConcurrentHashMap<>();
 
     private final static Logger LOGGER = LoggerFactory.getLogger(
             DictionaryNormalizer.class.getName());
@@ -39,50 +46,56 @@ public class DictionaryNormalizer implements WordNormalizer {
     // where to load dictionaries from:
     private static final String FOLKS_PATH = "/main/resources/FOLK_Normalization_Lexicon.xml";
     private static String DEREKO_PATH = "/main/resources/dereko_capital_only.txt";
-
+    private static String DICT_PATH = "/main/resources/dict.tsv";
+    private static String DICT_PATH_FILE = "src" + DICT_PATH;
+    
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
     private static final SAXReader reader = new SAXReader();
 
     private static boolean debug;
 
-    public final BinaryOperator<String> strCollider =
+    public static final BinaryOperator<String> strCollider =
             (u, v) -> {
                 LOGGER.warn("«{}» ignored, already an entry for «{}»", v, u);
                 return u;
     };
 
 
-    private void loadFolksDict() {
+    private static void loadFolksDict() throws IOException {
         loadFolksDict(false);
     }
-    private void loadFolksDict(boolean force) {
-        InputStream folkSource = DictionaryNormalizer.class
-                .getResourceAsStream(FOLKS_PATH);
-        if (folkLoaded && !force) {
-            return;
-        }
-        Document document;
-        try {
-            document = reader.read(folkSource);
-        } catch (DocumentException e) {
-            throw new RuntimeException("Dictionary broken! – " + e.getMessage());
-        }
-        document.getRootElement().elements("entry").parallelStream()
-            .forEach(entryN -> {
-                    Element entry = (Element) entryN;
-                    String from = entry.attributeValue("form");
-                    String to = entry.elements("n").parallelStream()
-                        .collect(Collectors.maxBy(
-                            Comparator.comparing(
-                                e -> Integer.parseInt(e.attributeValue("freq")))))
-                        .get().attributeValue("corr");
-                folksDict.put(from, to);
-        });
-        LOGGER.info(String.format("FOLK only: %d entries", folksDict.size()));
-        folkLoaded = true;
-    }
 
+
+    private static void loadFolksDict(boolean force) throws IOException {
+            if (folkLoaded && !force) {
+                return;
+            }
+            try (InputStream folkSource = DictionaryNormalizer.
+                    class.getResourceAsStream(FOLKS_PATH)) {
+            Document document;
+            try {
+                document = reader.read(folkSource);
+            } catch (DocumentException e) {
+                throw new RuntimeException(
+                        "Dictionary broken! – " + e.getMessage());
+            }
+            document.getRootElement().elements("entry")
+                    .parallelStream().forEach(entryN -> {
+                Element entry = (Element) entryN;
+                String from = entry.attributeValue("form");
+                String to = entry.elements("n").parallelStream()
+                    .collect(
+                        Collectors.maxBy(Comparator.comparing(
+                            e -> Integer.parseInt(e.attributeValue("freq")))))
+                        .get().attributeValue("corr");
+                dict.put(from, to);
+            });
+            LOGGER.info(String.format("FOLK only: %d entries", dict.size()));
+            folkLoaded = true;
+        }
+    }
+    
     private static BufferedReader getDerekoReader () {
         InputStream derekoStream = DictionaryNormalizer.class
                 .getResourceAsStream(DEREKO_PATH);
@@ -91,48 +104,109 @@ public class DictionaryNormalizer implements WordNormalizer {
         return new BufferedReader(derekoReader);
     }
 
-    private void loadDerekoDict() {
+    private static void loadDerekoDict() throws IOException {
         loadDerekoDict(false);
     }
-    private void loadDerekoDict(boolean force) {
+    private static void loadDerekoDict(boolean force) throws IOException {
         if (derekoLoaded && !force) {
             return;
         }
         if (debug) {
-            // only for statistics at the moment
-            Map<String, String> derekoDict = getDerekoReader().lines().parallel()
-                .map(String::trim).collect(
-                        Collectors.toMap(
-                            l -> l.toLowerCase(),
-                            Function.identity(),
-                            strCollider,
-                            ConcurrentHashMap::new
-            ));
-            LOGGER.info("DEREKO: {} entries", derekoDict.size());
-            LOGGER.info("FOLK [before]: {} entries", folksDict.size());
+            try (BufferedReader derekoReader = getDerekoReader()){
+                // only for statistics at the moment
+                Map<String, String> derekoDict = derekoReader.lines().parallel()
+                    .map(String::trim).collect(
+                            Collectors.toMap(
+                                l -> l.toLowerCase(),
+                                Function.identity(),
+                                strCollider,
+                                ConcurrentHashMap::new
+                ));
+                LOGGER.info("DEREKO: {} entries", derekoDict.size());
+            }
         }
         getDerekoReader().lines()
-            // .parallel() // uncomment if order is irrelevant
-            .map(String::trim).filter(String::isEmpty).forEach(
-                    l -> folksDict.putIfAbsent(l.toLowerCase(), l));
-        LOGGER.info("FOLK [finally]: {} entries", folksDict.size());
+        // .parallel() // uncomment if order is irrelevant
+        .map(String::trim).filter(s -> !s.isEmpty()).forEach(
+                l -> dict.putIfAbsent(l.toLowerCase(), l));
+        LOGGER.info("Final dictionary: {} entries", dict.size());
         derekoLoaded = true;
     }
 
+    private static void loadCompiledDict() {
+        InputStream dictSource = DictionaryNormalizer.
+                class.getResourceAsStream(DICT_PATH);
+        InputStreamReader dictReader = new InputStreamReader(dictSource);
+        BufferedReader dictBReader = new BufferedReader(dictReader);
+        dict = dictBReader.lines().parallel()
+        .map(l -> l.split("\t")).collect(
+                Collectors.toMap(
+                    l -> l[0],
+                    l -> l[1],
+                    strCollider,
+                    ConcurrentHashMap::new
+        ));
+        derekoLoaded = true;
+        folkLoaded = true;
+    }
+    
     /**
      * reload dictionaries
      *
      * TODO: useless at the moment, as dictionaries are loaded from the WAR.
      */
-    public void reloadDict() {
-        folksDict = new ConcurrentHashMap<>();
-        loadFolksDict(true);
-        loadDerekoDict(true);
+    public static void reloadDict() {
+        dict = new ConcurrentHashMap<>();
+        try {
+            loadFolksDict(true);
+            loadDerekoDict(true);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    public static void writeDict() {
+        try (FileWriter outF = new FileWriter(DICT_PATH_FILE)) {
+            PrintWriter out = new PrintWriter(outF);
+            dict.forEach((k, v) -> out.println(
+                    String.format("%s\t%s", k, v)));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.err.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);
+    }
+    
+    public static void loadDictionary() {
+        loadDictionary(false);
+    }
+    public static void loadDictionary(boolean force) {
+        if (!force) {
+            try {
+                loadCompiledDict();
+            } catch (NullPointerException e) {
+                force = true;
+                LOGGER.warn("Internal dictionary not available – forcing reload");
+            }
+        }
+        if (force) {
+            try {
+                LOGGER.warn(
+                    "Load (force = {} / folkLoaded = {}, derekoLoaded = {})",
+                    force, folkLoaded, derekoLoaded);
+                loadFolksDict(force);
+                loadDerekoDict(force);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
     public String getNormalised(String in) {
-        return folksDict.get(in);
+        return dict.get(in);
     }
 
     public DictionaryNormalizer() {
@@ -140,7 +214,6 @@ public class DictionaryNormalizer implements WordNormalizer {
     }
     public DictionaryNormalizer(boolean debugging) {
         debug = debugging;
-        loadFolksDict();
-        loadDerekoDict();
+        loadDictionary();
     }
 }
