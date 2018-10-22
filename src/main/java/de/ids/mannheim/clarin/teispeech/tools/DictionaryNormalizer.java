@@ -1,28 +1,23 @@
-package de.ids.mannheim.clarin.normalverbraucher;
+package de.ids.mannheim.clarin.teispeech.tools;
 
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.dom4j.Document;
-import org.dom4j.Element;
 import org.dom4j.DocumentException;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
-
-import java.nio.charset.Charset;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -44,11 +39,14 @@ public class DictionaryNormalizer implements WordNormalizer {
             DictionaryNormalizer.class.getName());
 
     // where to load dictionaries from:
-    private static final String FOLKS_PATH = "/main/resources/FOLK_Normalization_Lexicon.xml";
-    private static String DEREKO_PATH = "/main/resources/dereko_capital_only.txt";
-    private static String DICT_PATH = "/main/resources/dict.tsv";
+    private static final String FOLKS_PATH =
+            "/main/resources/FOLK_Normalization_Lexicon.xml";
+    private static String DEREKO_PATH =
+            "/main/resources/dereko_capital_only.txt";
+    private static String DICT_PATH =
+            "/main/resources/dict.tsv";
     private static String DICT_PATH_FILE = "src" + DICT_PATH;
-    
+
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
     private static final SAXReader reader = new SAXReader();
@@ -62,7 +60,7 @@ public class DictionaryNormalizer implements WordNormalizer {
     };
 
 
-    private static void loadFolksDict() throws IOException {
+    public static void loadFolksDict() throws IOException {
         loadFolksDict(false);
     }
 
@@ -82,7 +80,7 @@ public class DictionaryNormalizer implements WordNormalizer {
             }
             document.getRootElement().elements("entry")
                     .parallelStream().forEach(entryN -> {
-                Element entry = (Element) entryN;
+                Element entry = entryN;
                 String from = entry.attributeValue("form");
                 String to = entry.elements("n").parallelStream()
                     .collect(
@@ -95,7 +93,7 @@ public class DictionaryNormalizer implements WordNormalizer {
             folkLoaded = true;
         }
     }
-    
+
     private static BufferedReader getDerekoReader () {
         InputStream derekoStream = DictionaryNormalizer.class
                 .getResourceAsStream(DEREKO_PATH);
@@ -104,7 +102,7 @@ public class DictionaryNormalizer implements WordNormalizer {
         return new BufferedReader(derekoReader);
     }
 
-    private static void loadDerekoDict() throws IOException {
+    public static void loadDerekoDict() throws IOException {
         loadDerekoDict(false);
     }
     private static void loadDerekoDict(boolean force) throws IOException {
@@ -149,7 +147,7 @@ public class DictionaryNormalizer implements WordNormalizer {
         derekoLoaded = true;
         folkLoaded = true;
     }
-    
+
 //    /**
 //     * reload dictionaries
 //     *
@@ -165,7 +163,7 @@ public class DictionaryNormalizer implements WordNormalizer {
 //            e.printStackTrace();
 //        }
 //    }
-    
+
     public static void writeDict() {
         try (FileWriter outF = new FileWriter(DICT_PATH_FILE)) {
             PrintWriter out = new PrintWriter(outF);
@@ -177,7 +175,7 @@ public class DictionaryNormalizer implements WordNormalizer {
         }
         System.err.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);
     }
-    
+
     public static void loadDictionary() {
         loadDictionary(false);
     }

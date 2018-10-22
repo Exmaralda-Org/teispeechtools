@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.normalverbraucher;
+package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.File;
 import java.io.FileOutputStream;

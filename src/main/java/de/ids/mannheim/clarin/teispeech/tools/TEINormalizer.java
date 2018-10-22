@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.normalverbraucher;
+package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -28,6 +28,11 @@ public class TEINormalizer {
 
     WordNormalizer norm;
 
+    /**
+     * make new {@link TEINormalizer} that uses a {@link WordNormalizer}
+     *
+     * @param wn
+     */
     public TEINormalizer(WordNormalizer wn) {
         norm = wn;
     }
