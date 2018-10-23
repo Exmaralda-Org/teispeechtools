@@ -3,7 +3,9 @@ package de.ids.mannheim.clarin.teispeech.data;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.List;
 
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,6 +36,25 @@ public class SpeechDocument {
     public Document getDocument() {
         return doc;
     }
+
+    public void makeErrorList(List<String> errors) {
+        if (errors.size() > 0) {
+            Element head = (Element) doc.getElementsByTagName("teiHeader").item(0);
+            Element before = (Element) doc.getElementsByTagName("profileDesc").item(0);
+            Comment comment = doc.createComment("[ There were errors parsing your text: ");
+            head.insertBefore(comment, before);
+            comment = doc.createComment("  please refer to online documentation to correct them. ]");
+            head.insertBefore(comment, before);
+            for (String error: errors) {
+                comment = doc.createComment("  - " + error + " ");
+                head.insertBefore(comment, before);
+            }
+            comment = doc.createComment("[ end of parsing errors ]");
+            head.insertBefore(comment, before);
+
+        }
+    }
+
     public void makeTimeLine(Deque<Event> events) {
         Element timeLine = (Element) doc.getElementsByTagName("timeline").item(0);
         Iterator<Event> iter = events.descendingIterator();
@@ -82,7 +103,8 @@ public class SpeechDocument {
 
     public void addBlockUtterance(Event from, Event to) {
         Element block = addBlock(from, to);
-        Element utterance = doc.createElementNS(TEI_NS, "u");
+//        Element utterance = doc.createElementNS(TEI_NS, "u");
+      Element utterance = doc.createElement("u");
         block.appendChild(utterance);
         Element body = (Element) doc.getElementsByTagName("body").item(0);
         body.appendChild(block);
@@ -139,6 +161,7 @@ public class SpeechDocument {
     }
 
     public void addIncident(Event from, Event to, String text) {
+        Element block = addBlock(from, to);
         Element incident = doc.createElement("incident");
         Element desc = doc.createElement("desc");
 //        Element incident = doc.createElementNS(TEI_NS, "incident");
@@ -148,7 +171,9 @@ public class SpeechDocument {
         incident.appendChild(desc);
         incident.setAttribute("start", from.mkTime());
         incident.setAttribute("end", to.mkTime());
-        currentUtterance.appendChild(incident);
+        block.appendChild(incident);
+        currentUtterance.getParentNode().getParentNode().
+            insertBefore(block, currentUtterance.getParentNode());
     }
 
 

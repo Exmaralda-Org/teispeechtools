@@ -7,7 +7,7 @@
     </profileDesc>
     <encodingDesc>
       <appInfo>
-        <application ident="IDS_TEI_Webstuhl" version="1.1">
+        <application ident="IDS_TEI_Webstuhl" version="0.1">
           <label>IDS-TEI-Webstuhl</label>
           <desc>TEI Conversion Webservices</desc>
         </application>

@@ -9,6 +9,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -192,5 +193,9 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     @Override
     public void enterWord(WordContext ctx) {
         spd.addText(ctx.getText());
+    }
+
+    public void makeErrorList(List<String> list) {
+        spd.makeErrorList(list);
     };
 }

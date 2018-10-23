@@ -21,10 +21,13 @@ public class TextRunner {
             SimpleExmaraldaLexer lexer = new SimpleExmaraldaLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             SimpleExmaraldaParser parser = new SimpleExmaraldaParser(tokens);
+            AntlrErrorLister lister = new AntlrErrorLister();
+            parser.addErrorListener(lister);
             ParseTreeWalker walker = new ParseTreeWalker();
             ParseTree tree = parser.transcript();
             TextToTEI tt = new TextToTEI();
             walker.walk(tt, tree);
+            tt.makeErrorList(lister.getList());
             Document doc = tt.getDocument();
             DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation().getFeature("LS", "3.0");;
             LSSerializer lsSerializer = domImplementation.createLSSerializer();
