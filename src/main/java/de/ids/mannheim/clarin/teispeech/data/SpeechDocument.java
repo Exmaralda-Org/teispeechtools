@@ -20,14 +20,6 @@ public class SpeechDocument {
     private static String TEI_NS = "http://www.tei-c.org/ns/1.0";
     private static String XML_NS = "http://www.w3.org/XML/1998/namespace";
 
-    // reicht nicht: Klasse Event mit Ein-und Austritts-Marken
-    // (E1A, E1Z und Überlappungen E1M1..)
-    // Liste der Events pro Äußerung und Einsortieren
-    // in Reihenfolge des Vorkommens vor eventuellen Marken
-    // also E1A E1M1 E1Z, dann E2A E1M1 E2Z
-    // -> E1A E2A E1M1 E1Z E2Z.
-    private int lastEvent = 0;
-
     private Document doc;
 
     private Element currentBlock;
@@ -43,7 +35,6 @@ public class SpeechDocument {
         return doc;
     }
     public void makeTimeLine(Deque<Event> events) {
-        // TODO: Make lastEvent Events
         Element timeLine = (Element) doc.getElementsByTagName("timeline").item(0);
         Iterator<Event> iter = events.descendingIterator();
         while (iter.hasNext()) {
@@ -57,7 +48,7 @@ public class SpeechDocument {
     }
 
     public void makeSpeakerList(Collection<String> speakers) {
-        // TODO: iterate over speakers
+        // iterate over speakers
         //<person xml:id="LB" n="LB">
         //    <persName>
         //        <abbr>LB</abbr>
@@ -81,7 +72,6 @@ public class SpeechDocument {
     }
 
     public Element addBlock(Event from, Event to) {
-        // TODO: add to <body
         Element block = doc.createElement("annotationBlock");
 //        Element block = doc.createElementNS(TEI_NS, "annotationBlock");
         block.setAttribute("who", currentSpeaker);
@@ -91,7 +81,6 @@ public class SpeechDocument {
     }
 
     public void addBlockUtterance(Event from, Event to) {
-        // TODO: add to <body
         Element block = addBlock(from, to);
         Element utterance = doc.createElementNS(TEI_NS, "u");
         block.appendChild(utterance);
@@ -134,6 +123,7 @@ public class SpeechDocument {
         Element com = doc.createElement("span");
 //        Element comGroup = doc.createElementNS(TEI_NS, "spanGrp");
 //        Element com = doc.createElementNS(TEI_NS, "span");
+        com.setAttribute("type", "comment");
         com.setAttribute("from", from.mkTime());
         com.setAttribute("to", to.mkTime());
         Text tx = doc.createTextNode(text);

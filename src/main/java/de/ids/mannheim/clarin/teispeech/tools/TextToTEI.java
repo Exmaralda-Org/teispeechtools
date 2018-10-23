@@ -175,7 +175,6 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
 
     @Override
     public void enterAction(ActionContext ctx) {
-        // TODO Auto-generated method stub
         String tx = ctx.AWORD().stream().
                 map(w -> w.getText()).
                 collect(Collectors.joining(" "));
@@ -184,7 +183,6 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
 
     @Override
     public void enterInfo(InfoContext ctx) {
-        // TODO Auto-generated method stub
         String tx = ctx.IWORD().stream().
                 map(w -> w.getText()).
                 collect(Collectors.joining(" "));
