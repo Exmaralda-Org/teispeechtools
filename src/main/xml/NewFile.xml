@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <teiHeader>
+    <profileDesc>
+      <particDesc>
+      </particDesc>
+    </profileDesc>
+    <encodingDesc>
+      <appInfo>
+        <application ident="IDS_TEI_Webstuhl" version="1.1">
+          <label>IDS-TEI-Webstuhl</label>
+          <desc>TEI Conversion Webservices</desc>
+        </application>
+      </appInfo>
+      <transcriptionDesc ident="cGAT" version="2014">
+        <desc>
+          <!--Fill me in-->
+        </desc>
+        <label>
+          <!--Fill me in-->
+        </label>
+      </transcriptionDesc>
+    </encodingDesc>
+    <revisionDesc>
+    </revisionDesc>
+  </teiHeader>
+  <text xml:lang="de">
+    <timeline unit="ORDER">
+    </timeline>
+    <body>
+    </body>
+  </text>
+</TEI>

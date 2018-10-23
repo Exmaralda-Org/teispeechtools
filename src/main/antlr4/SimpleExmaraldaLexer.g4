@@ -39,7 +39,7 @@ LANGLE : '<' -> mode(MARK_TEXT), skip;
 LBRACKET : '[' -> mode(ACTION), skip;
 LBRACE : '{'  -> mode(INFO), skip;
 NSPACE : [\t ]+ -> channel(HIDDEN);
-CONTI : FNEWLINE [\t ]+ -> skip;
+CONTI : FNEWLINE [\t ]+;
 NNEWLINE : FNEWLINE -> mode(DEFAULT_MODE), skip;
 fragment FNEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
 

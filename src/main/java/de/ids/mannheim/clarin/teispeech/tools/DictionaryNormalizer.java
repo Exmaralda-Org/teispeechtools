@@ -66,11 +66,11 @@ public class DictionaryNormalizer implements WordNormalizer {
 
 
     private static void loadFolksDict(boolean force) throws IOException {
-            if (folkLoaded && !force) {
-                return;
-            }
-            try (InputStream folkSource = DictionaryNormalizer.
-                    class.getResourceAsStream(FOLKS_PATH)) {
+        if (folkLoaded && !force) {
+            return;
+        }
+        try (InputStream folkSource = DictionaryNormalizer.
+                class.getResourceAsStream(FOLKS_PATH)) {
             Document document;
             try {
                 document = reader.read(folkSource);
@@ -92,7 +92,7 @@ public class DictionaryNormalizer implements WordNormalizer {
             LOGGER.info(String.format("FOLK only: %d entries", dict.size()));
             folkLoaded = true;
         }
-    }
+}
 
     private static BufferedReader getDerekoReader () {
         InputStream derekoStream = DictionaryNormalizer.class

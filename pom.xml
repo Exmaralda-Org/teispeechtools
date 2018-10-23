@@ -13,6 +13,7 @@
     <!-- plug-in settings -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <kotlin.version>1.2.71</kotlin.version>
   </properties>
   <dependencies>
     <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
@@ -50,6 +51,19 @@
       <version>4.7.1</version>
       <type>maven-plugin</type>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-runtime -->
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>9.9.0-1</version>
+    </dependency>
+
   </dependencies>
   <build>
     <resources>
@@ -64,18 +78,6 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>de.ids.mannheim.clarin.normalverbraucher.DictMaker</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -112,7 +114,7 @@
           </execution>
         </executions>
         <configuration>
-        <outputDirectory>${project.build.directory}/generated-sources/antlr4/de/ids/mannheim/clarin/teispeech/tools</outputDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources/antlr4/de/ids/mannheim/clarin/teispeech/tools</outputDirectory>
           <arguments>
             <argument>-package</argument>
             <argument>de.ids.mannheim.clarin.teispeech.tools</argument>
