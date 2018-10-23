@@ -1,7 +1,6 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -27,16 +26,14 @@ public class Runner {
             System.err.format("Have got %d <w> nodes.\n",
                     doc.getElementsByTagName("w").getLength());
             tn.normalize(doc);
-            FileOutputStream out = new FileOutputStream("foo.xml");
             DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
             LSSerializer lsSerializer = domImplementation.createLSSerializer();
             LSOutput lsOutput =  domImplementation.createLSOutput();
             lsOutput.setEncoding("UTF-8");
             Writer stringWriter = new StringWriter();
             lsOutput.setCharacterStream(stringWriter);
-            lsSerializer.write(doc, lsOutput);     
+            lsSerializer.write(doc, lsOutput);
             System.out.println(stringWriter.toString());
-            out.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
