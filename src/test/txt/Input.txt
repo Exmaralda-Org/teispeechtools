@@ -1,0 +1,20 @@
+TOM: Hallo, Tim!
+TIM: Hallo, Tom.
+
+TOM: [winkt] Hallo, Tim!
+TIM: [winkt] Hallo, Tom.
+
+TOM: [winkt] Hallo, Tim! {Salut, Tim!}
+TIM: [winkt] Hallo, Tom. {Salut, Tom!}
+
+WIM: [wackelt mit dem Ohr]
+KIM: {unverständlich}
+
+TOM: [winkt] Hallo, <Tim!>1> {Salut, Tim!}
+TIM: [winkt] <Hallo>1>, Tom. {Salut, Tom!}
+
+TOM TOM: [winkt und hüpft] Hallo, Tim! {Salut, Tim!}
+  Lange nicht mehr gesehen.
+TIM TIM: [winkt und lacht] Hallo, Tom. {Salut, Tom!}
+        Stimmt.  Wie geht's Dir? {Comment ça va?}
+
