@@ -205,7 +205,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
                 firstMark = Optional.of(m);
             }
         } else {
-            m = new MarkedEvent();
+            m = new MarkedEvent(mark);
             markedEvents.put(mark, m);
             events.push(m);
         }

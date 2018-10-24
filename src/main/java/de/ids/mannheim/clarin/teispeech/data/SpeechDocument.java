@@ -90,9 +90,9 @@ public class SpeechDocument {
             timeLine.appendChild(el);
             if (e instanceof MarkedEvent) {
                 Comment explainMark = doc.createComment("marked as ‹"
-                        + ((MarkedEvent) e).getMark() + "in the input");
+                        + ((MarkedEvent) e).getMark() + "› in the input.");
+                timeLine.insertBefore(explainMark, el);
                 el = doc.createElement("when");
-                el.appendChild(explainMark);
                 el.setAttributeNS(XML_NS, "id",
                         ((MarkedEvent) e).mkEndTimeRef());
                 timeLine.appendChild(el);
