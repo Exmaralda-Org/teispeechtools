@@ -6,4 +6,8 @@ public abstract class Event {
     protected int nr;
 
     public abstract String mkTime();
+
+    public String mkTimeRef() {
+        return "#" + mkTime();
+    };
 }

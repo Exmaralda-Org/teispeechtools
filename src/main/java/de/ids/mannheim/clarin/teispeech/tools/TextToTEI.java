@@ -47,41 +47,27 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     private Map<String, MarkedEvent> markedEvents = new LinkedHashMap<>();
     private Event currentBegin = null;
     private Event currentEnd = null;
-    private Optional<Event> lastMark;
+
+    /**
+     * This records the first overlap mark in an utterance content.
+     * It is set if the mark occurs for the second or a later time.
+     * Begin events of turns are moved before <code>firstMark</code>
+     * in the timeline later.
+     */
+    private Optional<Event> firstMark;
     private SpeechDocument spd;
 
-    private static final String TEMPLATE_PATH =
-            "/main/xml/NewFile.xml";
+    private static final String TEMPLATE_PATH = "/main/xml/NewFile.xml";
 
-
-    public Document getDocument() {
-        return spd.getDocument();
-    }
-
-    public void moveEvent(Event e, Event before) {
-        Stack<Event> stick = new Stack<>();
-        for (Event i = events.pop();
-             !events.isEmpty() && i != before;
-             i = events.pop()) {
-            stick.push(i);
-            if (events.isEmpty()) {
-                throw new RuntimeException("Event not found!");
-            }
-        }
-        assert events.pop() == before;
-        events.push(e);
-        events.push(before);
-        for (Event i = stick.pop();
-             !stick.isEmpty() && i != null;
-             i = stick.pop()) {
-            events.push(i);
-        }
-    }
-
+    /**
+     * Constructor
+     *
+     * prepare XML template.
+     */
     public TextToTEI() {
         javax.xml.parsers.DocumentBuilder builder;
-        try (InputStream templateSource = DictionaryNormalizer.
-                    class.getResourceAsStream(TEMPLATE_PATH)) {
+        try (InputStream templateSource = DictionaryNormalizer.class
+                .getResourceAsStream(TEMPLATE_PATH)) {
 
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             builder = dbf.newDocumentBuilder();
@@ -96,26 +82,66 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         }
     }
 
-//    public MarkedEvent rememberMarkedEvent(String mark) {
-//        if (markedEvents.containsKey(mark)) {
-//            return markedEvents.get(mark);
-//        } else {
-//            MarkedEvent event = new MarkedEvent(mark);
-//            markedEvents.put(mark, event);
-//            return event;
-//        }
-//    }
+    /**TimeL
+     * get XML DOM Document from {@link SpeechDocument}
+     */
+    public Document getDocument() {
+        return spd.getDocument();
+    }
 
+    /**
+     * in timeline, move one before another.
+     *
+     * @param e
+     *            event to be moved
+     * @param before
+     *            event before which e shall go
+     */
+    public void moveEvent(Event e, Event before) {
+        Stack<Event> stick = new Stack<>();
+        for (Event i = events.pop(); !events.isEmpty()
+                && i != before; i = events.pop()) {
+            stick.push(i);
+            if (events.isEmpty()) {
+                throw new RuntimeException("Event not found!");
+            }
+        }
+        assert events.pop() == before;
+        events.push(e);
+        events.push(before);
+        for (Event i = stick.pop(); !stick.isEmpty()
+                && i != null; i = stick.pop()) {
+            events.push(i);
+        }
+    }
+
+    // public MarkedEvent rememberMarkedEvent(String mark) {
+    // if (markedEvents.containsKey(mark)) {
+    // return markedEvents.get(mark);
+    // } else {
+    // MarkedEvent event = new MarkedEvent(mark);
+    // markedEvents.put(mark, event);
+    // return event;
+    // }
+    // }
+
+    /**
+     * remember speaker and check that name is a valid XML ID
+     * @param name
+     */
     private void rememberSpeaker(String name) {
         if (NameChecker.isValidNCName(name)) {
             speakers.add(name);
         } else {
-            throw new IllegalArgumentException(
-                    "'" + name + "' is not a valid name. Start with a letter and use letters, "
-                            + "full stops, underscores and digits only!");
+            throw new IllegalArgumentException("'" + name
+                    + "' is not a valid name. Start with a letter and use letters, "
+                    + "full stops, underscores and digits only!");
         }
     }
 
+    /**
+     * fill in lists of speakers, time line, changes.
+     */
     @Override
     public void exitTranscript(TranscriptContext ctx) {
         spd.makeSpeakerList(speakers);
@@ -123,6 +149,9 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         spd.finish();
     }
 
+    /**
+     * Speaker: make sure speaker is registered and set as current
+     */
     @Override
     public void enterSpeaker(SpeakerContext ctx) {
         String name = ctx.getText();
@@ -130,41 +159,50 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         spd.setCurrentSpeaker(name);
     }
 
+    /**
+     * Content of a contribution: register events and set currentUtterance
+     */
     @Override
     public void enterContent(ContentContext ctx) {
         currentBegin = new BeginEvent();
         currentEnd = new EndEvent();
         spd.addBlockUtterance(currentBegin, currentEnd);
-        lastMark = Optional.empty();
+        firstMark = Optional.empty();
 
         events.push(currentBegin);
         spd.addTurn(currentBegin);
     }
 
+    /**
+     * one line is finished; mainly event management
+     */
     @Override
     public void exitContent(ContentContext ctx) {
-        if (lastMark.isPresent()
-                // TODO: Check if lastMark already used
-                ) {
-            moveEvent(currentBegin, lastMark.get());
+        // marked event referring to past contributions
+        // present, must move begin of this one before it.
+        if (firstMark.isPresent()) {
+            moveEvent(currentBegin, firstMark.get());
         }
         events.push(currentEnd);
         spd.endTurn(currentEnd);
     }
 
+    /**
+     * marked event encountered – event management.
+     */
     @Override
     public void enterMarked(MarkedContext ctx) {
-        String tx = ctx.MWORD().stream().
-                map(w -> w.getText()).
-                collect(Collectors.joining(" "));
+        String tx = ctx.MWORD().stream().map(w -> w.getText())
+                .collect(Collectors.joining(" "));
         String mark = ctx.MARK_ID().getText();
         MarkedEvent m;
+        // register if unknown; else, use as terminus ante quem for begin
         if (markedEvents.containsKey(mark)) {
 
             m = markedEvents.get(mark);
             assert events.contains(m);
-            if (!lastMark.isPresent()) {
-                lastMark = Optional.of(m);
+            if (!firstMark.isPresent()) {
+                firstMark = Optional.of(m);
             }
         } else {
             m = new MarkedEvent();
@@ -174,27 +212,37 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         spd.addMarked(m, tx);
     }
 
+    /**
+     * incident encountered
+     */
     @Override
     public void enterAction(ActionContext ctx) {
-        String tx = ctx.AWORD().stream().
-                map(w -> w.getText()).
-                collect(Collectors.joining(" "));
+        String tx = ctx.AWORD().stream().map(w -> w.getText())
+                .collect(Collectors.joining(" "));
         spd.addIncident(currentBegin, currentEnd, tx);
     }
 
+    /**
+     * comment encountered
+     */
     @Override
     public void enterInfo(InfoContext ctx) {
-        String tx = ctx.IWORD().stream().
-                map(w -> w.getText()).
-                collect(Collectors.joining(" "));
+        String tx = ctx.IWORD().stream().map(w -> w.getText())
+                .collect(Collectors.joining(" "));
         spd.addComment(currentBegin, currentEnd, tx);
     }
 
+    /**
+     * word encountered; consign to white space management
+     */
     @Override
     public void enterWord(WordContext ctx) {
         spd.addText(ctx.getText());
     }
 
+    /**
+     * prepare list of errors, delegate do {@link SpeechDocument}
+     */
     public void makeErrorList(List<String> list) {
         spd.makeErrorList(list);
     };

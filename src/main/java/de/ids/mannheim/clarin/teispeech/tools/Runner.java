@@ -20,28 +20,27 @@ public class Runner {
         WordNormalizer wn = new DictionaryNormalizer(true);
         TEINormalizer tn = new TEINormalizer(wn);
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = DocumentBuilderFactory
+                    .newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new File(args[0]));
             System.err.format("Have got %d <w> nodes.\n",
                     doc.getElementsByTagName("w").getLength());
             tn.normalize(doc);
-            DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation();
+            DOMImplementationLS domImplementation = (DOMImplementationLS) doc
+                    .getImplementation();
             LSSerializer lsSerializer = domImplementation.createLSSerializer();
-            LSOutput lsOutput =  domImplementation.createLSOutput();
+            LSOutput lsOutput = domImplementation.createLSOutput();
             lsOutput.setEncoding("UTF-8");
             Writer stringWriter = new StringWriter();
             lsOutput.setCharacterStream(stringWriter);
             lsSerializer.write(doc, lsOutput);
             System.out.println(stringWriter.toString());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (SAXException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

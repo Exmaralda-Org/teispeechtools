@@ -29,10 +29,12 @@ public class TextRunner {
             walker.walk(tt, tree);
             tt.makeErrorList(lister.getList());
             Document doc = tt.getDocument();
-            DOMImplementationLS domImplementation = (DOMImplementationLS) doc.getImplementation().getFeature("LS", "3.0");;
+            DOMImplementationLS domImplementation = (DOMImplementationLS) doc
+                    .getImplementation().getFeature("LS", "3.0");
             LSSerializer lsSerializer = domImplementation.createLSSerializer();
-            lsSerializer.getDomConfig().setParameter("format-pretty-print", Boolean.TRUE);
-            LSOutput lsOutput =  domImplementation.createLSOutput();
+            lsSerializer.getDomConfig().setParameter("format-pretty-print",
+                    Boolean.TRUE);
+            LSOutput lsOutput = domImplementation.createLSOutput();
             lsOutput.setEncoding("UTF-8");
             Writer stringWriter = new StringWriter();
             lsOutput.setCharacterStream(stringWriter);
@@ -40,7 +42,6 @@ public class TextRunner {
             System.out.println(stringWriter.toString());
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
