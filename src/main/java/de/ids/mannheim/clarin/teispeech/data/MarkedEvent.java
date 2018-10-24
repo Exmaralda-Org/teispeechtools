@@ -19,7 +19,7 @@ public class MarkedEvent extends Event {
     }
 
     public String mkEndTimeRef() {
-        return "#" + mkTime();
+        return "#" + mkEndTime();
     }
 
     public String getMark() {

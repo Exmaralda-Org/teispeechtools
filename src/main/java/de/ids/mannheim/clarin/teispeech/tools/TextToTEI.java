@@ -28,8 +28,8 @@ import de.ids.mannheim.clarin.teispeech.data.Event;
 import de.ids.mannheim.clarin.teispeech.data.MarkedEvent;
 import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ActionContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.CommentContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ContentContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.InfoContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.MarkedContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.SpeakerContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.TranscriptContext;
@@ -226,7 +226,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      * comment encountered
      */
     @Override
-    public void enterInfo(InfoContext ctx) {
+    public void enterComment(CommentContext ctx) {
         String tx = ctx.IWORD().stream().map(w -> w.getText())
                 .collect(Collectors.joining(" "));
         spd.addComment(currentBegin, currentEnd, tx);

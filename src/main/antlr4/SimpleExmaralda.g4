@@ -13,18 +13,18 @@ line : turn | empty_line ;
 
 empty_line : NEWLINE ;
 
-turn : speaker content+ ;
+turn : speaker COLON content+ ;
 
-content : (action | action? text info? ) conti?;
+content : (action? text comment? | action) conti?;
 
 conti : CONTI;
 
 speaker :  HWORD;
 
-action : AWORD+ ;
+action : LBRACKET AWORD+ RBRACKET ;
+comment : LBRACE IWORD+ RBRACE;
 
 text : (word | marked)+ ;
 word :  WORD ;
-marked : MWORD+ MARK_ID ;
+marked : LANGLE MWORD+ T_RANGLE MARK_ID RANGLE;
 
-info : IWORD+ ;
