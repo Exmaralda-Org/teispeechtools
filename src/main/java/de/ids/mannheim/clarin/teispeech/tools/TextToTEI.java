@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -98,7 +97,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      *            event before which e shall go
      */
     public void moveEvent(Event e, Event before) {
-        Stack<Event> stick = new Stack<>();
+        Deque<Event> stick = new ArrayDeque<>();
         for (Event i = events.pop(); !events.isEmpty()
                 && i != before; i = events.pop()) {
             stick.push(i);
