@@ -118,10 +118,12 @@ public class DictionaryNormalizer implements WordNormalizer {
                 LOGGER.info("DEREKO: {} entries", derekoDict.size());
             }
         }
-        getDerekoReader().lines()
-                // .parallel() // uncomment if order is irrelevant
-                .map(String::trim).filter(s -> !s.isEmpty())
-                .forEach(l -> dict.putIfAbsent(l.toLowerCase(), l));
+        try (BufferedReader derekoReader = getDerekoReader()) {
+            derekoReader.lines()
+            // .parallel() // uncomment if order is irrelevant
+            .map(String::trim).filter(s -> !s.isEmpty())
+            .forEach(l -> dict.putIfAbsent(l.toLowerCase(), l));
+        }
         LOGGER.info("Final dictionary: {} entries", dict.size());
         derekoLoaded = true;
     }

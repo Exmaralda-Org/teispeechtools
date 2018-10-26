@@ -6,7 +6,6 @@ lexer grammar SimpleExmaraldaLexer;
 
 SPACE : [\t ]+ -> channel(HIDDEN);
 
-
 HWORD : ~[:\t \n\r]+;
 COLON : ':' -> mode(NORMAL);
 NEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');

@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -48,14 +50,13 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     private Event currentEnd = null;
 
     /**
-     * This records the first overlap mark in an utterance content.
-     * It is set if the mark occurs for the second or a later time.
-     * Begin events of turns are moved before <code>firstMark</code>
-     * in the timeline later.
+     * This records the first overlap mark in an utterance content. It is set if
+     * the mark occurs for the second or a later time. Begin events of turns are
+     * moved before <code>firstMark</code> in the timeline later.
      */
     private Optional<Event> firstMark;
     private SpeechDocument spd;
-
+    private CommonTokenStream tokens;
     private static final String TEMPLATE_PATH = "/main/xml/NewFile.xml";
 
     /**
@@ -63,7 +64,8 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      *
      * prepare XML template.
      */
-    public TextToTEI() {
+    public TextToTEI(String language, CommonTokenStream tokens) {
+        this.tokens = tokens;
         javax.xml.parsers.DocumentBuilder builder;
         try (InputStream templateSource = DictionaryNormalizer.class
                 .getResourceAsStream(TEMPLATE_PATH)) {
@@ -71,7 +73,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             builder = dbf.newDocumentBuilder();
             Document doc = builder.parse(templateSource);
-            spd = new SpeechDocument(doc);
+            spd = new SpeechDocument(doc, language);
         } catch (ParserConfigurationException e) {
             throw new RuntimeException("XML parser broken!");
         } catch (IOException e1) {
@@ -81,8 +83,8 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         }
     }
 
-    /**TimeL
-     * get XML DOM Document from {@link SpeechDocument}
+    /**
+     * TimeL get XML DOM Document from {@link SpeechDocument}
      */
     public Document getDocument() {
         return spd.getDocument();
@@ -126,6 +128,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
 
     /**
      * remember speaker and check that name is a valid XML ID
+     *
      * @param name
      */
     private void rememberSpeaker(String name) {
@@ -191,6 +194,11 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterMarked(MarkedContext ctx) {
+        List<Token> left = tokens
+                .getHiddenTokensToLeft(ctx.getStart().getTokenIndex());
+        if (left != null && left.size() > 0) {
+            spd.addSpace();
+        }
         String tx = ctx.MWORD().stream().map(w -> w.getText())
                 .collect(Collectors.joining(" "));
         String mark = ctx.MARK_ID().getText();
@@ -210,6 +218,17 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         }
         spd.addMarked(m, tx);
     }
+
+    // @Override
+    // public void exitMarked(MarkedContext ctx) {
+    // List<Token> right = tokens
+    // .getHiddenTokensToRight(ctx.getStop().getTokenIndex());
+    // if (right != null && right.size() > 0) {
+    // spd.addSpace();
+    //
+    // }
+    // }
+    //
 
     /**
      * incident encountered
@@ -236,8 +255,12 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterWord(WordContext ctx) {
-        spd.addText(ctx.getText());
+        List<Token> left = tokens
+                .getHiddenTokensToLeft(ctx.getStart().getTokenIndex());
+        boolean space = (left != null);
+        spd.addText(ctx.getText(), space);
     }
+
 
     /**
      * prepare list of errors, delegate do {@link SpeechDocument}

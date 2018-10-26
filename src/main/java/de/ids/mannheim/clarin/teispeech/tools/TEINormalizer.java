@@ -41,7 +41,7 @@ public class TEINormalizer {
     public Document normalize(Document doc) {
         Utilities.toStream(doc.getElementsByTagName("w")).forEach(e -> {
             Element el = (Element) e;
-            String tx = el.getTextContent();
+            String tx = Utilities.removeSpace(el.getTextContent());
             String normal = norm.getNormalised(tx);
             if (normal != null) {
                 String before = el.getAttribute("norm");

@@ -1,5 +1,8 @@
 package de.ids.mannheim.clarin.teispeech.data;
 
+/**
+ * an {@link Event} starting a turn
+ */
 public class BeginEvent extends Event {
     public BeginEvent() {
         nr = ++lastEvent;

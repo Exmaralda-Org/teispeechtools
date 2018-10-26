@@ -1,5 +1,9 @@
 package de.ids.mannheim.clarin.teispeech.data;
 
+/**
+ * an {@link Event} where temporal overlap between different turns occurs.
+ */
+
 public class MarkedEvent extends Event {
     private static int lastEvent = 0;
     private final String mark;
