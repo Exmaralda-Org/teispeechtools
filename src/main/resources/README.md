@@ -27,7 +27,8 @@ Albanian, not `alb`).
   features (two- and three-letter codes, names in English, French,
   German) from [this list of ISO 639-2
   codes](http://www.loc.gov/standards/iso639-2/php/code_list.php)
-- `language-list-639-1-to-639-2.json`: list of two-letter codes
+- `language-list-639-1-to-639-2.json` and
+  `language-list-639-1-to-639-2.tsv`: list of two-letter codes
   pointing to the three-letter code
 - `languages-639-most-tolerant.json`: list of names and codes pointing
   to the three-letter code
