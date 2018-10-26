@@ -1,3224 +1,7848 @@
-{
-  "aar": [
-    "aa",
-    "aar",
-    "Afar",
-    "afar",
-    "Danakil-Sprache"
-  ],
-  "abk": [
-    "ab",
-    "abk",
-    "Abkhazian",
-    "abkhaze",
-    "Abchasisch"
-  ],
-  "ace": [
-    "ace",
-    "Achinese",
-    "aceh",
-    "Aceh-Sprache"
-  ],
-  "ach": [
-    "ach",
-    "Acoli",
-    "acoli",
-    "Acholi-Sprache"
-  ],
-  "ada": [
-    "ada",
-    "Adangme",
-    "adangme",
-    "Adangme-Sprache"
-  ],
-  "ady": [
-    "ady",
-    "Adyghe",
-    "Adygei",
-    "adyghé",
-    "Adygisch"
-  ],
-  "afa": [
-    "afa",
-    "Afro-Asiatic languages",
-    "afro-asiatiques, langues",
-    "Hamitosemitische Sprachen (Andere)"
-  ],
-  "afh": [
-    "afh",
-    "Afrihili",
-    "afrihili"
-  ],
-  "afr": [
-    "af",
-    "afr",
-    "Afrikaans",
-    "afrikaans"
-  ],
-  "ain": [
-    "ain",
-    "Ainu",
-    "aïnou",
-    "Ainu-Sprache"
-  ],
-  "aka": [
-    "ak",
-    "aka",
-    "Akan",
-    "akan",
-    "Akan-Sprache"
-  ],
-  "akk": [
-    "akk",
-    "Akkadian",
-    "akkadien",
-    "Akkadisch"
-  ],
-  "sqi": [
-    "sq",
-    "alb",
-    "sqi",
-    "Albanian",
-    "albanais",
-    "Albanisch"
-  ],
-  "ale": [
-    "ale",
-    "Aleut",
-    "aléoute",
-    "Aleutisch"
-  ],
-  "alg": [
-    "alg",
-    "Algonquian languages",
-    "algonquines, langues",
-    "Algonkin-Sprachen (Andere)"
-  ],
-  "alt": [
-    "alt",
-    "Southern Altai",
-    "altai du Sud",
-    "Altaisch"
-  ],
-  "amh": [
-    "am",
-    "amh",
-    "Amharic",
-    "amharique",
-    "Amharisch"
-  ],
-  "ang": [
-    "ang",
-    "English, Old (ca.450-1100)",
-    "English, Old",
-    "anglo-saxon (ca.450-1100)",
-    "Altenglisch"
-  ],
-  "anp": [
-    "anp",
-    "Angika",
-    "angika",
-    "Anga-Sprache"
-  ],
-  "apa": [
-    "apa",
-    "Apache languages",
-    "apaches, langues",
-    "Apachen-Sprachen"
-  ],
-  "ara": [
-    "ar",
-    "ara",
-    "Arabic",
-    "arabe",
-    "Arabisch"
-  ],
-  "arc": [
-    "arc",
-    "Official Aramaic (700-300 BCE)",
-    "Imperial Aramaic (700-300 BCE)",
-    "Official Aramaic",
-    "Imperial Aramaic",
-    "araméen d'empire (700-300 BCE)",
-    "Aramäisch"
-  ],
-  "arg": [
-    "an",
-    "arg",
-    "Aragonese",
-    "aragonais",
-    "Aragonesisch"
-  ],
-  "hye": [
-    "hy",
-    "arm",
-    "hye",
-    "Armenian",
-    "arménien",
-    "Armenisch"
-  ],
-  "arn": [
-    "arn",
-    "Mapudungun",
-    "Mapuche",
-    "mapudungun",
-    "mapuche",
-    "mapuce",
-    "Arauka-Sprachen"
-  ],
-  "arp": [
-    "arp",
-    "Arapaho",
-    "arapaho",
-    "Arapaho-Sprache"
-  ],
-  "art": [
-    "art",
-    "Artificial languages",
-    "artificielles, langues",
-    "Kunstsprachen (Andere)"
-  ],
-  "arw": [
-    "arw",
-    "Arawak",
-    "arawak",
-    "Arawak-Sprachen"
-  ],
-  "asm": [
-    "as",
-    "asm",
-    "Assamese",
-    "assamais",
-    "Assamesisch"
-  ],
-  "ast": [
-    "ast",
-    "Asturian",
-    "Bable",
-    "Leonese",
-    "Asturleonese",
-    "asturien",
-    "bable",
-    "léonais",
-    "asturoléonais",
-    "Asturisch"
-  ],
-  "ath": [
-    "ath",
-    "Athapascan languages",
-    "athapascanes, langues",
-    "Athapaskische Sprachen (Andere)"
-  ],
-  "aus": [
-    "aus",
-    "Australian languages",
-    "australiennes, langues",
-    "Australische Sprachen"
-  ],
-  "ava": [
-    "av",
-    "ava",
-    "Avaric",
-    "avar",
-    "Awarisch"
-  ],
-  "ave": [
-    "ae",
-    "ave",
-    "Avestan",
-    "avestique",
-    "Avestisch"
-  ],
-  "awa": [
-    "awa",
-    "Awadhi",
-    "awadhi"
-  ],
-  "aym": [
-    "ay",
-    "aym",
-    "Aymara",
-    "aymara",
-    "Aymará-Sprache"
-  ],
-  "aze": [
-    "az",
-    "aze",
-    "Azerbaijani",
-    "azéri",
-    "Aserbeidschanisch"
-  ],
-  "bad": [
-    "bad",
-    "Banda languages",
-    "banda, langues",
-    "Banda-Sprachen (Ubangi-Sprachen)"
-  ],
-  "bai": [
-    "bai",
-    "Bamileke languages",
-    "bamiléké, langues",
-    "Bamileke-Sprachen"
-  ],
-  "bak": [
-    "ba",
-    "bak",
-    "Bashkir",
-    "bachkir",
-    "Baschkirisch"
-  ],
-  "bal": [
-    "bal",
-    "Baluchi",
-    "baloutchi",
-    "Belutschisch"
-  ],
-  "bam": [
-    "bm",
-    "bam",
-    "Bambara",
-    "bambara",
-    "Bambara-Sprache"
-  ],
-  "ban": [
-    "ban",
-    "Balinese",
-    "balinais",
-    "Balinesisch"
-  ],
-  "eus": [
-    "eu",
-    "baq",
-    "eus",
-    "Basque",
-    "basque",
-    "Baskisch"
-  ],
-  "bas": [
-    "bas",
-    "Basa",
-    "basa",
-    "Basaa-Sprache"
-  ],
-  "bat": [
-    "bat",
-    "Baltic languages",
-    "baltes, langues",
-    "Baltische Sprachen (Andere)"
-  ],
-  "bej": [
-    "bej",
-    "Beja",
-    "Bedawiyet",
-    "bedja",
-    "Bedauye"
-  ],
-  "bel": [
-    "be",
-    "bel",
-    "Belarusian",
-    "biélorusse",
-    "Weißrussisch"
-  ],
-  "bem": [
-    "bem",
-    "Bemba",
-    "bemba",
-    "Bemba-Sprache"
-  ],
-  "ben": [
-    "bn",
-    "ben",
-    "Bengali",
-    "bengali"
-  ],
-  "ber": [
-    "ber",
-    "Berber languages",
-    "berbères, langues",
-    "Berbersprachen (Andere)"
-  ],
-  "bho": [
-    "bho",
-    "Bhojpuri",
-    "bhojpuri"
-  ],
-  "bih": [
-    "bh",
-    "bih",
-    "Bihari languages",
-    "langues biharis",
-    "Bihari (Andere)"
-  ],
-  "bik": [
-    "bik",
-    "Bikol",
-    "bikol",
-    "Bikol-Sprache"
-  ],
-  "bin": [
-    "bin",
-    "Bini",
-    "Edo",
-    "bini",
-    "edo",
-    "Edo-Sprache"
-  ],
-  "bis": [
-    "bi",
-    "bis",
-    "Bislama",
-    "bichlamar",
-    "Beach-la-mar"
-  ],
-  "bla": [
-    "bla",
-    "Siksika",
-    "blackfoot",
-    "Blackfoot-Sprache"
-  ],
-  "bnt": [
-    "bnt",
-    "Bantu languages",
-    "bantou, langues",
-    "Bantusprachen (Andere)"
-  ],
-  "bod": [
-    "bo",
-    "tib",
-    "bod",
-    "Tibetan",
-    "tibétain",
-    "Tibetisch"
-  ],
-  "bos": [
-    "bs",
-    "bos",
-    "Bosnian",
-    "bosniaque",
-    "Bosnisch"
-  ],
-  "bra": [
-    "bra",
-    "Braj",
-    "braj",
-    "Braj-Bhakha"
-  ],
-  "bre": [
-    "br",
-    "bre",
-    "Breton",
-    "breton",
-    "Bretonisch"
-  ],
-  "btk": [
-    "btk",
-    "Batak languages",
-    "batak, langues",
-    "Batak-Sprache"
-  ],
-  "bua": [
-    "bua",
-    "Buriat",
-    "bouriate",
-    "Burjatisch"
-  ],
-  "bug": [
-    "bug",
-    "Buginese",
-    "bugi",
-    "Bugi-Sprache"
-  ],
-  "bul": [
-    "bg",
-    "bul",
-    "Bulgarian",
-    "bulgare",
-    "Bulgarisch"
-  ],
-  "mya": [
-    "my",
-    "bur",
-    "mya",
-    "Burmese",
-    "birman",
-    "Birmanisch"
-  ],
-  "byn": [
-    "byn",
-    "Blin",
-    "Bilin",
-    "blin",
-    "bilen",
-    "Bilin-Sprache"
-  ],
-  "cad": [
-    "cad",
-    "Caddo",
-    "caddo",
-    "Caddo-Sprachen"
-  ],
-  "cai": [
-    "cai",
-    "Central American Indian languages",
-    "amérindiennes de l'Amérique centrale, langues",
-    "Indianersprachen, Zentralamerika (Andere)"
-  ],
-  "car": [
-    "car",
-    "Galibi Carib",
-    "karib",
-    "galibi",
-    "carib",
-    "Karibische Sprachen"
-  ],
-  "cat": [
-    "ca",
-    "cat",
-    "Catalan",
-    "Valencian",
-    "catalan",
-    "valencien",
-    "Katalanisch"
-  ],
-  "cau": [
-    "cau",
-    "Caucasian languages",
-    "caucasiennes, langues",
-    "Kaukasische Sprachen (Andere)"
-  ],
-  "ceb": [
-    "ceb",
-    "Cebuano",
-    "cebuano"
-  ],
-  "cel": [
-    "cel",
-    "Celtic languages",
-    "celtiques, langues",
-    "celtes, langues",
-    "Keltische Sprachen (Andere)"
-  ],
-  "ces": [
-    "cs",
-    "cze",
-    "ces",
-    "Czech",
-    "tchèque",
-    "Tschechisch"
-  ],
-  "cha": [
-    "ch",
-    "cha",
-    "Chamorro",
-    "chamorro",
-    "Chamorro-Sprache"
-  ],
-  "chb": [
-    "chb",
-    "Chibcha",
-    "chibcha",
-    "Chibcha-Sprachen"
-  ],
-  "che": [
-    "ce",
-    "che",
-    "Chechen",
-    "tchétchène",
-    "Tschetschenisch"
-  ],
-  "chg": [
-    "chg",
-    "Chagatai",
-    "djaghataï",
-    "Tschagataisch"
-  ],
-  "zho": [
-    "zh",
-    "chi",
-    "zho",
-    "Chinese",
-    "chinois",
-    "Chinesisch"
-  ],
-  "chk": [
-    "chk",
-    "Chuukese",
-    "chuuk",
-    "Trukesisch"
-  ],
-  "chm": [
-    "chm",
-    "Mari",
-    "mari",
-    "Tscheremissisch"
-  ],
-  "chn": [
-    "chn",
-    "Chinook jargon",
-    "chinook, jargon",
-    "Chinook-Jargon"
-  ],
-  "cho": [
-    "cho",
-    "Choctaw",
-    "choctaw",
-    "Choctaw-Sprache"
-  ],
-  "chp": [
-    "chp",
-    "Chipewyan",
-    "Dene Suline",
-    "chipewyan",
-    "Chipewyan-Sprache"
-  ],
-  "chr": [
-    "chr",
-    "Cherokee",
-    "cherokee",
-    "Cherokee-Sprache"
-  ],
-  "chu": [
-    "cu",
-    "chu",
-    "Church Slavic",
-    "Old Slavonic",
-    "Church Slavonic",
-    "Old Bulgarian",
-    "Old Church Slavonic",
-    "slavon d'église",
-    "vieux slave",
-    "slavon liturgique",
-    "vieux bulgare",
-    "Kirchenslawisch"
-  ],
-  "chv": [
-    "cv",
-    "chv",
-    "Chuvash",
-    "tchouvache",
-    "Tschuwaschisch"
-  ],
-  "chy": [
-    "chy",
-    "Cheyenne",
-    "cheyenne",
-    "Cheyenne-Sprache"
-  ],
-  "cmc": [
-    "cmc",
-    "Chamic languages",
-    "chames, langues",
-    "Cham-Sprachen"
-  ],
-  "cnr": [
-    "cnr",
-    "Montenegrin",
-    "monténégrin",
-    "Montenegrinisch"
-  ],
-  "cop": [
-    "cop",
-    "Coptic",
-    "copte",
-    "Koptisch"
-  ],
-  "cor": [
-    "kw",
-    "cor",
-    "Cornish",
-    "cornique",
-    "Kornisch"
-  ],
-  "cos": [
-    "co",
-    "cos",
-    "Corsican",
-    "corse",
-    "Korsisch"
-  ],
-  "cpe": [
-    "cpe",
-    "Creoles and pidgins, English based",
-    "créoles et pidgins basés sur l'anglais",
-    "Kreolisch-Englisch (Andere)"
-  ],
-  "cpf": [
-    "cpf",
-    "Creoles and pidgins, French-based",
-    "créoles et pidgins basés sur le français",
-    "Kreolisch-Französisch (Andere)"
-  ],
-  "cpp": [
-    "cpp",
-    "Creoles and pidgins, Portuguese-based",
-    "créoles et pidgins basés sur le portugais",
-    "Kreolisch-Portugiesisch (Andere)"
-  ],
-  "cre": [
-    "cr",
-    "cre",
-    "Cree",
-    "cree",
-    "Cree-Sprache"
-  ],
-  "crh": [
-    "crh",
-    "Crimean Tatar",
-    "Crimean Turkish",
-    "tatar de Crimé",
-    "Krimtatarisch"
-  ],
-  "crp": [
-    "crp",
-    "Creoles and pidgins",
-    "créoles et pidgins",
-    "Kreolische Sprachen",
-    "Pidginsprachen (Andere)"
-  ],
-  "csb": [
-    "csb",
-    "Kashubian",
-    "kachoube",
-    "Kaschubisch"
-  ],
-  "cus": [
-    "cus",
-    "Cushitic languages",
-    "couchitiques, langues",
-    "Kuschitische Sprachen (Andere)"
-  ],
-  "cym": [
-    "cy",
-    "wel",
-    "cym",
-    "Welsh",
-    "gallois",
-    "Kymrisch"
-  ],
-  "dak": [
-    "dak",
-    "Dakota",
-    "dakota",
-    "Dakota-Sprache"
-  ],
-  "dan": [
-    "da",
-    "dan",
-    "Danish",
-    "danois",
-    "Dänisch"
-  ],
-  "dar": [
-    "dar",
-    "Dargwa",
-    "dargwa",
-    "Darginisch"
-  ],
-  "day": [
-    "day",
-    "Land Dayak languages",
-    "dayak, langues",
-    "Dajakisch"
-  ],
-  "del": [
-    "del",
-    "Delaware",
-    "delaware",
-    "Delaware-Sprache"
-  ],
-  "den": [
-    "den",
-    "Slave (Athapascan)",
-    "Slave",
-    "esclave (athapascan)",
-    "Slave-Sprache"
-  ],
-  "deu": [
-    "de",
-    "ger",
-    "deu",
-    "German",
-    "allemand",
-    "Deutsch"
-  ],
-  "dgr": [
-    "dgr",
-    "Dogrib",
-    "dogrib",
-    "Dogrib-Sprache"
-  ],
-  "din": [
-    "din",
-    "Dinka",
-    "dinka",
-    "Dinka-Sprache"
-  ],
-  "div": [
-    "dv",
-    "div",
-    "Divehi",
-    "Dhivehi",
-    "Maldivian",
-    "maldivien",
-    "Maledivisch"
-  ],
-  "doi": [
-    "doi",
-    "Dogri",
-    "dogri"
-  ],
-  "dra": [
-    "dra",
-    "Dravidian languages",
-    "dravidiennes, langues",
-    "Drawidische Sprachen (Andere)"
-  ],
-  "dsb": [
-    "dsb",
-    "Lower Sorbian",
-    "bas-sorabe",
-    "Niedersorbisch"
-  ],
-  "dua": [
-    "dua",
-    "Duala",
-    "douala",
-    "Duala-Sprachen"
-  ],
-  "dum": [
-    "dum",
-    "Dutch, Middle (ca.1050-1350)",
-    "Dutch, Middle",
-    "néerlandais moyen (ca. 1050-1350)",
-    "Mittelniederländisch"
-  ],
-  "nld": [
-    "nl",
-    "dut",
-    "nld",
-    "Dutch",
-    "Flemish",
-    "néerlandais",
-    "flamand",
-    "Niederländisch"
-  ],
-  "dyu": [
-    "dyu",
-    "Dyula",
-    "dioula",
-    "Dyula-Sprache"
-  ],
-  "dzo": [
-    "dz",
-    "dzo",
-    "Dzongkha",
-    "dzongkha"
-  ],
-  "efi": [
-    "efi",
-    "Efik",
-    "efik"
-  ],
-  "egy": [
-    "egy",
-    "Egyptian (Ancient)",
-    "Egyptian",
-    "égyptien",
-    "Ägyptisch"
-  ],
-  "eka": [
-    "eka",
-    "Ekajuk",
-    "ekajuk"
-  ],
-  "ell": [
-    "el",
-    "gre",
-    "ell",
-    "Greek, Modern (1453-)",
-    "Greek",
-    "Greek, Modern",
-    "grec moderne (après 1453)",
-    "Neugriechisch"
-  ],
-  "elx": [
-    "elx",
-    "Elamite",
-    "élamite",
-    "Elamisch"
-  ],
-  "eng": [
-    "en",
-    "eng",
-    "English",
-    "anglais",
-    "Englisch"
-  ],
-  "enm": [
-    "enm",
-    "English, Middle (1100-1500)",
-    "English, Middle",
-    "anglais moyen (1100-1500)",
-    "Mittelenglisch"
-  ],
-  "epo": [
-    "eo",
-    "epo",
-    "Esperanto",
-    "espéranto"
-  ],
-  "est": [
-    "et",
-    "est",
-    "Estonian",
-    "estonien",
-    "Estnisch"
-  ],
-  "ewe": [
-    "ee",
-    "ewe",
-    "Ewe",
-    "éwé",
-    "Ewe-Sprache"
-  ],
-  "ewo": [
-    "ewo",
-    "Ewondo",
-    "éwondo"
-  ],
-  "fan": [
-    "fan",
-    "Fang",
-    "fang",
-    "Pangwe-Sprache"
-  ],
-  "fao": [
-    "fo",
-    "fao",
-    "Faroese",
-    "féroïen",
-    "Färöisch"
-  ],
-  "fas": [
-    "fa",
-    "per",
-    "fas",
-    "Persian",
-    "persan",
-    "Persisch"
-  ],
-  "fat": [
-    "fat",
-    "Fanti",
-    "fanti",
-    "Fante-Sprache"
-  ],
-  "fij": [
-    "fj",
-    "fij",
-    "Fijian",
-    "fidjien",
-    "Fidschi-Sprache"
-  ],
-  "fil": [
-    "fil",
-    "Filipino",
-    "Pilipino",
-    "filipino",
-    "pilipino"
-  ],
-  "fin": [
-    "fi",
-    "fin",
-    "Finnish",
-    "finnois",
-    "Finnisch"
-  ],
-  "fiu": [
-    "fiu",
-    "Finno-Ugrian languages",
-    "finno-ougriennes, langues",
-    "Finnougrische Sprachen (Andere)"
-  ],
-  "fon": [
-    "fon",
-    "Fon",
-    "Fon-Sprache"
-  ],
-  "fra": [
-    "fr",
-    "fre",
-    "fra",
-    "French",
-    "français",
-    "Französisch"
-  ],
-  "frm": [
-    "frm",
-    "French, Middle (ca.1400-1600)",
-    "French, Middle",
-    "français moyen (1400-1600)",
-    "Mittelfranzösisch"
-  ],
-  "fro": [
-    "fro",
-    "French, Old (842-ca.1400)",
-    "French, Old",
-    "français ancien (842-ca.1400)",
-    "Altfranzösisch"
-  ],
-  "frr": [
-    "frr",
-    "Northern Frisian",
-    "frison septentrional",
-    "Nordfriesisch"
-  ],
-  "frs": [
-    "frs",
-    "Eastern Frisian",
-    "frison oriental",
-    "Ostfriesisch"
-  ],
-  "fry": [
-    "fy",
-    "fry",
-    "Western Frisian",
-    "frison occidental",
-    "Friesisch"
-  ],
-  "ful": [
-    "ff",
-    "ful",
-    "Fulah",
-    "peul",
-    "Ful"
-  ],
-  "fur": [
-    "fur",
-    "Friulian",
-    "frioulan",
-    "Friulisch"
-  ],
-  "gaa": [
-    "gaa",
-    "Ga",
-    "ga",
-    "Ga-Sprache"
-  ],
-  "gay": [
-    "gay",
-    "Gayo",
-    "gayo",
-    "Gayo-Sprache"
-  ],
-  "gba": [
-    "gba",
-    "Gbaya",
-    "gbaya",
-    "Gbaya-Sprache"
-  ],
-  "gem": [
-    "gem",
-    "Germanic languages",
-    "germaniques, langues",
-    "Germanische Sprachen (Andere)"
-  ],
-  "kat": [
-    "ka",
-    "geo",
-    "kat",
-    "Georgian",
-    "géorgien",
-    "Georgisch"
-  ],
-  "gez": [
-    "gez",
-    "Geez",
-    "guèze",
-    "Altäthiopisch"
-  ],
-  "gil": [
-    "gil",
-    "Gilbertese",
-    "kiribati",
-    "Gilbertesisch"
-  ],
-  "gla": [
-    "gd",
-    "gla",
-    "Gaelic",
-    "Scottish Gaelic",
-    "gaélique",
-    "gaélique écossais",
-    "Gälisch-Schottisch"
-  ],
-  "gle": [
-    "ga",
-    "gle",
-    "Irish",
-    "irlandais",
-    "Irisch"
-  ],
-  "glg": [
-    "gl",
-    "glg",
-    "Galician",
-    "galicien",
-    "Galicisch"
-  ],
-  "glv": [
-    "gv",
-    "glv",
-    "Manx",
-    "manx",
-    "mannois"
-  ],
-  "gmh": [
-    "gmh",
-    "German, Middle High (ca.1050-1500)",
-    "German, Middle High",
-    "allemand, moyen haut (ca. 1050-1500)",
-    "Mittelhochdeutsch"
-  ],
-  "goh": [
-    "goh",
-    "German, Old High (ca.750-1050)",
-    "German, Old High",
-    "allemand, vieux haut (ca. 750-1050)",
-    "Althochdeutsch"
-  ],
-  "gon": [
-    "gon",
-    "Gondi",
-    "gond",
-    "Gondi-Sprache"
-  ],
-  "gor": [
-    "gor",
-    "Gorontalo",
-    "gorontalo",
-    "Gorontalesisch"
-  ],
-  "got": [
-    "got",
-    "Gothic",
-    "gothique",
-    "Gotisch"
-  ],
-  "grb": [
-    "grb",
-    "Grebo",
-    "grebo",
-    "Grebo-Sprache"
-  ],
-  "grc": [
-    "grc",
-    "Greek, Ancient (to 1453)",
-    "Greek, Ancient",
-    "grec ancien (jusqu'à 1453)",
-    "Griechisch"
-  ],
-  "grn": [
-    "gn",
-    "grn",
-    "Guarani",
-    "guarani",
-    "Guaraní-Sprache"
-  ],
-  "gsw": [
-    "gsw",
-    "Swiss German",
-    "Alemannic",
-    "Alsatian",
-    "suisse alémanique",
-    "alémanique",
-    "alsacien",
-    "Schweizerdeutsch"
-  ],
-  "guj": [
-    "gu",
-    "guj",
-    "Gujarati",
-    "goudjrati",
-    "Gujarati-Sprache"
-  ],
-  "gwi": [
-    "gwi",
-    "Gwich'in",
-    "gwich'in",
-    "Kutchin-Sprache"
-  ],
-  "hai": [
-    "hai",
-    "Haida",
-    "haida",
-    "Haida-Sprache"
-  ],
-  "hat": [
-    "ht",
-    "hat",
-    "Haitian",
-    "Haitian Creole",
-    "haïtien",
-    "créole haïtien",
-    "Haïtien (Haiti-Kreolisch)"
-  ],
-  "hau": [
-    "ha",
-    "hau",
-    "Hausa",
-    "haoussa",
-    "Haussa-Sprache"
-  ],
-  "haw": [
-    "haw",
-    "Hawaiian",
-    "hawaïen",
-    "Hawaiisch"
-  ],
-  "heb": [
-    "he",
-    "heb",
-    "Hebrew",
-    "hébreu",
-    "Hebräisch"
-  ],
-  "her": [
-    "hz",
-    "her",
-    "Herero",
-    "herero",
-    "Herero-Sprache"
-  ],
-  "hil": [
-    "hil",
-    "Hiligaynon",
-    "hiligaynon",
-    "Hiligaynon-Sprache"
-  ],
-  "him": [
-    "him",
-    "Himachali languages",
-    "Western Pahari languages",
-    "langues himachalis",
-    "langues paharis occidentales",
-    "Himachali"
-  ],
-  "hin": [
-    "hi",
-    "hin",
-    "Hindi",
-    "hindi"
-  ],
-  "hit": [
-    "hit",
-    "Hittite",
-    "hittite",
-    "Hethitisch"
-  ],
-  "hmn": [
-    "hmn",
-    "Hmong",
-    "Mong",
-    "hmong",
-    "Miao-Sprachen"
-  ],
-  "hmo": [
-    "ho",
-    "hmo",
-    "Hiri Motu",
-    "hiri motu",
-    "Hiri-Motu"
-  ],
-  "hrv": [
-    "hr",
-    "hrv",
-    "Croatian",
-    "croate",
-    "Kroatisch"
-  ],
-  "hsb": [
-    "hsb",
-    "Upper Sorbian",
-    "haut-sorabe",
-    "Obersorbisch"
-  ],
-  "hun": [
-    "hu",
-    "hun",
-    "Hungarian",
-    "hongrois",
-    "Ungarisch"
-  ],
-  "hup": [
-    "hup",
-    "Hupa",
-    "hupa",
-    "Hupa-Sprache"
-  ],
-  "iba": [
-    "iba",
-    "Iban",
-    "iban",
-    "Iban-Sprache"
-  ],
-  "ibo": [
-    "ig",
-    "ibo",
-    "Igbo",
-    "igbo",
-    "Ibo-Sprache"
-  ],
-  "isl": [
-    "is",
-    "ice",
-    "isl",
-    "Icelandic",
-    "islandais",
-    "Isländisch"
-  ],
-  "ido": [
-    "io",
-    "ido",
-    "Ido"
-  ],
-  "iii": [
-    "ii",
-    "iii",
-    "Sichuan Yi",
-    "Nuosu",
-    "yi de Sichuan",
-    "Lalo-Sprache"
-  ],
-  "ijo": [
-    "ijo",
-    "Ijo languages",
-    "ijo, langues",
-    "Ijo-Sprache"
-  ],
-  "iku": [
-    "iu",
-    "iku",
-    "Inuktitut",
-    "inuktitut"
-  ],
-  "ile": [
-    "ie",
-    "ile",
-    "Interlingue",
-    "Occidental",
-    "interlingue"
-  ],
-  "ilo": [
-    "ilo",
-    "Iloko",
-    "ilocano",
-    "Ilokano-Sprache"
-  ],
-  "ina": [
-    "ia",
-    "ina",
-    "Interlingua (International Auxiliary Language Association)",
-    "Interlingua",
-    "interlingua (langue auxiliaire internationale)"
-  ],
-  "inc": [
-    "inc",
-    "Indic languages",
-    "indo-aryennes, langues",
-    "Indoarische Sprachen (Andere)"
-  ],
-  "ind": [
-    "id",
-    "ind",
-    "Indonesian",
-    "indonésien",
-    "Bahasa Indonesia"
-  ],
-  "ine": [
-    "ine",
-    "Indo-European languages",
-    "indo-européennes, langues",
-    "Indogermanische Sprachen (Andere)"
-  ],
-  "inh": [
-    "inh",
-    "Ingush",
-    "ingouche",
-    "Inguschisch"
-  ],
-  "ipk": [
-    "ik",
-    "ipk",
-    "Inupiaq",
-    "inupiaq",
-    "Inupik"
-  ],
-  "ira": [
-    "ira",
-    "Iranian languages",
-    "iraniennes, langues",
-    "Iranische Sprachen (Andere)"
-  ],
-  "iro": [
-    "iro",
-    "Iroquoian languages",
-    "iroquoises, langues",
-    "Irokesische Sprachen"
-  ],
-  "ita": [
-    "it",
-    "ita",
-    "Italian",
-    "italien",
-    "Italienisch"
-  ],
-  "jav": [
-    "jv",
-    "jav",
-    "Javanese",
-    "javanais",
-    "Javanisch"
-  ],
-  "jbo": [
-    "jbo",
-    "Lojban",
-    "lojban"
-  ],
-  "jpn": [
-    "ja",
-    "jpn",
-    "Japanese",
-    "japonais",
-    "Japanisch"
-  ],
-  "jpr": [
-    "jpr",
-    "Judeo-Persian",
-    "judéo-persan",
-    "Jüdisch-Persisch"
-  ],
-  "jrb": [
-    "jrb",
-    "Judeo-Arabic",
-    "judéo-arabe",
-    "Jüdisch-Arabisch"
-  ],
-  "kaa": [
-    "kaa",
-    "Kara-Kalpak",
-    "karakalpak",
-    "Karakalpakisch"
-  ],
-  "kab": [
-    "kab",
-    "Kabyle",
-    "kabyle",
-    "Kabylisch"
-  ],
-  "kac": [
-    "kac",
-    "Kachin",
-    "Jingpho",
-    "kachin",
-    "jingpho",
-    "Kachin-Sprache"
-  ],
-  "kal": [
-    "kl",
-    "kal",
-    "Kalaallisut",
-    "Greenlandic",
-    "groenlandais",
-    "Grönländisch"
-  ],
-  "kam": [
-    "kam",
-    "Kamba",
-    "kamba",
-    "Kamba-Sprache"
-  ],
-  "kan": [
-    "kn",
-    "kan",
-    "Kannada",
-    "kannada"
-  ],
-  "kar": [
-    "kar",
-    "Karen languages",
-    "karen, langues",
-    "Karenisch"
-  ],
-  "kas": [
-    "ks",
-    "kas",
-    "Kashmiri",
-    "kashmiri",
-    "Kaschmiri"
-  ],
-  "kau": [
-    "kr",
-    "kau",
-    "Kanuri",
-    "kanouri",
-    "Kanuri-Sprache"
-  ],
-  "kaw": [
-    "kaw",
-    "Kawi",
-    "kawi"
-  ],
-  "kaz": [
-    "kk",
-    "kaz",
-    "Kazakh",
-    "kazakh",
-    "Kasachisch"
-  ],
-  "kbd": [
-    "kbd",
-    "Kabardian",
-    "kabardien",
-    "Kabardinisch"
-  ],
-  "kha": [
-    "kha",
-    "Khasi",
-    "khasi",
-    "Khasi-Sprache"
-  ],
-  "khi": [
-    "khi",
-    "Khoisan languages",
-    "khoïsan, langues",
-    "Khoisan-Sprachen (Andere)"
-  ],
-  "khm": [
-    "km",
-    "khm",
-    "Central Khmer",
-    "khmer central",
-    "Kambodschanisch"
-  ],
-  "kho": [
-    "kho",
-    "Khotanese",
-    "Sakan",
-    "khotanais",
-    "sakan",
-    "Sakisch"
-  ],
-  "kik": [
-    "ki",
-    "kik",
-    "Kikuyu",
-    "Gikuyu",
-    "kikuyu",
-    "Kikuyu-Sprache"
-  ],
-  "kin": [
-    "rw",
-    "kin",
-    "Kinyarwanda",
-    "rwanda",
-    "Rwanda-Sprache"
-  ],
-  "kir": [
-    "ky",
-    "kir",
-    "Kirghiz",
-    "Kyrgyz",
-    "kirghiz",
-    "Kirgisisch"
-  ],
-  "kmb": [
-    "kmb",
-    "Kimbundu",
-    "kimbundu",
-    "Kimbundu-Sprache"
-  ],
-  "kok": [
-    "kok",
-    "Konkani",
-    "konkani"
-  ],
-  "kom": [
-    "kv",
-    "kom",
-    "Komi",
-    "Komi-Sprache"
-  ],
-  "kon": [
-    "kg",
-    "kon",
-    "Kongo",
-    "kongo",
-    "Kongo-Sprache"
-  ],
-  "kor": [
-    "ko",
-    "kor",
-    "Korean",
-    "coréen",
-    "Koreanisch"
-  ],
-  "kos": [
-    "kos",
-    "Kosraean",
-    "kosrae",
-    "Kosraeanisch"
-  ],
-  "kpe": [
-    "kpe",
-    "Kpelle",
-    "kpellé",
-    "Kpelle-Sprache"
-  ],
-  "krc": [
-    "krc",
-    "Karachay-Balkar",
-    "karatchai balkar",
-    "Karatschaiisch-Balkarisch"
-  ],
-  "krl": [
-    "krl",
-    "Karelian",
-    "carélien",
-    "Karelisch"
-  ],
-  "kro": [
-    "kro",
-    "Kru languages",
-    "krou, langues",
-    "Kru-Sprachen (Andere)"
-  ],
-  "kru": [
-    "kru",
-    "Kurukh",
-    "kurukh",
-    "Oraon-Sprache"
-  ],
-  "kua": [
-    "kj",
-    "kua",
-    "Kuanyama",
-    "Kwanyama",
-    "kuanyama",
-    "kwanyama",
-    "Kwanyama-Sprache"
-  ],
-  "kum": [
-    "kum",
-    "Kumyk",
-    "koumyk",
-    "Kumükisch"
-  ],
-  "kur": [
-    "ku",
-    "kur",
-    "Kurdish",
-    "kurde",
-    "Kurdisch"
-  ],
-  "kut": [
-    "kut",
-    "Kutenai",
-    "kutenai",
-    "Kutenai-Sprache"
-  ],
-  "lad": [
-    "lad",
-    "Ladino",
-    "judéo-espagnol",
-    "Judenspanisch"
-  ],
-  "lah": [
-    "lah",
-    "Lahnda",
-    "lahnda"
-  ],
-  "lam": [
-    "lam",
-    "Lamba",
-    "lamba",
-    "Lamba-Sprache (Bantusprache)"
-  ],
-  "lao": [
-    "lo",
-    "lao",
-    "Lao",
-    "Laotisch"
-  ],
-  "lat": [
-    "la",
-    "lat",
-    "Latin",
-    "latin",
-    "Latein"
-  ],
-  "lav": [
-    "lv",
-    "lav",
-    "Latvian",
-    "letton",
-    "Lettisch"
-  ],
-  "lez": [
-    "lez",
-    "Lezghian",
-    "lezghien",
-    "Lesgisch"
-  ],
-  "lim": [
-    "li",
-    "lim",
-    "Limburgan",
-    "Limburger",
-    "Limburgish",
-    "limbourgeois",
-    "Limburgisch"
-  ],
-  "lin": [
-    "ln",
-    "lin",
-    "Lingala",
-    "lingala"
-  ],
-  "lit": [
-    "lt",
-    "lit",
-    "Lithuanian",
-    "lituanien",
-    "Litauisch"
-  ],
-  "lol": [
-    "lol",
-    "Mongo",
-    "mongo",
-    "Mongo-Sprache"
-  ],
-  "loz": [
-    "loz",
-    "Lozi",
-    "lozi",
-    "Rotse-Sprache"
-  ],
-  "ltz": [
-    "lb",
-    "ltz",
-    "Luxembourgish",
-    "Letzeburgesch",
-    "luxembourgeois",
-    "Luxemburgisch"
-  ],
-  "lua": [
-    "lua",
-    "Luba-Lulua",
-    "luba-lulua",
-    "Lulua-Sprache"
-  ],
-  "lub": [
-    "lu",
-    "lub",
-    "Luba-Katanga",
-    "luba-katanga",
-    "Luba-Katanga-Sprache"
-  ],
-  "lug": [
-    "lg",
-    "lug",
-    "Ganda",
-    "ganda",
-    "Ganda-Sprache"
-  ],
-  "lui": [
-    "lui",
-    "Luiseno",
-    "luiseno",
-    "Luiseño-Sprache"
-  ],
-  "lun": [
-    "lun",
-    "Lunda",
-    "lunda",
-    "Lunda-Sprache"
-  ],
-  "luo": [
-    "luo",
-    "Luo (Kenya and Tanzania)",
-    "Luo",
-    "luo (Kenya et Tanzanie)",
-    "Luo-Sprache"
-  ],
-  "lus": [
-    "lus",
-    "Lushai",
-    "lushai",
-    "Lushai-Sprache"
-  ],
-  "mkd": [
-    "mk",
-    "mac",
-    "mkd",
-    "Macedonian",
-    "macédonien",
-    "Makedonisch"
-  ],
-  "mad": [
-    "mad",
-    "Madurese",
-    "madourais",
-    "Maduresisch"
-  ],
-  "mag": [
-    "mag",
-    "Magahi",
-    "magahi",
-    "Khotta"
-  ],
-  "mah": [
-    "mh",
-    "mah",
-    "Marshallese",
-    "marshall",
-    "Marschallesisch"
-  ],
-  "mai": [
-    "mai",
-    "Maithili",
-    "maithili"
-  ],
-  "mak": [
-    "mak",
-    "Makasar",
-    "makassar",
-    "Makassarisch"
-  ],
-  "mal": [
-    "ml",
-    "mal",
-    "Malayalam",
-    "malayalam"
-  ],
-  "man": [
-    "man",
-    "Mandingo",
-    "mandingue",
-    "Malinke-Sprache"
-  ],
-  "mri": [
-    "mi",
-    "mao",
-    "mri",
-    "Maori",
-    "maori",
-    "Maori-Sprache"
-  ],
-  "map": [
-    "map",
-    "Austronesian languages",
-    "austronésiennes, langues",
-    "Austronesische Sprachen (Andere)"
-  ],
-  "mar": [
-    "mr",
-    "mar",
-    "Marathi",
-    "marathe"
-  ],
-  "mas": [
-    "mas",
-    "Masai",
-    "massaï",
-    "Massai-Sprache"
-  ],
-  "msa": [
-    "ms",
-    "may",
-    "msa",
-    "Malay",
-    "malais",
-    "Malaiisch"
-  ],
-  "mdf": [
-    "mdf",
-    "Moksha",
-    "moksa",
-    "Mokscha-Sprache"
-  ],
-  "mdr": [
-    "mdr",
-    "Mandar",
-    "mandar",
-    "Mandaresisch"
-  ],
-  "men": [
-    "men",
-    "Mende",
-    "mendé",
-    "Mende-Sprache"
-  ],
-  "mga": [
-    "mga",
-    "Irish, Middle (900-1200)",
-    "Irish, Middle",
-    "irlandais moyen (900-1200)",
-    "Mittelirisch"
-  ],
-  "mic": [
-    "mic",
-    "Mi'kmaq",
-    "Micmac",
-    "mi'kmaq",
-    "micmac",
-    "Micmac-Sprache"
-  ],
-  "min": [
-    "min",
-    "Minangkabau",
-    "minangkabau",
-    "Minangkabau-Sprache"
-  ],
-  "mis": [
-    "mis",
-    "Uncoded languages",
-    "langues non codées",
-    "Einzelne andere Sprachen"
-  ],
-  "mkh": [
-    "mkh",
-    "Mon-Khmer languages",
-    "môn-khmer, langues",
-    "Mon-Khmer-Sprachen (Andere)"
-  ],
-  "mlg": [
-    "mg",
-    "mlg",
-    "Malagasy",
-    "malgache",
-    "Malagassi-Sprache"
-  ],
-  "mlt": [
-    "mt",
-    "mlt",
-    "Maltese",
-    "maltais",
-    "Maltesisch"
-  ],
-  "mnc": [
-    "mnc",
-    "Manchu",
-    "mandchou",
-    "Mandschurisch"
-  ],
-  "mni": [
-    "mni",
-    "Manipuri",
-    "manipuri",
-    "Meithei-Sprache"
-  ],
-  "mno": [
-    "mno",
-    "Manobo languages",
-    "manobo, langues",
-    "Manobo-Sprachen"
-  ],
-  "moh": [
-    "moh",
-    "Mohawk",
-    "mohawk",
-    "Mohawk-Sprache"
-  ],
-  "mon": [
-    "mn",
-    "mon",
-    "Mongolian",
-    "mongol",
-    "Mongolisch"
-  ],
-  "mos": [
-    "mos",
-    "Mossi",
-    "moré",
-    "Mossi-Sprache"
-  ],
-  "mul": [
-    "mul",
-    "Multiple languages",
-    "multilingue",
-    "Mehrere Sprachen"
-  ],
-  "mun": [
-    "mun",
-    "Munda languages",
-    "mounda, langues",
-    "Mundasprachen (Andere)"
-  ],
-  "mus": [
-    "mus",
-    "Creek",
-    "muskogee",
-    "Muskogisch"
-  ],
-  "mwl": [
-    "mwl",
-    "Mirandese",
-    "mirandais",
-    "Mirandesisch"
-  ],
-  "mwr": [
-    "mwr",
-    "Marwari",
-    "marvari"
-  ],
-  "myn": [
-    "myn",
-    "Mayan languages",
-    "maya, langues",
-    "Maya-Sprachen"
-  ],
-  "myv": [
-    "myv",
-    "Erzya",
-    "erza",
-    "Erza-Mordwinisch"
-  ],
-  "nah": [
-    "nah",
-    "Nahuatl languages",
-    "nahuatl, langues",
-    "Nahuatl"
-  ],
-  "nai": [
-    "nai",
-    "North American Indian languages",
-    "nord-amérindiennes, langues",
-    "Indianersprachen, Nordamerika (Andere)"
-  ],
-  "nap": [
-    "nap",
-    "Neapolitan",
-    "napolitain",
-    "Neapel / Mundart"
-  ],
-  "nau": [
-    "na",
-    "nau",
-    "Nauru",
-    "nauruan",
-    "Nauruanisch"
-  ],
-  "nav": [
-    "nv",
-    "nav",
-    "Navajo",
-    "Navaho",
-    "navaho",
-    "Navajo-Sprache"
-  ],
-  "nbl": [
-    "nr",
-    "nbl",
-    "Ndebele, South",
-    "South Ndebele",
-    "ndébélé du Sud",
-    "Ndebele-Sprache (Transvaal)"
-  ],
-  "nde": [
-    "nd",
-    "nde",
-    "Ndebele, North",
-    "North Ndebele",
-    "ndébélé du Nord",
-    "Ndebele-Sprache (Simbabwe)"
-  ],
-  "ndo": [
-    "ng",
-    "ndo",
-    "Ndonga",
-    "ndonga"
-  ],
-  "nds": [
-    "nds",
-    "Low German",
-    "Low Saxon",
-    "German, Low",
-    "Saxon, Low",
-    "bas allemand",
-    "bas saxon",
-    "allemand, bas",
-    "saxon, bas",
-    "Niederdeutsch"
-  ],
-  "nep": [
-    "ne",
-    "nep",
-    "Nepali",
-    "népalais"
-  ],
-  "new": [
-    "new",
-    "Nepal Bhasa",
-    "Newari",
-    "nepal bhasa",
-    "newari"
-  ],
-  "nia": [
-    "nia",
-    "Nias",
-    "nias",
-    "Nias-Sprache"
-  ],
-  "nic": [
-    "nic",
-    "Niger-Kordofanian languages",
-    "nigéro-kordofaniennes, langues",
-    "Nigerkordofanische Sprachen (Andere)"
-  ],
-  "niu": [
-    "niu",
-    "Niuean",
-    "niué",
-    "Niue-Sprache"
-  ],
-  "nno": [
-    "nn",
-    "nno",
-    "Norwegian Nynorsk",
-    "Nynorsk, Norwegian",
-    "norvégien nynorsk",
-    "nynorsk, norvégien",
-    "Nynorsk"
-  ],
-  "nob": [
-    "nb",
-    "nob",
-    "Bokmål, Norwegian",
-    "Norwegian Bokmål",
-    "norvégien bokmål",
-    "Bokmål"
-  ],
-  "nog": [
-    "nog",
-    "Nogai",
-    "nogaï",
-    "nogay",
-    "Nogaisch"
-  ],
-  "non": [
-    "non",
-    "Norse, Old",
-    "norrois, vieux",
-    "Altnorwegisch"
-  ],
-  "nor": [
-    "no",
-    "nor",
-    "Norwegian",
-    "norvégien",
-    "Norwegisch"
-  ],
-  "nqo": [
-    "nqo",
-    "N'Ko",
-    "n'ko"
-  ],
-  "nso": [
-    "nso",
-    "Pedi",
-    "Sepedi",
-    "Northern Sotho",
-    "pedi",
-    "sepedi",
-    "sotho du Nord",
-    "Pedi-Sprache"
-  ],
-  "nub": [
-    "nub",
-    "Nubian languages",
-    "nubiennes, langues",
-    "Nubische Sprachen"
-  ],
-  "nwc": [
-    "nwc",
-    "Classical Newari",
-    "Old Newari",
-    "Classical Nepal Bhasa",
-    "newari classique",
-    "Alt-Newari"
-  ],
-  "nya": [
-    "ny",
-    "nya",
-    "Chichewa",
-    "Chewa",
-    "Nyanja",
-    "chichewa",
-    "chewa",
-    "nyanja",
-    "Nyanja-Sprache"
-  ],
-  "nym": [
-    "nym",
-    "Nyamwezi",
-    "nyamwezi",
-    "Nyamwezi-Sprache"
-  ],
-  "nyn": [
-    "nyn",
-    "Nyankole",
-    "nyankolé",
-    "Nkole-Sprache"
-  ],
-  "nyo": [
-    "nyo",
-    "Nyoro",
-    "nyoro",
-    "Nyoro-Sprache"
-  ],
-  "nzi": [
-    "nzi",
-    "Nzima",
-    "nzema",
-    "Nzima-Sprache"
-  ],
-  "oci": [
-    "oc",
-    "oci",
-    "Occitan (post 1500)",
-    "Occitan",
-    "occitan (après 1500)",
-    "Okzitanisch"
-  ],
-  "oji": [
-    "oj",
-    "oji",
-    "Ojibwa",
-    "ojibwa",
-    "Ojibwa-Sprache"
-  ],
-  "ori": [
-    "or",
-    "ori",
-    "Oriya",
-    "oriya",
-    "Oriya-Sprache"
-  ],
-  "orm": [
-    "om",
-    "orm",
-    "Oromo",
-    "galla",
-    "Galla-Sprache"
-  ],
-  "osa": [
-    "osa",
-    "Osage",
-    "osage",
-    "Osage-Sprache"
-  ],
-  "oss": [
-    "os",
-    "oss",
-    "Ossetian",
-    "Ossetic",
-    "ossète",
-    "Ossetisch"
-  ],
-  "ota": [
-    "ota",
-    "Turkish, Ottoman (1500-1928)",
-    "Turkish, Ottoman",
-    "turc ottoman (1500-1928)",
-    "Osmanisch"
-  ],
-  "oto": [
-    "oto",
-    "Otomian languages",
-    "otomi, langues",
-    "Otomangue-Sprachen"
-  ],
-  "paa": [
-    "paa",
-    "Papuan languages",
-    "papoues, langues",
-    "Papuasprachen (Andere)"
-  ],
-  "pag": [
-    "pag",
-    "Pangasinan",
-    "pangasinan",
-    "Pangasinan-Sprache"
-  ],
-  "pal": [
-    "pal",
-    "Pahlavi",
-    "pahlavi",
-    "Mittelpersisch"
-  ],
-  "pam": [
-    "pam",
-    "Pampanga",
-    "Kapampangan",
-    "pampangan",
-    "Pampanggan-Sprache"
-  ],
-  "pan": [
-    "pa",
-    "pan",
-    "Panjabi",
-    "Punjabi",
-    "pendjabi",
-    "Pandschabi-Sprache"
-  ],
-  "pap": [
-    "pap",
-    "Papiamento",
-    "papiamento"
-  ],
-  "pau": [
-    "pau",
-    "Palauan",
-    "palau",
-    "Palau-Sprache"
-  ],
-  "peo": [
-    "peo",
-    "Persian, Old (ca.600-400 B.C.)",
-    "Persian, Old",
-    "perse, vieux (ca. 600-400 av. J.-C.)",
-    "Altpersisch"
-  ],
-  "phi": [
-    "phi",
-    "Philippine languages",
-    "philippines, langues",
-    "Philippinisch-Austronesisch (Andere)"
-  ],
-  "phn": [
-    "phn",
-    "Phoenician",
-    "phénicien",
-    "Phönikisch"
-  ],
-  "pli": [
-    "pi",
-    "pli",
-    "Pali",
-    "pali"
-  ],
-  "pol": [
-    "pl",
-    "pol",
-    "Polish",
-    "polonais",
-    "Polnisch"
-  ],
-  "pon": [
-    "pon",
-    "Pohnpeian",
-    "pohnpei",
-    "Ponapeanisch"
-  ],
-  "por": [
-    "pt",
-    "por",
-    "Portuguese",
-    "portugais",
-    "Portugiesisch"
-  ],
-  "pra": [
-    "pra",
-    "Prakrit languages",
-    "prâkrit, langues",
-    "Prakrit"
-  ],
-  "pro": [
-    "pro",
-    "Provençal, Old (to 1500)",
-    "Occitan, Old (to 1500)",
-    "Provençal, Old",
-    "Occitan, Old",
-    "provençal ancien (jusqu'à 1500)",
-    "occitan ancien (jusqu'à 1500)",
-    "Altokzitanisch"
-  ],
-  "pus": [
-    "ps",
-    "pus",
-    "Pushto",
-    "Pashto",
-    "pachto",
-    "Paschtu"
-  ],
-  "qaa-qtz": [
-    "qaa-qtz",
-    "Reserved for local use",
-    "réservée à l'usage local",
-    "Reserviert für lokale Verwendung"
-  ],
-  "que": [
-    "qu",
-    "que",
-    "Quechua",
-    "quechua",
-    "Quechua-Sprache"
-  ],
-  "raj": [
-    "raj",
-    "Rajasthani",
-    "rajasthani"
-  ],
-  "rap": [
-    "rap",
-    "Rapanui",
-    "rapanui",
-    "Osterinsel-Sprache"
-  ],
-  "rar": [
-    "rar",
-    "Rarotongan",
-    "Cook Islands Maori",
-    "rarotonga",
-    "maori des îles Cook",
-    "Rarotonganisch"
-  ],
-  "roa": [
-    "roa",
-    "Romance languages",
-    "romanes, langues",
-    "Romanische Sprachen (Andere)"
-  ],
-  "roh": [
-    "rm",
-    "roh",
-    "Romansh",
-    "romanche",
-    "Rätoromanisch"
-  ],
-  "rom": [
-    "rom",
-    "Romany",
-    "tsigane",
-    "Romani (Sprache)"
-  ],
-  "ron": [
-    "ro",
-    "rum",
-    "ron",
-    "Romanian",
-    "Moldavian",
-    "Moldovan",
-    "roumain",
-    "moldave",
-    "Rumänisch"
-  ],
-  "run": [
-    "rn",
-    "run",
-    "Rundi",
-    "rundi",
-    "Rundi-Sprache"
-  ],
-  "rup": [
-    "rup",
-    "Aromanian",
-    "Arumanian",
-    "Macedo-Romanian",
-    "aroumain",
-    "macédo-roumain",
-    "Aromunisch"
-  ],
-  "rus": [
-    "ru",
-    "rus",
-    "Russian",
-    "russe",
-    "Russisch"
-  ],
-  "sad": [
-    "sad",
-    "Sandawe",
-    "sandawe",
-    "Sandawe-Sprache"
-  ],
-  "sag": [
-    "sg",
-    "sag",
-    "Sango",
-    "sango",
-    "Sango-Sprache"
-  ],
-  "sah": [
-    "sah",
-    "Yakut",
-    "iakoute",
-    "Jakutisch"
-  ],
-  "sai": [
-    "sai",
-    "South American Indian languages",
-    "sud-amérindiennes, langues",
-    "Indianersprachen, Südamerika (Andere)"
-  ],
-  "sal": [
-    "sal",
-    "Salishan languages",
-    "salishennes, langues",
-    "Salish-Sprache"
-  ],
-  "sam": [
-    "sam",
-    "Samaritan Aramaic",
-    "samaritain",
-    "Samaritanisch"
-  ],
-  "san": [
-    "sa",
-    "san",
-    "Sanskrit",
-    "sanskrit"
-  ],
-  "sas": [
-    "sas",
-    "Sasak",
-    "sasak"
-  ],
-  "sat": [
-    "sat",
-    "Santali",
-    "santal"
-  ],
-  "scn": [
-    "scn",
-    "Sicilian",
-    "sicilien",
-    "Sizilianisch"
-  ],
-  "sco": [
-    "sco",
-    "Scots",
-    "écossais",
-    "Schottisch"
-  ],
-  "sel": [
-    "sel",
-    "Selkup",
-    "selkoupe",
-    "Selkupisch"
-  ],
-  "sem": [
-    "sem",
-    "Semitic languages",
-    "sémitiques, langues",
-    "Semitische Sprachen (Andere)"
-  ],
-  "sga": [
-    "sga",
-    "Irish, Old (to 900)",
-    "Irish, Old",
-    "irlandais ancien (jusqu'à 900)",
-    "Altirisch"
-  ],
-  "sgn": [
-    "sgn",
-    "Sign Languages",
-    "langues des signes",
-    "Zeichensprachen"
-  ],
-  "shn": [
-    "shn",
-    "Shan",
-    "chan",
-    "Schan-Sprache"
-  ],
-  "sid": [
-    "sid",
-    "Sidamo",
-    "sidamo",
-    "Sidamo-Sprache"
-  ],
-  "sin": [
-    "si",
-    "sin",
-    "Sinhala",
-    "Sinhalese",
-    "singhalais",
-    "Singhalesisch"
-  ],
-  "sio": [
-    "sio",
-    "Siouan languages",
-    "sioux, langues",
-    "Sioux-Sprachen (Andere)"
-  ],
-  "sit": [
-    "sit",
-    "Sino-Tibetan languages",
-    "sino-tibétaines, langues",
-    "Sinotibetische Sprachen (Andere)"
-  ],
-  "sla": [
-    "sla",
-    "Slavic languages",
-    "slaves, langues",
-    "Slawische Sprachen (Andere)"
-  ],
-  "slk": [
-    "sk",
-    "slo",
-    "slk",
-    "Slovak",
-    "slovaque",
-    "Slowakisch"
-  ],
-  "slv": [
-    "sl",
-    "slv",
-    "Slovenian",
-    "slovène",
-    "Slowenisch"
-  ],
-  "sma": [
-    "sma",
-    "Southern Sami",
-    "sami du Sud",
-    "Südsaamisch"
-  ],
-  "sme": [
-    "se",
-    "sme",
-    "Northern Sami",
-    "sami du Nord",
-    "Nordsaamisch"
-  ],
-  "smi": [
-    "smi",
-    "Sami languages",
-    "sames, langues",
-    "Saamisch"
-  ],
-  "smj": [
-    "smj",
-    "Lule Sami",
-    "sami de Lule",
-    "Lulesaamisch"
-  ],
-  "smn": [
-    "smn",
-    "Inari Sami",
-    "sami d'Inari",
-    "Inarisaamisch"
-  ],
-  "smo": [
-    "sm",
-    "smo",
-    "Samoan",
-    "samoan",
-    "Samoanisch"
-  ],
-  "sms": [
-    "sms",
-    "Skolt Sami",
-    "sami skolt",
-    "Skoltsaamisch"
-  ],
-  "sna": [
-    "sn",
-    "sna",
-    "Shona",
-    "shona",
-    "Schona-Sprache"
-  ],
-  "snd": [
-    "sd",
-    "snd",
-    "Sindhi",
-    "sindhi",
-    "Sindhi-Sprache"
-  ],
-  "snk": [
-    "snk",
-    "Soninke",
-    "soninké",
-    "Soninke-Sprache"
-  ],
-  "sog": [
-    "sog",
-    "Sogdian",
-    "sogdien",
-    "Sogdisch"
-  ],
-  "som": [
-    "so",
-    "som",
-    "Somali",
-    "somali"
-  ],
-  "son": [
-    "son",
-    "Songhai languages",
-    "songhai, langues",
-    "Songhai-Sprache"
-  ],
-  "sot": [
-    "st",
-    "sot",
-    "Sotho, Southern",
-    "sotho du Sud",
-    "Süd-Sotho-Sprache"
-  ],
-  "spa": [
-    "es",
-    "spa",
-    "Spanish",
-    "Castilian",
-    "espagnol",
-    "castillan",
-    "Spanisch"
-  ],
-  "srd": [
-    "sc",
-    "srd",
-    "Sardinian",
-    "sarde",
-    "Sardisch"
-  ],
-  "srn": [
-    "srn",
-    "Sranan Tongo",
-    "sranan tongo",
-    "Sranantongo"
-  ],
-  "srp": [
-    "sr",
-    "srp",
-    "Serbian",
-    "serbe",
-    "Serbisch"
-  ],
-  "srr": [
-    "srr",
-    "Serer",
-    "sérère",
-    "Serer-Sprache"
-  ],
-  "ssa": [
-    "ssa",
-    "Nilo-Saharan languages",
-    "nilo-sahariennes, langues",
-    "Nilosaharanische Sprachen (Andere)"
-  ],
-  "ssw": [
-    "ss",
-    "ssw",
-    "Swati",
-    "swati",
-    "Swasi-Sprache"
-  ],
-  "suk": [
-    "suk",
-    "Sukuma",
-    "sukuma",
-    "Sukuma-Sprache"
-  ],
-  "sun": [
-    "su",
-    "sun",
-    "Sundanese",
-    "soundanais",
-    "Sundanesisch"
-  ],
-  "sus": [
-    "sus",
-    "Susu",
-    "soussou"
-  ],
-  "sux": [
-    "sux",
-    "Sumerian",
-    "sumérien",
-    "Sumerisch"
-  ],
-  "swa": [
-    "sw",
-    "swa",
-    "Swahili",
-    "swahili"
-  ],
-  "swe": [
-    "sv",
-    "swe",
-    "Swedish",
-    "suédois",
-    "Schwedisch"
-  ],
-  "syc": [
-    "syc",
-    "Classical Syriac",
-    "syriaque classique",
-    "Syrisch"
-  ],
-  "syr": [
-    "syr",
-    "Syriac",
-    "syriaque",
-    "Neuostaramäisch"
-  ],
-  "tah": [
-    "ty",
-    "tah",
-    "Tahitian",
-    "tahitien",
-    "Tahitisch"
-  ],
-  "tai": [
-    "tai",
-    "Tai languages",
-    "tai, langues",
-    "Thaisprachen (Andere)"
-  ],
-  "tam": [
-    "ta",
-    "tam",
-    "Tamil",
-    "tamoul"
-  ],
-  "tat": [
-    "tt",
-    "tat",
-    "Tatar",
-    "tatar",
-    "Tatarisch"
-  ],
-  "tel": [
-    "te",
-    "tel",
-    "Telugu",
-    "télougou",
-    "Telugu-Sprache"
-  ],
-  "tem": [
-    "tem",
-    "Timne",
-    "temne",
-    "Temne-Sprache"
-  ],
-  "ter": [
-    "ter",
-    "Tereno",
-    "tereno",
-    "Tereno-Sprache"
-  ],
-  "tet": [
-    "tet",
-    "Tetum",
-    "tetum",
-    "Tetum-Sprache"
-  ],
-  "tgk": [
-    "tg",
-    "tgk",
-    "Tajik",
-    "tadjik",
-    "Tadschikisch"
-  ],
-  "tgl": [
-    "tl",
-    "tgl",
-    "Tagalog",
-    "tagalog"
-  ],
-  "tha": [
-    "th",
-    "tha",
-    "Thai",
-    "thaï",
-    "Thailändisch"
-  ],
-  "tig": [
-    "tig",
-    "Tigre",
-    "tigré",
-    "Tigre-Sprache"
-  ],
-  "tir": [
-    "ti",
-    "tir",
-    "Tigrinya",
-    "tigrigna",
-    "Tigrinja-Sprache"
-  ],
-  "tiv": [
-    "tiv",
-    "Tiv",
-    "Tiv-Sprache"
-  ],
-  "tkl": [
-    "tkl",
-    "Tokelau",
-    "tokelau",
-    "Tokelauanisch"
-  ],
-  "tlh": [
-    "tlh",
-    "Klingon",
-    "tlhIngan-Hol",
-    "klingon",
-    "Klingonisch"
-  ],
-  "tli": [
-    "tli",
-    "Tlingit",
-    "tlingit",
-    "Tlingit-Sprache"
-  ],
-  "tmh": [
-    "tmh",
-    "Tamashek",
-    "tamacheq",
-    "Tamašeq"
-  ],
-  "tog": [
-    "tog",
-    "Tonga (Nyasa)",
-    "Tonga",
-    "tonga (Nyasa)",
-    "Tonga (Bantusprache, Sambia)"
-  ],
-  "ton": [
-    "to",
-    "ton",
-    "Tonga (Tonga Islands)",
-    "Tonga",
-    "tongan (Îles Tonga)",
-    "Tongaisch"
-  ],
-  "tpi": [
-    "tpi",
-    "Tok Pisin",
-    "tok pisin",
-    "Neumelanesisch"
-  ],
-  "tsi": [
-    "tsi",
-    "Tsimshian",
-    "tsimshian",
-    "Tsimshian-Sprache"
-  ],
-  "tsn": [
-    "tn",
-    "tsn",
-    "Tswana",
-    "tswana",
-    "Tswana-Sprache"
-  ],
-  "tso": [
-    "ts",
-    "tso",
-    "Tsonga",
-    "tsonga",
-    "Tsonga-Sprache"
-  ],
-  "tuk": [
-    "tk",
-    "tuk",
-    "Turkmen",
-    "turkmène",
-    "Turkmenisch"
-  ],
-  "tum": [
-    "tum",
-    "Tumbuka",
-    "tumbuka",
-    "Tumbuka-Sprache"
-  ],
-  "tup": [
-    "tup",
-    "Tupi languages",
-    "tupi, langues",
-    "Tupi-Sprache"
-  ],
-  "tur": [
-    "tr",
-    "tur",
-    "Turkish",
-    "turc",
-    "Türkisch"
-  ],
-  "tut": [
-    "tut",
-    "Altaic languages",
-    "altaïques, langues",
-    "Altaische Sprachen (Andere)"
-  ],
-  "tvl": [
-    "tvl",
-    "Tuvalu",
-    "tuvalu",
-    "Elliceanisch"
-  ],
-  "twi": [
-    "tw",
-    "twi",
-    "Twi",
-    "Twi-Sprache"
-  ],
-  "tyv": [
-    "tyv",
-    "Tuvinian",
-    "touva",
-    "Tuwinisch"
-  ],
-  "udm": [
-    "udm",
-    "Udmurt",
-    "oudmourte",
-    "Udmurtisch"
-  ],
-  "uga": [
-    "uga",
-    "Ugaritic",
-    "ougaritique",
-    "Ugaritisch"
-  ],
-  "uig": [
-    "ug",
-    "uig",
-    "Uighur",
-    "Uyghur",
-    "ouïgour",
-    "Uigurisch"
-  ],
-  "ukr": [
-    "uk",
-    "ukr",
-    "Ukrainian",
-    "ukrainien",
-    "Ukrainisch"
-  ],
-  "umb": [
-    "umb",
-    "Umbundu",
-    "umbundu",
-    "Mbundu-Sprache"
-  ],
-  "und": [
-    "und",
-    "Undetermined",
-    "indéterminée",
-    "Nicht zu entscheiden"
-  ],
-  "urd": [
-    "ur",
-    "urd",
-    "Urdu",
-    "ourdou"
-  ],
-  "uzb": [
-    "uz",
-    "uzb",
-    "Uzbek",
-    "ouszbek",
-    "Usbekisch"
-  ],
-  "vai": [
-    "vai",
-    "Vai",
-    "vaï",
-    "Vai-Sprache"
-  ],
-  "ven": [
-    "ve",
-    "ven",
-    "Venda",
-    "venda",
-    "Venda-Sprache"
-  ],
-  "vie": [
-    "vi",
-    "vie",
-    "Vietnamese",
-    "vietnamien",
-    "Vietnamesisch"
-  ],
-  "vol": [
-    "vo",
-    "vol",
-    "Volapük",
-    "volapük"
-  ],
-  "vot": [
-    "vot",
-    "Votic",
-    "vote",
-    "Wotisch"
-  ],
-  "wak": [
-    "wak",
-    "Wakashan languages",
-    "wakashanes, langues",
-    "Wakash-Sprachen"
-  ],
-  "wal": [
-    "wal",
-    "Wolaitta",
-    "Wolaytta",
-    "wolaitta",
-    "wolaytta",
-    "Walamo-Sprache"
-  ],
-  "war": [
-    "war",
-    "Waray",
-    "waray"
-  ],
-  "was": [
-    "was",
-    "Washo",
-    "washo",
-    "Washo-Sprache"
-  ],
-  "wen": [
-    "wen",
-    "Sorbian languages",
-    "sorabes, langues",
-    "Sorbisch (Andere)"
-  ],
-  "wln": [
-    "wa",
-    "wln",
-    "Walloon",
-    "wallon",
-    "Wallonisch"
-  ],
-  "wol": [
-    "wo",
-    "wol",
-    "Wolof",
-    "wolof",
-    "Wolof-Sprache"
-  ],
-  "xal": [
-    "xal",
-    "Kalmyk",
-    "Oirat",
-    "kalmouk",
-    "oïrat",
-    "Kalmückisch"
-  ],
-  "xho": [
-    "xh",
-    "xho",
-    "Xhosa",
-    "xhosa",
-    "Xhosa-Sprache"
-  ],
-  "yao": [
-    "yao",
-    "Yao",
-    "Yao-Sprache (Bantusprache)"
-  ],
-  "yap": [
-    "yap",
-    "Yapese",
-    "yapois",
-    "Yapesisch"
-  ],
-  "yid": [
-    "yi",
-    "yid",
-    "Yiddish",
-    "yiddish",
-    "Jiddisch"
-  ],
-  "yor": [
-    "yo",
-    "yor",
-    "Yoruba",
-    "yoruba",
-    "Yoruba-Sprache"
-  ],
-  "ypk": [
-    "ypk",
-    "Yupik languages",
-    "yupik, langues",
-    "Ypik-Sprachen"
-  ],
-  "zap": [
-    "zap",
-    "Zapotec",
-    "zapotèque",
-    "Zapotekisch"
-  ],
-  "zbl": [
-    "zbl",
-    "Blissymbols",
-    "Blissymbolics",
-    "Bliss",
-    "symboles Bliss",
-    "Bliss-Symbol"
-  ],
-  "zen": [
-    "zen",
-    "Zenaga",
-    "zenaga"
-  ],
-  "zgh": [
-    "zgh",
-    "Standard Moroccan Tamazight",
-    "amazighe standard marocain"
-  ],
-  "zha": [
-    "za",
-    "zha",
-    "Zhuang",
-    "Chuang",
-    "zhuang",
-    "chuang"
-  ],
-  "znd": [
-    "znd",
-    "Zande languages",
-    "zandé, langues",
-    "Zande-Sprachen"
-  ],
-  "zul": [
-    "zu",
-    "zul",
-    "Zulu",
-    "zoulou",
-    "Zulu-Sprache"
-  ],
-  "zun": [
-    "zun",
-    "Zuni",
-    "zuni",
-    "Zuñi-Sprache"
-  ],
-  "zxx": [
-    "zxx",
-    "No linguistic content",
-    "Not applicable",
-    "pas de contenu linguistique",
-    "non applicable",
-    "Kein linguistischer Inhalt"
-  ],
-  "zza": [
-    "zza",
-    "Zaza",
-    "Dimili",
-    "Dimli",
-    "Kirdki",
-    "Kirmanjki",
-    "Zazaki",
-    "zaza",
-    "dimili",
-    "dimli",
-    "kirdki",
-    "kirmanjki",
-    "zazaki"
-  ]
-}
+[
+  {
+    "three": [
+      "aar"
+    ],
+    "two": [
+      "aa"
+    ],
+    "english": [
+      "Afar"
+    ],
+    "french": [
+      "afar"
+    ],
+    "german": [
+      "Danakil-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "abk"
+    ],
+    "two": [
+      "ab"
+    ],
+    "english": [
+      "Abkhazian"
+    ],
+    "french": [
+      "abkhaze"
+    ],
+    "german": [
+      "Abchasisch"
+    ]
+  },
+  {
+    "three": [
+      "ace"
+    ],
+    "two": [],
+    "english": [
+      "Achinese"
+    ],
+    "french": [
+      "aceh"
+    ],
+    "german": [
+      "Aceh-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ach"
+    ],
+    "two": [],
+    "english": [
+      "Acoli"
+    ],
+    "french": [
+      "acoli"
+    ],
+    "german": [
+      "Acholi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ada"
+    ],
+    "two": [],
+    "english": [
+      "Adangme"
+    ],
+    "french": [
+      "adangme"
+    ],
+    "german": [
+      "Adangme-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ady"
+    ],
+    "two": [],
+    "english": [
+      "Adyghe",
+      "Adygei"
+    ],
+    "french": [
+      "adyghé"
+    ],
+    "german": [
+      "Adygisch"
+    ]
+  },
+  {
+    "three": [
+      "afa"
+    ],
+    "two": [],
+    "english": [
+      "Afro-Asiatic languages"
+    ],
+    "french": [
+      "afro-asiatiques, langues"
+    ],
+    "german": [
+      "Hamitosemitische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "afh"
+    ],
+    "two": [],
+    "english": [
+      "Afrihili"
+    ],
+    "french": [
+      "afrihili"
+    ],
+    "german": [
+      "Afrihili"
+    ]
+  },
+  {
+    "three": [
+      "afr"
+    ],
+    "two": [
+      "af"
+    ],
+    "english": [
+      "Afrikaans"
+    ],
+    "french": [
+      "afrikaans"
+    ],
+    "german": [
+      "Afrikaans"
+    ]
+  },
+  {
+    "three": [
+      "ain"
+    ],
+    "two": [],
+    "english": [
+      "Ainu"
+    ],
+    "french": [
+      "aïnou"
+    ],
+    "german": [
+      "Ainu-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "aka"
+    ],
+    "two": [
+      "ak"
+    ],
+    "english": [
+      "Akan"
+    ],
+    "french": [
+      "akan"
+    ],
+    "german": [
+      "Akan-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "akk"
+    ],
+    "two": [],
+    "english": [
+      "Akkadian"
+    ],
+    "french": [
+      "akkadien"
+    ],
+    "german": [
+      "Akkadisch"
+    ]
+  },
+  {
+    "three": [
+      "alb",
+      "sqi"
+    ],
+    "two": [
+      "sq"
+    ],
+    "english": [
+      "Albanian"
+    ],
+    "french": [
+      "albanais"
+    ],
+    "german": [
+      "Albanisch"
+    ]
+  },
+  {
+    "three": [
+      "ale"
+    ],
+    "two": [],
+    "english": [
+      "Aleut"
+    ],
+    "french": [
+      "aléoute"
+    ],
+    "german": [
+      "Aleutisch"
+    ]
+  },
+  {
+    "three": [
+      "alg"
+    ],
+    "two": [],
+    "english": [
+      "Algonquian languages"
+    ],
+    "french": [
+      "algonquines, langues"
+    ],
+    "german": [
+      "Algonkin-Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "alt"
+    ],
+    "two": [],
+    "english": [
+      "Southern Altai"
+    ],
+    "french": [
+      "altai du Sud"
+    ],
+    "german": [
+      "Altaisch"
+    ]
+  },
+  {
+    "three": [
+      "amh"
+    ],
+    "two": [
+      "am"
+    ],
+    "english": [
+      "Amharic"
+    ],
+    "french": [
+      "amharique"
+    ],
+    "german": [
+      "Amharisch"
+    ]
+  },
+  {
+    "three": [
+      "ang"
+    ],
+    "two": [],
+    "english": [
+      "English, Old (ca.450-1100)",
+      "English, Old"
+    ],
+    "french": [
+      "anglo-saxon (ca.450-1100)"
+    ],
+    "german": [
+      "Altenglisch"
+    ]
+  },
+  {
+    "three": [
+      "anp"
+    ],
+    "two": [],
+    "english": [
+      "Angika"
+    ],
+    "french": [
+      "angika"
+    ],
+    "german": [
+      "Anga-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "apa"
+    ],
+    "two": [],
+    "english": [
+      "Apache languages"
+    ],
+    "french": [
+      "apaches, langues"
+    ],
+    "german": [
+      "Apachen-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "ara"
+    ],
+    "two": [
+      "ar"
+    ],
+    "english": [
+      "Arabic"
+    ],
+    "french": [
+      "arabe"
+    ],
+    "german": [
+      "Arabisch"
+    ]
+  },
+  {
+    "three": [
+      "arc"
+    ],
+    "two": [],
+    "english": [
+      "Official Aramaic (700-300 BCE)",
+      "Imperial Aramaic (700-300 BCE)",
+      "Official Aramaic",
+      "Imperial Aramaic"
+    ],
+    "french": [
+      "araméen d'empire (700-300 BCE)"
+    ],
+    "german": [
+      "Aramäisch"
+    ]
+  },
+  {
+    "three": [
+      "arg"
+    ],
+    "two": [
+      "an"
+    ],
+    "english": [
+      "Aragonese"
+    ],
+    "french": [
+      "aragonais"
+    ],
+    "german": [
+      "Aragonesisch"
+    ]
+  },
+  {
+    "three": [
+      "arm",
+      "hye"
+    ],
+    "two": [
+      "hy"
+    ],
+    "english": [
+      "Armenian"
+    ],
+    "french": [
+      "arménien"
+    ],
+    "german": [
+      "Armenisch"
+    ]
+  },
+  {
+    "three": [
+      "arn"
+    ],
+    "two": [],
+    "english": [
+      "Mapudungun",
+      "Mapuche"
+    ],
+    "french": [
+      "mapudungun",
+      "mapuche",
+      "mapuce"
+    ],
+    "german": [
+      "Arauka-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "arp"
+    ],
+    "two": [],
+    "english": [
+      "Arapaho"
+    ],
+    "french": [
+      "arapaho"
+    ],
+    "german": [
+      "Arapaho-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "art"
+    ],
+    "two": [],
+    "english": [
+      "Artificial languages"
+    ],
+    "french": [
+      "artificielles, langues"
+    ],
+    "german": [
+      "Kunstsprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "arw"
+    ],
+    "two": [],
+    "english": [
+      "Arawak"
+    ],
+    "french": [
+      "arawak"
+    ],
+    "german": [
+      "Arawak-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "asm"
+    ],
+    "two": [
+      "as"
+    ],
+    "english": [
+      "Assamese"
+    ],
+    "french": [
+      "assamais"
+    ],
+    "german": [
+      "Assamesisch"
+    ]
+  },
+  {
+    "three": [
+      "ast"
+    ],
+    "two": [],
+    "english": [
+      "Asturian",
+      "Bable",
+      "Leonese",
+      "Asturleonese"
+    ],
+    "french": [
+      "asturien",
+      "bable",
+      "léonais",
+      "asturoléonais"
+    ],
+    "german": [
+      "Asturisch"
+    ]
+  },
+  {
+    "three": [
+      "ath"
+    ],
+    "two": [],
+    "english": [
+      "Athapascan languages"
+    ],
+    "french": [
+      "athapascanes, langues"
+    ],
+    "german": [
+      "Athapaskische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "aus"
+    ],
+    "two": [],
+    "english": [
+      "Australian languages"
+    ],
+    "french": [
+      "australiennes, langues"
+    ],
+    "german": [
+      "Australische Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "ava"
+    ],
+    "two": [
+      "av"
+    ],
+    "english": [
+      "Avaric"
+    ],
+    "french": [
+      "avar"
+    ],
+    "german": [
+      "Awarisch"
+    ]
+  },
+  {
+    "three": [
+      "ave"
+    ],
+    "two": [
+      "ae"
+    ],
+    "english": [
+      "Avestan"
+    ],
+    "french": [
+      "avestique"
+    ],
+    "german": [
+      "Avestisch"
+    ]
+  },
+  {
+    "three": [
+      "awa"
+    ],
+    "two": [],
+    "english": [
+      "Awadhi"
+    ],
+    "french": [
+      "awadhi"
+    ],
+    "german": [
+      "Awadhi"
+    ]
+  },
+  {
+    "three": [
+      "aym"
+    ],
+    "two": [
+      "ay"
+    ],
+    "english": [
+      "Aymara"
+    ],
+    "french": [
+      "aymara"
+    ],
+    "german": [
+      "Aymará-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "aze"
+    ],
+    "two": [
+      "az"
+    ],
+    "english": [
+      "Azerbaijani"
+    ],
+    "french": [
+      "azéri"
+    ],
+    "german": [
+      "Aserbeidschanisch"
+    ]
+  },
+  {
+    "three": [
+      "bad"
+    ],
+    "two": [],
+    "english": [
+      "Banda languages"
+    ],
+    "french": [
+      "banda, langues"
+    ],
+    "german": [
+      "Banda-Sprachen (Ubangi-Sprachen)"
+    ]
+  },
+  {
+    "three": [
+      "bai"
+    ],
+    "two": [],
+    "english": [
+      "Bamileke languages"
+    ],
+    "french": [
+      "bamiléké, langues"
+    ],
+    "german": [
+      "Bamileke-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "bak"
+    ],
+    "two": [
+      "ba"
+    ],
+    "english": [
+      "Bashkir"
+    ],
+    "french": [
+      "bachkir"
+    ],
+    "german": [
+      "Baschkirisch"
+    ]
+  },
+  {
+    "three": [
+      "bal"
+    ],
+    "two": [],
+    "english": [
+      "Baluchi"
+    ],
+    "french": [
+      "baloutchi"
+    ],
+    "german": [
+      "Belutschisch"
+    ]
+  },
+  {
+    "three": [
+      "bam"
+    ],
+    "two": [
+      "bm"
+    ],
+    "english": [
+      "Bambara"
+    ],
+    "french": [
+      "bambara"
+    ],
+    "german": [
+      "Bambara-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ban"
+    ],
+    "two": [],
+    "english": [
+      "Balinese"
+    ],
+    "french": [
+      "balinais"
+    ],
+    "german": [
+      "Balinesisch"
+    ]
+  },
+  {
+    "three": [
+      "baq",
+      "eus"
+    ],
+    "two": [
+      "eu"
+    ],
+    "english": [
+      "Basque"
+    ],
+    "french": [
+      "basque"
+    ],
+    "german": [
+      "Baskisch"
+    ]
+  },
+  {
+    "three": [
+      "bas"
+    ],
+    "two": [],
+    "english": [
+      "Basa"
+    ],
+    "french": [
+      "basa"
+    ],
+    "german": [
+      "Basaa-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "bat"
+    ],
+    "two": [],
+    "english": [
+      "Baltic languages"
+    ],
+    "french": [
+      "baltes, langues"
+    ],
+    "german": [
+      "Baltische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "bej"
+    ],
+    "two": [],
+    "english": [
+      "Beja",
+      "Bedawiyet"
+    ],
+    "french": [
+      "bedja"
+    ],
+    "german": [
+      "Bedauye"
+    ]
+  },
+  {
+    "three": [
+      "bel"
+    ],
+    "two": [
+      "be"
+    ],
+    "english": [
+      "Belarusian"
+    ],
+    "french": [
+      "biélorusse"
+    ],
+    "german": [
+      "Weißrussisch"
+    ]
+  },
+  {
+    "three": [
+      "bem"
+    ],
+    "two": [],
+    "english": [
+      "Bemba"
+    ],
+    "french": [
+      "bemba"
+    ],
+    "german": [
+      "Bemba-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ben"
+    ],
+    "two": [
+      "bn"
+    ],
+    "english": [
+      "Bengali"
+    ],
+    "french": [
+      "bengali"
+    ],
+    "german": [
+      "Bengali"
+    ]
+  },
+  {
+    "three": [
+      "ber"
+    ],
+    "two": [],
+    "english": [
+      "Berber languages"
+    ],
+    "french": [
+      "berbères, langues"
+    ],
+    "german": [
+      "Berbersprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "bho"
+    ],
+    "two": [],
+    "english": [
+      "Bhojpuri"
+    ],
+    "french": [
+      "bhojpuri"
+    ],
+    "german": [
+      "Bhojpuri"
+    ]
+  },
+  {
+    "three": [
+      "bih"
+    ],
+    "two": [
+      "bh"
+    ],
+    "english": [
+      "Bihari languages"
+    ],
+    "french": [
+      "langues biharis"
+    ],
+    "german": [
+      "Bihari (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "bik"
+    ],
+    "two": [],
+    "english": [
+      "Bikol"
+    ],
+    "french": [
+      "bikol"
+    ],
+    "german": [
+      "Bikol-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "bin"
+    ],
+    "two": [],
+    "english": [
+      "Bini",
+      "Edo"
+    ],
+    "french": [
+      "bini",
+      "edo"
+    ],
+    "german": [
+      "Edo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "bis"
+    ],
+    "two": [
+      "bi"
+    ],
+    "english": [
+      "Bislama"
+    ],
+    "french": [
+      "bichlamar"
+    ],
+    "german": [
+      "Beach-la-mar"
+    ]
+  },
+  {
+    "three": [
+      "bla"
+    ],
+    "two": [],
+    "english": [
+      "Siksika"
+    ],
+    "french": [
+      "blackfoot"
+    ],
+    "german": [
+      "Blackfoot-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "bnt"
+    ],
+    "two": [],
+    "english": [
+      "Bantu languages"
+    ],
+    "french": [
+      "bantou, langues"
+    ],
+    "german": [
+      "Bantusprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "tib",
+      "bod"
+    ],
+    "two": [
+      "bo"
+    ],
+    "english": [
+      "Tibetan"
+    ],
+    "french": [
+      "tibétain"
+    ],
+    "german": [
+      "Tibetisch"
+    ]
+  },
+  {
+    "three": [
+      "bos"
+    ],
+    "two": [
+      "bs"
+    ],
+    "english": [
+      "Bosnian"
+    ],
+    "french": [
+      "bosniaque"
+    ],
+    "german": [
+      "Bosnisch"
+    ]
+  },
+  {
+    "three": [
+      "bra"
+    ],
+    "two": [],
+    "english": [
+      "Braj"
+    ],
+    "french": [
+      "braj"
+    ],
+    "german": [
+      "Braj-Bhakha"
+    ]
+  },
+  {
+    "three": [
+      "bre"
+    ],
+    "two": [
+      "br"
+    ],
+    "english": [
+      "Breton"
+    ],
+    "french": [
+      "breton"
+    ],
+    "german": [
+      "Bretonisch"
+    ]
+  },
+  {
+    "three": [
+      "btk"
+    ],
+    "two": [],
+    "english": [
+      "Batak languages"
+    ],
+    "french": [
+      "batak, langues"
+    ],
+    "german": [
+      "Batak-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "bua"
+    ],
+    "two": [],
+    "english": [
+      "Buriat"
+    ],
+    "french": [
+      "bouriate"
+    ],
+    "german": [
+      "Burjatisch"
+    ]
+  },
+  {
+    "three": [
+      "bug"
+    ],
+    "two": [],
+    "english": [
+      "Buginese"
+    ],
+    "french": [
+      "bugi"
+    ],
+    "german": [
+      "Bugi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "bul"
+    ],
+    "two": [
+      "bg"
+    ],
+    "english": [
+      "Bulgarian"
+    ],
+    "french": [
+      "bulgare"
+    ],
+    "german": [
+      "Bulgarisch"
+    ]
+  },
+  {
+    "three": [
+      "bur",
+      "mya"
+    ],
+    "two": [
+      "my"
+    ],
+    "english": [
+      "Burmese"
+    ],
+    "french": [
+      "birman"
+    ],
+    "german": [
+      "Birmanisch"
+    ]
+  },
+  {
+    "three": [
+      "byn"
+    ],
+    "two": [],
+    "english": [
+      "Blin",
+      "Bilin"
+    ],
+    "french": [
+      "blin",
+      "bilen"
+    ],
+    "german": [
+      "Bilin-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "cad"
+    ],
+    "two": [],
+    "english": [
+      "Caddo"
+    ],
+    "french": [
+      "caddo"
+    ],
+    "german": [
+      "Caddo-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "cai"
+    ],
+    "two": [],
+    "english": [
+      "Central American Indian languages"
+    ],
+    "french": [
+      "amérindiennes de l'Amérique centrale, langues"
+    ],
+    "german": [
+      "Indianersprachen, Zentralamerika (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "car"
+    ],
+    "two": [],
+    "english": [
+      "Galibi Carib"
+    ],
+    "french": [
+      "karib",
+      "galibi",
+      "carib"
+    ],
+    "german": [
+      "Karibische Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "cat"
+    ],
+    "two": [
+      "ca"
+    ],
+    "english": [
+      "Catalan",
+      "Valencian"
+    ],
+    "french": [
+      "catalan",
+      "valencien"
+    ],
+    "german": [
+      "Katalanisch"
+    ]
+  },
+  {
+    "three": [
+      "cau"
+    ],
+    "two": [],
+    "english": [
+      "Caucasian languages"
+    ],
+    "french": [
+      "caucasiennes, langues"
+    ],
+    "german": [
+      "Kaukasische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "ceb"
+    ],
+    "two": [],
+    "english": [
+      "Cebuano"
+    ],
+    "french": [
+      "cebuano"
+    ],
+    "german": [
+      "Cebuano"
+    ]
+  },
+  {
+    "three": [
+      "cel"
+    ],
+    "two": [],
+    "english": [
+      "Celtic languages"
+    ],
+    "french": [
+      "celtiques, langues",
+      "celtes, langues"
+    ],
+    "german": [
+      "Keltische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "cze",
+      "ces"
+    ],
+    "two": [
+      "cs"
+    ],
+    "english": [
+      "Czech"
+    ],
+    "french": [
+      "tchèque"
+    ],
+    "german": [
+      "Tschechisch"
+    ]
+  },
+  {
+    "three": [
+      "cha"
+    ],
+    "two": [
+      "ch"
+    ],
+    "english": [
+      "Chamorro"
+    ],
+    "french": [
+      "chamorro"
+    ],
+    "german": [
+      "Chamorro-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "chb"
+    ],
+    "two": [],
+    "english": [
+      "Chibcha"
+    ],
+    "french": [
+      "chibcha"
+    ],
+    "german": [
+      "Chibcha-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "che"
+    ],
+    "two": [
+      "ce"
+    ],
+    "english": [
+      "Chechen"
+    ],
+    "french": [
+      "tchétchène"
+    ],
+    "german": [
+      "Tschetschenisch"
+    ]
+  },
+  {
+    "three": [
+      "chg"
+    ],
+    "two": [],
+    "english": [
+      "Chagatai"
+    ],
+    "french": [
+      "djaghataï"
+    ],
+    "german": [
+      "Tschagataisch"
+    ]
+  },
+  {
+    "three": [
+      "chi",
+      "zho"
+    ],
+    "two": [
+      "zh"
+    ],
+    "english": [
+      "Chinese"
+    ],
+    "french": [
+      "chinois"
+    ],
+    "german": [
+      "Chinesisch"
+    ]
+  },
+  {
+    "three": [
+      "chk"
+    ],
+    "two": [],
+    "english": [
+      "Chuukese"
+    ],
+    "french": [
+      "chuuk"
+    ],
+    "german": [
+      "Trukesisch"
+    ]
+  },
+  {
+    "three": [
+      "chm"
+    ],
+    "two": [],
+    "english": [
+      "Mari"
+    ],
+    "french": [
+      "mari"
+    ],
+    "german": [
+      "Tscheremissisch"
+    ]
+  },
+  {
+    "three": [
+      "chn"
+    ],
+    "two": [],
+    "english": [
+      "Chinook jargon"
+    ],
+    "french": [
+      "chinook, jargon"
+    ],
+    "german": [
+      "Chinook-Jargon"
+    ]
+  },
+  {
+    "three": [
+      "cho"
+    ],
+    "two": [],
+    "english": [
+      "Choctaw"
+    ],
+    "french": [
+      "choctaw"
+    ],
+    "german": [
+      "Choctaw-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "chp"
+    ],
+    "two": [],
+    "english": [
+      "Chipewyan",
+      "Dene Suline"
+    ],
+    "french": [
+      "chipewyan"
+    ],
+    "german": [
+      "Chipewyan-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "chr"
+    ],
+    "two": [],
+    "english": [
+      "Cherokee"
+    ],
+    "french": [
+      "cherokee"
+    ],
+    "german": [
+      "Cherokee-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "chu"
+    ],
+    "two": [
+      "cu"
+    ],
+    "english": [
+      "Church Slavic",
+      "Old Slavonic",
+      "Church Slavonic",
+      "Old Bulgarian",
+      "Old Church Slavonic"
+    ],
+    "french": [
+      "slavon d'église",
+      "vieux slave",
+      "slavon liturgique",
+      "vieux bulgare"
+    ],
+    "german": [
+      "Kirchenslawisch"
+    ]
+  },
+  {
+    "three": [
+      "chv"
+    ],
+    "two": [
+      "cv"
+    ],
+    "english": [
+      "Chuvash"
+    ],
+    "french": [
+      "tchouvache"
+    ],
+    "german": [
+      "Tschuwaschisch"
+    ]
+  },
+  {
+    "three": [
+      "chy"
+    ],
+    "two": [],
+    "english": [
+      "Cheyenne"
+    ],
+    "french": [
+      "cheyenne"
+    ],
+    "german": [
+      "Cheyenne-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "cmc"
+    ],
+    "two": [],
+    "english": [
+      "Chamic languages"
+    ],
+    "french": [
+      "chames, langues"
+    ],
+    "german": [
+      "Cham-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "cnr"
+    ],
+    "two": [],
+    "english": [
+      "Montenegrin"
+    ],
+    "french": [
+      "monténégrin"
+    ],
+    "german": [
+      "Montenegrinisch"
+    ]
+  },
+  {
+    "three": [
+      "cop"
+    ],
+    "two": [],
+    "english": [
+      "Coptic"
+    ],
+    "french": [
+      "copte"
+    ],
+    "german": [
+      "Koptisch"
+    ]
+  },
+  {
+    "three": [
+      "cor"
+    ],
+    "two": [
+      "kw"
+    ],
+    "english": [
+      "Cornish"
+    ],
+    "french": [
+      "cornique"
+    ],
+    "german": [
+      "Kornisch"
+    ]
+  },
+  {
+    "three": [
+      "cos"
+    ],
+    "two": [
+      "co"
+    ],
+    "english": [
+      "Corsican"
+    ],
+    "french": [
+      "corse"
+    ],
+    "german": [
+      "Korsisch"
+    ]
+  },
+  {
+    "three": [
+      "cpe"
+    ],
+    "two": [],
+    "english": [
+      "Creoles and pidgins, English based"
+    ],
+    "french": [
+      "créoles et pidgins basés sur l'anglais"
+    ],
+    "german": [
+      "Kreolisch-Englisch (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "cpf"
+    ],
+    "two": [],
+    "english": [
+      "Creoles and pidgins, French-based"
+    ],
+    "french": [
+      "créoles et pidgins basés sur le français"
+    ],
+    "german": [
+      "Kreolisch-Französisch (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "cpp"
+    ],
+    "two": [],
+    "english": [
+      "Creoles and pidgins, Portuguese-based"
+    ],
+    "french": [
+      "créoles et pidgins basés sur le portugais"
+    ],
+    "german": [
+      "Kreolisch-Portugiesisch (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "cre"
+    ],
+    "two": [
+      "cr"
+    ],
+    "english": [
+      "Cree"
+    ],
+    "french": [
+      "cree"
+    ],
+    "german": [
+      "Cree-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "crh"
+    ],
+    "two": [],
+    "english": [
+      "Crimean Tatar",
+      "Crimean Turkish"
+    ],
+    "french": [
+      "tatar de Crimé"
+    ],
+    "german": [
+      "Krimtatarisch"
+    ]
+  },
+  {
+    "three": [
+      "crp"
+    ],
+    "two": [],
+    "english": [
+      "Creoles and pidgins"
+    ],
+    "french": [
+      "créoles et pidgins"
+    ],
+    "german": [
+      "Kreolische Sprachen",
+      "Pidginsprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "csb"
+    ],
+    "two": [],
+    "english": [
+      "Kashubian"
+    ],
+    "french": [
+      "kachoube"
+    ],
+    "german": [
+      "Kaschubisch"
+    ]
+  },
+  {
+    "three": [
+      "cus"
+    ],
+    "two": [],
+    "english": [
+      "Cushitic languages"
+    ],
+    "french": [
+      "couchitiques, langues"
+    ],
+    "german": [
+      "Kuschitische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "wel",
+      "cym"
+    ],
+    "two": [
+      "cy"
+    ],
+    "english": [
+      "Welsh"
+    ],
+    "french": [
+      "gallois"
+    ],
+    "german": [
+      "Kymrisch"
+    ]
+  },
+  {
+    "three": [
+      "dak"
+    ],
+    "two": [],
+    "english": [
+      "Dakota"
+    ],
+    "french": [
+      "dakota"
+    ],
+    "german": [
+      "Dakota-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "dan"
+    ],
+    "two": [
+      "da"
+    ],
+    "english": [
+      "Danish"
+    ],
+    "french": [
+      "danois"
+    ],
+    "german": [
+      "Dänisch"
+    ]
+  },
+  {
+    "three": [
+      "dar"
+    ],
+    "two": [],
+    "english": [
+      "Dargwa"
+    ],
+    "french": [
+      "dargwa"
+    ],
+    "german": [
+      "Darginisch"
+    ]
+  },
+  {
+    "three": [
+      "day"
+    ],
+    "two": [],
+    "english": [
+      "Land Dayak languages"
+    ],
+    "french": [
+      "dayak, langues"
+    ],
+    "german": [
+      "Dajakisch"
+    ]
+  },
+  {
+    "three": [
+      "del"
+    ],
+    "two": [],
+    "english": [
+      "Delaware"
+    ],
+    "french": [
+      "delaware"
+    ],
+    "german": [
+      "Delaware-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "den"
+    ],
+    "two": [],
+    "english": [
+      "Slave (Athapascan)",
+      "Slave"
+    ],
+    "french": [
+      "esclave (athapascan)"
+    ],
+    "german": [
+      "Slave-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ger",
+      "deu"
+    ],
+    "two": [
+      "de"
+    ],
+    "english": [
+      "German"
+    ],
+    "french": [
+      "allemand"
+    ],
+    "german": [
+      "Deutsch"
+    ]
+  },
+  {
+    "three": [
+      "dgr"
+    ],
+    "two": [],
+    "english": [
+      "Dogrib"
+    ],
+    "french": [
+      "dogrib"
+    ],
+    "german": [
+      "Dogrib-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "din"
+    ],
+    "two": [],
+    "english": [
+      "Dinka"
+    ],
+    "french": [
+      "dinka"
+    ],
+    "german": [
+      "Dinka-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "div"
+    ],
+    "two": [
+      "dv"
+    ],
+    "english": [
+      "Divehi",
+      "Dhivehi",
+      "Maldivian"
+    ],
+    "french": [
+      "maldivien"
+    ],
+    "german": [
+      "Maledivisch"
+    ]
+  },
+  {
+    "three": [
+      "doi"
+    ],
+    "two": [],
+    "english": [
+      "Dogri"
+    ],
+    "french": [
+      "dogri"
+    ],
+    "german": [
+      "Dogri"
+    ]
+  },
+  {
+    "three": [
+      "dra"
+    ],
+    "two": [],
+    "english": [
+      "Dravidian languages"
+    ],
+    "french": [
+      "dravidiennes, langues"
+    ],
+    "german": [
+      "Drawidische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "dsb"
+    ],
+    "two": [],
+    "english": [
+      "Lower Sorbian"
+    ],
+    "french": [
+      "bas-sorabe"
+    ],
+    "german": [
+      "Niedersorbisch"
+    ]
+  },
+  {
+    "three": [
+      "dua"
+    ],
+    "two": [],
+    "english": [
+      "Duala"
+    ],
+    "french": [
+      "douala"
+    ],
+    "german": [
+      "Duala-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "dum"
+    ],
+    "two": [],
+    "english": [
+      "Dutch, Middle (ca.1050-1350)",
+      "Dutch, Middle"
+    ],
+    "french": [
+      "néerlandais moyen (ca. 1050-1350)"
+    ],
+    "german": [
+      "Mittelniederländisch"
+    ]
+  },
+  {
+    "three": [
+      "dut",
+      "nld"
+    ],
+    "two": [
+      "nl"
+    ],
+    "english": [
+      "Dutch",
+      "Flemish"
+    ],
+    "french": [
+      "néerlandais",
+      "flamand"
+    ],
+    "german": [
+      "Niederländisch"
+    ]
+  },
+  {
+    "three": [
+      "dyu"
+    ],
+    "two": [],
+    "english": [
+      "Dyula"
+    ],
+    "french": [
+      "dioula"
+    ],
+    "german": [
+      "Dyula-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "dzo"
+    ],
+    "two": [
+      "dz"
+    ],
+    "english": [
+      "Dzongkha"
+    ],
+    "french": [
+      "dzongkha"
+    ],
+    "german": [
+      "Dzongkha"
+    ]
+  },
+  {
+    "three": [
+      "efi"
+    ],
+    "two": [],
+    "english": [
+      "Efik"
+    ],
+    "french": [
+      "efik"
+    ],
+    "german": [
+      "Efik"
+    ]
+  },
+  {
+    "three": [
+      "egy"
+    ],
+    "two": [],
+    "english": [
+      "Egyptian (Ancient)",
+      "Egyptian"
+    ],
+    "french": [
+      "égyptien"
+    ],
+    "german": [
+      "Ägyptisch"
+    ]
+  },
+  {
+    "three": [
+      "eka"
+    ],
+    "two": [],
+    "english": [
+      "Ekajuk"
+    ],
+    "french": [
+      "ekajuk"
+    ],
+    "german": [
+      "Ekajuk"
+    ]
+  },
+  {
+    "three": [
+      "gre",
+      "ell"
+    ],
+    "two": [
+      "el"
+    ],
+    "english": [
+      "Greek, Modern (1453-)",
+      "Greek",
+      "Greek, Modern"
+    ],
+    "french": [
+      "grec moderne (après 1453)"
+    ],
+    "german": [
+      "Neugriechisch"
+    ]
+  },
+  {
+    "three": [
+      "elx"
+    ],
+    "two": [],
+    "english": [
+      "Elamite"
+    ],
+    "french": [
+      "élamite"
+    ],
+    "german": [
+      "Elamisch"
+    ]
+  },
+  {
+    "three": [
+      "eng"
+    ],
+    "two": [
+      "en"
+    ],
+    "english": [
+      "English"
+    ],
+    "french": [
+      "anglais"
+    ],
+    "german": [
+      "Englisch"
+    ]
+  },
+  {
+    "three": [
+      "enm"
+    ],
+    "two": [],
+    "english": [
+      "English, Middle (1100-1500)",
+      "English, Middle"
+    ],
+    "french": [
+      "anglais moyen (1100-1500)"
+    ],
+    "german": [
+      "Mittelenglisch"
+    ]
+  },
+  {
+    "three": [
+      "epo"
+    ],
+    "two": [
+      "eo"
+    ],
+    "english": [
+      "Esperanto"
+    ],
+    "french": [
+      "espéranto"
+    ],
+    "german": [
+      "Esperanto"
+    ]
+  },
+  {
+    "three": [
+      "est"
+    ],
+    "two": [
+      "et"
+    ],
+    "english": [
+      "Estonian"
+    ],
+    "french": [
+      "estonien"
+    ],
+    "german": [
+      "Estnisch"
+    ]
+  },
+  {
+    "three": [
+      "ewe"
+    ],
+    "two": [
+      "ee"
+    ],
+    "english": [
+      "Ewe"
+    ],
+    "french": [
+      "éwé"
+    ],
+    "german": [
+      "Ewe-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ewo"
+    ],
+    "two": [],
+    "english": [
+      "Ewondo"
+    ],
+    "french": [
+      "éwondo"
+    ],
+    "german": [
+      "Ewondo"
+    ]
+  },
+  {
+    "three": [
+      "fan"
+    ],
+    "two": [],
+    "english": [
+      "Fang"
+    ],
+    "french": [
+      "fang"
+    ],
+    "german": [
+      "Pangwe-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "fao"
+    ],
+    "two": [
+      "fo"
+    ],
+    "english": [
+      "Faroese"
+    ],
+    "french": [
+      "féroïen"
+    ],
+    "german": [
+      "Färöisch"
+    ]
+  },
+  {
+    "three": [
+      "per",
+      "fas"
+    ],
+    "two": [
+      "fa"
+    ],
+    "english": [
+      "Persian"
+    ],
+    "french": [
+      "persan"
+    ],
+    "german": [
+      "Persisch"
+    ]
+  },
+  {
+    "three": [
+      "fat"
+    ],
+    "two": [],
+    "english": [
+      "Fanti"
+    ],
+    "french": [
+      "fanti"
+    ],
+    "german": [
+      "Fante-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "fij"
+    ],
+    "two": [
+      "fj"
+    ],
+    "english": [
+      "Fijian"
+    ],
+    "french": [
+      "fidjien"
+    ],
+    "german": [
+      "Fidschi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "fil"
+    ],
+    "two": [],
+    "english": [
+      "Filipino",
+      "Pilipino"
+    ],
+    "french": [
+      "filipino",
+      "pilipino"
+    ],
+    "german": [
+      "Pilipino"
+    ]
+  },
+  {
+    "three": [
+      "fin"
+    ],
+    "two": [
+      "fi"
+    ],
+    "english": [
+      "Finnish"
+    ],
+    "french": [
+      "finnois"
+    ],
+    "german": [
+      "Finnisch"
+    ]
+  },
+  {
+    "three": [
+      "fiu"
+    ],
+    "two": [],
+    "english": [
+      "Finno-Ugrian languages"
+    ],
+    "french": [
+      "finno-ougriennes, langues"
+    ],
+    "german": [
+      "Finnougrische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "fon"
+    ],
+    "two": [],
+    "english": [
+      "Fon"
+    ],
+    "french": [
+      "fon"
+    ],
+    "german": [
+      "Fon-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "fre",
+      "fra"
+    ],
+    "two": [
+      "fr"
+    ],
+    "english": [
+      "French"
+    ],
+    "french": [
+      "français"
+    ],
+    "german": [
+      "Französisch"
+    ]
+  },
+  {
+    "three": [
+      "frm"
+    ],
+    "two": [],
+    "english": [
+      "French, Middle (ca.1400-1600)",
+      "French, Middle"
+    ],
+    "french": [
+      "français moyen (1400-1600)"
+    ],
+    "german": [
+      "Mittelfranzösisch"
+    ]
+  },
+  {
+    "three": [
+      "fro"
+    ],
+    "two": [],
+    "english": [
+      "French, Old (842-ca.1400)",
+      "French, Old"
+    ],
+    "french": [
+      "français ancien (842-ca.1400)"
+    ],
+    "german": [
+      "Altfranzösisch"
+    ]
+  },
+  {
+    "three": [
+      "frr"
+    ],
+    "two": [],
+    "english": [
+      "Northern Frisian"
+    ],
+    "french": [
+      "frison septentrional"
+    ],
+    "german": [
+      "Nordfriesisch"
+    ]
+  },
+  {
+    "three": [
+      "frs"
+    ],
+    "two": [],
+    "english": [
+      "Eastern Frisian"
+    ],
+    "french": [
+      "frison oriental"
+    ],
+    "german": [
+      "Ostfriesisch"
+    ]
+  },
+  {
+    "three": [
+      "fry"
+    ],
+    "two": [
+      "fy"
+    ],
+    "english": [
+      "Western Frisian"
+    ],
+    "french": [
+      "frison occidental"
+    ],
+    "german": [
+      "Friesisch"
+    ]
+  },
+  {
+    "three": [
+      "ful"
+    ],
+    "two": [
+      "ff"
+    ],
+    "english": [
+      "Fulah"
+    ],
+    "french": [
+      "peul"
+    ],
+    "german": [
+      "Ful"
+    ]
+  },
+  {
+    "three": [
+      "fur"
+    ],
+    "two": [],
+    "english": [
+      "Friulian"
+    ],
+    "french": [
+      "frioulan"
+    ],
+    "german": [
+      "Friulisch"
+    ]
+  },
+  {
+    "three": [
+      "gaa"
+    ],
+    "two": [],
+    "english": [
+      "Ga"
+    ],
+    "french": [
+      "ga"
+    ],
+    "german": [
+      "Ga-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "gay"
+    ],
+    "two": [],
+    "english": [
+      "Gayo"
+    ],
+    "french": [
+      "gayo"
+    ],
+    "german": [
+      "Gayo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "gba"
+    ],
+    "two": [],
+    "english": [
+      "Gbaya"
+    ],
+    "french": [
+      "gbaya"
+    ],
+    "german": [
+      "Gbaya-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "gem"
+    ],
+    "two": [],
+    "english": [
+      "Germanic languages"
+    ],
+    "french": [
+      "germaniques, langues"
+    ],
+    "german": [
+      "Germanische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "geo",
+      "kat"
+    ],
+    "two": [
+      "ka"
+    ],
+    "english": [
+      "Georgian"
+    ],
+    "french": [
+      "géorgien"
+    ],
+    "german": [
+      "Georgisch"
+    ]
+  },
+  {
+    "three": [
+      "gez"
+    ],
+    "two": [],
+    "english": [
+      "Geez"
+    ],
+    "french": [
+      "guèze"
+    ],
+    "german": [
+      "Altäthiopisch"
+    ]
+  },
+  {
+    "three": [
+      "gil"
+    ],
+    "two": [],
+    "english": [
+      "Gilbertese"
+    ],
+    "french": [
+      "kiribati"
+    ],
+    "german": [
+      "Gilbertesisch"
+    ]
+  },
+  {
+    "three": [
+      "gla"
+    ],
+    "two": [
+      "gd"
+    ],
+    "english": [
+      "Gaelic",
+      "Scottish Gaelic"
+    ],
+    "french": [
+      "gaélique",
+      "gaélique écossais"
+    ],
+    "german": [
+      "Gälisch-Schottisch"
+    ]
+  },
+  {
+    "three": [
+      "gle"
+    ],
+    "two": [
+      "ga"
+    ],
+    "english": [
+      "Irish"
+    ],
+    "french": [
+      "irlandais"
+    ],
+    "german": [
+      "Irisch"
+    ]
+  },
+  {
+    "three": [
+      "glg"
+    ],
+    "two": [
+      "gl"
+    ],
+    "english": [
+      "Galician"
+    ],
+    "french": [
+      "galicien"
+    ],
+    "german": [
+      "Galicisch"
+    ]
+  },
+  {
+    "three": [
+      "glv"
+    ],
+    "two": [
+      "gv"
+    ],
+    "english": [
+      "Manx"
+    ],
+    "french": [
+      "manx",
+      "mannois"
+    ],
+    "german": [
+      "Manx"
+    ]
+  },
+  {
+    "three": [
+      "gmh"
+    ],
+    "two": [],
+    "english": [
+      "German, Middle High (ca.1050-1500)",
+      "German, Middle High"
+    ],
+    "french": [
+      "allemand, moyen haut (ca. 1050-1500)"
+    ],
+    "german": [
+      "Mittelhochdeutsch"
+    ]
+  },
+  {
+    "three": [
+      "goh"
+    ],
+    "two": [],
+    "english": [
+      "German, Old High (ca.750-1050)",
+      "German, Old High"
+    ],
+    "french": [
+      "allemand, vieux haut (ca. 750-1050)"
+    ],
+    "german": [
+      "Althochdeutsch"
+    ]
+  },
+  {
+    "three": [
+      "gon"
+    ],
+    "two": [],
+    "english": [
+      "Gondi"
+    ],
+    "french": [
+      "gond"
+    ],
+    "german": [
+      "Gondi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "gor"
+    ],
+    "two": [],
+    "english": [
+      "Gorontalo"
+    ],
+    "french": [
+      "gorontalo"
+    ],
+    "german": [
+      "Gorontalesisch"
+    ]
+  },
+  {
+    "three": [
+      "got"
+    ],
+    "two": [],
+    "english": [
+      "Gothic"
+    ],
+    "french": [
+      "gothique"
+    ],
+    "german": [
+      "Gotisch"
+    ]
+  },
+  {
+    "three": [
+      "grb"
+    ],
+    "two": [],
+    "english": [
+      "Grebo"
+    ],
+    "french": [
+      "grebo"
+    ],
+    "german": [
+      "Grebo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "grc"
+    ],
+    "two": [],
+    "english": [
+      "Greek, Ancient (to 1453)",
+      "Greek, Ancient"
+    ],
+    "french": [
+      "grec ancien (jusqu'à 1453)"
+    ],
+    "german": [
+      "Griechisch"
+    ]
+  },
+  {
+    "three": [
+      "grn"
+    ],
+    "two": [
+      "gn"
+    ],
+    "english": [
+      "Guarani"
+    ],
+    "french": [
+      "guarani"
+    ],
+    "german": [
+      "Guaraní-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "gsw"
+    ],
+    "two": [],
+    "english": [
+      "Swiss German",
+      "Alemannic",
+      "Alsatian"
+    ],
+    "french": [
+      "suisse alémanique",
+      "alémanique",
+      "alsacien"
+    ],
+    "german": [
+      "Schweizerdeutsch"
+    ]
+  },
+  {
+    "three": [
+      "guj"
+    ],
+    "two": [
+      "gu"
+    ],
+    "english": [
+      "Gujarati"
+    ],
+    "french": [
+      "goudjrati"
+    ],
+    "german": [
+      "Gujarati-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "gwi"
+    ],
+    "two": [],
+    "english": [
+      "Gwich'in"
+    ],
+    "french": [
+      "gwich'in"
+    ],
+    "german": [
+      "Kutchin-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "hai"
+    ],
+    "two": [],
+    "english": [
+      "Haida"
+    ],
+    "french": [
+      "haida"
+    ],
+    "german": [
+      "Haida-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "hat"
+    ],
+    "two": [
+      "ht"
+    ],
+    "english": [
+      "Haitian",
+      "Haitian Creole"
+    ],
+    "french": [
+      "haïtien",
+      "créole haïtien"
+    ],
+    "german": [
+      "Haïtien (Haiti-Kreolisch)"
+    ]
+  },
+  {
+    "three": [
+      "hau"
+    ],
+    "two": [
+      "ha"
+    ],
+    "english": [
+      "Hausa"
+    ],
+    "french": [
+      "haoussa"
+    ],
+    "german": [
+      "Haussa-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "haw"
+    ],
+    "two": [],
+    "english": [
+      "Hawaiian"
+    ],
+    "french": [
+      "hawaïen"
+    ],
+    "german": [
+      "Hawaiisch"
+    ]
+  },
+  {
+    "three": [
+      "heb"
+    ],
+    "two": [
+      "he"
+    ],
+    "english": [
+      "Hebrew"
+    ],
+    "french": [
+      "hébreu"
+    ],
+    "german": [
+      "Hebräisch"
+    ]
+  },
+  {
+    "three": [
+      "her"
+    ],
+    "two": [
+      "hz"
+    ],
+    "english": [
+      "Herero"
+    ],
+    "french": [
+      "herero"
+    ],
+    "german": [
+      "Herero-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "hil"
+    ],
+    "two": [],
+    "english": [
+      "Hiligaynon"
+    ],
+    "french": [
+      "hiligaynon"
+    ],
+    "german": [
+      "Hiligaynon-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "him"
+    ],
+    "two": [],
+    "english": [
+      "Himachali languages",
+      "Western Pahari languages"
+    ],
+    "french": [
+      "langues himachalis",
+      "langues paharis occidentales"
+    ],
+    "german": [
+      "Himachali"
+    ]
+  },
+  {
+    "three": [
+      "hin"
+    ],
+    "two": [
+      "hi"
+    ],
+    "english": [
+      "Hindi"
+    ],
+    "french": [
+      "hindi"
+    ],
+    "german": [
+      "Hindi"
+    ]
+  },
+  {
+    "three": [
+      "hit"
+    ],
+    "two": [],
+    "english": [
+      "Hittite"
+    ],
+    "french": [
+      "hittite"
+    ],
+    "german": [
+      "Hethitisch"
+    ]
+  },
+  {
+    "three": [
+      "hmn"
+    ],
+    "two": [],
+    "english": [
+      "Hmong",
+      "Mong"
+    ],
+    "french": [
+      "hmong"
+    ],
+    "german": [
+      "Miao-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "hmo"
+    ],
+    "two": [
+      "ho"
+    ],
+    "english": [
+      "Hiri Motu"
+    ],
+    "french": [
+      "hiri motu"
+    ],
+    "german": [
+      "Hiri-Motu"
+    ]
+  },
+  {
+    "three": [
+      "hrv"
+    ],
+    "two": [
+      "hr"
+    ],
+    "english": [
+      "Croatian"
+    ],
+    "french": [
+      "croate"
+    ],
+    "german": [
+      "Kroatisch"
+    ]
+  },
+  {
+    "three": [
+      "hsb"
+    ],
+    "two": [],
+    "english": [
+      "Upper Sorbian"
+    ],
+    "french": [
+      "haut-sorabe"
+    ],
+    "german": [
+      "Obersorbisch"
+    ]
+  },
+  {
+    "three": [
+      "hun"
+    ],
+    "two": [
+      "hu"
+    ],
+    "english": [
+      "Hungarian"
+    ],
+    "french": [
+      "hongrois"
+    ],
+    "german": [
+      "Ungarisch"
+    ]
+  },
+  {
+    "three": [
+      "hup"
+    ],
+    "two": [],
+    "english": [
+      "Hupa"
+    ],
+    "french": [
+      "hupa"
+    ],
+    "german": [
+      "Hupa-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "iba"
+    ],
+    "two": [],
+    "english": [
+      "Iban"
+    ],
+    "french": [
+      "iban"
+    ],
+    "german": [
+      "Iban-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ibo"
+    ],
+    "two": [
+      "ig"
+    ],
+    "english": [
+      "Igbo"
+    ],
+    "french": [
+      "igbo"
+    ],
+    "german": [
+      "Ibo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ice",
+      "isl"
+    ],
+    "two": [
+      "is"
+    ],
+    "english": [
+      "Icelandic"
+    ],
+    "french": [
+      "islandais"
+    ],
+    "german": [
+      "Isländisch"
+    ]
+  },
+  {
+    "three": [
+      "ido"
+    ],
+    "two": [
+      "io"
+    ],
+    "english": [
+      "Ido"
+    ],
+    "french": [
+      "ido"
+    ],
+    "german": [
+      "Ido"
+    ]
+  },
+  {
+    "three": [
+      "iii"
+    ],
+    "two": [
+      "ii"
+    ],
+    "english": [
+      "Sichuan Yi",
+      "Nuosu"
+    ],
+    "french": [
+      "yi de Sichuan"
+    ],
+    "german": [
+      "Lalo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ijo"
+    ],
+    "two": [],
+    "english": [
+      "Ijo languages"
+    ],
+    "french": [
+      "ijo, langues"
+    ],
+    "german": [
+      "Ijo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "iku"
+    ],
+    "two": [
+      "iu"
+    ],
+    "english": [
+      "Inuktitut"
+    ],
+    "french": [
+      "inuktitut"
+    ],
+    "german": [
+      "Inuktitut"
+    ]
+  },
+  {
+    "three": [
+      "ile"
+    ],
+    "two": [
+      "ie"
+    ],
+    "english": [
+      "Interlingue",
+      "Occidental"
+    ],
+    "french": [
+      "interlingue"
+    ],
+    "german": [
+      "Interlingue"
+    ]
+  },
+  {
+    "three": [
+      "ilo"
+    ],
+    "two": [],
+    "english": [
+      "Iloko"
+    ],
+    "french": [
+      "ilocano"
+    ],
+    "german": [
+      "Ilokano-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ina"
+    ],
+    "two": [
+      "ia"
+    ],
+    "english": [
+      "Interlingua (International Auxiliary Language Association)",
+      "Interlingua"
+    ],
+    "french": [
+      "interlingua (langue auxiliaire internationale)"
+    ],
+    "german": [
+      "Interlingua"
+    ]
+  },
+  {
+    "three": [
+      "inc"
+    ],
+    "two": [],
+    "english": [
+      "Indic languages"
+    ],
+    "french": [
+      "indo-aryennes, langues"
+    ],
+    "german": [
+      "Indoarische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "ind"
+    ],
+    "two": [
+      "id"
+    ],
+    "english": [
+      "Indonesian"
+    ],
+    "french": [
+      "indonésien"
+    ],
+    "german": [
+      "Bahasa Indonesia"
+    ]
+  },
+  {
+    "three": [
+      "ine"
+    ],
+    "two": [],
+    "english": [
+      "Indo-European languages"
+    ],
+    "french": [
+      "indo-européennes, langues"
+    ],
+    "german": [
+      "Indogermanische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "inh"
+    ],
+    "two": [],
+    "english": [
+      "Ingush"
+    ],
+    "french": [
+      "ingouche"
+    ],
+    "german": [
+      "Inguschisch"
+    ]
+  },
+  {
+    "three": [
+      "ipk"
+    ],
+    "two": [
+      "ik"
+    ],
+    "english": [
+      "Inupiaq"
+    ],
+    "french": [
+      "inupiaq"
+    ],
+    "german": [
+      "Inupik"
+    ]
+  },
+  {
+    "three": [
+      "ira"
+    ],
+    "two": [],
+    "english": [
+      "Iranian languages"
+    ],
+    "french": [
+      "iraniennes, langues"
+    ],
+    "german": [
+      "Iranische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "iro"
+    ],
+    "two": [],
+    "english": [
+      "Iroquoian languages"
+    ],
+    "french": [
+      "iroquoises, langues"
+    ],
+    "german": [
+      "Irokesische Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "ita"
+    ],
+    "two": [
+      "it"
+    ],
+    "english": [
+      "Italian"
+    ],
+    "french": [
+      "italien"
+    ],
+    "german": [
+      "Italienisch"
+    ]
+  },
+  {
+    "three": [
+      "jav"
+    ],
+    "two": [
+      "jv"
+    ],
+    "english": [
+      "Javanese"
+    ],
+    "french": [
+      "javanais"
+    ],
+    "german": [
+      "Javanisch"
+    ]
+  },
+  {
+    "three": [
+      "jbo"
+    ],
+    "two": [],
+    "english": [
+      "Lojban"
+    ],
+    "french": [
+      "lojban"
+    ],
+    "german": [
+      "Lojban"
+    ]
+  },
+  {
+    "three": [
+      "jpn"
+    ],
+    "two": [
+      "ja"
+    ],
+    "english": [
+      "Japanese"
+    ],
+    "french": [
+      "japonais"
+    ],
+    "german": [
+      "Japanisch"
+    ]
+  },
+  {
+    "three": [
+      "jpr"
+    ],
+    "two": [],
+    "english": [
+      "Judeo-Persian"
+    ],
+    "french": [
+      "judéo-persan"
+    ],
+    "german": [
+      "Jüdisch-Persisch"
+    ]
+  },
+  {
+    "three": [
+      "jrb"
+    ],
+    "two": [],
+    "english": [
+      "Judeo-Arabic"
+    ],
+    "french": [
+      "judéo-arabe"
+    ],
+    "german": [
+      "Jüdisch-Arabisch"
+    ]
+  },
+  {
+    "three": [
+      "kaa"
+    ],
+    "two": [],
+    "english": [
+      "Kara-Kalpak"
+    ],
+    "french": [
+      "karakalpak"
+    ],
+    "german": [
+      "Karakalpakisch"
+    ]
+  },
+  {
+    "three": [
+      "kab"
+    ],
+    "two": [],
+    "english": [
+      "Kabyle"
+    ],
+    "french": [
+      "kabyle"
+    ],
+    "german": [
+      "Kabylisch"
+    ]
+  },
+  {
+    "three": [
+      "kac"
+    ],
+    "two": [],
+    "english": [
+      "Kachin",
+      "Jingpho"
+    ],
+    "french": [
+      "kachin",
+      "jingpho"
+    ],
+    "german": [
+      "Kachin-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kal"
+    ],
+    "two": [
+      "kl"
+    ],
+    "english": [
+      "Kalaallisut",
+      "Greenlandic"
+    ],
+    "french": [
+      "groenlandais"
+    ],
+    "german": [
+      "Grönländisch"
+    ]
+  },
+  {
+    "three": [
+      "kam"
+    ],
+    "two": [],
+    "english": [
+      "Kamba"
+    ],
+    "french": [
+      "kamba"
+    ],
+    "german": [
+      "Kamba-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kan"
+    ],
+    "two": [
+      "kn"
+    ],
+    "english": [
+      "Kannada"
+    ],
+    "french": [
+      "kannada"
+    ],
+    "german": [
+      "Kannada"
+    ]
+  },
+  {
+    "three": [
+      "kar"
+    ],
+    "two": [],
+    "english": [
+      "Karen languages"
+    ],
+    "french": [
+      "karen, langues"
+    ],
+    "german": [
+      "Karenisch"
+    ]
+  },
+  {
+    "three": [
+      "kas"
+    ],
+    "two": [
+      "ks"
+    ],
+    "english": [
+      "Kashmiri"
+    ],
+    "french": [
+      "kashmiri"
+    ],
+    "german": [
+      "Kaschmiri"
+    ]
+  },
+  {
+    "three": [
+      "kau"
+    ],
+    "two": [
+      "kr"
+    ],
+    "english": [
+      "Kanuri"
+    ],
+    "french": [
+      "kanouri"
+    ],
+    "german": [
+      "Kanuri-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kaw"
+    ],
+    "two": [],
+    "english": [
+      "Kawi"
+    ],
+    "french": [
+      "kawi"
+    ],
+    "german": [
+      "Kawi"
+    ]
+  },
+  {
+    "three": [
+      "kaz"
+    ],
+    "two": [
+      "kk"
+    ],
+    "english": [
+      "Kazakh"
+    ],
+    "french": [
+      "kazakh"
+    ],
+    "german": [
+      "Kasachisch"
+    ]
+  },
+  {
+    "three": [
+      "kbd"
+    ],
+    "two": [],
+    "english": [
+      "Kabardian"
+    ],
+    "french": [
+      "kabardien"
+    ],
+    "german": [
+      "Kabardinisch"
+    ]
+  },
+  {
+    "three": [
+      "kha"
+    ],
+    "two": [],
+    "english": [
+      "Khasi"
+    ],
+    "french": [
+      "khasi"
+    ],
+    "german": [
+      "Khasi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "khi"
+    ],
+    "two": [],
+    "english": [
+      "Khoisan languages"
+    ],
+    "french": [
+      "khoïsan, langues"
+    ],
+    "german": [
+      "Khoisan-Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "khm"
+    ],
+    "two": [
+      "km"
+    ],
+    "english": [
+      "Central Khmer"
+    ],
+    "french": [
+      "khmer central"
+    ],
+    "german": [
+      "Kambodschanisch"
+    ]
+  },
+  {
+    "three": [
+      "kho"
+    ],
+    "two": [],
+    "english": [
+      "Khotanese",
+      "Sakan"
+    ],
+    "french": [
+      "khotanais",
+      "sakan"
+    ],
+    "german": [
+      "Sakisch"
+    ]
+  },
+  {
+    "three": [
+      "kik"
+    ],
+    "two": [
+      "ki"
+    ],
+    "english": [
+      "Kikuyu",
+      "Gikuyu"
+    ],
+    "french": [
+      "kikuyu"
+    ],
+    "german": [
+      "Kikuyu-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kin"
+    ],
+    "two": [
+      "rw"
+    ],
+    "english": [
+      "Kinyarwanda"
+    ],
+    "french": [
+      "rwanda"
+    ],
+    "german": [
+      "Rwanda-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kir"
+    ],
+    "two": [
+      "ky"
+    ],
+    "english": [
+      "Kirghiz",
+      "Kyrgyz"
+    ],
+    "french": [
+      "kirghiz"
+    ],
+    "german": [
+      "Kirgisisch"
+    ]
+  },
+  {
+    "three": [
+      "kmb"
+    ],
+    "two": [],
+    "english": [
+      "Kimbundu"
+    ],
+    "french": [
+      "kimbundu"
+    ],
+    "german": [
+      "Kimbundu-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kok"
+    ],
+    "two": [],
+    "english": [
+      "Konkani"
+    ],
+    "french": [
+      "konkani"
+    ],
+    "german": [
+      "Konkani"
+    ]
+  },
+  {
+    "three": [
+      "kom"
+    ],
+    "two": [
+      "kv"
+    ],
+    "english": [
+      "Komi"
+    ],
+    "french": [
+      "kom"
+    ],
+    "german": [
+      "Komi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kon"
+    ],
+    "two": [
+      "kg"
+    ],
+    "english": [
+      "Kongo"
+    ],
+    "french": [
+      "kongo"
+    ],
+    "german": [
+      "Kongo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kor"
+    ],
+    "two": [
+      "ko"
+    ],
+    "english": [
+      "Korean"
+    ],
+    "french": [
+      "coréen"
+    ],
+    "german": [
+      "Koreanisch"
+    ]
+  },
+  {
+    "three": [
+      "kos"
+    ],
+    "two": [],
+    "english": [
+      "Kosraean"
+    ],
+    "french": [
+      "kosrae"
+    ],
+    "german": [
+      "Kosraeanisch"
+    ]
+  },
+  {
+    "three": [
+      "kpe"
+    ],
+    "two": [],
+    "english": [
+      "Kpelle"
+    ],
+    "french": [
+      "kpellé"
+    ],
+    "german": [
+      "Kpelle-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "krc"
+    ],
+    "two": [],
+    "english": [
+      "Karachay-Balkar"
+    ],
+    "french": [
+      "karatchai balkar"
+    ],
+    "german": [
+      "Karatschaiisch-Balkarisch"
+    ]
+  },
+  {
+    "three": [
+      "krl"
+    ],
+    "two": [],
+    "english": [
+      "Karelian"
+    ],
+    "french": [
+      "carélien"
+    ],
+    "german": [
+      "Karelisch"
+    ]
+  },
+  {
+    "three": [
+      "kro"
+    ],
+    "two": [],
+    "english": [
+      "Kru languages"
+    ],
+    "french": [
+      "krou, langues"
+    ],
+    "german": [
+      "Kru-Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "kru"
+    ],
+    "two": [],
+    "english": [
+      "Kurukh"
+    ],
+    "french": [
+      "kurukh"
+    ],
+    "german": [
+      "Oraon-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kua"
+    ],
+    "two": [
+      "kj"
+    ],
+    "english": [
+      "Kuanyama",
+      "Kwanyama"
+    ],
+    "french": [
+      "kuanyama",
+      "kwanyama"
+    ],
+    "german": [
+      "Kwanyama-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "kum"
+    ],
+    "two": [],
+    "english": [
+      "Kumyk"
+    ],
+    "french": [
+      "koumyk"
+    ],
+    "german": [
+      "Kumükisch"
+    ]
+  },
+  {
+    "three": [
+      "kur"
+    ],
+    "two": [
+      "ku"
+    ],
+    "english": [
+      "Kurdish"
+    ],
+    "french": [
+      "kurde"
+    ],
+    "german": [
+      "Kurdisch"
+    ]
+  },
+  {
+    "three": [
+      "kut"
+    ],
+    "two": [],
+    "english": [
+      "Kutenai"
+    ],
+    "french": [
+      "kutenai"
+    ],
+    "german": [
+      "Kutenai-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "lad"
+    ],
+    "two": [],
+    "english": [
+      "Ladino"
+    ],
+    "french": [
+      "judéo-espagnol"
+    ],
+    "german": [
+      "Judenspanisch"
+    ]
+  },
+  {
+    "three": [
+      "lah"
+    ],
+    "two": [],
+    "english": [
+      "Lahnda"
+    ],
+    "french": [
+      "lahnda"
+    ],
+    "german": [
+      "Lahnda"
+    ]
+  },
+  {
+    "three": [
+      "lam"
+    ],
+    "two": [],
+    "english": [
+      "Lamba"
+    ],
+    "french": [
+      "lamba"
+    ],
+    "german": [
+      "Lamba-Sprache (Bantusprache)"
+    ]
+  },
+  {
+    "three": [
+      "lao"
+    ],
+    "two": [
+      "lo"
+    ],
+    "english": [
+      "Lao"
+    ],
+    "french": [
+      "lao"
+    ],
+    "german": [
+      "Laotisch"
+    ]
+  },
+  {
+    "three": [
+      "lat"
+    ],
+    "two": [
+      "la"
+    ],
+    "english": [
+      "Latin"
+    ],
+    "french": [
+      "latin"
+    ],
+    "german": [
+      "Latein"
+    ]
+  },
+  {
+    "three": [
+      "lav"
+    ],
+    "two": [
+      "lv"
+    ],
+    "english": [
+      "Latvian"
+    ],
+    "french": [
+      "letton"
+    ],
+    "german": [
+      "Lettisch"
+    ]
+  },
+  {
+    "three": [
+      "lez"
+    ],
+    "two": [],
+    "english": [
+      "Lezghian"
+    ],
+    "french": [
+      "lezghien"
+    ],
+    "german": [
+      "Lesgisch"
+    ]
+  },
+  {
+    "three": [
+      "lim"
+    ],
+    "two": [
+      "li"
+    ],
+    "english": [
+      "Limburgan",
+      "Limburger",
+      "Limburgish"
+    ],
+    "french": [
+      "limbourgeois"
+    ],
+    "german": [
+      "Limburgisch"
+    ]
+  },
+  {
+    "three": [
+      "lin"
+    ],
+    "two": [
+      "ln"
+    ],
+    "english": [
+      "Lingala"
+    ],
+    "french": [
+      "lingala"
+    ],
+    "german": [
+      "Lingala"
+    ]
+  },
+  {
+    "three": [
+      "lit"
+    ],
+    "two": [
+      "lt"
+    ],
+    "english": [
+      "Lithuanian"
+    ],
+    "french": [
+      "lituanien"
+    ],
+    "german": [
+      "Litauisch"
+    ]
+  },
+  {
+    "three": [
+      "lol"
+    ],
+    "two": [],
+    "english": [
+      "Mongo"
+    ],
+    "french": [
+      "mongo"
+    ],
+    "german": [
+      "Mongo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "loz"
+    ],
+    "two": [],
+    "english": [
+      "Lozi"
+    ],
+    "french": [
+      "lozi"
+    ],
+    "german": [
+      "Rotse-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ltz"
+    ],
+    "two": [
+      "lb"
+    ],
+    "english": [
+      "Luxembourgish",
+      "Letzeburgesch"
+    ],
+    "french": [
+      "luxembourgeois"
+    ],
+    "german": [
+      "Luxemburgisch"
+    ]
+  },
+  {
+    "three": [
+      "lua"
+    ],
+    "two": [],
+    "english": [
+      "Luba-Lulua"
+    ],
+    "french": [
+      "luba-lulua"
+    ],
+    "german": [
+      "Lulua-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "lub"
+    ],
+    "two": [
+      "lu"
+    ],
+    "english": [
+      "Luba-Katanga"
+    ],
+    "french": [
+      "luba-katanga"
+    ],
+    "german": [
+      "Luba-Katanga-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "lug"
+    ],
+    "two": [
+      "lg"
+    ],
+    "english": [
+      "Ganda"
+    ],
+    "french": [
+      "ganda"
+    ],
+    "german": [
+      "Ganda-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "lui"
+    ],
+    "two": [],
+    "english": [
+      "Luiseno"
+    ],
+    "french": [
+      "luiseno"
+    ],
+    "german": [
+      "Luiseño-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "lun"
+    ],
+    "two": [],
+    "english": [
+      "Lunda"
+    ],
+    "french": [
+      "lunda"
+    ],
+    "german": [
+      "Lunda-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "luo"
+    ],
+    "two": [],
+    "english": [
+      "Luo (Kenya and Tanzania)",
+      "Luo"
+    ],
+    "french": [
+      "luo (Kenya et Tanzanie)"
+    ],
+    "german": [
+      "Luo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "lus"
+    ],
+    "two": [],
+    "english": [
+      "Lushai"
+    ],
+    "french": [
+      "lushai"
+    ],
+    "german": [
+      "Lushai-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mac",
+      "mkd"
+    ],
+    "two": [
+      "mk"
+    ],
+    "english": [
+      "Macedonian"
+    ],
+    "french": [
+      "macédonien"
+    ],
+    "german": [
+      "Makedonisch"
+    ]
+  },
+  {
+    "three": [
+      "mad"
+    ],
+    "two": [],
+    "english": [
+      "Madurese"
+    ],
+    "french": [
+      "madourais"
+    ],
+    "german": [
+      "Maduresisch"
+    ]
+  },
+  {
+    "three": [
+      "mag"
+    ],
+    "two": [],
+    "english": [
+      "Magahi"
+    ],
+    "french": [
+      "magahi"
+    ],
+    "german": [
+      "Khotta"
+    ]
+  },
+  {
+    "three": [
+      "mah"
+    ],
+    "two": [
+      "mh"
+    ],
+    "english": [
+      "Marshallese"
+    ],
+    "french": [
+      "marshall"
+    ],
+    "german": [
+      "Marschallesisch"
+    ]
+  },
+  {
+    "three": [
+      "mai"
+    ],
+    "two": [],
+    "english": [
+      "Maithili"
+    ],
+    "french": [
+      "maithili"
+    ],
+    "german": [
+      "Maithili"
+    ]
+  },
+  {
+    "three": [
+      "mak"
+    ],
+    "two": [],
+    "english": [
+      "Makasar"
+    ],
+    "french": [
+      "makassar"
+    ],
+    "german": [
+      "Makassarisch"
+    ]
+  },
+  {
+    "three": [
+      "mal"
+    ],
+    "two": [
+      "ml"
+    ],
+    "english": [
+      "Malayalam"
+    ],
+    "french": [
+      "malayalam"
+    ],
+    "german": [
+      "Malayalam"
+    ]
+  },
+  {
+    "three": [
+      "man"
+    ],
+    "two": [],
+    "english": [
+      "Mandingo"
+    ],
+    "french": [
+      "mandingue"
+    ],
+    "german": [
+      "Malinke-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mao",
+      "mri"
+    ],
+    "two": [
+      "mi"
+    ],
+    "english": [
+      "Maori"
+    ],
+    "french": [
+      "maori"
+    ],
+    "german": [
+      "Maori-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "map"
+    ],
+    "two": [],
+    "english": [
+      "Austronesian languages"
+    ],
+    "french": [
+      "austronésiennes, langues"
+    ],
+    "german": [
+      "Austronesische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "mar"
+    ],
+    "two": [
+      "mr"
+    ],
+    "english": [
+      "Marathi"
+    ],
+    "french": [
+      "marathe"
+    ],
+    "german": [
+      "Marathi"
+    ]
+  },
+  {
+    "three": [
+      "mas"
+    ],
+    "two": [],
+    "english": [
+      "Masai"
+    ],
+    "french": [
+      "massaï"
+    ],
+    "german": [
+      "Massai-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "may",
+      "msa"
+    ],
+    "two": [
+      "ms"
+    ],
+    "english": [
+      "Malay"
+    ],
+    "french": [
+      "malais"
+    ],
+    "german": [
+      "Malaiisch"
+    ]
+  },
+  {
+    "three": [
+      "mdf"
+    ],
+    "two": [],
+    "english": [
+      "Moksha"
+    ],
+    "french": [
+      "moksa"
+    ],
+    "german": [
+      "Mokscha-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mdr"
+    ],
+    "two": [],
+    "english": [
+      "Mandar"
+    ],
+    "french": [
+      "mandar"
+    ],
+    "german": [
+      "Mandaresisch"
+    ]
+  },
+  {
+    "three": [
+      "men"
+    ],
+    "two": [],
+    "english": [
+      "Mende"
+    ],
+    "french": [
+      "mendé"
+    ],
+    "german": [
+      "Mende-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mga"
+    ],
+    "two": [],
+    "english": [
+      "Irish, Middle (900-1200)",
+      "Irish, Middle"
+    ],
+    "french": [
+      "irlandais moyen (900-1200)"
+    ],
+    "german": [
+      "Mittelirisch"
+    ]
+  },
+  {
+    "three": [
+      "mic"
+    ],
+    "two": [],
+    "english": [
+      "Mi'kmaq",
+      "Micmac"
+    ],
+    "french": [
+      "mi'kmaq",
+      "micmac"
+    ],
+    "german": [
+      "Micmac-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "min"
+    ],
+    "two": [],
+    "english": [
+      "Minangkabau"
+    ],
+    "french": [
+      "minangkabau"
+    ],
+    "german": [
+      "Minangkabau-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mis"
+    ],
+    "two": [],
+    "english": [
+      "Uncoded languages"
+    ],
+    "french": [
+      "langues non codées"
+    ],
+    "german": [
+      "Einzelne andere Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "mkh"
+    ],
+    "two": [],
+    "english": [
+      "Mon-Khmer languages"
+    ],
+    "french": [
+      "môn-khmer, langues"
+    ],
+    "german": [
+      "Mon-Khmer-Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "mlg"
+    ],
+    "two": [
+      "mg"
+    ],
+    "english": [
+      "Malagasy"
+    ],
+    "french": [
+      "malgache"
+    ],
+    "german": [
+      "Malagassi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mlt"
+    ],
+    "two": [
+      "mt"
+    ],
+    "english": [
+      "Maltese"
+    ],
+    "french": [
+      "maltais"
+    ],
+    "german": [
+      "Maltesisch"
+    ]
+  },
+  {
+    "three": [
+      "mnc"
+    ],
+    "two": [],
+    "english": [
+      "Manchu"
+    ],
+    "french": [
+      "mandchou"
+    ],
+    "german": [
+      "Mandschurisch"
+    ]
+  },
+  {
+    "three": [
+      "mni"
+    ],
+    "two": [],
+    "english": [
+      "Manipuri"
+    ],
+    "french": [
+      "manipuri"
+    ],
+    "german": [
+      "Meithei-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mno"
+    ],
+    "two": [],
+    "english": [
+      "Manobo languages"
+    ],
+    "french": [
+      "manobo, langues"
+    ],
+    "german": [
+      "Manobo-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "moh"
+    ],
+    "two": [],
+    "english": [
+      "Mohawk"
+    ],
+    "french": [
+      "mohawk"
+    ],
+    "german": [
+      "Mohawk-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mon"
+    ],
+    "two": [
+      "mn"
+    ],
+    "english": [
+      "Mongolian"
+    ],
+    "french": [
+      "mongol"
+    ],
+    "german": [
+      "Mongolisch"
+    ]
+  },
+  {
+    "three": [
+      "mos"
+    ],
+    "two": [],
+    "english": [
+      "Mossi"
+    ],
+    "french": [
+      "moré"
+    ],
+    "german": [
+      "Mossi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "mul"
+    ],
+    "two": [],
+    "english": [
+      "Multiple languages"
+    ],
+    "french": [
+      "multilingue"
+    ],
+    "german": [
+      "Mehrere Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "mun"
+    ],
+    "two": [],
+    "english": [
+      "Munda languages"
+    ],
+    "french": [
+      "mounda, langues"
+    ],
+    "german": [
+      "Mundasprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "mus"
+    ],
+    "two": [],
+    "english": [
+      "Creek"
+    ],
+    "french": [
+      "muskogee"
+    ],
+    "german": [
+      "Muskogisch"
+    ]
+  },
+  {
+    "three": [
+      "mwl"
+    ],
+    "two": [],
+    "english": [
+      "Mirandese"
+    ],
+    "french": [
+      "mirandais"
+    ],
+    "german": [
+      "Mirandesisch"
+    ]
+  },
+  {
+    "three": [
+      "mwr"
+    ],
+    "two": [],
+    "english": [
+      "Marwari"
+    ],
+    "french": [
+      "marvari"
+    ],
+    "german": [
+      "Marwari"
+    ]
+  },
+  {
+    "three": [
+      "myn"
+    ],
+    "two": [],
+    "english": [
+      "Mayan languages"
+    ],
+    "french": [
+      "maya, langues"
+    ],
+    "german": [
+      "Maya-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "myv"
+    ],
+    "two": [],
+    "english": [
+      "Erzya"
+    ],
+    "french": [
+      "erza"
+    ],
+    "german": [
+      "Erza-Mordwinisch"
+    ]
+  },
+  {
+    "three": [
+      "nah"
+    ],
+    "two": [],
+    "english": [
+      "Nahuatl languages"
+    ],
+    "french": [
+      "nahuatl, langues"
+    ],
+    "german": [
+      "Nahuatl"
+    ]
+  },
+  {
+    "three": [
+      "nai"
+    ],
+    "two": [],
+    "english": [
+      "North American Indian languages"
+    ],
+    "french": [
+      "nord-amérindiennes, langues"
+    ],
+    "german": [
+      "Indianersprachen, Nordamerika (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "nap"
+    ],
+    "two": [],
+    "english": [
+      "Neapolitan"
+    ],
+    "french": [
+      "napolitain"
+    ],
+    "german": [
+      "Neapel / Mundart"
+    ]
+  },
+  {
+    "three": [
+      "nau"
+    ],
+    "two": [
+      "na"
+    ],
+    "english": [
+      "Nauru"
+    ],
+    "french": [
+      "nauruan"
+    ],
+    "german": [
+      "Nauruanisch"
+    ]
+  },
+  {
+    "three": [
+      "nav"
+    ],
+    "two": [
+      "nv"
+    ],
+    "english": [
+      "Navajo",
+      "Navaho"
+    ],
+    "french": [
+      "navaho"
+    ],
+    "german": [
+      "Navajo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nbl"
+    ],
+    "two": [
+      "nr"
+    ],
+    "english": [
+      "Ndebele, South",
+      "South Ndebele"
+    ],
+    "french": [
+      "ndébélé du Sud"
+    ],
+    "german": [
+      "Ndebele-Sprache (Transvaal)"
+    ]
+  },
+  {
+    "three": [
+      "nde"
+    ],
+    "two": [
+      "nd"
+    ],
+    "english": [
+      "Ndebele, North",
+      "North Ndebele"
+    ],
+    "french": [
+      "ndébélé du Nord"
+    ],
+    "german": [
+      "Ndebele-Sprache (Simbabwe)"
+    ]
+  },
+  {
+    "three": [
+      "ndo"
+    ],
+    "two": [
+      "ng"
+    ],
+    "english": [
+      "Ndonga"
+    ],
+    "french": [
+      "ndonga"
+    ],
+    "german": [
+      "Ndonga"
+    ]
+  },
+  {
+    "three": [
+      "nds"
+    ],
+    "two": [],
+    "english": [
+      "Low German",
+      "Low Saxon",
+      "German, Low",
+      "Saxon, Low"
+    ],
+    "french": [
+      "bas allemand",
+      "bas saxon",
+      "allemand, bas",
+      "saxon, bas"
+    ],
+    "german": [
+      "Niederdeutsch"
+    ]
+  },
+  {
+    "three": [
+      "nep"
+    ],
+    "two": [
+      "ne"
+    ],
+    "english": [
+      "Nepali"
+    ],
+    "french": [
+      "népalais"
+    ],
+    "german": [
+      "Nepali"
+    ]
+  },
+  {
+    "three": [
+      "new"
+    ],
+    "two": [],
+    "english": [
+      "Nepal Bhasa",
+      "Newari"
+    ],
+    "french": [
+      "nepal bhasa",
+      "newari"
+    ],
+    "german": [
+      "Newari"
+    ]
+  },
+  {
+    "three": [
+      "nia"
+    ],
+    "two": [],
+    "english": [
+      "Nias"
+    ],
+    "french": [
+      "nias"
+    ],
+    "german": [
+      "Nias-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nic"
+    ],
+    "two": [],
+    "english": [
+      "Niger-Kordofanian languages"
+    ],
+    "french": [
+      "nigéro-kordofaniennes, langues"
+    ],
+    "german": [
+      "Nigerkordofanische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "niu"
+    ],
+    "two": [],
+    "english": [
+      "Niuean"
+    ],
+    "french": [
+      "niué"
+    ],
+    "german": [
+      "Niue-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nno"
+    ],
+    "two": [
+      "nn"
+    ],
+    "english": [
+      "Norwegian Nynorsk",
+      "Nynorsk, Norwegian"
+    ],
+    "french": [
+      "norvégien nynorsk",
+      "nynorsk, norvégien"
+    ],
+    "german": [
+      "Nynorsk"
+    ]
+  },
+  {
+    "three": [
+      "nob"
+    ],
+    "two": [
+      "nb"
+    ],
+    "english": [
+      "Bokmål, Norwegian",
+      "Norwegian Bokmål"
+    ],
+    "french": [
+      "norvégien bokmål"
+    ],
+    "german": [
+      "Bokmål"
+    ]
+  },
+  {
+    "three": [
+      "nog"
+    ],
+    "two": [],
+    "english": [
+      "Nogai"
+    ],
+    "french": [
+      "nogaï",
+      "nogay"
+    ],
+    "german": [
+      "Nogaisch"
+    ]
+  },
+  {
+    "three": [
+      "non"
+    ],
+    "two": [],
+    "english": [
+      "Norse, Old"
+    ],
+    "french": [
+      "norrois, vieux"
+    ],
+    "german": [
+      "Altnorwegisch"
+    ]
+  },
+  {
+    "three": [
+      "nor"
+    ],
+    "two": [
+      "no"
+    ],
+    "english": [
+      "Norwegian"
+    ],
+    "french": [
+      "norvégien"
+    ],
+    "german": [
+      "Norwegisch"
+    ]
+  },
+  {
+    "three": [
+      "nqo"
+    ],
+    "two": [],
+    "english": [
+      "N'Ko"
+    ],
+    "french": [
+      "n'ko"
+    ],
+    "german": [
+      "N'Ko"
+    ]
+  },
+  {
+    "three": [
+      "nso"
+    ],
+    "two": [],
+    "english": [
+      "Pedi",
+      "Sepedi",
+      "Northern Sotho"
+    ],
+    "french": [
+      "pedi",
+      "sepedi",
+      "sotho du Nord"
+    ],
+    "german": [
+      "Pedi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nub"
+    ],
+    "two": [],
+    "english": [
+      "Nubian languages"
+    ],
+    "french": [
+      "nubiennes, langues"
+    ],
+    "german": [
+      "Nubische Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "nwc"
+    ],
+    "two": [],
+    "english": [
+      "Classical Newari",
+      "Old Newari",
+      "Classical Nepal Bhasa"
+    ],
+    "french": [
+      "newari classique"
+    ],
+    "german": [
+      "Alt-Newari"
+    ]
+  },
+  {
+    "three": [
+      "nya"
+    ],
+    "two": [
+      "ny"
+    ],
+    "english": [
+      "Chichewa",
+      "Chewa",
+      "Nyanja"
+    ],
+    "french": [
+      "chichewa",
+      "chewa",
+      "nyanja"
+    ],
+    "german": [
+      "Nyanja-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nym"
+    ],
+    "two": [],
+    "english": [
+      "Nyamwezi"
+    ],
+    "french": [
+      "nyamwezi"
+    ],
+    "german": [
+      "Nyamwezi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nyn"
+    ],
+    "two": [],
+    "english": [
+      "Nyankole"
+    ],
+    "french": [
+      "nyankolé"
+    ],
+    "german": [
+      "Nkole-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nyo"
+    ],
+    "two": [],
+    "english": [
+      "Nyoro"
+    ],
+    "french": [
+      "nyoro"
+    ],
+    "german": [
+      "Nyoro-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "nzi"
+    ],
+    "two": [],
+    "english": [
+      "Nzima"
+    ],
+    "french": [
+      "nzema"
+    ],
+    "german": [
+      "Nzima-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "oci"
+    ],
+    "two": [
+      "oc"
+    ],
+    "english": [
+      "Occitan (post 1500)",
+      "Occitan"
+    ],
+    "french": [
+      "occitan (après 1500)"
+    ],
+    "german": [
+      "Okzitanisch"
+    ]
+  },
+  {
+    "three": [
+      "oji"
+    ],
+    "two": [
+      "oj"
+    ],
+    "english": [
+      "Ojibwa"
+    ],
+    "french": [
+      "ojibwa"
+    ],
+    "german": [
+      "Ojibwa-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ori"
+    ],
+    "two": [
+      "or"
+    ],
+    "english": [
+      "Oriya"
+    ],
+    "french": [
+      "oriya"
+    ],
+    "german": [
+      "Oriya-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "orm"
+    ],
+    "two": [
+      "om"
+    ],
+    "english": [
+      "Oromo"
+    ],
+    "french": [
+      "galla"
+    ],
+    "german": [
+      "Galla-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "osa"
+    ],
+    "two": [],
+    "english": [
+      "Osage"
+    ],
+    "french": [
+      "osage"
+    ],
+    "german": [
+      "Osage-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "oss"
+    ],
+    "two": [
+      "os"
+    ],
+    "english": [
+      "Ossetian",
+      "Ossetic"
+    ],
+    "french": [
+      "ossète"
+    ],
+    "german": [
+      "Ossetisch"
+    ]
+  },
+  {
+    "three": [
+      "ota"
+    ],
+    "two": [],
+    "english": [
+      "Turkish, Ottoman (1500-1928)",
+      "Turkish, Ottoman"
+    ],
+    "french": [
+      "turc ottoman (1500-1928)"
+    ],
+    "german": [
+      "Osmanisch"
+    ]
+  },
+  {
+    "three": [
+      "oto"
+    ],
+    "two": [],
+    "english": [
+      "Otomian languages"
+    ],
+    "french": [
+      "otomi, langues"
+    ],
+    "german": [
+      "Otomangue-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "paa"
+    ],
+    "two": [],
+    "english": [
+      "Papuan languages"
+    ],
+    "french": [
+      "papoues, langues"
+    ],
+    "german": [
+      "Papuasprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "pag"
+    ],
+    "two": [],
+    "english": [
+      "Pangasinan"
+    ],
+    "french": [
+      "pangasinan"
+    ],
+    "german": [
+      "Pangasinan-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "pal"
+    ],
+    "two": [],
+    "english": [
+      "Pahlavi"
+    ],
+    "french": [
+      "pahlavi"
+    ],
+    "german": [
+      "Mittelpersisch"
+    ]
+  },
+  {
+    "three": [
+      "pam"
+    ],
+    "two": [],
+    "english": [
+      "Pampanga",
+      "Kapampangan"
+    ],
+    "french": [
+      "pampangan"
+    ],
+    "german": [
+      "Pampanggan-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "pan"
+    ],
+    "two": [
+      "pa"
+    ],
+    "english": [
+      "Panjabi",
+      "Punjabi"
+    ],
+    "french": [
+      "pendjabi"
+    ],
+    "german": [
+      "Pandschabi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "pap"
+    ],
+    "two": [],
+    "english": [
+      "Papiamento"
+    ],
+    "french": [
+      "papiamento"
+    ],
+    "german": [
+      "Papiamento"
+    ]
+  },
+  {
+    "three": [
+      "pau"
+    ],
+    "two": [],
+    "english": [
+      "Palauan"
+    ],
+    "french": [
+      "palau"
+    ],
+    "german": [
+      "Palau-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "peo"
+    ],
+    "two": [],
+    "english": [
+      "Persian, Old (ca.600-400 B.C.)",
+      "Persian, Old"
+    ],
+    "french": [
+      "perse, vieux (ca. 600-400 av. J.-C.)"
+    ],
+    "german": [
+      "Altpersisch"
+    ]
+  },
+  {
+    "three": [
+      "phi"
+    ],
+    "two": [],
+    "english": [
+      "Philippine languages"
+    ],
+    "french": [
+      "philippines, langues"
+    ],
+    "german": [
+      "Philippinisch-Austronesisch (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "phn"
+    ],
+    "two": [],
+    "english": [
+      "Phoenician"
+    ],
+    "french": [
+      "phénicien"
+    ],
+    "german": [
+      "Phönikisch"
+    ]
+  },
+  {
+    "three": [
+      "pli"
+    ],
+    "two": [
+      "pi"
+    ],
+    "english": [
+      "Pali"
+    ],
+    "french": [
+      "pali"
+    ],
+    "german": [
+      "Pali"
+    ]
+  },
+  {
+    "three": [
+      "pol"
+    ],
+    "two": [
+      "pl"
+    ],
+    "english": [
+      "Polish"
+    ],
+    "french": [
+      "polonais"
+    ],
+    "german": [
+      "Polnisch"
+    ]
+  },
+  {
+    "three": [
+      "pon"
+    ],
+    "two": [],
+    "english": [
+      "Pohnpeian"
+    ],
+    "french": [
+      "pohnpei"
+    ],
+    "german": [
+      "Ponapeanisch"
+    ]
+  },
+  {
+    "three": [
+      "por"
+    ],
+    "two": [
+      "pt"
+    ],
+    "english": [
+      "Portuguese"
+    ],
+    "french": [
+      "portugais"
+    ],
+    "german": [
+      "Portugiesisch"
+    ]
+  },
+  {
+    "three": [
+      "pra"
+    ],
+    "two": [],
+    "english": [
+      "Prakrit languages"
+    ],
+    "french": [
+      "prâkrit, langues"
+    ],
+    "german": [
+      "Prakrit"
+    ]
+  },
+  {
+    "three": [
+      "pro"
+    ],
+    "two": [],
+    "english": [
+      "Provençal, Old (to 1500)",
+      "Occitan, Old (to 1500)",
+      "Provençal, Old",
+      "Occitan, Old"
+    ],
+    "french": [
+      "provençal ancien (jusqu'à 1500)",
+      "occitan ancien (jusqu'à 1500)"
+    ],
+    "german": [
+      "Altokzitanisch"
+    ]
+  },
+  {
+    "three": [
+      "pus"
+    ],
+    "two": [
+      "ps"
+    ],
+    "english": [
+      "Pushto",
+      "Pashto"
+    ],
+    "french": [
+      "pachto"
+    ],
+    "german": [
+      "Paschtu"
+    ]
+  },
+  {
+    "three": [
+      "qaa-qtz"
+    ],
+    "two": [],
+    "english": [
+      "Reserved for local use"
+    ],
+    "french": [
+      "réservée à l'usage local"
+    ],
+    "german": [
+      "Reserviert für lokale Verwendung"
+    ]
+  },
+  {
+    "three": [
+      "que"
+    ],
+    "two": [
+      "qu"
+    ],
+    "english": [
+      "Quechua"
+    ],
+    "french": [
+      "quechua"
+    ],
+    "german": [
+      "Quechua-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "raj"
+    ],
+    "two": [],
+    "english": [
+      "Rajasthani"
+    ],
+    "french": [
+      "rajasthani"
+    ],
+    "german": [
+      "Rajasthani"
+    ]
+  },
+  {
+    "three": [
+      "rap"
+    ],
+    "two": [],
+    "english": [
+      "Rapanui"
+    ],
+    "french": [
+      "rapanui"
+    ],
+    "german": [
+      "Osterinsel-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "rar"
+    ],
+    "two": [],
+    "english": [
+      "Rarotongan",
+      "Cook Islands Maori"
+    ],
+    "french": [
+      "rarotonga",
+      "maori des îles Cook"
+    ],
+    "german": [
+      "Rarotonganisch"
+    ]
+  },
+  {
+    "three": [
+      "roa"
+    ],
+    "two": [],
+    "english": [
+      "Romance languages"
+    ],
+    "french": [
+      "romanes, langues"
+    ],
+    "german": [
+      "Romanische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "roh"
+    ],
+    "two": [
+      "rm"
+    ],
+    "english": [
+      "Romansh"
+    ],
+    "french": [
+      "romanche"
+    ],
+    "german": [
+      "Rätoromanisch"
+    ]
+  },
+  {
+    "three": [
+      "rom"
+    ],
+    "two": [],
+    "english": [
+      "Romany"
+    ],
+    "french": [
+      "tsigane"
+    ],
+    "german": [
+      "Romani (Sprache)"
+    ]
+  },
+  {
+    "three": [
+      "rum",
+      "ron"
+    ],
+    "two": [
+      "ro"
+    ],
+    "english": [
+      "Romanian",
+      "Moldavian",
+      "Moldovan"
+    ],
+    "french": [
+      "roumain",
+      "moldave"
+    ],
+    "german": [
+      "Rumänisch"
+    ]
+  },
+  {
+    "three": [
+      "run"
+    ],
+    "two": [
+      "rn"
+    ],
+    "english": [
+      "Rundi"
+    ],
+    "french": [
+      "rundi"
+    ],
+    "german": [
+      "Rundi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "rup"
+    ],
+    "two": [],
+    "english": [
+      "Aromanian",
+      "Arumanian",
+      "Macedo-Romanian"
+    ],
+    "french": [
+      "aroumain",
+      "macédo-roumain"
+    ],
+    "german": [
+      "Aromunisch"
+    ]
+  },
+  {
+    "three": [
+      "rus"
+    ],
+    "two": [
+      "ru"
+    ],
+    "english": [
+      "Russian"
+    ],
+    "french": [
+      "russe"
+    ],
+    "german": [
+      "Russisch"
+    ]
+  },
+  {
+    "three": [
+      "sad"
+    ],
+    "two": [],
+    "english": [
+      "Sandawe"
+    ],
+    "french": [
+      "sandawe"
+    ],
+    "german": [
+      "Sandawe-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sag"
+    ],
+    "two": [
+      "sg"
+    ],
+    "english": [
+      "Sango"
+    ],
+    "french": [
+      "sango"
+    ],
+    "german": [
+      "Sango-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sah"
+    ],
+    "two": [],
+    "english": [
+      "Yakut"
+    ],
+    "french": [
+      "iakoute"
+    ],
+    "german": [
+      "Jakutisch"
+    ]
+  },
+  {
+    "three": [
+      "sai"
+    ],
+    "two": [],
+    "english": [
+      "South American Indian languages"
+    ],
+    "french": [
+      "sud-amérindiennes, langues"
+    ],
+    "german": [
+      "Indianersprachen, Südamerika (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "sal"
+    ],
+    "two": [],
+    "english": [
+      "Salishan languages"
+    ],
+    "french": [
+      "salishennes, langues"
+    ],
+    "german": [
+      "Salish-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sam"
+    ],
+    "two": [],
+    "english": [
+      "Samaritan Aramaic"
+    ],
+    "french": [
+      "samaritain"
+    ],
+    "german": [
+      "Samaritanisch"
+    ]
+  },
+  {
+    "three": [
+      "san"
+    ],
+    "two": [
+      "sa"
+    ],
+    "english": [
+      "Sanskrit"
+    ],
+    "french": [
+      "sanskrit"
+    ],
+    "german": [
+      "Sanskrit"
+    ]
+  },
+  {
+    "three": [
+      "sas"
+    ],
+    "two": [],
+    "english": [
+      "Sasak"
+    ],
+    "french": [
+      "sasak"
+    ],
+    "german": [
+      "Sasak"
+    ]
+  },
+  {
+    "three": [
+      "sat"
+    ],
+    "two": [],
+    "english": [
+      "Santali"
+    ],
+    "french": [
+      "santal"
+    ],
+    "german": [
+      "Santali"
+    ]
+  },
+  {
+    "three": [
+      "scn"
+    ],
+    "two": [],
+    "english": [
+      "Sicilian"
+    ],
+    "french": [
+      "sicilien"
+    ],
+    "german": [
+      "Sizilianisch"
+    ]
+  },
+  {
+    "three": [
+      "sco"
+    ],
+    "two": [],
+    "english": [
+      "Scots"
+    ],
+    "french": [
+      "écossais"
+    ],
+    "german": [
+      "Schottisch"
+    ]
+  },
+  {
+    "three": [
+      "sel"
+    ],
+    "two": [],
+    "english": [
+      "Selkup"
+    ],
+    "french": [
+      "selkoupe"
+    ],
+    "german": [
+      "Selkupisch"
+    ]
+  },
+  {
+    "three": [
+      "sem"
+    ],
+    "two": [],
+    "english": [
+      "Semitic languages"
+    ],
+    "french": [
+      "sémitiques, langues"
+    ],
+    "german": [
+      "Semitische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "sga"
+    ],
+    "two": [],
+    "english": [
+      "Irish, Old (to 900)",
+      "Irish, Old"
+    ],
+    "french": [
+      "irlandais ancien (jusqu'à 900)"
+    ],
+    "german": [
+      "Altirisch"
+    ]
+  },
+  {
+    "three": [
+      "sgn"
+    ],
+    "two": [],
+    "english": [
+      "Sign Languages"
+    ],
+    "french": [
+      "langues des signes"
+    ],
+    "german": [
+      "Zeichensprachen"
+    ]
+  },
+  {
+    "three": [
+      "shn"
+    ],
+    "two": [],
+    "english": [
+      "Shan"
+    ],
+    "french": [
+      "chan"
+    ],
+    "german": [
+      "Schan-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sid"
+    ],
+    "two": [],
+    "english": [
+      "Sidamo"
+    ],
+    "french": [
+      "sidamo"
+    ],
+    "german": [
+      "Sidamo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sin"
+    ],
+    "two": [
+      "si"
+    ],
+    "english": [
+      "Sinhala",
+      "Sinhalese"
+    ],
+    "french": [
+      "singhalais"
+    ],
+    "german": [
+      "Singhalesisch"
+    ]
+  },
+  {
+    "three": [
+      "sio"
+    ],
+    "two": [],
+    "english": [
+      "Siouan languages"
+    ],
+    "french": [
+      "sioux, langues"
+    ],
+    "german": [
+      "Sioux-Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "sit"
+    ],
+    "two": [],
+    "english": [
+      "Sino-Tibetan languages"
+    ],
+    "french": [
+      "sino-tibétaines, langues"
+    ],
+    "german": [
+      "Sinotibetische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "sla"
+    ],
+    "two": [],
+    "english": [
+      "Slavic languages"
+    ],
+    "french": [
+      "slaves, langues"
+    ],
+    "german": [
+      "Slawische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "slo",
+      "slk"
+    ],
+    "two": [
+      "sk"
+    ],
+    "english": [
+      "Slovak"
+    ],
+    "french": [
+      "slovaque"
+    ],
+    "german": [
+      "Slowakisch"
+    ]
+  },
+  {
+    "three": [
+      "slv"
+    ],
+    "two": [
+      "sl"
+    ],
+    "english": [
+      "Slovenian"
+    ],
+    "french": [
+      "slovène"
+    ],
+    "german": [
+      "Slowenisch"
+    ]
+  },
+  {
+    "three": [
+      "sma"
+    ],
+    "two": [],
+    "english": [
+      "Southern Sami"
+    ],
+    "french": [
+      "sami du Sud"
+    ],
+    "german": [
+      "Südsaamisch"
+    ]
+  },
+  {
+    "three": [
+      "sme"
+    ],
+    "two": [
+      "se"
+    ],
+    "english": [
+      "Northern Sami"
+    ],
+    "french": [
+      "sami du Nord"
+    ],
+    "german": [
+      "Nordsaamisch"
+    ]
+  },
+  {
+    "three": [
+      "smi"
+    ],
+    "two": [],
+    "english": [
+      "Sami languages"
+    ],
+    "french": [
+      "sames, langues"
+    ],
+    "german": [
+      "Saamisch"
+    ]
+  },
+  {
+    "three": [
+      "smj"
+    ],
+    "two": [],
+    "english": [
+      "Lule Sami"
+    ],
+    "french": [
+      "sami de Lule"
+    ],
+    "german": [
+      "Lulesaamisch"
+    ]
+  },
+  {
+    "three": [
+      "smn"
+    ],
+    "two": [],
+    "english": [
+      "Inari Sami"
+    ],
+    "french": [
+      "sami d'Inari"
+    ],
+    "german": [
+      "Inarisaamisch"
+    ]
+  },
+  {
+    "three": [
+      "smo"
+    ],
+    "two": [
+      "sm"
+    ],
+    "english": [
+      "Samoan"
+    ],
+    "french": [
+      "samoan"
+    ],
+    "german": [
+      "Samoanisch"
+    ]
+  },
+  {
+    "three": [
+      "sms"
+    ],
+    "two": [],
+    "english": [
+      "Skolt Sami"
+    ],
+    "french": [
+      "sami skolt"
+    ],
+    "german": [
+      "Skoltsaamisch"
+    ]
+  },
+  {
+    "three": [
+      "sna"
+    ],
+    "two": [
+      "sn"
+    ],
+    "english": [
+      "Shona"
+    ],
+    "french": [
+      "shona"
+    ],
+    "german": [
+      "Schona-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "snd"
+    ],
+    "two": [
+      "sd"
+    ],
+    "english": [
+      "Sindhi"
+    ],
+    "french": [
+      "sindhi"
+    ],
+    "german": [
+      "Sindhi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "snk"
+    ],
+    "two": [],
+    "english": [
+      "Soninke"
+    ],
+    "french": [
+      "soninké"
+    ],
+    "german": [
+      "Soninke-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sog"
+    ],
+    "two": [],
+    "english": [
+      "Sogdian"
+    ],
+    "french": [
+      "sogdien"
+    ],
+    "german": [
+      "Sogdisch"
+    ]
+  },
+  {
+    "three": [
+      "som"
+    ],
+    "two": [
+      "so"
+    ],
+    "english": [
+      "Somali"
+    ],
+    "french": [
+      "somali"
+    ],
+    "german": [
+      "Somali"
+    ]
+  },
+  {
+    "three": [
+      "son"
+    ],
+    "two": [],
+    "english": [
+      "Songhai languages"
+    ],
+    "french": [
+      "songhai, langues"
+    ],
+    "german": [
+      "Songhai-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sot"
+    ],
+    "two": [
+      "st"
+    ],
+    "english": [
+      "Sotho, Southern"
+    ],
+    "french": [
+      "sotho du Sud"
+    ],
+    "german": [
+      "Süd-Sotho-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "spa"
+    ],
+    "two": [
+      "es"
+    ],
+    "english": [
+      "Spanish",
+      "Castilian"
+    ],
+    "french": [
+      "espagnol",
+      "castillan"
+    ],
+    "german": [
+      "Spanisch"
+    ]
+  },
+  {
+    "three": [
+      "srd"
+    ],
+    "two": [
+      "sc"
+    ],
+    "english": [
+      "Sardinian"
+    ],
+    "french": [
+      "sarde"
+    ],
+    "german": [
+      "Sardisch"
+    ]
+  },
+  {
+    "three": [
+      "srn"
+    ],
+    "two": [],
+    "english": [
+      "Sranan Tongo"
+    ],
+    "french": [
+      "sranan tongo"
+    ],
+    "german": [
+      "Sranantongo"
+    ]
+  },
+  {
+    "three": [
+      "srp"
+    ],
+    "two": [
+      "sr"
+    ],
+    "english": [
+      "Serbian"
+    ],
+    "french": [
+      "serbe"
+    ],
+    "german": [
+      "Serbisch"
+    ]
+  },
+  {
+    "three": [
+      "srr"
+    ],
+    "two": [],
+    "english": [
+      "Serer"
+    ],
+    "french": [
+      "sérère"
+    ],
+    "german": [
+      "Serer-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ssa"
+    ],
+    "two": [],
+    "english": [
+      "Nilo-Saharan languages"
+    ],
+    "french": [
+      "nilo-sahariennes, langues"
+    ],
+    "german": [
+      "Nilosaharanische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "ssw"
+    ],
+    "two": [
+      "ss"
+    ],
+    "english": [
+      "Swati"
+    ],
+    "french": [
+      "swati"
+    ],
+    "german": [
+      "Swasi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "suk"
+    ],
+    "two": [],
+    "english": [
+      "Sukuma"
+    ],
+    "french": [
+      "sukuma"
+    ],
+    "german": [
+      "Sukuma-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "sun"
+    ],
+    "two": [
+      "su"
+    ],
+    "english": [
+      "Sundanese"
+    ],
+    "french": [
+      "soundanais"
+    ],
+    "german": [
+      "Sundanesisch"
+    ]
+  },
+  {
+    "three": [
+      "sus"
+    ],
+    "two": [],
+    "english": [
+      "Susu"
+    ],
+    "french": [
+      "soussou"
+    ],
+    "german": [
+      "Susu"
+    ]
+  },
+  {
+    "three": [
+      "sux"
+    ],
+    "two": [],
+    "english": [
+      "Sumerian"
+    ],
+    "french": [
+      "sumérien"
+    ],
+    "german": [
+      "Sumerisch"
+    ]
+  },
+  {
+    "three": [
+      "swa"
+    ],
+    "two": [
+      "sw"
+    ],
+    "english": [
+      "Swahili"
+    ],
+    "french": [
+      "swahili"
+    ],
+    "german": [
+      "Swahili"
+    ]
+  },
+  {
+    "three": [
+      "swe"
+    ],
+    "two": [
+      "sv"
+    ],
+    "english": [
+      "Swedish"
+    ],
+    "french": [
+      "suédois"
+    ],
+    "german": [
+      "Schwedisch"
+    ]
+  },
+  {
+    "three": [
+      "syc"
+    ],
+    "two": [],
+    "english": [
+      "Classical Syriac"
+    ],
+    "french": [
+      "syriaque classique"
+    ],
+    "german": [
+      "Syrisch"
+    ]
+  },
+  {
+    "three": [
+      "syr"
+    ],
+    "two": [],
+    "english": [
+      "Syriac"
+    ],
+    "french": [
+      "syriaque"
+    ],
+    "german": [
+      "Neuostaramäisch"
+    ]
+  },
+  {
+    "three": [
+      "tah"
+    ],
+    "two": [
+      "ty"
+    ],
+    "english": [
+      "Tahitian"
+    ],
+    "french": [
+      "tahitien"
+    ],
+    "german": [
+      "Tahitisch"
+    ]
+  },
+  {
+    "three": [
+      "tai"
+    ],
+    "two": [],
+    "english": [
+      "Tai languages"
+    ],
+    "french": [
+      "tai, langues"
+    ],
+    "german": [
+      "Thaisprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "tam"
+    ],
+    "two": [
+      "ta"
+    ],
+    "english": [
+      "Tamil"
+    ],
+    "french": [
+      "tamoul"
+    ],
+    "german": [
+      "Tamil"
+    ]
+  },
+  {
+    "three": [
+      "tat"
+    ],
+    "two": [
+      "tt"
+    ],
+    "english": [
+      "Tatar"
+    ],
+    "french": [
+      "tatar"
+    ],
+    "german": [
+      "Tatarisch"
+    ]
+  },
+  {
+    "three": [
+      "tel"
+    ],
+    "two": [
+      "te"
+    ],
+    "english": [
+      "Telugu"
+    ],
+    "french": [
+      "télougou"
+    ],
+    "german": [
+      "Telugu-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tem"
+    ],
+    "two": [],
+    "english": [
+      "Timne"
+    ],
+    "french": [
+      "temne"
+    ],
+    "german": [
+      "Temne-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ter"
+    ],
+    "two": [],
+    "english": [
+      "Tereno"
+    ],
+    "french": [
+      "tereno"
+    ],
+    "german": [
+      "Tereno-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tet"
+    ],
+    "two": [],
+    "english": [
+      "Tetum"
+    ],
+    "french": [
+      "tetum"
+    ],
+    "german": [
+      "Tetum-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tgk"
+    ],
+    "two": [
+      "tg"
+    ],
+    "english": [
+      "Tajik"
+    ],
+    "french": [
+      "tadjik"
+    ],
+    "german": [
+      "Tadschikisch"
+    ]
+  },
+  {
+    "three": [
+      "tgl"
+    ],
+    "two": [
+      "tl"
+    ],
+    "english": [
+      "Tagalog"
+    ],
+    "french": [
+      "tagalog"
+    ],
+    "german": [
+      "Tagalog"
+    ]
+  },
+  {
+    "three": [
+      "tha"
+    ],
+    "two": [
+      "th"
+    ],
+    "english": [
+      "Thai"
+    ],
+    "french": [
+      "thaï"
+    ],
+    "german": [
+      "Thailändisch"
+    ]
+  },
+  {
+    "three": [
+      "tig"
+    ],
+    "two": [],
+    "english": [
+      "Tigre"
+    ],
+    "french": [
+      "tigré"
+    ],
+    "german": [
+      "Tigre-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tir"
+    ],
+    "two": [
+      "ti"
+    ],
+    "english": [
+      "Tigrinya"
+    ],
+    "french": [
+      "tigrigna"
+    ],
+    "german": [
+      "Tigrinja-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tiv"
+    ],
+    "two": [],
+    "english": [
+      "Tiv"
+    ],
+    "french": [
+      "tiv"
+    ],
+    "german": [
+      "Tiv-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tkl"
+    ],
+    "two": [],
+    "english": [
+      "Tokelau"
+    ],
+    "french": [
+      "tokelau"
+    ],
+    "german": [
+      "Tokelauanisch"
+    ]
+  },
+  {
+    "three": [
+      "tlh"
+    ],
+    "two": [],
+    "english": [
+      "Klingon",
+      "tlhIngan-Hol"
+    ],
+    "french": [
+      "klingon"
+    ],
+    "german": [
+      "Klingonisch"
+    ]
+  },
+  {
+    "three": [
+      "tli"
+    ],
+    "two": [],
+    "english": [
+      "Tlingit"
+    ],
+    "french": [
+      "tlingit"
+    ],
+    "german": [
+      "Tlingit-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tmh"
+    ],
+    "two": [],
+    "english": [
+      "Tamashek"
+    ],
+    "french": [
+      "tamacheq"
+    ],
+    "german": [
+      "Tamašeq"
+    ]
+  },
+  {
+    "three": [
+      "tog"
+    ],
+    "two": [],
+    "english": [
+      "Tonga (Nyasa)",
+      "Tonga"
+    ],
+    "french": [
+      "tonga (Nyasa)"
+    ],
+    "german": [
+      "Tonga (Bantusprache, Sambia)"
+    ]
+  },
+  {
+    "three": [
+      "ton"
+    ],
+    "two": [
+      "to"
+    ],
+    "english": [
+      "Tonga (Tonga Islands)",
+      "Tonga"
+    ],
+    "french": [
+      "tongan (Îles Tonga)"
+    ],
+    "german": [
+      "Tongaisch"
+    ]
+  },
+  {
+    "three": [
+      "tpi"
+    ],
+    "two": [],
+    "english": [
+      "Tok Pisin"
+    ],
+    "french": [
+      "tok pisin"
+    ],
+    "german": [
+      "Neumelanesisch"
+    ]
+  },
+  {
+    "three": [
+      "tsi"
+    ],
+    "two": [],
+    "english": [
+      "Tsimshian"
+    ],
+    "french": [
+      "tsimshian"
+    ],
+    "german": [
+      "Tsimshian-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tsn"
+    ],
+    "two": [
+      "tn"
+    ],
+    "english": [
+      "Tswana"
+    ],
+    "french": [
+      "tswana"
+    ],
+    "german": [
+      "Tswana-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tso"
+    ],
+    "two": [
+      "ts"
+    ],
+    "english": [
+      "Tsonga"
+    ],
+    "french": [
+      "tsonga"
+    ],
+    "german": [
+      "Tsonga-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tuk"
+    ],
+    "two": [
+      "tk"
+    ],
+    "english": [
+      "Turkmen"
+    ],
+    "french": [
+      "turkmène"
+    ],
+    "german": [
+      "Turkmenisch"
+    ]
+  },
+  {
+    "three": [
+      "tum"
+    ],
+    "two": [],
+    "english": [
+      "Tumbuka"
+    ],
+    "french": [
+      "tumbuka"
+    ],
+    "german": [
+      "Tumbuka-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tup"
+    ],
+    "two": [],
+    "english": [
+      "Tupi languages"
+    ],
+    "french": [
+      "tupi, langues"
+    ],
+    "german": [
+      "Tupi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tur"
+    ],
+    "two": [
+      "tr"
+    ],
+    "english": [
+      "Turkish"
+    ],
+    "french": [
+      "turc"
+    ],
+    "german": [
+      "Türkisch"
+    ]
+  },
+  {
+    "three": [
+      "tut"
+    ],
+    "two": [],
+    "english": [
+      "Altaic languages"
+    ],
+    "french": [
+      "altaïques, langues"
+    ],
+    "german": [
+      "Altaische Sprachen (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "tvl"
+    ],
+    "two": [],
+    "english": [
+      "Tuvalu"
+    ],
+    "french": [
+      "tuvalu"
+    ],
+    "german": [
+      "Elliceanisch"
+    ]
+  },
+  {
+    "three": [
+      "twi"
+    ],
+    "two": [
+      "tw"
+    ],
+    "english": [
+      "Twi"
+    ],
+    "french": [
+      "twi"
+    ],
+    "german": [
+      "Twi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "tyv"
+    ],
+    "two": [],
+    "english": [
+      "Tuvinian"
+    ],
+    "french": [
+      "touva"
+    ],
+    "german": [
+      "Tuwinisch"
+    ]
+  },
+  {
+    "three": [
+      "udm"
+    ],
+    "two": [],
+    "english": [
+      "Udmurt"
+    ],
+    "french": [
+      "oudmourte"
+    ],
+    "german": [
+      "Udmurtisch"
+    ]
+  },
+  {
+    "three": [
+      "uga"
+    ],
+    "two": [],
+    "english": [
+      "Ugaritic"
+    ],
+    "french": [
+      "ougaritique"
+    ],
+    "german": [
+      "Ugaritisch"
+    ]
+  },
+  {
+    "three": [
+      "uig"
+    ],
+    "two": [
+      "ug"
+    ],
+    "english": [
+      "Uighur",
+      "Uyghur"
+    ],
+    "french": [
+      "ouïgour"
+    ],
+    "german": [
+      "Uigurisch"
+    ]
+  },
+  {
+    "three": [
+      "ukr"
+    ],
+    "two": [
+      "uk"
+    ],
+    "english": [
+      "Ukrainian"
+    ],
+    "french": [
+      "ukrainien"
+    ],
+    "german": [
+      "Ukrainisch"
+    ]
+  },
+  {
+    "three": [
+      "umb"
+    ],
+    "two": [],
+    "english": [
+      "Umbundu"
+    ],
+    "french": [
+      "umbundu"
+    ],
+    "german": [
+      "Mbundu-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "und"
+    ],
+    "two": [],
+    "english": [
+      "Undetermined"
+    ],
+    "french": [
+      "indéterminée"
+    ],
+    "german": [
+      "Nicht zu entscheiden"
+    ]
+  },
+  {
+    "three": [
+      "urd"
+    ],
+    "two": [
+      "ur"
+    ],
+    "english": [
+      "Urdu"
+    ],
+    "french": [
+      "ourdou"
+    ],
+    "german": [
+      "Urdu"
+    ]
+  },
+  {
+    "three": [
+      "uzb"
+    ],
+    "two": [
+      "uz"
+    ],
+    "english": [
+      "Uzbek"
+    ],
+    "french": [
+      "ouszbek"
+    ],
+    "german": [
+      "Usbekisch"
+    ]
+  },
+  {
+    "three": [
+      "vai"
+    ],
+    "two": [],
+    "english": [
+      "Vai"
+    ],
+    "french": [
+      "vaï"
+    ],
+    "german": [
+      "Vai-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ven"
+    ],
+    "two": [
+      "ve"
+    ],
+    "english": [
+      "Venda"
+    ],
+    "french": [
+      "venda"
+    ],
+    "german": [
+      "Venda-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "vie"
+    ],
+    "two": [
+      "vi"
+    ],
+    "english": [
+      "Vietnamese"
+    ],
+    "french": [
+      "vietnamien"
+    ],
+    "german": [
+      "Vietnamesisch"
+    ]
+  },
+  {
+    "three": [
+      "vol"
+    ],
+    "two": [
+      "vo"
+    ],
+    "english": [
+      "Volapük"
+    ],
+    "french": [
+      "volapük"
+    ],
+    "german": [
+      "Volapük"
+    ]
+  },
+  {
+    "three": [
+      "vot"
+    ],
+    "two": [],
+    "english": [
+      "Votic"
+    ],
+    "french": [
+      "vote"
+    ],
+    "german": [
+      "Wotisch"
+    ]
+  },
+  {
+    "three": [
+      "wak"
+    ],
+    "two": [],
+    "english": [
+      "Wakashan languages"
+    ],
+    "french": [
+      "wakashanes, langues"
+    ],
+    "german": [
+      "Wakash-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "wal"
+    ],
+    "two": [],
+    "english": [
+      "Wolaitta",
+      "Wolaytta"
+    ],
+    "french": [
+      "wolaitta",
+      "wolaytta"
+    ],
+    "german": [
+      "Walamo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "war"
+    ],
+    "two": [],
+    "english": [
+      "Waray"
+    ],
+    "french": [
+      "waray"
+    ],
+    "german": [
+      "Waray"
+    ]
+  },
+  {
+    "three": [
+      "was"
+    ],
+    "two": [],
+    "english": [
+      "Washo"
+    ],
+    "french": [
+      "washo"
+    ],
+    "german": [
+      "Washo-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "wen"
+    ],
+    "two": [],
+    "english": [
+      "Sorbian languages"
+    ],
+    "french": [
+      "sorabes, langues"
+    ],
+    "german": [
+      "Sorbisch (Andere)"
+    ]
+  },
+  {
+    "three": [
+      "wln"
+    ],
+    "two": [
+      "wa"
+    ],
+    "english": [
+      "Walloon"
+    ],
+    "french": [
+      "wallon"
+    ],
+    "german": [
+      "Wallonisch"
+    ]
+  },
+  {
+    "three": [
+      "wol"
+    ],
+    "two": [
+      "wo"
+    ],
+    "english": [
+      "Wolof"
+    ],
+    "french": [
+      "wolof"
+    ],
+    "german": [
+      "Wolof-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "xal"
+    ],
+    "two": [],
+    "english": [
+      "Kalmyk",
+      "Oirat"
+    ],
+    "french": [
+      "kalmouk",
+      "oïrat"
+    ],
+    "german": [
+      "Kalmückisch"
+    ]
+  },
+  {
+    "three": [
+      "xho"
+    ],
+    "two": [
+      "xh"
+    ],
+    "english": [
+      "Xhosa"
+    ],
+    "french": [
+      "xhosa"
+    ],
+    "german": [
+      "Xhosa-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "yao"
+    ],
+    "two": [],
+    "english": [
+      "Yao"
+    ],
+    "french": [
+      "yao"
+    ],
+    "german": [
+      "Yao-Sprache (Bantusprache)"
+    ]
+  },
+  {
+    "three": [
+      "yap"
+    ],
+    "two": [],
+    "english": [
+      "Yapese"
+    ],
+    "french": [
+      "yapois"
+    ],
+    "german": [
+      "Yapesisch"
+    ]
+  },
+  {
+    "three": [
+      "yid"
+    ],
+    "two": [
+      "yi"
+    ],
+    "english": [
+      "Yiddish"
+    ],
+    "french": [
+      "yiddish"
+    ],
+    "german": [
+      "Jiddisch"
+    ]
+  },
+  {
+    "three": [
+      "yor"
+    ],
+    "two": [
+      "yo"
+    ],
+    "english": [
+      "Yoruba"
+    ],
+    "french": [
+      "yoruba"
+    ],
+    "german": [
+      "Yoruba-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "ypk"
+    ],
+    "two": [],
+    "english": [
+      "Yupik languages"
+    ],
+    "french": [
+      "yupik, langues"
+    ],
+    "german": [
+      "Ypik-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "zap"
+    ],
+    "two": [],
+    "english": [
+      "Zapotec"
+    ],
+    "french": [
+      "zapotèque"
+    ],
+    "german": [
+      "Zapotekisch"
+    ]
+  },
+  {
+    "three": [
+      "zbl"
+    ],
+    "two": [],
+    "english": [
+      "Blissymbols",
+      "Blissymbolics",
+      "Bliss"
+    ],
+    "french": [
+      "symboles Bliss",
+      "Bliss"
+    ],
+    "german": [
+      "Bliss-Symbol"
+    ]
+  },
+  {
+    "three": [
+      "zen"
+    ],
+    "two": [],
+    "english": [
+      "Zenaga"
+    ],
+    "french": [
+      "zenaga"
+    ],
+    "german": [
+      "Zenaga"
+    ]
+  },
+  {
+    "three": [
+      "zgh"
+    ],
+    "two": [],
+    "english": [
+      "Standard Moroccan Tamazight"
+    ],
+    "french": [
+      "amazighe standard marocain"
+    ],
+    "german": []
+  },
+  {
+    "three": [
+      "zha"
+    ],
+    "two": [
+      "za"
+    ],
+    "english": [
+      "Zhuang",
+      "Chuang"
+    ],
+    "french": [
+      "zhuang",
+      "chuang"
+    ],
+    "german": [
+      "Zhuang"
+    ]
+  },
+  {
+    "three": [
+      "znd"
+    ],
+    "two": [],
+    "english": [
+      "Zande languages"
+    ],
+    "french": [
+      "zandé, langues"
+    ],
+    "german": [
+      "Zande-Sprachen"
+    ]
+  },
+  {
+    "three": [
+      "zul"
+    ],
+    "two": [
+      "zu"
+    ],
+    "english": [
+      "Zulu"
+    ],
+    "french": [
+      "zoulou"
+    ],
+    "german": [
+      "Zulu-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "zun"
+    ],
+    "two": [],
+    "english": [
+      "Zuni"
+    ],
+    "french": [
+      "zuni"
+    ],
+    "german": [
+      "Zuñi-Sprache"
+    ]
+  },
+  {
+    "three": [
+      "zxx"
+    ],
+    "two": [],
+    "english": [
+      "No linguistic content",
+      "Not applicable"
+    ],
+    "french": [
+      "pas de contenu linguistique",
+      "non applicable"
+    ],
+    "german": [
+      "Kein linguistischer Inhalt"
+    ]
+  },
+  {
+    "three": [
+      "zza"
+    ],
+    "two": [],
+    "english": [
+      "Zaza",
+      "Dimili",
+      "Dimli",
+      "Kirdki",
+      "Kirmanjki",
+      "Zazaki"
+    ],
+    "french": [
+      "zaza",
+      "dimili",
+      "dimli",
+      "kirdki",
+      "kirmanjki",
+      "zazaki"
+    ],
+    "german": [
+      "Zazaki"
+    ]
+  }
+]
