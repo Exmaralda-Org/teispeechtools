@@ -48,7 +48,7 @@ public class DocUtilities {
     /**
      * valid terminological ISO-639-2 three letter codes
      *
-     * @see {@link #languageCodesThree} for a list including bibliographic
+     * see {@link #languageCodesThree} for a list including bibliographic
      *      variants
      */
     public static Set<String> languageTriples;
@@ -103,12 +103,14 @@ public class DocUtilities {
      * get language of element, ascending the element tree recursively.
      *
      * @param el
+     *            the DOM XML Element
      * @return Optional containing the language code, or empty
      */
     public static Optional<String> getLanguage(Element el) {
         String lang = el.getAttribute("xml:lang");
-        for (Node parent = el.getParentNode(); lang.isEmpty()
-                && parent != null && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent.getParentNode()) {
+        for (Node parent = el.getParentNode(); lang.isEmpty() && parent != null
+                && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent
+                        .getParentNode()) {
             lang = ((Element) parent).getAttribute("xml:lang");
         }
         if (!lang.isEmpty()) {
@@ -177,13 +179,15 @@ public class DocUtilities {
      *            XML document
      * @param defaultL
      *            default language
-     * @return
+     * @return the elements grouped by language
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL) {
         return Utilities.toStream(doc.getElementsByTagName("u"))
-                .map(u -> (Element) u).collect(Collectors.groupingBy(
-                        u -> getUtteranceLanguage(u, defaultL), Collectors.toList()));
+                .map(u -> (Element) u)
+                .collect(Collectors.groupingBy(
+                        u -> getUtteranceLanguage(u, defaultL),
+                        Collectors.toList()));
     }
 
     /**
@@ -226,7 +230,9 @@ public class DocUtilities {
      * Is this an ISO 639-2 three letter code?
      *
      * @param lang
+     *            the language code
      * @return whether
+     *
      */
     public static boolean isLanguageTriple(String lang) {
         return languageCodesThree.contains(lang.toLowerCase());
@@ -237,6 +243,7 @@ public class DocUtilities {
      * languageMap)
      *
      * @param lang
+     *            the language code
      * @return whether
      */
     public static boolean isTerminologicalLanguageTriple(String lang) {
@@ -247,6 +254,7 @@ public class DocUtilities {
      * Is this an ISO 639-1 two letter code
      *
      * @param lang
+     *            the language code
      * @return whether
      */
     public static boolean isLanguageTuple(String lang) {
@@ -257,7 +265,9 @@ public class DocUtilities {
      * add change to {@code <revisionDesc>} in TEI document
      *
      * @param doc
+     *            the DOM Document
      * @param change
+     *            the change message
      * @return the document, for chaining
      */
     public static Document makeChange(Document doc, String change) {
@@ -275,10 +285,13 @@ public class DocUtilities {
 
     /**
      *
-     * add change to {@code <revisionDesc>} in TEI document
+     * add change to {@code <revisionDesc>} in TEI document, name processed and
+     * skipped languages
      *
      * @param doc
+     *            the document
      * @param change
+     *            the change info
      * @param processedLanguages
      *            the languages that could be processed
      * @param skippedLanguages
@@ -303,7 +316,9 @@ public class DocUtilities {
      * Add a comment at the beginning of a DOM doc's {@code <body>}
      *
      * @param doc
+     *            the document
      * @param commentText
+     *            the text of the comment
      * @return the document, for chaining
      */
     public static Document addComment(Document doc, String commentText) {

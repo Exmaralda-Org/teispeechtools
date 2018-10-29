@@ -66,6 +66,11 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      * Constructor
      *
      * prepare XML template.
+     *
+     * @param tokens
+     *            the token stream of the document
+     * @param language
+     *            the language code for the document language
      */
     public TextToTEI(CommonTokenStream tokens, String language) {
         this.tokens = tokens;
@@ -88,6 +93,8 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
 
     /**
      * get XML DOM Document from {@link SpeechDocument}
+     *
+     * @return the DOM document
      */
     public Document getDocument() {
         return spd.getDocument();
@@ -267,6 +274,9 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
 
     /**
      * prepare list of errors, delegate do {@link SpeechDocument}
+     *
+     * @param list
+     *            the list of error messages
      */
     public void makeErrorList(List<String> list) {
         spd.makeErrorList(list);

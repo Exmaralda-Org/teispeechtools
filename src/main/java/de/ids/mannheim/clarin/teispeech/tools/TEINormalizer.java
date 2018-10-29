@@ -13,8 +13,8 @@ import org.w3c.dom.Element;
 /**
  * a normalizer for the TEI transcription format.
  *
- * Mainly applies the normalizer {@link #normalizer} to all &lt;w&gt; Elements in a
- * document.
+ * Mainly applies the normalizer {@link #normalizer} to all &lt;w&gt; Elements
+ * in a document.
  *
  * @author bfi
  *
@@ -35,6 +35,9 @@ public class TEINormalizer {
      * make new {@link TEINormalizer} that uses a {@link WordNormalizer}
      *
      * @param wn
+     *            the normalizer
+     * @param language
+     *            an ISO language code
      */
     public TEINormalizer(WordNormalizer wn, String language) {
         normalizer = wn;
@@ -46,8 +49,9 @@ public class TEINormalizer {
     }
 
     public TEINormalizer(String language) {
-        normalizer = new DictionaryNormalizer(); // TODO: currently, only German,
-                                           // anyway!
+        normalizer = new DictionaryNormalizer(); // TODO: currently, only
+                                                 // German,
+        // anyway!
         this.language = language != null ? language : "deu";
     }
 

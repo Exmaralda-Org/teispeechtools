@@ -231,6 +231,9 @@ public class SpeechDocument {
      * add text and manage whitespace
      *
      * @param text
+     *            the text
+     * @param space
+     *            whether to prepend whitespace
      */
     public void addText(String text, boolean space) {
         Node lc = currentUtterance.getLastChild();
