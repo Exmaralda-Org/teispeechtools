@@ -4,7 +4,6 @@ encoding//src/main/resources=UTF-8
 encoding//src/main/resources/dereko_capital_only.txt=ISO-8859-1
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
-encoding//target/generated-sources/antlr4=UTF-8
 encoding//target/generated-sources/antlr4/de/ids/mannheim/clarin/teispeech/tools=UTF-8
 encoding/<project>=UTF-8
 encoding/src=UTF-8

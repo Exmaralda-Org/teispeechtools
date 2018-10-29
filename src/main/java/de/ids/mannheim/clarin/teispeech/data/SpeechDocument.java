@@ -12,31 +12,69 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.tools.TextToTEI;
 
 /**
+ * TEI annotated speech document, mainly for use in {@link TextToTEI}
+ *
  * @author bfi
  */
 
 public class SpeechDocument {
 
+    /**
+     * the XML DOM document
+     */
     private final Document doc;
 
+    /**
+     * the current {@code <annotationBlock>}
+     */
     private Element currentBlock;
+
+    /**
+     * the current {@code <u>}
+     */
     private Element currentUtterance;
+
+    /**
+     * the ID of the current speaker
+     */
     private String currentSpeaker;
 
+    /**
+     * the document language
+     */
+    private String language;
+
+    /**
+     * a speech document has
+     *
+     * @param doc
+     *            an XML document
+     * @param lang
+     *            a document language (preferably a ISO 639-1 three letter code)
+     */
     public SpeechDocument(Document doc, String lang) {
+        language = lang;
         this.doc = doc;
+        // TODO: Should we validate the language
         setLanguage(lang);
     }
 
     /**
-     * @return XML DOM document
+     * @return the XML DOM document {@link #doc}
      */
     public Document getDocument() {
         return doc;
     }
 
+    /**
+     * set the language to code specified by {@code language}
+     *
+     * @param language
+     *            should be an ISO 639-1 three letter code
+     */
     public void setLanguage(String language) {
         ((Element) doc.getElementsByTagName("text").item(0))
                 .setAttributeNS(NameSpaces.XML_NS, "lang", language);
@@ -61,8 +99,9 @@ public class SpeechDocument {
             Comment comment = doc
                     .createComment("[ There were errors parsing your text: ");
             head.insertBefore(comment, before);
-            comment = doc.createComment(
-                    "  please refer to online documentation to correct them. ]");
+            comment = doc
+                    .createComment("  please refer to online documentation "
+                            + "on how to correct them. ]");
             head.insertBefore(comment, before);
             for (String error : errors) {
                 comment = doc.createComment("  - " + error + " ");
@@ -95,7 +134,8 @@ public class SpeechDocument {
                         + ((MarkedEvent) e).getMark() + "› in the input.");
                 timeLine.insertBefore(explainMark, el);
                 el = doc.createElement("when");
-                el.setAttributeNS(NameSpaces.XML_NS, "id", ((MarkedEvent) e).mkEndTime());
+                el.setAttributeNS(NameSpaces.XML_NS, "id",
+                        ((MarkedEvent) e).mkEndTime());
                 timeLine.appendChild(el);
             }
         }
@@ -105,6 +145,7 @@ public class SpeechDocument {
      * insert sorted list of speakers
      *
      * @param speakers
+     *            the speakers
      */
     public void makeSpeakerList(Collection<String> speakers) {
         // iterate over speakers
@@ -116,21 +157,23 @@ public class SpeechDocument {
         Element list = (Element) doc.getElementsByTagName("particDesc").item(0);
         speakers.stream().sorted().forEach(s -> {
             Element person = doc.createElementNS(NameSpaces.TEI_NS, "person");
-            Element persName = doc.createElementNS(NameSpaces.TEI_NS, "persName");
+            Element persName = doc.createElementNS(NameSpaces.TEI_NS,
+                    "persName");
             Element abbr = doc.createElementNS(NameSpaces.TEI_NS, "abbr");
             Text tx = doc.createTextNode(s);
             abbr.appendChild(tx);
             persName.appendChild(abbr);
             person.appendChild(persName);
             person.setAttributeNS(NameSpaces.XML_NS, "id", s);
-            person.setAttributeNS(NameSpaces.XML_NS, "n", s);
+            person.setAttributeNS(NameSpaces.TEI_NS, "n", s);
             list.appendChild(person);
         });
     }
 
     public Element addAnnotationBlock(Event from, Event to) {
         Element block = doc.createElement("annotationBlock");
-        // Element block = doc.createElementNS(NameSpaces.TEI_NS, "annotationBlock");
+        // Element block = doc.createElementNS(NameSpaces.TEI_NS,
+        // "annotationBlock");
         block.setAttribute("who", currentSpeaker);
         block.setAttribute("from", from.mkTimeRef());
         block.setAttribute("to", to.mkTimeRef());
@@ -138,7 +181,8 @@ public class SpeechDocument {
     }
 
     /**
-     * adds &lt;u&gt; with surrounding block and sets {@link #currentUtterance}
+     * adds {@code <u>} with surrounding block and sets
+     * {@link #currentUtterance}
      *
      * @param from
      *            begin event
@@ -176,11 +220,11 @@ public class SpeechDocument {
 
     // TODO: Mit oder ohne Anchor?
     public void addTurn(Event from) {
-//        addAnchor(from, currentUtterance);
+        // addAnchor(from, currentUtterance);
     }
 
     public void endTurn(Event to) {
-//        addAnchor(to, currentUtterance);
+        // addAnchor(to, currentUtterance);
     }
 
     /**
@@ -236,6 +280,7 @@ public class SpeechDocument {
      * @param e
      *            the event in the timeline
      * @param text
+     *            the labelled text
      */
     public void addMarked(MarkedEvent e, String text) {
         addAnchor(e, currentUtterance);
@@ -257,7 +302,8 @@ public class SpeechDocument {
     public void addIncident(Event from, Event to, String text) {
         Element incident = doc.createElement("incident");
         Element desc = doc.createElement("desc");
-        // Element incident = doc.createElementNS(NameSpaces.TEI_NS, "incident");
+        // Element incident = doc.createElementNS(NameSpaces.TEI_NS,
+        // "incident");
         // Element desc = doc.createElementNS(NameSpaces.TEI_NS, "desc");
         Text tx = doc.createTextNode(text);
         desc.appendChild(tx);
@@ -268,9 +314,13 @@ public class SpeechDocument {
                 currentUtterance);
     }
 
+    /**
+     * final words
+     */
     public void finish() {
         DocUtilities.makeChange(doc,
-                "created from Simple EXMARaLDA plain text transcript");
+                "created from Simple EXMARaLDA plain text transcript; "
+                        + "language set to «" + language + "»");
     }
 
 }

@@ -1,5 +1,9 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +13,7 @@ import org.w3c.dom.Element;
 /**
  * a normalizer for the TEI transcription format.
  *
- * Mainly applies the normalizer {@link #norm} to all &lt;w&gt; Elements in a
+ * Mainly applies the normalizer {@link #normalizer} to all &lt;w&gt; Elements in a
  * document.
  *
  * @author bfi
@@ -20,45 +24,79 @@ public class TEINormalizer {
     private final static Logger LOGGER = LoggerFactory
             .getLogger(TEINormalizer.class.getName());
 
-    WordNormalizer norm;
+    /**
+     * the document language per request; "deu" if nothing is given
+     */
+    private String language;
+
+    WordNormalizer normalizer;
 
     /**
      * make new {@link TEINormalizer} that uses a {@link WordNormalizer}
      *
      * @param wn
      */
+    public TEINormalizer(WordNormalizer wn, String language) {
+        normalizer = wn;
+        this.language = language != null ? language : "deu";
+    }
+
     public TEINormalizer(WordNormalizer wn) {
-        norm = wn;
+        this(wn, "deu");
+    }
+
+    public TEINormalizer(String language) {
+        normalizer = new DictionaryNormalizer(); // TODO: currently, only German,
+                                           // anyway!
+        this.language = language != null ? language : "deu";
     }
 
     /**
-     * normalize an XML document using the normalizer {@link #norm}.
+     * normalize an XML document using the normalizer {@link #normalizer}.
      *
      * @param doc
      *            – the XML file DOM
      * @return the document again
      */
     public Document normalize(Document doc) {
-        Utilities.toStream(doc.getElementsByTagName("w")).forEach(e -> {
-            Element el = (Element) e;
-            String tx = Utilities.removeSpace(el.getTextContent());
-            String normal = norm.getNormalised(tx);
-            if (normal != null) {
-                String before = el.getAttribute("norm");
-                if (!before.isEmpty()) {
-                    if (!before.equals(normal)) {
-                        LOGGER.info("ReNormalized {} -> {} [was: {}]", tx,
-                                normal, before);
+        Map<String, List<Element>> words = DocUtilities.groupByLanguage("w",
+                doc, language);
+
+        List<String> processed = new ArrayList<>();
+        List<String> unprocessed = new ArrayList<>();
+        // TODO: currently, we only support German normalization!
+        words.forEach((lang, utters) -> {
+            if (lang != "deu") {
+
+                utters.forEach(e -> {
+                    Element el = e;
+                    String tx = Utilities.removeSpace(el.getTextContent());
+                    String normal = normalizer.getNormalised(tx);
+                    if (normal != null) {
+                        String before = el.getAttribute("normalizer");
+                        if (!before.isEmpty()) {
+                            if (!before.equals(normal)) {
+                                LOGGER.info("ReNormalized {} -> {} [was: {}]",
+                                        tx, normal, before);
+                            }
+                        } else {
+                            LOGGER.info("Normalized {} -> {}", tx, normal);
+                        }
+                        el.setAttribute("normalizer", normal);
+                    } else {
+                        LOGGER.info("Cannot normalize «{}».", tx);
                     }
-                } else {
-                    LOGGER.info("Normalized {} -> {}", tx, normal);
-                }
-                el.setAttribute("norm", normal);
+                });
+                processed.add(lang);
             } else {
-                LOGGER.info("Cannot normalize «{}».", tx);
+                unprocessed.add(lang);
             }
         });
-        DocUtilities.makeChange(doc, "normalized by OrthoNormal");
+
+        // TODO: currently, we only support German normalization!
+        DocUtilities.makeChange(doc,
+                "normalized words using the OrthoNormal dictionaries",
+                processed, unprocessed);
         return doc;
     }
 

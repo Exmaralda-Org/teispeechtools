@@ -38,6 +38,9 @@ import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.WordContext;
 import net.sf.saxon.om.NameChecker;
 
 /**
+ * converter from Simple EXMARaLDA-encoded document of annotated speech to a
+ * TEI-encoded document
+ *
  * @author bfi
  *
  */
@@ -64,7 +67,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      *
      * prepare XML template.
      */
-    public TextToTEI(String language, CommonTokenStream tokens) {
+    public TextToTEI(CommonTokenStream tokens, String language) {
         this.tokens = tokens;
         javax.xml.parsers.DocumentBuilder builder;
         try (InputStream templateSource = DictionaryNormalizer.class
@@ -84,14 +87,14 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     }
 
     /**
-     * TimeL get XML DOM Document from {@link SpeechDocument}
+     * get XML DOM Document from {@link SpeechDocument}
      */
     public Document getDocument() {
         return spd.getDocument();
     }
 
     /**
-     * in timeline, move one before another.
+     * in timeline, move one Event before another.
      *
      * @param e
      *            event to be moved
@@ -135,9 +138,10 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         if (NameChecker.isValidNCName(name)) {
             speakers.add(name);
         } else {
-            throw new IllegalArgumentException("'" + name
-                    + "' is not a valid name. Start with a letter and use letters, "
-                    + "full stops, underscores and digits only!");
+            throw new IllegalArgumentException(
+                    "«" + name + "» is not a valid name. Names "
+                            + "start with a letter and use letters, "
+                            + "full stops, underscores and digits only!");
         }
     }
 
@@ -260,7 +264,6 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         boolean space = (left != null);
         spd.addText(ctx.getText(), space);
     }
-
 
     /**
      * prepare list of errors, delegate do {@link SpeechDocument}

@@ -120,9 +120,9 @@ public class DictionaryNormalizer implements WordNormalizer {
         }
         try (BufferedReader derekoReader = getDerekoReader()) {
             derekoReader.lines()
-            // .parallel() // uncomment if order is irrelevant
-            .map(String::trim).filter(s -> !s.isEmpty())
-            .forEach(l -> dict.putIfAbsent(l.toLowerCase(), l));
+                    // .parallel() // uncomment if order is irrelevant
+                    .map(String::trim).filter(s -> !s.isEmpty())
+                    .forEach(l -> dict.putIfAbsent(l.toLowerCase(), l));
         }
         LOGGER.info("Final dictionary: {} entries", dict.size());
         derekoLoaded = true;
@@ -177,8 +177,8 @@ public class DictionaryNormalizer implements WordNormalizer {
                 loadCompiledDict();
             } catch (NullPointerException e) {
                 force = true;
-                LOGGER.warn(
-                        "Internal dictionary not available – forcing reload");
+                LOGGER.warn("Compiled dictionary not available – "
+                        + "forcing reload of sources");
             }
         }
         if (force) {
@@ -194,17 +194,17 @@ public class DictionaryNormalizer implements WordNormalizer {
         }
     }
 
-    @Override
-    public String getNormalised(String in) {
-        return dict.get(in);
+    public DictionaryNormalizer(boolean debugging) {
+        debug = debugging;
+        loadDictionary();
     }
 
     public DictionaryNormalizer() {
         this(false);
     }
 
-    public DictionaryNormalizer(boolean debugging) {
-        debug = debugging;
-        loadDictionary();
+    @Override
+    public String getNormalised(String in) {
+        return dict.get(in);
     }
 }
