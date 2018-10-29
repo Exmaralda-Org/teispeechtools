@@ -29,10 +29,10 @@ import picocli.CommandLine.Spec;
 @Command(description = "process documents of annotated speech", name = "spindel", mixinStandardHelpOptions = true, version = "spindel 0.1")
 public class CLI implements Runnable {
 
-    @Option(names = { "-v", "--verbose" }, description = "give more info")
-    private boolean verbose = false;
-
-    @Option(names = { "-i", "--indent" }, description = "indent")
+    // @Option(names = {"-v", "--verbose"}, description = "give more info")
+    // private boolean verbose = false;
+    //
+    @Option(names = {"--indent"}, description = "indent")
     private boolean indent = false;
     // @Command() static void normalize
 
@@ -43,21 +43,24 @@ public class CLI implements Runnable {
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing Step, one of: ${COMPLETION-CANDIDATES}")
     private Step step;
 
-    @Parameters(index = "1", paramLabel = "FILE", description = "File(s) to process.")
-    private File inputFile;
-
     @Option(names = { "-l",
             "--language" }, description = "the (default) language of the document an ISO-639 language code")
     private String language = "deu";
 
+    @Option(names = { "-i",
+    "--input" }, description = "file to read from, by default STDIN")
+    private File inputFile;
+
     @Option(names = { "-o",
-            "--output" }, description = "file to write to, by default /dev/stdout")
+            "--output" }, description = "file to write to, by default STDOUT")
     private File outFile;
 
     @Spec
     private CommandSpec spec; // injected by picocli
 
     private OutputStream outStream = System.out;
+
+    private InputStream inputStream = System.in;
 
     private static DocumentBuilderFactory factory = DocumentBuilderFactory
             .newInstance();
@@ -87,9 +90,16 @@ public class CLI implements Runnable {
                 System.err.println("--> continuing to print to STDOUT");
             }
         }
+        if (inputFile != null) {
+            try {
+                inputStream = new FileInputStream(inputFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         if (!DocUtilities.isLanguage(language)) {
             throw new ParameterException(spec.commandLine(),
-                    String.format("%s is not a valid language!", language));
+                    String.format("«%s» is not a valid language!", language));
         } else {
             language = DocUtilities.getLanguage(language).get();
         }
@@ -115,7 +125,7 @@ public class CLI implements Runnable {
 
     public void pos() {
         try {
-            Document doc = builder.parse(inputFile);
+            Document doc = builder.parse(inputStream);
             TEIPOS teipo = new TEIPOS(doc, language);
             teipo.posTag();
             Utilities.outputXML(outStream, doc, indent);
@@ -129,7 +139,7 @@ public class CLI implements Runnable {
         WordNormalizer wn = new DictionaryNormalizer(true);
         TEINormalizer tn = new TEINormalizer(wn, language);
         try {
-            Document doc = builder.parse(inputFile);
+            Document doc = builder.parse(inputStream);
             System.err.format("Have got %d <w> nodes.\n",
                     doc.getElementsByTagName("w").getLength());
             tn.normalize(doc);
@@ -141,14 +151,15 @@ public class CLI implements Runnable {
     }
 
     public void text2iso() {
-        try (InputStream inputStream = new FileInputStream(inputFile)) {
             // DocUtilities.setupLanguage();
-            CharStream input = CharStreams.fromStream(inputStream);
+            CharStream input;
+            try {
+                input = CharStreams.fromStream(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             Document doc = TextToTEIConversion.call(input, language);
             Utilities.outputXML(outStream, doc, indent);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 

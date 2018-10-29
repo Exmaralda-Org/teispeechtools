@@ -114,8 +114,9 @@ public class TEIPOS {
         assert modelLang != null;
         String model = modelMap.get(modelLang);
         assert model != null;
-
-        treeTagger.setModel(modelName(model));
+        String modelFName = modelName(model);
+        LOGGER.info("model file is: {}", modelFName);
+        treeTagger.setModel(modelFName);
         for (Element u : utterances) {
             try {
                 treeTagger.process(

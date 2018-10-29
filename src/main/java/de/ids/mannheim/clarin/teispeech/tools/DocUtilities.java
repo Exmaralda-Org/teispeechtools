@@ -26,8 +26,6 @@ import org.w3c.dom.NodeList;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
-
 public class DocUtilities {
     /**
      * add a change to the end of the {@code <revisionDesc>}
@@ -108,10 +106,10 @@ public class DocUtilities {
      * @return Optional containing the language code, or empty
      */
     public static Optional<String> getLanguage(Element el) {
-        String lang = el.getAttributeNS(NameSpaces.XML_NS, "lang");
+        String lang = el.getAttribute("xml:lang");
         for (Node parent = el.getParentNode(); lang.isEmpty()
                 && parent != null && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent.getParentNode()) {
-            lang = ((Element) parent).getAttributeNS(NameSpaces.XML_NS, "lang");
+            lang = ((Element) parent).getAttribute("xml:lang");
         }
         if (!lang.isEmpty()) {
             return getLanguage(lang);
