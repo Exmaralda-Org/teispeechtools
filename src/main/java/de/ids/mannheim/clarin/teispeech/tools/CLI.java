@@ -20,8 +20,11 @@ import org.xml.sax.SAXException;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.Parameters;
+import picocli.CommandLine.Spec;
 
 @Command(description = "process documents of annotated speech", name = "spindel", mixinStandardHelpOptions = true, version = "spindel 0.1")
 public class CLI implements Runnable {
@@ -48,8 +51,11 @@ public class CLI implements Runnable {
     private String language = "deu";
 
     @Option(names = { "-o",
-    "--output" }, description = "the (default) language of the document an ISO-639 language code")
+            "--output" }, description = "file to write to, by default /dev/stdout")
     private File outFile;
+
+    @Spec
+    private CommandSpec spec; // injected by picocli
 
     private OutputStream outStream = System.out;
 
@@ -81,6 +87,12 @@ public class CLI implements Runnable {
                 System.err.println("--> continuing to print to STDOUT");
             }
         }
+        if (!DocUtilities.isLanguage(language)) {
+            throw new ParameterException(spec.commandLine(),
+                    String.format("%s is not a valid language!", language));
+        } else {
+            language = DocUtilities.getLanguage(language).get();
+        }
         switch (step) {
         case text2iso:
             text2iso();
@@ -100,7 +112,6 @@ public class CLI implements Runnable {
     public void segmentize() {
         System.err.println("Sorry, Segmentation has not yet been implemented.");
     }
-
 
     public void pos() {
         try {

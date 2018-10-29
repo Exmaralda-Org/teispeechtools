@@ -63,8 +63,7 @@ public class TEIPOS {
         ObjectMapper mapper = new ObjectMapper();
         try {
             modelMap = mapper.readValue(
-                    ClassLoader.getSystemClassLoader()
-                            .getResourceAsStream(MODELS_PATH),
+                    TEIPOS.class.getResourceAsStream(MODELS_PATH),
                     new TypeReference<Map<String, String>>() {
                     });
         } catch (IOException e) {
@@ -96,7 +95,7 @@ public class TEIPOS {
      * @return file name
      */
     private static String modelName(String modelName) {
-        return System.getProperty("treetagger.home") + "/models/" + modelName
+        return System.getProperty("treetagger.home") + "/lib/" + modelName
                 + ".par:utf-8";
     }
 

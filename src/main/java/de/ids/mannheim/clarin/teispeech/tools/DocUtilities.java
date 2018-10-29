@@ -20,6 +20,7 @@ import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -108,9 +109,9 @@ public class DocUtilities {
      */
     public static Optional<String> getLanguage(Element el) {
         String lang = el.getAttributeNS(NameSpaces.XML_NS, "lang");
-        for (Element parent = (Element) el.getParentNode(); lang.isEmpty()
-                && parent != null; parent = (Element) parent.getParentNode()) {
-            lang = parent.getAttributeNS(NameSpaces.XML_NS, "lang");
+        for (Node parent = el.getParentNode(); lang.isEmpty()
+                && parent != null && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent.getParentNode()) {
+            lang = ((Element) parent).getAttributeNS(NameSpaces.XML_NS, "lang");
         }
         if (!lang.isEmpty()) {
             return getLanguage(lang);
@@ -195,7 +196,7 @@ public class DocUtilities {
      * @return whether
      */
     public static boolean isLanguage(String lang) {
-        return languageMap.containsValue(lang.toLowerCase());
+        return languageMap.containsKey(lang.toLowerCase());
     }
 
     /**
