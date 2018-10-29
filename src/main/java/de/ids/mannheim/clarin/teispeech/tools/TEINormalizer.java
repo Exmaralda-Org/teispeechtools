@@ -29,7 +29,7 @@ public class TEINormalizer {
      */
     private String language;
 
-    WordNormalizer normalizer;
+    private WordNormalizer normalizer;
 
     /**
      * make new {@link TEINormalizer} that uses a {@link WordNormalizer}
@@ -59,7 +59,7 @@ public class TEINormalizer {
      * normalize an XML document using the normalizer {@link #normalizer}.
      *
      * @param doc
-     *            – the XML file DOM
+     *            the XML file DOM
      * @return the document again
      */
     public Document normalize(Document doc) {
@@ -69,10 +69,10 @@ public class TEINormalizer {
         List<String> processed = new ArrayList<>();
         List<String> unprocessed = new ArrayList<>();
         // TODO: currently, we only support German normalization!
-        words.forEach((lang, utters) -> {
-            if (lang != "deu") {
+        words.forEach((lang, ws) -> {
+            if (lang == "deu") {
 
-                utters.forEach(e -> {
+                ws.forEach(e -> {
                     Element el = e;
                     String tx = Utilities.removeSpace(el.getTextContent());
                     String normal = normalizer.getNormalised(tx);

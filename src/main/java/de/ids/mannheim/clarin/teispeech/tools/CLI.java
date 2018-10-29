@@ -37,7 +37,7 @@ public class CLI implements Runnable {
     // @Command() static void normalize
 
     enum Step {
-        text2iso, segmentize, normalize, pos
+        text2iso, segmentize, normalize, pos, guess
     };
 
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing Step, one of: ${COMPLETION-CANDIDATES}")
@@ -116,6 +116,9 @@ public class CLI implements Runnable {
         case segmentize:
             segmentize();
             break;
+        case guess:
+            guess();
+            break;
         }
     }
 
@@ -128,6 +131,18 @@ public class CLI implements Runnable {
             Document doc = builder.parse(inputStream);
             TEIPOS teipo = new TEIPOS(doc, language);
             teipo.posTag();
+            Utilities.outputXML(outStream, doc, indent);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void guess() {
+        try {
+            Document doc = builder.parse(inputStream);
+            LanguageDetect ld = new LanguageDetect(doc, language);
+            ld.detect();
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
