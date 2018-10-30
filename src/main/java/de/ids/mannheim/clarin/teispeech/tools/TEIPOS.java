@@ -153,8 +153,7 @@ public class TEIPOS {
             });
             treeTagger.setHandler((token, pos, lemma) -> {
                 token.setAttribute("pos", pos);
-                // TODO: Klären!
-                // token.setAttribute("lemma", lemma);
+                token.setAttribute("lemma", lemma);
             });
             List<String> tagged = new ArrayList<>();
             List<String> untagged = new ArrayList<>();

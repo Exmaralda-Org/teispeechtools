@@ -85,7 +85,7 @@ public class LanguageDetect {
     public LanguageDetect(Document doc, String language, String[] expected) {
         this.doc = doc;
         this.language = language != null ? language : "deu";
-        if (expected != null) {
+        if (expected != null && expected.length > 0) {
             expectedLanguages = new HashSet<String>();
             expectedLanguages.add(language);
             for (String l : expected) {
