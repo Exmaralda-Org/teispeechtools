@@ -128,6 +128,13 @@ public class CLI implements Runnable {
         }
     }
 
+    /**
+     * check language parameters
+     *
+     * @param lang
+     *            a String given as a language
+     * @return
+     */
     private String checkLanguage(String lang) {
         if (!DocUtilities.isLanguage(lang)) {
             throw new ParameterException(spec.commandLine(),
@@ -138,10 +145,29 @@ public class CLI implements Runnable {
         return lang;
     }
 
+    public void text2iso() {
+        // DocUtilities.setupLanguage();
+        CharStream inputCS;
+        try {
+            inputCS = CharStreams.fromStream(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Document doc = TextToTEIConversion.process(inputCS, language);
+        Utilities.outputXML(outStream, doc, indent);
+
+    }
+
+    /**
+     * segment an ISO transcription
+     */
     public void segmentize() {
         System.err.println("Sorry, Segmentation has not yet been implemented.");
     }
 
+    /**
+     * pos-tag an ISO transcription
+     */
     public void pos() {
         try {
             Document doc = builder.parse(inputStream);
@@ -154,18 +180,9 @@ public class CLI implements Runnable {
 
     }
 
-    public void guess() {
-        try {
-            Document doc = builder.parse(inputStream);
-            LanguageDetect ld = new LanguageDetect(doc, language, expected);
-            ld.detect(force);
-            Utilities.outputXML(outStream, doc, indent);
-        } catch (IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
+    /**
+     * normalize an ISO transcription
+     */
     public void normalize() {
         WordNormalizer wn = new DictionaryNormalizer(true);
         TEINormalizer tn = new TEINormalizer(wn, language);
@@ -181,17 +198,18 @@ public class CLI implements Runnable {
 
     }
 
-    public void text2iso() {
-        // DocUtilities.setupLanguage();
-        CharStream input;
+    /**
+     * guess languages in an ISO transcription
+     */
+    public void guess() {
         try {
-            input = CharStreams.fromStream(inputStream);
-        } catch (IOException e) {
+            Document doc = builder.parse(inputStream);
+            LanguageDetect ld = new LanguageDetect(doc, language, expected);
+            ld.detect(force);
+            Utilities.outputXML(outStream, doc, indent);
+        } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
-        Document doc = TextToTEIConversion.process(input, language);
-        Utilities.outputXML(outStream, doc, indent);
 
     }
-
 }
