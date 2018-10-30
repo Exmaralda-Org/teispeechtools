@@ -8,7 +8,16 @@ import org.w3c.dom.Document;
 
 public class TextToTEIConversion {
 
-    public static Document call(CharStream input, String language) {
+    /**
+     * convert a plain text document to TEI ISO
+     *
+     * @param input
+     *            the input
+     * @param language
+     *            the language of the document
+     * @return the document
+     */
+    public static Document process(CharStream input, String language) {
         SimpleExmaraldaLexer lexer = new SimpleExmaraldaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SimpleExmaraldaParser parser = new SimpleExmaraldaParser(tokens);

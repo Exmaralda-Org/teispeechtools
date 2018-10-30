@@ -108,8 +108,8 @@ public class TEIPOS {
      *            the list of &lt;u&gt; elements
      * @throws IOException
      */
-    private void tagByLanguage(String lang, List<Element> utterances)
-            throws IOException {
+    private void tagByLanguage(String lang, List<Element> utterances,
+            boolean force) throws IOException {
         String modelLang = DocUtilities.languageMap.get(lang);
         assert modelLang != null;
         String model = modelMap.get(modelLang);
@@ -118,9 +118,13 @@ public class TEIPOS {
         LOGGER.info("model file is: {}", modelFName);
         treeTagger.setModel(modelFName);
         for (Element u : utterances) {
+            List<Element> words = Utilities
+                    .toElementList(u.getElementsByTagName("w"));
+            if (!force && words.stream().allMatch(e -> e.hasAttribute("pos"))) {
+                continue;
+            }
             try {
-                treeTagger.process(
-                        Utilities.toElementList(u.getElementsByTagName("w")));
+                treeTagger.process(words);
             } catch (TreeTaggerException | IOException tte) {
                 throw new RuntimeException(tte);
             }
@@ -131,9 +135,12 @@ public class TEIPOS {
     /**
      * pos-tag the document
      *
+     * @param force
+     *            whether to force tagging even if utterance already tagged
+     *
      * @return current {@link TEIPOS} instance, for chaining
      */
-    public TEIPOS posTag() {
+    public Document posTag(boolean force) {
 
         // aggregate by language to avoid restarting the tagger all the time
         treeTagger = new TreeTaggerWrapper<>();
@@ -155,7 +162,7 @@ public class TEIPOS {
                     .forEach((language, utters) -> {
                         if (modelMap.containsKey(language)) {
                             try {
-                                tagByLanguage(language, utters);
+                                tagByLanguage(language, utters, force);
                                 tagged.add(language);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
@@ -171,7 +178,7 @@ public class TEIPOS {
         } finally {
             treeTagger.destroy();
         }
-        return this;
+        return doc;
     }
 
 }

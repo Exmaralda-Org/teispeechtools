@@ -49,7 +49,7 @@ public class DocUtilities {
      * valid terminological ISO-639-2 three letter codes
      *
      * see {@link #languageCodesThree} for a list including bibliographic
-     *      variants
+     * variants
      */
     public static Set<String> languageTriples;
 
@@ -224,6 +224,14 @@ public class DocUtilities {
      */
     public static String getLanguage(String lang, String defaultL) {
         return languageMap.getOrDefault(lang.toLowerCase(), defaultL);
+    }
+
+    public static String getTextOrNorm(Element el) {
+        if (el.hasAttribute("norm")) {
+            return el.getAttribute("norm");
+        } else {
+            return el.getTextContent();
+        }
     }
 
     /**

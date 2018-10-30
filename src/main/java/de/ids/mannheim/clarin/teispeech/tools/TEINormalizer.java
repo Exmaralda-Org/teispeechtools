@@ -60,9 +60,11 @@ public class TEINormalizer {
      *
      * @param doc
      *            the XML file DOM
+     * @param force
+     *            whether to force normalization even if already normalized
      * @return the document again
      */
-    public Document normalize(Document doc) {
+    public Document normalize(Document doc, boolean force) {
         Map<String, List<Element>> words = DocUtilities.groupByLanguage("w",
                 doc, language);
 
@@ -73,6 +75,9 @@ public class TEINormalizer {
             if (lang == "deu") {
 
                 ws.forEach(e -> {
+                    if (!force && e.hasAttribute("norm")) {
+                        return;
+                    }
                     Element el = e;
                     String tx = Utilities.removeSpace(el.getTextContent());
                     String normal = normalizer.getNormalised(tx);

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,8 +33,16 @@ public class CLI implements Runnable {
     // @Option(names = {"-v", "--verbose"}, description = "give more info")
     // private boolean verbose = false;
     //
-    @Option(names = {"--indent"}, description = "indent")
+    @Option(names = { "--indent" }, description = "indent")
     private boolean indent = false;
+    // @Command() static void normalize
+
+    @Option(names = "--expected", split = ",", description = "comma-separated list of expected languages besides main language; by default deu,en,tur (ONLY guess)")
+    String[] expected = { "deu", "en", "tur" };
+
+    @Option(names = {
+            "--force" }, description = "force STEP even if it has been executed already (not for text2iso!)")
+    private boolean force = false;
     // @Command() static void normalize
 
     enum Step {
@@ -48,7 +57,7 @@ public class CLI implements Runnable {
     private String language = "deu";
 
     @Option(names = { "-i",
-    "--input" }, description = "file to read from, by default STDIN")
+            "--input" }, description = "file to read from, by default STDIN")
     private File inputFile;
 
     @Option(names = { "-o",
@@ -97,12 +106,9 @@ public class CLI implements Runnable {
                 throw new RuntimeException(e);
             }
         }
-        if (!DocUtilities.isLanguage(language)) {
-            throw new ParameterException(spec.commandLine(),
-                    String.format("«%s» is not a valid language!", language));
-        } else {
-            language = DocUtilities.getLanguage(language).get();
-        }
+        language = checkLanguage(language);
+        expected = Stream.of(expected).map(this::checkLanguage)
+                .toArray(String[]::new);
         switch (step) {
         case text2iso:
             text2iso();
@@ -122,6 +128,16 @@ public class CLI implements Runnable {
         }
     }
 
+    private String checkLanguage(String lang) {
+        if (!DocUtilities.isLanguage(lang)) {
+            throw new ParameterException(spec.commandLine(),
+                    String.format("«%s» is not a valid language!", lang));
+        } else {
+            lang = DocUtilities.getLanguage(lang).get();
+        }
+        return lang;
+    }
+
     public void segmentize() {
         System.err.println("Sorry, Segmentation has not yet been implemented.");
     }
@@ -130,7 +146,7 @@ public class CLI implements Runnable {
         try {
             Document doc = builder.parse(inputStream);
             TEIPOS teipo = new TEIPOS(doc, language);
-            teipo.posTag();
+            teipo.posTag(force);
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
@@ -141,8 +157,8 @@ public class CLI implements Runnable {
     public void guess() {
         try {
             Document doc = builder.parse(inputStream);
-            LanguageDetect ld = new LanguageDetect(doc, language);
-            ld.detect();
+            LanguageDetect ld = new LanguageDetect(doc, language, expected);
+            ld.detect(force);
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
@@ -157,7 +173,7 @@ public class CLI implements Runnable {
             Document doc = builder.parse(inputStream);
             System.err.format("Have got %d <w> nodes.\n",
                     doc.getElementsByTagName("w").getLength());
-            tn.normalize(doc);
+            tn.normalize(doc, force);
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
@@ -166,15 +182,15 @@ public class CLI implements Runnable {
     }
 
     public void text2iso() {
-            // DocUtilities.setupLanguage();
-            CharStream input;
-            try {
-                input = CharStreams.fromStream(inputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Document doc = TextToTEIConversion.call(input, language);
-            Utilities.outputXML(outStream, doc, indent);
+        // DocUtilities.setupLanguage();
+        CharStream input;
+        try {
+            input = CharStreams.fromStream(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Document doc = TextToTEIConversion.process(input, language);
+        Utilities.outputXML(outStream, doc, indent);
 
     }
 
