@@ -6,6 +6,7 @@ grammar SimpleExmaralda;
 
 options {tokenVocab=SimpleExmaraldaLexer;}
 
+@header{package de.ids.mannheim.clarin.teispeech.tools;}
 
 transcript :  line+ ;
 

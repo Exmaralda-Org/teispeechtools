@@ -162,10 +162,10 @@
         </executions>
         <configuration>
           <outputDirectory>${project.build.directory}/generated-sources/antlr4/de/ids/mannheim/clarin/teispeech/tools</outputDirectory>
-          <arguments>
+          <!-- arguments>
             <argument>-package</argument>
             <argument>de.ids.mannheim.clarin.teispeech.tools</argument>
-          </arguments>
+          </arguments-->
         </configuration>
       </plugin>
     </plugins>

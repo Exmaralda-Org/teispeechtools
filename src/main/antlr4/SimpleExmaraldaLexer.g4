@@ -4,6 +4,8 @@
 
 lexer grammar SimpleExmaraldaLexer;
 
+@header{package de.ids.mannheim.clarin.teispeech.tools;}
+
 SPACE : [\t ]+ -> channel(HIDDEN);
 
 HWORD : ~[:\t \n\r]+;
