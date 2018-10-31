@@ -18,11 +18,11 @@
         <pattern name="ALPHABET_LETTERS_SMALL">
             <regex>[a-zäöüß]</regex>
             <comment>any lower case letters from the German alphabet</comment>                
-            <language name="ger">
+            <language name="deu">
                 <regex>[a-zäöüß]</regex>
                 <comment>any lower case letters from the German alphabet</comment>                
             </language>
-            <language name="GER">
+            <language name="DEU">
                 <regex>[a-zäöüßA-ZÄÖÜ]</regex>
                 <comment>any lower or upper case letters from the German alphabet</comment>                
             </language>
@@ -30,7 +30,7 @@
                 <regex>[a-z']</regex>
                 <comment>any lower case letters from the English alphabet</comment>                
             </language>
-            <language name="fre">
+            <language name="fra">
                 <regex>[a-zàâçéèêëîïôœùûüÿ'-]</regex>
                 <comment>any lower case letters from the French alphabet</comment>                
             </language>
@@ -72,7 +72,7 @@
                 <comment>characters for Latin transliteration of Russian</comment>
             </language>                                        
             <language name="universal">
-                <regex>[\p{javaLowerCase}']</regex>
+                <regex>[\p{Ll}']</regex>
                 <comment>any lower case letters from any alphabet</comment>                
             </language>
         </pattern>

@@ -15,10 +15,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.jdom2.JDOMException;
+import org.jdom2.output.XMLOutputter;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import de.ids.mannheim.clarin.teispeech.data.GATParser;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
@@ -159,13 +162,6 @@ public class CLI implements Runnable {
     }
 
     /**
-     * segment an ISO transcription
-     */
-    public void segmentize() {
-        System.err.println("Sorry, Segmentation has not yet been implemented.");
-    }
-
-    /**
      * pos-tag an ISO transcription
      */
     public void pos() {
@@ -209,6 +205,25 @@ public class CLI implements Runnable {
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
+     * segment an ISO transcription
+     */
+    public void segmentize() {
+        try {
+            org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
+            GATParser parser = new GATParser(language);
+            parser.parseDocument(doc, 2);
+            XMLOutputter outputter = new XMLOutputter();
+            outputter.output(doc, outStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (JDOMException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }
