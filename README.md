@@ -27,13 +27,17 @@ based on dictionaries from the FOLK and the DeReKo corpora.
 
 # Compilation
 
+```sh
     mvn install dependency:copy-dependencies
-    
+```
+
 installs the package locally with Maven and copies the dependencies to
 `target/dependency`.  You can use this package as a library then, or
 use the CLI (see below).  If you only want to use the CLI, you can run:
 
+```sh
     mvn package dependency:copy-dependencies
+```
 
 This will pull in the sources and make a runnable [JAR](https://en.wikipedia.org/wiki/JAR_%28file_format%29)
 
@@ -44,13 +48,35 @@ This will pull in the sources and make a runnable [JAR](https://en.wikipedia.org
 To speed up loading time, one can compile the dictionary.  From the root directory 
 of the project, execute:
 
-    java -cp 'target/normal-0.1-SNAPSHOT.jar:target/dependency/*' de.ids.mannheim.clarin.normalverbraucher.DictMaker
-    
+```sh
+java -cp 'target/normal-0.1-SNAPSHOT.jar:target/dependency/*' \
+    de.ids.mannheim.clarin.normalverbraucher.DictMaker
+```
 
 # Run CLI
 
 All functions are also accessible from the command line.  Try:
 
-	java -cp 'target/dependency/*' -jar target/teispeechtools-0.1-SNAPSHOT.jar
+```sh
+java -cp 'target/dependency/*' -jar target/teispeechtools-0.1-SNAPSHOT.jar
+```
 
 and follow the help.
+
+
+# Check Pattern files
+
+To check the files with regular expressions, you can run:
+
+```sh
+java -cp 'target/dependency/*:target/teispeechtools-0.1-SNAPSHOT.jar' \
+    de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner -h
+```
+
+to get help. E.g.,
+
+```sh
+java -cp 'target/dependency/*:target/teispeechtools-0.1-SNAPSHOT.jar' \
+    de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner \
+    -i src/main/xml/Patterns.xml -l universal -L 2
+```
