@@ -49,7 +49,10 @@ public class GATParser extends AbstractParser {
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
     XSLTransformer basicTransformer;
 
-    public GATParser(String languageCode) throws JDOMException, IOException {
+    boolean picky = false;
+
+    public GATParser(String languageCode, boolean picky)
+            throws JDOMException, IOException {
 
         PatternReader pr = new PatternReader(
                 GATParser.class.getResourceAsStream(PATTERNS_FILE_PATH));
@@ -135,13 +138,12 @@ public class GATParser extends AbstractParser {
                         System.err.println("ETEXT: " + eventText);
                         if (!(minimalPatterns.get("GAT_EVENT")
                                 .matcher(eventText).matches())) {
-                            System.err.println(
-                                    String.format("NOT! %s %s", eventText,
-                                            eventText.matches(minimalPatterns
-                                                    .get("GAT_CONTRIBUTION")
-                                                    .toString())));
+                            System.err.println(String.format(
+                                    "EVENT DID NOT MATCH: «%s»", eventText));
                             totalParseOK = false;
-//                            break;
+                            // TODO: Hä?
+                            if (picky)
+                                break;
                         }
                         System.err.println("MATCHED!");
                         text += eventText;
@@ -157,7 +159,9 @@ public class GATParser extends AbstractParser {
                 if (!totalParseOK) {
                     System.err.println(
                             "TOTAL PARSE FAILED: " + unparsed.getText());
-//                    continue;
+                    // TODO: Ups?ß
+                    if (picky)
+                        continue;
                 }
                 try {
                     text = parseText(text, "GAT_NON_PHO", minimalPatterns);

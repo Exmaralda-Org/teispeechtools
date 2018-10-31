@@ -9,7 +9,8 @@
     <!-- removed template for UNINTELLIGIBLE -->
 
     <xsl:template match="contribution">
-        <xsl:element name="contribution">
+        <xsl:element name="seg">
+          <xsl:attribute name="type" value="contribution"/>
             <xsl:copy-of select="@speaker-reference"/>
             <xsl:copy-of select="@start-reference"/>
             <xsl:copy-of select="@end-reference"/>
@@ -57,17 +58,24 @@
     </xsl:template>
     
     <xsl:template match="GAT_BREATHE">
-        <xsl:element name="breathe">
-            <xsl:attribute name="type">
-                <!-- changed on 04-02-2009 -->
-                <!-- changed on 06-04-2008 -->
-                <xsl:if test="substring(text(),1,1)='°'">in</xsl:if>
-                <xsl:if test="substring(text(),string-length(),1)='°'">out</xsl:if>
-            </xsl:attribute>
-            <xsl:attribute name="length">
-                <xsl:value-of select="string-length()-1"/>
-            </xsl:attribute>
-        </xsl:element>
+      <vocal>
+        <desc>
+          <xsl:variable name="length">
+            <xsl:value-of select="string-length()-1"/>
+          </xsl:variable>
+          <xsl:choose>
+            <xsl:when test="$length = 1">short</xsl:when>
+            <xsl:when test="$length = 2">medium</xsl:when>
+            <xsl:when test="$length = 3">long</xsl:when>
+          </xsl:choose>
+          <xsl:attribute name="type">
+            <!-- changed on 04-02-2009 -->
+            <!-- changed on 06-04-2008 -->
+            <xsl:if test="substring(text(),1,1)='°'">in</xsl:if>
+            <xsl:if test="substring(text(),string-length(),1)='°'">out</xsl:if>
+          </xsl:attribute>
+        </desc>
+      </vocal>
     </xsl:template>
 
     <!-- removed on 06-03-2009 -->
@@ -80,15 +88,16 @@
     </xsl:template> -->
     
     <xsl:template match="GAT_UNCERTAIN">
-        <uncertain>
+        <unclear>
             <xsl:apply-templates select="GAT_ALTERNATIVE | GAT_WORD"/>
-        </uncertain>
+        </unclear>
     </xsl:template>
     
+    <!-- TODO: alternative segmentation? -->
     <xsl:template match="GAT_ALTERNATIVE">
-        <alternative>
+        <choice>
             <xsl:apply-templates select="GAT_WORD"/>
-        </alternative>
+        </choice>
     </xsl:template>
     
     <xsl:template match="GAT_WORDBOUNDARY">

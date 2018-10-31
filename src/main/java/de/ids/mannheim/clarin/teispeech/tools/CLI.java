@@ -63,6 +63,10 @@ public class CLI implements Runnable {
             "--input" }, description = "file to read from, by default STDIN")
     private File inputFile;
 
+    @Option(names = { "-q",
+            "--picky" }, description = "whether to fail on partial parses (segmentize only)")
+    private boolean picky = false;
+
     @Option(names = { "-o",
             "--output" }, description = "file to write to, by default STDOUT")
     private File outFile;
@@ -215,7 +219,7 @@ public class CLI implements Runnable {
     public void segmentize() {
         try {
             org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
-            GATParser parser = new GATParser(language);
+            GATParser parser = new GATParser(language, picky);
             parser.parseDocument(doc, 2);
             XMLOutputter outputter = new XMLOutputter();
             outputter.output(doc, outStream);
