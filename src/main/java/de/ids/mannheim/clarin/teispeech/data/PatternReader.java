@@ -54,7 +54,7 @@ public class PatternReader {
     }
 
     /**
-     * get all Patterns for a leven
+     * get all Patterns for a level
      *
      * @param level
      *            the level
@@ -160,6 +160,7 @@ public class PatternReader {
      * language
      *
      * @param e
+     *            the element whose links to resolve
      * @return the resolved pattern
      * @throws JDOMException
      */
@@ -171,7 +172,7 @@ public class PatternReader {
      * resolve links to other patterns within element content
      *
      * @param e
-     *            the element
+     *            the element whose links to resolve
      * @param languageCode
      *            a language code
      * @return the resolved pattern
