@@ -65,12 +65,12 @@ public class PatternReader {
         return getAllPatterns(level, "default");
     }
 
+    // TODO: Wieso sind die Pattern alle so possessiv?
     // TODO: Ich habe die Muster-Namen auf die *terminologische* Variante
     // umgestellt.
     // TODO: Pattern werden gleich compiliert
     /**
-     *
-     * get all Patterns for a leven
+     * get all Patterns for a level
      *
      * @param level
      *            the level

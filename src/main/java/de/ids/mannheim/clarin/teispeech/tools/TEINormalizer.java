@@ -74,15 +74,14 @@ public class TEINormalizer {
         words.forEach((lang, ws) -> {
             if ("deu".equals(lang)) {
 
-                ws.forEach(e -> {
-                    if (!force && e.hasAttribute("norm")) {
+                ws.forEach(el -> {
+                    if (!force && el.hasAttribute("norm")) {
                         return;
                     }
-                    Element el = e;
                     String tx = Utilities.removeSpace(el.getTextContent());
                     String normal = normalizer.getNormalised(tx);
                     if (normal != null) {
-                        String before = el.getAttribute("normalizer");
+                        String before = el.getAttribute("norm");
                         if (!before.isEmpty()) {
                             if (!before.equals(normal)) {
                                 LOGGER.info("ReNormalized {} -> {} [was: {}]",
@@ -91,7 +90,7 @@ public class TEINormalizer {
                         } else {
                             LOGGER.info("Normalized {} -> {}", tx, normal);
                         }
-                        el.setAttribute("normalizer", normal);
+                        el.setAttribute("norm", normal);
                     } else {
                         LOGGER.info("Cannot normalize «{}».", tx);
                     }

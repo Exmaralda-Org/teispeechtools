@@ -183,7 +183,7 @@ public class DocUtilities {
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL) {
-        return Utilities.toStream(doc.getElementsByTagName("u"))
+        return Utilities.toStream(doc.getElementsByTagName(tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
                         u -> getUtteranceLanguage(u, defaultL),
