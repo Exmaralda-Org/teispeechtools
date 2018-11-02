@@ -72,7 +72,7 @@ public class TEINormalizer {
         List<String> unprocessed = new ArrayList<>();
         // TODO: currently, we only support German normalization!
         words.forEach((lang, ws) -> {
-            if (lang == "deu") {
+            if ("deu".equals(lang)) {
 
                 ws.forEach(e -> {
                     if (!force && e.hasAttribute("norm")) {

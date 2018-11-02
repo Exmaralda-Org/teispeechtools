@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.Text;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 import org.korpora.useful.Utilities;
@@ -26,26 +28,60 @@ import org.korpora.useful.Utilities;
  */
 public class PatternReader {
 
-    Document document;
+    private final Document document;
     private static XPathFactory xpf = XPathFactory.instance();
 
+    /**
+     * read Patterns from file
+     *
+     * @param input
+     * @throws JDOMException
+     * @throws IOException
+     */
     public PatternReader(File input) throws JDOMException, IOException {
         document = Utilities.parseXMLviaJDOM(new FileInputStream(input));
     }
 
+    /**
+     * read Patterns from InputStream
+     *
+     * @param input
+     * @throws JDOMException
+     * @throws IOException
+     */
     public PatternReader(InputStream input) throws JDOMException, IOException {
         document = Utilities.parseXMLviaJDOM(input);
     }
 
-    public Hashtable<String, Pattern> getAllPatterns(int level)
-            throws JDOMException {
+    /**
+     * get all Patterns for a leven
+     *
+     * @param level
+     *            the level
+     * @return the patterns as a Map: name → Pattern
+     * @throws JDOMException
+     */
+    public Map<String, Pattern> getAllPatterns(int level) throws JDOMException {
         return getAllPatterns(level, "default");
     }
 
-    // TODO: Ich habe die Muster auf die *terminologische* Variante umgestellt.
-    public Hashtable<String, Pattern> getAllPatterns(int level,
-            String languageCode) throws JDOMException {
-        Hashtable<String, Pattern> result = new Hashtable<>();
+    // TODO: Ich habe die Muster-Namen auf die *terminologische* Variante
+    // umgestellt.
+    // TODO: Pattern werden gleich compiliert
+    /**
+     *
+     * get all Patterns for a leven
+     *
+     * @param level
+     *            the level
+     * @param languageCode
+     *            the language code
+     * @return the patterns as a Map: name → Pattern
+     * @throws JDOMException
+     */
+    public Map<String, Pattern> getAllPatterns(int level, String languageCode)
+            throws JDOMException {
+        Map<String, Pattern> result = new HashMap<>();
         String xp = "//level[@level='" + Integer.toString(level) + "']/pattern";
         for (Element e : xpf.compile(xp, Filters.element())
                 .evaluate(document)) {
@@ -67,10 +103,32 @@ public class PatternReader {
         return result;
     }
 
+    /**
+     * get the Pattern by name for a specific level
+     *
+     * @param level
+     *            the level
+     * @param name
+     *            the Pattern name
+     * @return the Pattern
+     * @throws JDOMException
+     */
     public Pattern getPattern(int level, String name) throws JDOMException {
         return getPattern(level, name, "default");
     }
 
+    /**
+     * get the Pattern by name for a specific level and language
+     *
+     * @param level
+     *            the level
+     * @param name
+     *            the Pattern name
+     * @param languageCode
+     *            the language name
+     * @return the Pattern
+     * @throws JDOMException
+     */
     public Pattern getPattern(int level, String name, String languageCode)
             throws JDOMException {
         String xp = "//level[@level='" + Integer.toString(level)
@@ -97,20 +155,38 @@ public class PatternReader {
         return pattern;
     }
 
+    /**
+     * resolve links to other patterns within element content for the default
+     * language
+     *
+     * @param e
+     * @return the resolved pattern
+     * @throws JDOMException
+     */
     public String resolveElement(Element e) throws JDOMException {
         return resolveElement(e, "default");
     }
 
+    /**
+     * resolve links to other patterns within element content
+     *
+     * @param e
+     *            the element
+     * @param languageCode
+     *            a language code
+     * @return the resolved pattern
+     * @throws JDOMException
+     */
     public String resolveElement(Element e, String languageCode)
             throws JDOMException {
         String result = "";
         List<Content> l = e.getContent();
         for (Object o : l) {
             // System.out.println(o.toString());
-            if (o instanceof org.jdom2.Text) {
-                result += ((org.jdom2.Text) o).getText();
+            if (o instanceof Text) {
+                result += ((Text) o).getText();
             } else {
-                Element patternRef = ((org.jdom2.Element) o);
+                Element patternRef = ((Element) o);
                 String refName = patternRef.getAttributeValue("ref");
                 // System.out.println("---" + refName);
                 String xp2 = "ancestor::level/descendant::pattern[@name='"

@@ -149,7 +149,7 @@ public class DocUtilities {
      * @return the determined language
      */
     public static String getUtteranceLanguage(Element el, String defaultL) {
-        assert el.getTagName() == "u";
+        assert "u".equals(el.getTagName());
         String lang = getLanguage(el, defaultL);
         Map<String, Long> freq = Utilities
                 .toStream(el.getElementsByTagName("w"))

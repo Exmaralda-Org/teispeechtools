@@ -19,6 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.codepoetics.protonpack.StreamUtils;
+import java.util.Arrays;
 
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
@@ -86,11 +87,9 @@ public class LanguageDetect {
         this.doc = doc;
         this.language = language != null ? language : "deu";
         if (expected != null && expected.length > 0) {
-            expectedLanguages = new HashSet<String>();
+            expectedLanguages = new HashSet<>();
             expectedLanguages.add(language);
-            for (String l : expected) {
-                expectedLanguages.add(l);
-            }
+            expectedLanguages.addAll(Arrays.asList(expected));
 
         }
     }

@@ -33,17 +33,17 @@ public class TEIPOS {
     /**
      * default language
      */
-    private String language;
+    private final String language;
 
     /**
      * XML DOM document
      */
-    private Document doc;
+    private final Document doc;
 
     /**
      * TreeTagger wrapper
      */
-    TreeTaggerWrapper<Element> treeTagger;
+    private TreeTaggerWrapper<Element> treeTagger;
 
     private static final String TREETAGGER_PATH = "/opt/treetagger";
     static {
@@ -158,18 +158,18 @@ public class TEIPOS {
             List<String> tagged = new ArrayList<>();
             List<String> untagged = new ArrayList<>();
             DocUtilities.groupByLanguage("u", doc, language)
-                    .forEach((language, utters) -> {
-                        if (modelMap.containsKey(language)) {
+                    .forEach((uLanguage, utters) -> {
+                        if (modelMap.containsKey(uLanguage)) {
                             try {
-                                tagByLanguage(language, utters, force);
-                                tagged.add(language);
+                                tagByLanguage(uLanguage, utters, force);
+                                tagged.add(uLanguage);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         } else {
-                            untagged.add(language);
+                            untagged.add(uLanguage);
                             LOGGER.info("Could not handle {} utterances in {}.",
-                                    utters.size(), language);
+                                    utters.size(), uLanguage);
                         }
                     });
             DocUtilities.makeChange(doc, "POS-tagged with TreeTagger", tagged,

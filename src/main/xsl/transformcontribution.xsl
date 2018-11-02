@@ -10,7 +10,7 @@
 
     <xsl:template match="contribution">
         <xsl:element name="seg">
-          <xsl:attribute name="type" value="contribution"/>
+          <xsl:attribute name="type">contribution</xsl:attribute>
             <xsl:copy-of select="@speaker-reference"/>
             <xsl:copy-of select="@start-reference"/>
             <xsl:copy-of select="@end-reference"/>

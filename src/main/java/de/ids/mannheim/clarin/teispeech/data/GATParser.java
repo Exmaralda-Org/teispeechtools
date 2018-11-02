@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,19 +36,19 @@ public class GATParser extends AbstractParser {
     // String PATTERNS_FILE_PATH = "/org/exmaralda/folker/data/Patterns.xml";
     static String PATTERNS_FILE_PATH = "/main/xml/Patterns.xml";
 
-    Map<String, Pattern> minimalPatterns;
+    private Map<String, Pattern> minimalPatterns;
     static String MINIMAL_TRANSFORMER_FILE_PATH = "/main/xsl/transformcontribution.xsl";
     // String MINIMAL_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution.xsl";
-    XSLTransformer minimalTransformer;
+    private XSLTransformer minimalTransformer;
 
-    Map<String, Pattern> basicPatterns;
+    private Map<String, Pattern> basicPatterns;
     static String BASIC_TRANSFORMER_FILE_PATH = "/main/xsl/transformcontribution_basic.xsl";
     // String BASIC_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
-    XSLTransformer basicTransformer;
+    private XSLTransformer basicTransformer;
 
-    boolean picky = false;
+    private boolean picky = false;
 
     public GATParser(String languageCode, boolean picky)
             throws JDOMException, IOException {
@@ -71,13 +70,14 @@ public class GATParser extends AbstractParser {
 
     @Override
     public void parseDocument(Document doc, int parseLevel) {
-        if (parseLevel == 0)
+        if (parseLevel == 0) {
             return;
+        }
 
         if (parseLevel == 1) {
             IteratorIterable<Element> contributionIterator = doc.getDescendants(
-                    new org.jdom2.filter.ElementFilter("contribution"));
-            java.util.Vector<org.jdom2.Element> contributions = new java.util.Vector<org.jdom2.Element>();
+                    new ElementFilter("contribution"));
+            List<Element> contributions = new ArrayList<>();
             while (contributionIterator.hasNext()) {
                 Element con = (contributionIterator.next());
                 contributions.add(con);
@@ -99,7 +99,7 @@ public class GATParser extends AbstractParser {
                 }
                 if (isOrdered) {
                     List<Element> l2 = e.removeContent(
-                            new org.jdom2.filter.ElementFilter("segment"));
+                            new ElementFilter("segment"));
                     Element unparsed = new Element("unparsed");
                     for (Object o : l2) {
                         Element ev = (Element) o;
@@ -119,8 +119,8 @@ public class GATParser extends AbstractParser {
             }
         } else if (parseLevel == 2) {
             IteratorIterable<Element> unparsedIterator = doc
-                    .getDescendants(new org.jdom2.filter.ElementFilter("u"));
-            java.util.Vector<org.jdom2.Element> unparseds = new java.util.Vector<org.jdom2.Element>();
+                    .getDescendants(new ElementFilter("u"));
+            List<Element> unparseds = new ArrayList<>();
             while (unparsedIterator.hasNext()) {
                 Element up = unparsedIterator.next();
                 if (!up.getTextTrim().isEmpty()) {
@@ -129,11 +129,11 @@ public class GATParser extends AbstractParser {
             }
             for (Element unparsed : unparseds) {
 
-                Vector<PositionTimeMapping> timePositions = new Vector<PositionTimeMapping>();
+                List<PositionTimeMapping> timePositions = new ArrayList<>();
                 String text = "";
                 boolean totalParseOK = true;
                 for (Content c : unparsed.getContent()) {
-                    if (c instanceof org.jdom2.Text) {
+                    if (c instanceof Text) {
                         String eventText = ((Text) c).getText();
                         System.err.println("ETEXT: " + eventText);
                         if (!(minimalPatterns.get("GAT_EVENT")
@@ -142,15 +142,16 @@ public class GATParser extends AbstractParser {
                                     "EVENT DID NOT MATCH: «%s»", eventText));
                             totalParseOK = false;
                             // TODO: Hä?
-                            if (picky)
+                            if (picky) {
                                 break;
+                            }
                         }
                         System.err.println("MATCHED!");
                         text += eventText;
                     } else {
                         Element e = (Element) c;
                         String timeID = e.getAttributeValue("synch");
-                        timePositions.addElement(
+                        timePositions.add(
                                 new PositionTimeMapping(text.length(), timeID));
                     }
                 }
@@ -160,8 +161,9 @@ public class GATParser extends AbstractParser {
                     System.err.println(
                             "TOTAL PARSE FAILED: " + unparsed.getText());
                     // TODO: Ups?ß
-                    if (picky)
+                    if (picky) {
                         continue;
+                    }
                 }
                 try {
                     text = parseText(text, "GAT_NON_PHO", minimalPatterns);
@@ -178,7 +180,7 @@ public class GATParser extends AbstractParser {
                     Utilities.replaceContentWithParse(contribution, text);
 
                     List<Element> l = contribution.getChildren("GAT_UNCERTAIN");
-                    java.util.Vector<org.jdom2.Element> uncertains = new java.util.Vector<org.jdom2.Element>();
+                    List<Element> uncertains = new ArrayList<>();
                     for (Object o : l) {
                         Element uc = (Element) (o);
                         uncertains.add(uc);
@@ -195,7 +197,7 @@ public class GATParser extends AbstractParser {
 
                     IteratorIterable<Element> i2 = contribution.getDescendants(
                             new ElementFilter("GAT_ALTERNATIVE"));
-                    java.util.Vector<org.jdom2.Element> alternatives = new java.util.Vector<org.jdom2.Element>();
+                    List<Element> alternatives = new ArrayList<>();
                     while (i2.hasNext()) {
                         Element al = (i2.next());
                         alternatives.add(al);
@@ -227,19 +229,19 @@ public class GATParser extends AbstractParser {
             // TODO
             // parseDocument(doc, 2);
             IteratorIterable<Element> unparsedIterator = doc.getDescendants(
-                    new org.jdom2.filter.ElementFilter("unparsed"));
-            java.util.Vector<org.jdom2.Element> unparseds = new java.util.Vector<org.jdom2.Element>();
+                    new ElementFilter("unparsed"));
+            List<Element> unparseds = new ArrayList<>();
             while (unparsedIterator.hasNext()) {
                 Element up = (unparsedIterator.next());
                 unparseds.add(up);
             }
             for (Element unparsed : unparseds) {
-                Vector<PositionTimeMapping> timePositions = new Vector<PositionTimeMapping>();
+                List<PositionTimeMapping> timePositions = new ArrayList<>();
                 String text = "";
                 boolean totalParseOK = true;
                 for (Object c : unparsed.getContent()) {
-                    if (c instanceof org.jdom2.Text) {
-                        String eventText = ((org.jdom2.Text) c).getText();
+                    if (c instanceof Text) {
+                        String eventText = ((Text) c).getText();
                         if (!(basicPatterns.get("GAT_EVENT").matcher(eventText)
                                 .matches())) {
                             totalParseOK = false;
@@ -250,7 +252,7 @@ public class GATParser extends AbstractParser {
                         Element e = (Element) c;
                         String timeID = e
                                 .getAttributeValue("timepoint-reference");
-                        timePositions.addElement(
+                        timePositions.add(
                                 new PositionTimeMapping(text.length(), timeID));
                     }
                 }
@@ -311,7 +313,7 @@ public class GATParser extends AbstractParser {
                     Utilities.replaceContentWithParse(contribution, text);
 
                     List<Element> l = contribution.getChildren("GAT_UNCERTAIN");
-                    java.util.Vector<org.jdom2.Element> uncertains = new java.util.Vector<org.jdom2.Element>();
+                    List<Element> uncertains = new ArrayList<>();
                     for (Object o : l) {
                         Element uc = (Element) (o);
                         uncertains.add(uc);
@@ -328,7 +330,7 @@ public class GATParser extends AbstractParser {
 
                     IteratorIterable<Element> i2 = contribution.getDescendants(
                             new ElementFilter("GAT_ALTERNATIVE"));
-                    java.util.Vector<org.jdom2.Element> alternatives = new java.util.Vector<org.jdom2.Element>();
+                    List<Element> alternatives = new ArrayList<>();
                     while (i2.hasNext()) {
                         Element al = (i2.next());
                         alternatives.add(al);
@@ -344,7 +346,7 @@ public class GATParser extends AbstractParser {
                     // take care of accent markup and lengthening...
                     IteratorIterable<Element> i3 = contribution
                             .getDescendants(new ElementFilter("GAT_WORD"));
-                    java.util.Vector<org.jdom2.Element> words = new java.util.Vector<org.jdom2.Element>();
+                    List<Element> words = new ArrayList<>();
                     while (i3.hasNext()) {
                         Element w = (i3.next());
                         words.add(w);
@@ -365,7 +367,7 @@ public class GATParser extends AbstractParser {
                                     new ElementFilter("GAT_ACCENT_SYLLABLE")
                                             .or(new ElementFilter(
                                                     "GAT_STRONG_ACCENT_SYLLABLE")));
-                    java.util.Vector<org.jdom2.Element> syllables = new java.util.Vector<org.jdom2.Element>();
+                    List<Element> syllables = new ArrayList<>();
                     while (i4.hasNext()) {
                         Element s = (Element) (i4.next());
                         syllables.add(s);
@@ -385,7 +387,7 @@ public class GATParser extends AbstractParser {
                     insertTimeReferences(contribution, timePositions);
 
                     // transform the pseudo markup into the target markup...
-                    List<Content> v = new ArrayList<Content>();
+                    List<Content> v = new ArrayList<>();
                     v.add(contribution);
                     Element transformedContribution = (Element) (basicTransformer
                             .transform(v).get(0));
@@ -452,23 +454,19 @@ public class GATParser extends AbstractParser {
         return returnText;
     }
 
-//    private void insertTimeReferences(Element contribution,
-//            Vector<PositionTimeMapping> timePositions) {
-//    }
-//
     private void insertTimeReferences(Element contribution,
-            Vector<PositionTimeMapping> timePositions) {
-        // System.out.println(org.exmaralda.common.jdomutilities.IOUtilities.elementToString(contribution));
+            List<PositionTimeMapping> timePositions) {
         /*
          * for (PositionTimeMapping ptm : timePositions){
          * System.out.println(ptm.position + " / " + ptm.timeID); }
          */
         IteratorIterable<Content> i = contribution.getDescendants();
-        Vector<Text> texts = new Vector<Text>();
+        List<Text> texts = new ArrayList<>();
         while (i.hasNext()) {
             Object o = i.next();
-            if (!(o instanceof Text))
+            if (!(o instanceof Text)) {
                 continue;
+            }
             Text textElement = (Text) o;
             texts.add(textElement);
         }
@@ -476,21 +474,22 @@ public class GATParser extends AbstractParser {
         int timePositionCount = 0;
         int offsetCount = 0;
         for (Text textElement : texts) {
-            Vector<PositionTimeMapping> localTimePositions = new Vector<PositionTimeMapping>();
-            if (timePositionCount >= timePositions.size())
+            List<PositionTimeMapping> localTimePositions = new ArrayList<>();
+            if (timePositionCount >= timePositions.size()) {
                 break;
+            }
             int positionWanted = timePositions
-                    .elementAt(timePositionCount).position;
+                    .get(timePositionCount).position;
             String text = textElement.getText();
             while ((positionWanted >= 0) && (offsetCount <= positionWanted)
                     && (offsetCount + text.length() >= positionWanted)) {
                 localTimePositions.add(new PositionTimeMapping(
                         positionWanted - offsetCount,
-                        timePositions.elementAt(timePositionCount).timeID));
+                        timePositions.get(timePositionCount).timeID));
                 timePositionCount++;
                 if (timePositionCount < timePositions.size()) {
                     positionWanted = timePositions
-                            .elementAt(timePositionCount).position;
+                            .get(timePositionCount).position;
                 } else {
                     positionWanted = -1;
                 }
@@ -500,20 +499,20 @@ public class GATParser extends AbstractParser {
                 Element parent = textElement.getParentElement();
                 int index = parent.indexOf(textElement);
                 textElement.detach();
-                Vector<Content> newContent = new Vector<Content>();
+                List<Content> newContent = new ArrayList<>();
                 int offsetCount2 = 0;
                 for (PositionTimeMapping ptm : localTimePositions) {
                     Text t = new Text(
                             text.substring(offsetCount2, ptm.position));
-                    newContent.addElement(t);
+                    newContent.add(t);
                     Element e = new Element("anchor", NameSpaces.TEI_NS);
                     e.setAttribute("synch", ptm.timeID);
-                    newContent.addElement(e);
+                    newContent.add(e);
                     offsetCount2 = ptm.position;
                 }
                 if (offsetCount2 < text.length()) {
                     Text t = new Text(text.substring(offsetCount2));
-                    newContent.addElement(t);
+                    newContent.add(t);
                 }
                 parent.addContent(index, newContent);
             }

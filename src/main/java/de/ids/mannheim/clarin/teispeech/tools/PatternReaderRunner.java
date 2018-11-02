@@ -27,13 +27,13 @@ import picocli.CommandLine.Spec;
  * @author bfi
  *
  */
-@Command(description = "read patterns from file", name = "patternread", mixinStandardHelpOptions = true, version = "patternreader 0.1")
+@Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, version = "patternreader 0.1")
 public class PatternReaderRunner implements Runnable {
     public static void main(String[] args) {
         CommandLine.run(new PatternReaderRunner(), args);
     }
 
-    private static List<Integer> potentialLevels = Arrays
+    private static final List<Integer> potentialLevels = Arrays
             .asList(new Integer[] { 2, 3 });
 
     @Option(names = { "-i",
