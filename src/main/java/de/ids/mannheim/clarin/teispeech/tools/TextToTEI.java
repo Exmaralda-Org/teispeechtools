@@ -1,6 +1,3 @@
-/**
- * Converter for simple text format transcriptions to TEI-ISO
- */
 package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.IOException;

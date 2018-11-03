@@ -2,6 +2,7 @@ package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.codepoetics.protonpack.StreamUtils;
-import java.util.Arrays;
 
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
@@ -201,10 +201,9 @@ public class LanguageDetect {
             }
 
         }
-        DocUtilities.makeChange(doc,
-                String.format(
-                        "detected languages in %d utterances; skipped %d (found: %s).",
-                        processed, unprocessed, changed));
+        DocUtilities.makeChange(doc, String.format(
+                "detected languages in %d utterances; skipped %d (found: %s).",
+                processed, unprocessed, changed));
         return doc;
     }
 

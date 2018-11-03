@@ -7,6 +7,7 @@ package de.ids.mannheim.clarin.teispeech.tools;
  * @author bfi
  *
  */
+
 public class DictMaker {
     public static void main(String[] args) {
         DictionaryNormalizer.loadDictionary(true);

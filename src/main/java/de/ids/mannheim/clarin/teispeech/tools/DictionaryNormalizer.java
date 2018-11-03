@@ -82,8 +82,7 @@ public class DictionaryNormalizer implements WordNormalizer {
                         "XML parsing broken! – " + ex.getMessage());
             }
             Utilities.toStream(document.getElementsByTagName("entry"))
-                    .map(e -> (Element) e)
-                    .forEach(entry -> {
+                    .map(e -> (Element) e).forEach(entry -> {
                         String from = entry.getAttribute("form");
                         String to = Utilities
                                 .toStream(entry.getElementsByTagName("n"))
@@ -170,8 +169,7 @@ public class DictionaryNormalizer implements WordNormalizer {
             Collator collator = Collator.getInstance(Locale.GERMAN);
             collator.setStrength(Collator.PRIMARY);
             dict.entrySet().stream()
-                    .sorted(Comparator.comparing(c -> c.getKey(),
-                            collator))
+                    .sorted(Comparator.comparing(c -> c.getKey(), collator))
                     .forEach(entry -> out.println(String.format("%s\t%s",
                             entry.getKey(), entry.getValue())));
         } catch (IOException e) {

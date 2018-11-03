@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.RecognitionException;
 
 /**
  * accumulate error messages from ANTLR 4 in a List
+ *
  * @author bfi
  *
  */

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * a normalizer for the TEI transcription format.
+ * POS-tag documents in the TEI transcription format with the TreeTagger
  *
  * pos-tags all &lt;w&gt; Elements in a document.
  *

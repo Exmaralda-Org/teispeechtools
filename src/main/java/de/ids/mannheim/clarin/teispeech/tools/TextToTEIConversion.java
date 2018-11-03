@@ -6,6 +6,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.w3c.dom.Document;
 
+/**
+ * converter from plain text to TEI ISO
+ */
 public class TextToTEIConversion {
 
     /**

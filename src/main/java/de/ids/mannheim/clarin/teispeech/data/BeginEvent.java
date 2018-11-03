@@ -2,6 +2,8 @@ package de.ids.mannheim.clarin.teispeech.data;
 
 /**
  * an {@link Event} starting a turn
+ *
+ * @author bfi
  */
 public class BeginEvent extends Event {
     public BeginEvent() {

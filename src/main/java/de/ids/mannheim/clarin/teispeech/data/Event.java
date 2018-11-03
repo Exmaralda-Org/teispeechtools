@@ -4,12 +4,19 @@ package de.ids.mannheim.clarin.teispeech.data;
  * Events in the timeline
  *
  * Events are counted, as their only feature is to be distinct.
+ *
+ * @author bfi
  */
 public abstract class Event {
 
     protected static int lastEvent = 0;
     protected int nr;
 
+    /**
+     * generate ID for the Event
+     *
+     * @return
+     */
     public abstract String mkTime();
 
     /**

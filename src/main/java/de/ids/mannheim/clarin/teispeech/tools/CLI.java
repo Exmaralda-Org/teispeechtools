@@ -30,6 +30,12 @@ import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Spec;
 
+/**
+ * a command line interface for the annotation processing work flow
+ *
+ * @author bfi
+ * 
+ */
 @Command(description = "process documents of annotated speech", name = "spindel", mixinStandardHelpOptions = true, version = "spindel 0.1")
 public class CLI implements Runnable {
 

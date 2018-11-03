@@ -1,19 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package de.ids.mannheim.clarin.teispeech.data;
 
 /**
+ * a time anchor in an XML document
  *
- * @author thomas
+ * @author Thomas Schmidt
  */
 class PositionTimeMapping {
 
-    public int position;
-    public String timeID;
+    /**
+     * the position in the XML file
+     */
+    public final int position;
 
+    /**
+     * an identifier for the time, e.g. a measurement
+     */
+    public final String timeID;
 
     public PositionTimeMapping(int position, String timeID) {
         this.position = position;
