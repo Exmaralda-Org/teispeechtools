@@ -7,19 +7,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.text.Collator;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  * A normalizer based on the dictionaries from the EXMARaLDA project, namely
@@ -49,7 +53,6 @@ public class DictionaryNormalizer implements WordNormalizer {
 
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
-    private static final SAXReader reader = new SAXReader();
 
     private static boolean debug;
 
@@ -70,20 +73,24 @@ public class DictionaryNormalizer implements WordNormalizer {
                 .getResourceAsStream(FOLKS_PATH)) {
             Document document;
             try {
-                document = reader.read(folkSource);
-            } catch (DocumentException e) {
+                document = Utilities.parseXML(folkSource);
+            } catch (SAXException e) {
                 throw new RuntimeException(
                         "Dictionary broken! – " + e.getMessage());
+            } catch (ParserConfigurationException ex) {
+                throw new RuntimeException(
+                        "XML parsing broken! – " + ex.getMessage());
             }
-            document.getRootElement().elements("entry").parallelStream()
-                    .forEach(entryN -> {
-                        Element entry = entryN;
-                        String from = entry.attributeValue("form");
-                        String to = entry.elements("n").parallelStream()
+            Utilities.toElementList(document.getElementsByTagName("entry"))
+                    .stream().forEach(entry -> {
+                        String from = entry.getAttribute("form");
+                        String to = Utilities
+                                .toStream(entry.getElementsByTagName("n"))
+                                .map(e -> (Element) e)
                                 .collect(Collectors.maxBy(Comparator
                                         .comparing(e -> Integer.parseInt(
-                                                e.attributeValue("freq")))))
-                                .get().attributeValue("corr");
+                                                e.getAttribute("freq")))))
+                                .get().getAttribute("corr");
                         dict.put(from, to);
                     });
             LOGGER.info(String.format("FOLK only: %d entries", dict.size()));
@@ -159,7 +166,12 @@ public class DictionaryNormalizer implements WordNormalizer {
     public static void writeDict() {
         try (FileWriter outF = new FileWriter(DICT_PATH_FILE)) {
             PrintWriter out = new PrintWriter(outF);
-            dict.forEach((k, v) -> out.println(String.format("%s\t%s", k, v)));
+            Collator collator = Collator.getInstance(Locale.GERMAN);
+            collator.setStrength(Collator.PRIMARY);
+            dict.entrySet().stream()
+                    .sorted(Comparator.comparing(c -> c.getKey(), collator))
+                    .forEach(entry -> out.println(String.format("%s\t%s",
+                            entry.getKey(), entry.getValue())));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException();

@@ -49,8 +49,8 @@ To speed up loading time, one can compile the dictionary.  From the root directo
 of the project, execute:
 
 ```sh
-java -cp 'target/normal-0.1-SNAPSHOT.jar:target/dependency/*' \
-    de.ids.mannheim.clarin.normalverbraucher.DictMaker
+java -cp 'target/teispeechtools-0.1-SNAPSHOT.jar:target/dependency/*' \
+    de.ids.mannheim.clarin.teispeech.tools.DictMaker
 ```
 
 # Run CLI

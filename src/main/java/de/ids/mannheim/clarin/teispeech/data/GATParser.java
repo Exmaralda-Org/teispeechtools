@@ -18,11 +18,12 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.Text;
 import org.jdom2.filter.ElementFilter;
-import org.jdom2.filter.Filters;
 import org.jdom2.transform.XSLTransformer;
 import org.jdom2.util.IteratorIterable;
 import org.jdom2.xpath.XPathFactory;
 import org.korpora.useful.Utilities;
+
+import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 
 /**
  *
@@ -75,8 +76,8 @@ public class GATParser extends AbstractParser {
         }
 
         if (parseLevel == 1) {
-            IteratorIterable<Element> contributionIterator = doc.getDescendants(
-                    new ElementFilter("contribution"));
+            IteratorIterable<Element> contributionIterator = doc
+                    .getDescendants(new ElementFilter("contribution"));
             List<Element> contributions = new ArrayList<>();
             while (contributionIterator.hasNext()) {
                 Element con = (contributionIterator.next());
@@ -98,8 +99,8 @@ public class GATParser extends AbstractParser {
                     }
                 }
                 if (isOrdered) {
-                    List<Element> l2 = e.removeContent(
-                            new ElementFilter("segment"));
+                    List<Element> l2 = e
+                            .removeContent(new ElementFilter("segment"));
                     Element unparsed = new Element("unparsed");
                     for (Object o : l2) {
                         Element ev = (Element) o;
@@ -228,8 +229,8 @@ public class GATParser extends AbstractParser {
         } else if (parseLevel == 3) {
             // TODO
             // parseDocument(doc, 2);
-            IteratorIterable<Element> unparsedIterator = doc.getDescendants(
-                    new ElementFilter("unparsed"));
+            IteratorIterable<Element> unparsedIterator = doc
+                    .getDescendants(new ElementFilter("unparsed"));
             List<Element> unparseds = new ArrayList<>();
             while (unparsedIterator.hasNext()) {
                 Element up = (unparsedIterator.next());
@@ -423,6 +424,8 @@ public class GATParser extends AbstractParser {
                 }
             }
         }
+        DocUtilities.makeChange(doc,
+                String.format("parsed for cGAT level %d.", parseLevel));
     }
 
     String parseText(String text, String patternName,
@@ -478,14 +481,13 @@ public class GATParser extends AbstractParser {
             if (timePositionCount >= timePositions.size()) {
                 break;
             }
-            int positionWanted = timePositions
-                    .get(timePositionCount).position;
+            int positionWanted = timePositions.get(timePositionCount).position;
             String text = textElement.getText();
             while ((positionWanted >= 0) && (offsetCount <= positionWanted)
                     && (offsetCount + text.length() >= positionWanted)) {
-                localTimePositions.add(new PositionTimeMapping(
-                        positionWanted - offsetCount,
-                        timePositions.get(timePositionCount).timeID));
+                localTimePositions.add(
+                        new PositionTimeMapping(positionWanted - offsetCount,
+                                timePositions.get(timePositionCount).timeID));
                 timePositionCount++;
                 if (timePositionCount < timePositions.size()) {
                     positionWanted = timePositions
@@ -525,7 +527,7 @@ public class GATParser extends AbstractParser {
                 .compile(
                         "//contribution[not(@parse-level='"
                                 + Integer.toString(level) + "')]",
-                        Filters.element())
+                        new ElementFilter())
                 .evaluateFirst(doc) == null);
     }
 

@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jdom2.filter.ElementFilter;
+import org.jdom2.util.IteratorIterable;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -25,6 +27,8 @@ import org.w3c.dom.NodeList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
 public class DocUtilities {
     /**
@@ -287,6 +291,31 @@ public class DocUtilities {
             changeEl.setAttribute("when", stamp);
             changeEl.appendChild(doc.createTextNode(change));
             revDescs.item(0).appendChild(changeEl);
+        }
+        return doc;
+    }
+
+    /**
+     * add change to {@code <revisionDesc>} in TEI document
+     *
+     * @param doc
+     *            the JDOM Document
+     * @param change
+     *            the change message
+     * @return the document, for chaining
+     */
+    public static org.jdom2.Document makeChange(org.jdom2.Document doc,
+            String change) {
+        String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
+                .format(DateTimeFormatter.ISO_INSTANT);
+        IteratorIterable<org.jdom2.Element> revDescs = doc
+                .getDescendants(new ElementFilter("revisionDesc"));
+        if (revDescs.hasNext()) {
+            org.jdom2.Element changeEl = new org.jdom2.Element(
+                    NameSpaces.TEI_NS, "change");
+            changeEl.setAttribute("when", stamp);
+            changeEl.addContent(new org.jdom2.Text(change));
+            revDescs.next().addContent(changeEl);
         }
         return doc;
     }
