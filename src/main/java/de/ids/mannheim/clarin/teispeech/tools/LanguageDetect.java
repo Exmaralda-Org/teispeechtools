@@ -3,11 +3,14 @@ package de.ids.mannheim.clarin.teispeech.tools;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,7 +69,6 @@ public class LanguageDetect {
             // load the model
             languageDetector = new LanguageDetectorME(trainedModel);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
     }
@@ -129,7 +131,39 @@ public class LanguageDetect {
             }
             String defaultLanguage = DocUtilities
                     .getLanguage((Element) utter.getParentNode(), language);
+
+            // language by words:
             NodeList words = utter.getElementsByTagName("w");
+            boolean already = Utilities.toElementStream(words)
+                    .allMatch(e -> e.hasAttribute("xml:lang"));
+            if (already) {
+                List<Entry<String, Long>> wordLanguages = Utilities
+                        .toElementStream(words)
+                        .filter(e -> e.hasAttribute("xml:lang"))
+                        .map(e -> e.getAttribute("xml:lang"))
+                        .collect(Collectors.groupingBy(Function.identity(),
+                                Collectors.counting()))
+                        .entrySet().stream()
+                        .sorted(Map.Entry
+                                .comparingByValue(Comparator.reverseOrder()))
+                        .collect(Collectors.toList());
+                List<String> candidates = StreamUtils
+                        .takeWhile(wordLanguages.stream(),
+                                e -> e.getValue() == wordLanguages.get(0)
+                                        .getValue())
+                        .map(Map.Entry::getKey).collect(Collectors.toList());
+                if (candidates.size() == 1) {
+                    // majority language:
+                    utter.setAttribute("xml:lang", candidates.get(0));
+                    continue;
+                } else if (candidates.size() > 1
+                        && candidates.contains(defaultLanguage)) {
+                    // default among major languages:
+                    utter.setAttribute("xml:lang", defaultLanguage);
+                    continue;
+                }
+            }
+            // haven't found language yet:
             if (words.getLength() > 0
                     && words.getLength() < MIN_UTTERANCE_SIZE) {
                 Comment com = doc.createComment(
@@ -144,11 +178,12 @@ public class LanguageDetect {
                 if (utter.getChildNodes().getLength() == 0) {
                     text = utter.getTextContent();
                 } else {
-                    text = "";
+                    // text = "";
+                    continue;
                 }
             } else {
-                text = Utilities.toStream(words).map(e -> (Element) e)
-                        .map(e -> DocUtilities.getTextOrNorm(e))
+                text = Utilities.toElementStream(words)
+                        .map(DocUtilities::getTextOrNorm)
                         .collect(Collectors.joining(" "));
             }
             LOGGER.info("{} {}", Utilities.stripSpace(text),

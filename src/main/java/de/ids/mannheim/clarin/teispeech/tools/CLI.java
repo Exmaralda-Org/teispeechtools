@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.jdom2.JDOMException;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Document;
@@ -34,7 +35,7 @@ import picocli.CommandLine.Spec;
  * a command line interface for the annotation processing work flow
  *
  * @author bfi
- * 
+ *
  */
 @Command(description = "process documents of annotated speech", name = "spindel", mixinStandardHelpOptions = true, version = "spindel 0.1")
 public class CLI implements Runnable {
@@ -46,8 +47,8 @@ public class CLI implements Runnable {
     private boolean indent = false;
     // @Command() static void normalize
 
-    @Option(names = "--expected", split = ",", description = "comma-separated list of expected languages besides main language; by default deu,en,tur (ONLY guess)")
-    String[] expected = { "deu", "en", "tur" };
+    @Option(names = "--expected", split = ",", description = "comma-separated list of expected languages besides main language; by default deu,eng,tur (ONLY guess)")
+    String[] expected = { "deu", "eng", "tur" };
 
     @Option(names = {
             "--force" }, description = "force STEP even if it has been executed already (not for text2iso!)")
@@ -68,10 +69,6 @@ public class CLI implements Runnable {
     @Option(names = { "-i",
             "--input" }, description = "file to read from, by default STDIN")
     private File inputFile;
-
-    @Option(names = { "-q",
-            "--picky" }, description = "whether to fail on partial parses (segmentize only)")
-    private boolean picky = false;
 
     @Option(names = { "-o",
             "--output" }, description = "file to write to, by default STDOUT")
@@ -107,7 +104,6 @@ public class CLI implements Runnable {
             try {
                 outStream = new FileOutputStream(outFile);
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 System.err.println(e.getMessage());
                 System.err.println("--> continuing to print to STDOUT");
             }
@@ -225,15 +221,18 @@ public class CLI implements Runnable {
     public void segmentize() {
         try {
             org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
-            GATParser parser = new GATParser(language, picky);
+            GATParser parser = new GATParser(language);
             parser.parseDocument(doc, 2);
             XMLOutputter outputter = new XMLOutputter();
+            if (indent) {
+                Format outFormat = Format.getPrettyFormat();
+                outputter.setFormat(outFormat);
+            }
             outputter.output(doc, outStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (JDOMException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }

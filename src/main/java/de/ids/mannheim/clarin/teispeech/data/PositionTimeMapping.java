@@ -13,7 +13,7 @@ class PositionTimeMapping {
     public final int position;
 
     /**
-     * an identifier for the time, e.g. a measurement
+     * an identifier for the time
      */
     public final String timeID;
 

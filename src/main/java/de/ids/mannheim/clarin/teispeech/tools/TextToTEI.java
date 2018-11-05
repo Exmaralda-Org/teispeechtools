@@ -30,6 +30,7 @@ import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.CommentConte
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ContentContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.MarkedContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.SpeakerContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.TextContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.TranscriptContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.WordContext;
 import net.sf.saxon.om.NameChecker;
@@ -48,13 +49,15 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     private Map<String, MarkedEvent> markedEvents = new LinkedHashMap<>();
     private Event currentBegin = null;
     private Event currentEnd = null;
+    private int currentPos = 0;
+//    private int lastMarkPos = 0;
+    private Optional<MarkedEvent> lastMarked;
 
     /**
      * This records the first overlap mark in an utterance content. It is set if
      * the mark occurs for the second or a later time. Begin events of turns are
      * moved before <code>firstMark</code> in the timeline later.
      */
-    private Optional<Event> firstMark;
     private SpeechDocument spd;
     private CommonTokenStream tokens;
     private static final String TEMPLATE_PATH = "/main/xml/NewFile.xml";
@@ -98,42 +101,6 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     }
 
     /**
-     * in timeline, move one Event before another.
-     *
-     * @param e
-     *            event to be moved
-     * @param before
-     *            event before which e shall go
-     */
-    public void moveEvent(Event e, Event before) {
-        Deque<Event> stick = new ArrayDeque<>();
-        for (Event i = events.pop(); !events.isEmpty()
-                && i != before; i = events.pop()) {
-            stick.push(i);
-            if (events.isEmpty()) {
-                throw new RuntimeException("Event not found!");
-            }
-        }
-        assert events.pop() == before;
-        events.push(e);
-        events.push(before);
-        for (Event i = stick.pop(); !stick.isEmpty()
-                && i != null; i = stick.pop()) {
-            events.push(i);
-        }
-    }
-
-    // public MarkedEvent rememberMarkedEvent(String mark) {
-    // if (markedEvents.containsKey(mark)) {
-    // return markedEvents.get(mark);
-    // } else {
-    // MarkedEvent event = new MarkedEvent(mark);
-    // markedEvents.put(mark, event);
-    // return event;
-    // }
-    // }
-
-    /**
      * remember speaker and check that name is a valid XML ID
      *
      * @param name
@@ -174,13 +141,19 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterContent(ContentContext ctx) {
+        currentPos = 0;
+//        lastMarkPos = 0;
+        lastMarked = Optional.empty();
         currentBegin = new BeginEvent();
         currentEnd = new EndEvent();
         spd.addBlockUtterance(currentBegin, currentEnd);
-        firstMark = Optional.empty();
-
         events.push(currentBegin);
         spd.addTurn(currentBegin);
+    }
+
+    @Override
+    public void enterText(TextContext ctx) {
+        currentPos++;
     }
 
     /**
@@ -189,12 +162,10 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     @Override
     public void exitContent(ContentContext ctx) {
         // marked event referring to past contributions
-        // present, must move begin of this one before it.
-        if (firstMark.isPresent()) {
-            moveEvent(currentBegin, firstMark.get());
+        // present, check if it is the last one
+        if (!spd.endTurn(currentEnd, lastMarked)) {
+            events.push(currentEnd);
         }
-        events.push(currentEnd);
-        spd.endTurn(currentEnd);
     }
 
     /**
@@ -204,7 +175,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     public void enterMarked(MarkedContext ctx) {
         List<Token> left = tokens
                 .getHiddenTokensToLeft(ctx.getStart().getTokenIndex());
-        if (left != null && left.size() > 0) {
+        if (left != null && left.size() > 0 && currentPos > 1) {
             spd.addSpace();
         }
         String tx = ctx.MWORD().stream().map(w -> w.getText())
@@ -212,19 +183,33 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         String mark = ctx.MARK_ID().getText();
         MarkedEvent m;
         // register if unknown; else, use as terminus ante quem for begin
+        boolean startAnchor;
         if (markedEvents.containsKey(mark)) {
+            if (currentPos == 1) {
+                startAnchor = false;
+                m = markedEvents.get(mark);
+                assert events.contains(m);
+                spd.changeBlockStart(currentBegin, m);
+                events.remove(currentBegin);
+                System.err.println("Removed " + currentBegin.mkTimeRef());
+                currentBegin = m;
 
-            m = markedEvents.get(mark);
-            assert events.contains(m);
-            if (!firstMark.isPresent()) {
-                firstMark = Optional.of(m);
+            } else {
+                throw new RuntimeException(String.format(
+                        "line %d, char %d: second and latter occurrence "
+                                + "of overlap must be at beginning of line!",
+                        ctx.getStart().getLine(),
+                        ctx.getStart().getCharPositionInLine()));
             }
         } else {
+            startAnchor = true;
             m = new MarkedEvent(mark);
             markedEvents.put(mark, m);
             events.push(m);
         }
-        spd.addMarked(m, tx);
+//        lastMarkPos = currentPos;
+        lastMarked = Optional.ofNullable(m);
+        spd.addMarked(m, tx, startAnchor);
     }
 
     // @Override

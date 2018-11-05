@@ -22,7 +22,6 @@ import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
@@ -81,12 +80,12 @@ public class DictionaryNormalizer implements WordNormalizer {
                 throw new RuntimeException(
                         "XML parsing broken! – " + ex.getMessage());
             }
-            Utilities.toStream(document.getElementsByTagName("entry"))
-                    .map(e -> (Element) e).forEach(entry -> {
+            Utilities.toElementStream(document.getElementsByTagName("entry"))
+                    .forEach(entry -> {
                         String from = entry.getAttribute("form");
                         String to = Utilities
-                                .toStream(entry.getElementsByTagName("n"))
-                                .map(e -> (Element) e)
+                                .toElementStream(
+                                        entry.getElementsByTagName("n"))
                                 .collect(Collectors.maxBy(Comparator
                                         .comparing(e -> Integer.parseInt(
                                                 e.getAttribute("freq")))))
@@ -158,8 +157,7 @@ public class DictionaryNormalizer implements WordNormalizer {
     // loadFolksDict(true);
     // loadDerekoDict(true);
     // } catch (IOException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
+    // throw new RuntimeException(e);
     // }
     // }
 
@@ -174,7 +172,7 @@ public class DictionaryNormalizer implements WordNormalizer {
                             entry.getKey(), entry.getValue())));
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
         System.err.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);
     }
@@ -200,8 +198,9 @@ public class DictionaryNormalizer implements WordNormalizer {
                         force, folkLoaded, derekoLoaded);
                 loadFolksDict(force);
                 loadDerekoDict(force);
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }

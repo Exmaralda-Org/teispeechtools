@@ -14,5 +14,4 @@ public class BeginEvent extends Event {
     public String mkTime() {
         return "B_" + Integer.toString(nr);
     }
-
 }

@@ -44,10 +44,7 @@ public class GATParser extends AbstractParser {
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
     private XSLTransformer basicTransformer;
 
-    private boolean picky = false;
-
-    public GATParser(String languageCode, boolean picky)
-            throws JDOMException, IOException {
+    public GATParser(String languageCode) throws JDOMException, IOException {
 
         PatternReader pr = new PatternReader(
                 GATParser.class.getResourceAsStream(PATTERNS_FILE_PATH));
@@ -137,10 +134,7 @@ public class GATParser extends AbstractParser {
                             System.err.println(String.format(
                                     "EVENT DID NOT MATCH: «%s»", eventText));
                             totalParseOK = false;
-                            // TODO: Hä?
-                            if (picky) {
-                                break;
-                            }
+                            break;
                         }
                         System.err.println("MATCHED!");
                         text += eventText;
@@ -156,10 +150,7 @@ public class GATParser extends AbstractParser {
                 if (!totalParseOK) {
                     System.err.println(
                             "TOTAL PARSE FAILED: " + unparsed.getText());
-                    // TODO: Ups?ß
-                    if (picky) {
-                        continue;
-                    }
+                    continue;
                 }
                 try {
                     text = parseText(text, "GAT_NON_PHO", minimalPatterns);
@@ -175,7 +166,8 @@ public class GATParser extends AbstractParser {
                     // Element contribution = unparsed.getParentElement();
                     Utilities.replaceContentWithParse(contribution, text);
 
-                    List<Element> l = contribution.getChildren("GAT_UNCERTAIN");
+                    List<Element> l = contribution.getChildren("GAT_UNCERTAIN"); // drin
+                                                                                 // lassen
                     List<Element> uncertains = new ArrayList<>();
                     for (Object o : l) {
                         Element uc = (Element) (o);
@@ -183,10 +175,15 @@ public class GATParser extends AbstractParser {
                     }
                     for (Element uc : uncertains) {
                         String ucText = uc.getText();
-                        ucText = parseText(ucText, "GAT_ALTERNATIVE",
+                        ucText = parseText(ucText, "GAT_ALTERNATIVE", // nicht
                                 minimalPatterns);
-                        ucText = parseText(ucText, "GAT_WORD", minimalPatterns);
-                        ucText = parseText(ucText, "GAT_WORDBOUNDARY",
+                        ucText = parseText(ucText, "GAT_WORD", minimalPatterns); // anpassen
+                                                                                 // auf
+                                                                                 // Buchstaben;
+                                                                                 // Satzzeichen
+                                                                                 // als
+                                                                                 // ISO-<punctuation>
+                        ucText = parseText(ucText, "GAT_WORDBOUNDARY", // (egal?)
                                 minimalPatterns);
                         Utilities.replaceContentWithParse(uc, ucText);
                     }
@@ -205,8 +202,8 @@ public class GATParser extends AbstractParser {
                                 minimalPatterns);
                         Utilities.replaceContentWithParse(al, alText);
                     }
-                    // TODO: Kann man das anders codieren?
-                    contribution.setAttribute("parse-level", "2");
+                    // TODO: TEI convention cGAT minimal
+//                    contribution.setAttribute("parse-level", "2");
                     insertTimeReferences(contribution, timePositions);
                     List<Content> v = new ArrayList<>();
                     v.add(contribution);

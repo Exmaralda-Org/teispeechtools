@@ -63,11 +63,13 @@
           <xsl:variable name="length">
             <xsl:value-of select="string-length()-1"/>
           </xsl:variable>
-          <xsl:choose>
-            <xsl:when test="$length = 1">short</xsl:when>
-            <xsl:when test="$length = 2">medium</xsl:when>
-            <xsl:when test="$length = 3">long</xsl:when>
-          </xsl:choose>
+          <xsl:attribute name="length">
+            <xsl:choose>
+              <xsl:when test="$length = 1">short</xsl:when>
+              <xsl:when test="$length = 2">medium</xsl:when>
+              <xsl:when test="$length = 3">long</xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
           <xsl:attribute name="type">
             <!-- changed on 04-02-2009 -->
             <!-- changed on 06-04-2008 -->

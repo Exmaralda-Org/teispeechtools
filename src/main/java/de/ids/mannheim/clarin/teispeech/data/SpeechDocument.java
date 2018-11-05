@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
+import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -200,6 +202,19 @@ public class SpeechDocument {
         currentUtterance = utterance;
     }
 
+    public void changeBlockStart(Event original, MarkedEvent from) {
+        String mark = from.mkTime();
+        currentBlock.setAttribute("from", mark);
+        Utilities.toElementStream(currentBlock.getElementsByTagName("incident"))
+                .forEach(b -> b.setAttribute("start", mark));
+        Utilities.toElementStream(currentBlock.getElementsByTagName("span"))
+                .forEach(b -> {
+                    if (b.getAttribute("from") == original.mkTimeRef()) {
+                        b.setAttribute("from", mark);
+                    }
+                });
+    }
+
     /**
      * add anchor for synchronization
      *
@@ -223,8 +238,48 @@ public class SpeechDocument {
         // addAnchor(from, currentUtterance);
     }
 
-    public void endTurn(Event to) {
+    /**
+     * if turn ends with marked event, update surrounding
+     * {@code <annotationBlock>} {@code @to} to last marked event; remove
+     * anchor.
+     *
+     * @param to
+     *            the end event.
+     */
+    public boolean endTurn(Event original, Optional<MarkedEvent> to) {
         // addAnchor(to, currentUtterance);
+        if (to.isPresent()) {
+            Node lastNode = currentUtterance.getLastChild();
+            while (lastNode.getNodeType() == Node.TEXT_NODE
+                    && lastNode.getTextContent().trim().isEmpty()) {
+                lastNode = lastNode.getPreviousSibling();
+            }
+            if (lastNode.getNodeType() == Node.ELEMENT_NODE
+                    && ((Element) lastNode).getTagName().equals("anchor")) {
+                MarkedEvent toM = to.get();
+                Element lastAnchor = (Element) lastNode;
+                String mark = toM.mkEndTimeRef();
+                if (lastAnchor.getAttribute("synch").equals(mark)) {
+                    currentUtterance.removeChild(lastAnchor);
+                    currentBlock.setAttribute("to", mark);
+                    Utilities
+                            .toElementStream(currentBlock
+                                    .getElementsByTagName("incident"))
+                            .forEach(b -> b.setAttribute("end", mark));
+                    Utilities
+                            .toElementStream(
+                                    currentBlock.getElementsByTagName("span"))
+                            .forEach(b -> {
+                                if (b.getAttribute("to")
+                                        .equals(original.mkTimeRef())) {
+                                    b.setAttribute("to", mark);
+                                }
+                            });
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -285,8 +340,10 @@ public class SpeechDocument {
      * @param text
      *            the labelled text
      */
-    public void addMarked(MarkedEvent e, String text) {
-        addAnchor(e, currentUtterance);
+    public void addMarked(MarkedEvent e, String text, boolean startAnchor) {
+        if (startAnchor) {
+            addAnchor(e, currentUtterance);
+        }
         Text tx = doc.createTextNode(text);
         currentUtterance.appendChild(tx);
         addAnchor(e.mkEndTimeRef(), currentUtterance);

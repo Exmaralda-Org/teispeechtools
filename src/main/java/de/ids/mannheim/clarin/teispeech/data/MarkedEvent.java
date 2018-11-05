@@ -6,9 +6,10 @@ package de.ids.mannheim.clarin.teispeech.data;
 
 public class MarkedEvent extends Event {
     private final String mark;
+    private static int lastEvent = 0;
 
     public MarkedEvent(String mark) {
-        nr = lastEvent++;
+        nr = ++lastEvent;
         this.mark = mark;
     }
 
@@ -19,7 +20,7 @@ public class MarkedEvent extends Event {
 
     /**
      * generate ID for end time of marked event
-     * 
+     *
      * @return
      */
     public String mkEndTime() {

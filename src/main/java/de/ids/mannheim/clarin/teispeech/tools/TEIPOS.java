@@ -146,7 +146,6 @@ public class TEIPOS {
         treeTagger = new TreeTaggerWrapper<>();
         try {
             treeTagger.setAdapter(elly -> {
-                // TODO Auto-generated method stub
                 return elly.hasAttribute("normalizer")
                         ? elly.getAttribute("normalizer")
                         : Utilities.removeSpace(elly.getTextContent());

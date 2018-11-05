@@ -156,12 +156,11 @@ public class DocUtilities {
         assert "u".equals(el.getTagName());
         String lang = getLanguage(el, defaultL);
         Map<String, Long> freq = Utilities
-                .toStream(el.getElementsByTagName("w"))
+                .toElementStream(el.getElementsByTagName("w"))
                 .collect(Collectors.groupingBy(w -> {
                     // words without language tag are counted as having the
                     // language of the {@code <u>}
-                    Element wEl = (Element) w;
-                    return wEl.hasAttribute("lang") ? wEl.getAttribute("lang")
+                    return w.hasAttribute("lang") ? w.getAttribute("lang")
                             : lang;
                 }, Collectors.counting()));
         Optional<Entry<String, Long>> maxLang = freq.entrySet().stream()
@@ -311,8 +310,8 @@ public class DocUtilities {
         IteratorIterable<org.jdom2.Element> revDescs = doc
                 .getDescendants(new ElementFilter("revisionDesc"));
         if (revDescs.hasNext()) {
-            org.jdom2.Element changeEl = new org.jdom2.Element(
-                    NameSpaces.TEI_NS, "change");
+            org.jdom2.Element changeEl = new org.jdom2.Element("change",
+                    NameSpaces.TEI_NS);
             changeEl.setAttribute("when", stamp);
             changeEl.addContent(new org.jdom2.Text(change));
             revDescs.next().addContent(changeEl);
