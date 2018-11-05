@@ -16,7 +16,7 @@ empty_line : NEWLINE ;
 
 turn : speaker COLON content+ ;
 
-content : (action? text comment? | action) conti?;
+content : (action? text+ comment? | action) conti?;
 
 conti : CONTI;
 
@@ -25,7 +25,7 @@ speaker :  HWORD;
 action : LBRACKET AWORD+ RBRACKET ;
 comment : LBRACE IWORD+ RBRACE;
 
-text : (word | marked)+ ;
+text : (word | marked) ;
 word :  WORD ;
 marked : LANGLE MWORD+ T_RANGLE MARK_ID RANGLE;
 
