@@ -146,21 +146,6 @@ public class DictionaryNormalizer implements WordNormalizer {
         folkLoaded = true;
     }
 
-    // /**
-    // * reload dictionaries
-    // *
-    // * TODO: useless at the moment, as dictionaries are loaded from the WAR.
-    // */
-    // public static void reloadDict() {
-    // dict = new ConcurrentHashMap<>();
-    // try {
-    // loadFolksDict(true);
-    // loadDerekoDict(true);
-    // } catch (IOException e) {
-    // throw new RuntimeException(e);
-    // }
-    // }
-
     public static void writeDict() {
         try (FileWriter outF = new FileWriter(DICT_PATH_FILE)) {
             PrintWriter out = new PrintWriter(outF);

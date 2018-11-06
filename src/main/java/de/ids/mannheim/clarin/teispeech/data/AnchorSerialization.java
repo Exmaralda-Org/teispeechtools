@@ -45,13 +45,9 @@ public class AnchorSerialization {
             Deque<String> anchors) {
         String rest = from;
         List<Node> ret = new ArrayList<>();
-        System.err.println("FROM: " + from);
         Matcher mat = anchor_pat.matcher(rest);
         int lastEnd = 0;
         while (mat.find(lastEnd)) {
-            System.err.println(
-                    "MATCHED: " + rest.substring(mat.start(), mat.end())
-                            + "  REST: " + rest.substring(mat.end()));
             if (mat.start() > 0) {
                 ret.add(parent.getOwnerDocument()
                         .createTextNode(rest.substring(lastEnd, mat.start())));
@@ -69,7 +65,6 @@ public class AnchorSerialization {
             ret.add(parent.getOwnerDocument().createTextNode(remaining));
         }
         for (Node n : ret) {
-            System.err.println(n);
             parent.appendChild(n);
         }
     }

@@ -206,7 +206,6 @@ public class GATParser extends AbstractParser {
                                 minimalPatterns);
                         Utilities.replaceContentWithParse(al, alText);
                     }
-                    // TODO: TEI convention cGAT minimal
 //                    contribution.setAttribute("parse-level", "2");
                     insertTimeReferences(contribution, timePositions);
                     List<Content> v = new ArrayList<>();
@@ -380,7 +379,7 @@ public class GATParser extends AbstractParser {
                         s.setContent(newContent4);
                     }
 
-                    contribution.setAttribute("parse-level", "3");
+//                    contribution.setAttribute("parse-level", "3");
                     insertTimeReferences(contribution, timePositions);
 
                     // transform the pseudo markup into the target markup...

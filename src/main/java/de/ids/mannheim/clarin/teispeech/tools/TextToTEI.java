@@ -51,7 +51,6 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     private Event currentBegin = null;
     private Event currentEnd = null;
     private int currentPos = 0;
-//    private int lastMarkPos = 0;
     private Optional<MarkedEvent> lastMarked;
 
     /**
@@ -143,7 +142,6 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     @Override
     public void enterContent(ContentContext ctx) {
         currentPos = 0;
-//        lastMarkPos = 0;
         lastMarked = Optional.empty();
         currentBegin = new BeginEvent();
         currentEnd = new EndEvent();
@@ -193,7 +191,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
                 assert events.contains(m);
                 spd.changeBlockStart(currentBegin, m);
                 events.remove(currentBegin);
-                System.err.println("Removed " + currentBegin.mkTimeRef());
+                // System.err.println("Removed " + currentBegin.mkTimeRef());
                 currentBegin = m;
 
             } else {
@@ -209,21 +207,9 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
             markedEvents.put(mark, m);
             events.push(m);
         }
-//        lastMarkPos = currentPos;
         lastMarked = Optional.ofNullable(m);
         spd.addMarked(m, tx, startAnchor);
     }
-
-    // @Override
-    // public void exitMarked(MarkedContext ctx) {
-    // List<Token> right = tokens
-    // .getHiddenTokensToRight(ctx.getStop().getTokenIndex());
-    // if (right != null && right.size() > 0) {
-    // spd.addSpace();
-    //
-    // }
-    // }
-    //
 
     /**
      * incident encountered

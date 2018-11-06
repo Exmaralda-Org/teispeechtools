@@ -60,7 +60,6 @@ public class SpeechDocument {
     public SpeechDocument(Document doc, String lang) {
         language = lang;
         this.doc = doc;
-        // TODO: Should we validate the language
         setLanguage(lang);
     }
 
@@ -233,7 +232,6 @@ public class SpeechDocument {
         parent.appendChild(anc);
     }
 
-    // TODO: Mit oder ohne Anchor?
     public void addTurn(Event from) {
         // addAnchor(from, currentUtterance);
     }
@@ -334,8 +332,6 @@ public class SpeechDocument {
     }
 
     /**
-     * TODO: Does a marked event have an end, or are only beginnings aligned?
-     *
      * add marked event
      *
      * @param e

@@ -21,10 +21,11 @@ public class TextToTEIConversion {
      * @return the document
      */
     public static Document process(CharStream input, String language) {
+        AntlrErrorLister lister = new AntlrErrorLister();
         SimpleExmaraldaLexer lexer = new SimpleExmaraldaLexer(input);
+        lexer.addErrorListener(lister);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SimpleExmaraldaParser parser = new SimpleExmaraldaParser(tokens);
-        AntlrErrorLister lister = new AntlrErrorLister();
         parser.addErrorListener(lister);
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTree tree = parser.transcript();

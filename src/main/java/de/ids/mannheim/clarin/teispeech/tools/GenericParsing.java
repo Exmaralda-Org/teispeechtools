@@ -30,20 +30,11 @@ public class GenericParsing {
     private static void makeErrorList(List<String> errors, Element el) {
         Document doc = el.getOwnerDocument();
         if (errors.size() > 0) {
-
-            Comment comment = doc
-                    .createComment("[ There were errors parsing your text: ");
-            el.insertBefore(comment, el.getFirstChild());
-            comment = doc
-                    .createComment("  please refer to online documentation "
-                            + "on how to correct them. ]");
-            el.insertBefore(comment, el.getFirstChild());
             for (String error : errors) {
-                comment = doc.createComment("  - " + error + " ");
-                el.insertBefore(comment, el.getFirstChild());
+                System.err.println(error);
+                Comment comment = doc.createComment(" " + error + " ");
+                Utilities.insertInFront(el, comment);
             }
-            comment = doc.createComment("[ end of parsing errors ]");
-            el.insertBefore(comment, el.getFirstChild());
         }
     }
 
@@ -69,19 +60,18 @@ public class GenericParsing {
         String tx = el.getTextContent();
         while (el.hasChildNodes())
             el.removeChild(el.getFirstChild());
+        AntlrErrorLister lister = new AntlrErrorLister(false);
         GenericConventionLexer lexer = new GenericConventionLexer(
                 CharStreams.fromString(tx));
+        lexer.addErrorListener(lister);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         GenericConventionParser parser = new GenericConventionParser(tokens);
-        AntlrErrorLister lister = new AntlrErrorLister();
         parser.addErrorListener(lister);
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTree tree = parser.text();
         GenericParser gp = new GenericParser(el, anchors);
         walker.walk(gp, tree);
         makeErrorList(lister.getList(), el);
-        DocUtilities.makeChange(el.getOwnerDocument(),
-                "segmented according to generic transcription conventions");
     }
 
     /**
@@ -94,6 +84,8 @@ public class GenericParsing {
     public static void process(Document doc) {
         Utilities.toElementStream(doc.getElementsByTagName("u"))
                 .forEach(u -> process(u));
+        DocUtilities.makeChange(doc,
+                "segmented according to generic transcription conventions");
     }
 
 }

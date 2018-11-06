@@ -58,7 +58,6 @@ public class GenericParser extends GenericConventionBaseListener {
 
     @Override
     public void enterPunctuation(PunctuationContext ctx) {
-        System.err.println("PUNCT! " + ctx.getText());
         Element pc = doc.createElement("pc");
         Text content = doc.createTextNode(ctx.getText());
         pc.appendChild(content);
@@ -73,7 +72,8 @@ public class GenericParser extends GenericConventionBaseListener {
                         .getRuleIndex()) {
             el.setAttribute("type", "assimilated");
         }
-        AnchorSerialization.deserializeAnchor(el, ctx.getText().trim(), anchors);
+        AnchorSerialization.deserializeAnchor(el, ctx.getText().trim(),
+                anchors);
         currentParent.appendChild(el);
     }
 

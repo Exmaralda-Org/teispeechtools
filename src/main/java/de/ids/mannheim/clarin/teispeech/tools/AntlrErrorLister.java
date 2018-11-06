@@ -19,6 +19,17 @@ public class AntlrErrorLister extends BaseErrorListener {
      */
     private List<String> errorList = new ArrayList<>();
 
+    private boolean includeLineNo;
+
+    public AntlrErrorLister(boolean numbered) {
+        super();
+        this.includeLineNo = numbered;
+    }
+
+    public AntlrErrorLister() {
+        this(true);
+    }
+
     /**
      * catch errors and put a message in {@link #errorList}
      */
@@ -26,8 +37,14 @@ public class AntlrErrorLister extends BaseErrorListener {
     public void syntaxError(org.antlr.v4.runtime.Recognizer<?, ?> recognizer,
             Object offendingSymbol, int line, int charPositionInLine,
             String msg, RecognitionException e) {
-        errorList.add(String.format("line %d, position %d: %s", line,
-                charPositionInLine, msg));
+        String tx;
+        if (includeLineNo) {
+            tx = String.format("line %d, position %d: ", line,
+                    charPositionInLine);
+        } else {
+            tx = String.format("character %d: ", charPositionInLine);
+        }
+        errorList.add(tx + msg);
     }
 
     /**
