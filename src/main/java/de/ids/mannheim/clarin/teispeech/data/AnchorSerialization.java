@@ -38,6 +38,8 @@ public class AnchorSerialization {
      *            the element that will receive the text and anchors
      * @param from
      *            text with serialized anchors
+     * @param anchors
+     *            list of anchor {@code @synch}s
      */
     public static void deserializeAnchor(Element parent, String from,
             Deque<String> anchors) {
@@ -77,6 +79,7 @@ public class AnchorSerialization {
      *
      * @param el
      *            the element contains text and anchors
+     * @return list of anchor {@code @synch} values
      */
     public static Deque<String> serializeAnchors(Element el) {
         NodeList anchors = el.getElementsByTagName("anchor");

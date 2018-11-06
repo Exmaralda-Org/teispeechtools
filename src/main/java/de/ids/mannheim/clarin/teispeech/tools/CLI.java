@@ -239,8 +239,12 @@ public class CLI implements Runnable {
         } else {
             try {
                 org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
-                GATParser parser = new GATParser(language);
+                // TODO: language?
+                GATParser parser = new GATParser();
                 parser.parseDocument(doc, level.ordinal() + 1);
+                DocUtilities.makeChange(doc, String.format(
+                        "utterances parsed to %s conventions", level.name()));
+
                 XMLOutputter outputter = new XMLOutputter();
                 if (indent) {
                     Format outFormat = Format.getPrettyFormat();

@@ -44,6 +44,10 @@ public class GATParser extends AbstractParser {
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
     private XSLTransformer basicTransformer;
 
+    public GATParser() throws JDOMException, IOException {
+        this("universal");
+    }
+
     public GATParser(String languageCode) throws JDOMException, IOException {
 
         PatternReader pr = new PatternReader(
