@@ -9,6 +9,11 @@ TIM: [winkt] Hallo, Tom. {Salut, Tom!}
 
 WIM: [wackelt mit dem Ohr]
 
+WUM: Das (+++) ein (gampf lechtes) Beispiel!
+
+KIM: Dem (.) stimme (..) ich (...) zu!
+     Das (+++ ++++++ (gampf lechtes) Beispiel!
+
 TOM: [winkt] Hallo, <Tim!>1> {Salut, Tim!}
 TIM: [winkt] <Hallo>1>, Tom. {Salut, Tom!}
 

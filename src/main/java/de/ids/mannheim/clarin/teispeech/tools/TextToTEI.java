@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -74,20 +75,20 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     public TextToTEI(CommonTokenStream tokens, String language) {
         this.tokens = tokens;
-        javax.xml.parsers.DocumentBuilder builder;
-        try (InputStream templateSource = DictionaryNormalizer.class
+        try (InputStream templateSource = TextToTEI.class
                 .getResourceAsStream(TEMPLATE_PATH)) {
-
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            builder = dbf.newDocumentBuilder();
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+
             Document doc = builder.parse(templateSource);
             spd = new SpeechDocument(doc, language);
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException("XML parser broken!");
         } catch (IOException e1) {
             throw new RuntimeException("Template missing!");
         } catch (SAXException e) {
             throw new RuntimeException("Template broken!");
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException(e);
         }
     }
 
@@ -166,6 +167,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         if (!spd.endTurn(currentEnd, lastMarked)) {
             events.push(currentEnd);
         }
+        spd.cleanUtterance();
     }
 
     /**

@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.jooq.lambda.Seq;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,6 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import com.codepoetics.protonpack.StreamUtils;
 
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
@@ -147,10 +146,9 @@ public class LanguageDetect {
                         .sorted(Map.Entry
                                 .comparingByValue(Comparator.reverseOrder()))
                         .collect(Collectors.toList());
-                List<String> candidates = StreamUtils
-                        .takeWhile(wordLanguages.stream(),
-                                e -> e.getValue() == wordLanguages.get(0)
-                                        .getValue())
+                List<String> candidates = Seq.seq(wordLanguages.stream())
+                        .limitWhile(e -> e.getValue() == wordLanguages.get(0)
+                                .getValue())
                         .map(Map.Entry::getKey).collect(Collectors.toList());
                 if (candidates.size() == 1) {
                     // majority language:
@@ -217,9 +215,8 @@ public class LanguageDetect {
                 if (languages.size() >= 2
                         && languages.get(0).getConfidence() > 0) {
                     double measure = languages.get(0).getConfidence();
-                    List<String> similar = StreamUtils
-                            .takeWhile(languages.stream(),
-                                    l -> measure / l.getConfidence() < 1.1)
+                    List<String> similar = Seq.seq(languages)
+                            .limitWhile(l -> measure / l.getConfidence() < 1.1)
                             .map(l -> l.getLang()).collect(Collectors.toList());
                     if (similar.contains(defaultLanguage)) {
                         utter.setAttribute("xml:lang", defaultLanguage);

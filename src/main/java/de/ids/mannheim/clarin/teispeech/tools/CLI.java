@@ -62,6 +62,14 @@ public class CLI implements Runnable {
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing Step, one of: ${COMPLETION-CANDIDATES}")
     private Step step;
 
+    public enum Level {
+        generic, minimal, basic
+    }
+
+    @Option(names = { "-L",
+            "--level" }, description = "the level of the transcription (segmentize)")
+    private Level level = Level.generic;
+
     @Option(names = { "-l",
             "--language" }, description = "the (default) language of the document an ISO-639 language code")
     private String language = "deu";
@@ -219,21 +227,31 @@ public class CLI implements Runnable {
      * segment an ISO transcription
      */
     public void segmentize() {
-        try {
-            org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
-            GATParser parser = new GATParser(language);
-            parser.parseDocument(doc, 2);
-            XMLOutputter outputter = new XMLOutputter();
-            if (indent) {
-                Format outFormat = Format.getPrettyFormat();
-                outputter.setFormat(outFormat);
+        if (level == Level.generic) {
+            try {
+                Document doc = builder.parse(inputStream);
+                GenericParsing.process(doc);
+                Utilities.outputXML(outStream, doc, indent);
+            } catch (SAXException | IOException e) {
+                throw new RuntimeException(e);
             }
-            outputter.output(doc, outStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (JDOMException e) {
-            throw new RuntimeException(e);
-        }
 
+        } else {
+            try {
+                org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
+                GATParser parser = new GATParser(language);
+                parser.parseDocument(doc, level.ordinal() + 1);
+                XMLOutputter outputter = new XMLOutputter();
+                if (indent) {
+                    Format outFormat = Format.getPrettyFormat();
+                    outputter.setFormat(outFormat);
+                }
+                outputter.output(doc, outStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (JDOMException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ lexer grammar GenericConventionLexer;
 
 LEFT_PAREN : '(' -> mode(ANNO);
 
-LLEFT_PAREN : '((' -> mode(INCIDENT);
+//LLEFT_PAREN : '((' -> mode(INCIDENT);
 
 D_WORD : WORD;
 D_LINK: '_';
@@ -26,14 +26,13 @@ INCOMPREHENSIBLE: '+++'+;
 
 SPACE: [\p{Zs}\n\r]+ -> channel(HIDDEN);
 
-
-mode INCIDENT;
-
-RRIGHT_PAREN : '))' -> mode(DEFAULT_MODE);
-I_WORD : WORD;
-I_PUNCTUATION: (PUNCT | [[\]])+;
-I_LINK: '_'+;
-I_SPACE: [\p{Zs}]+ -> channel(HIDDEN);
+//mode INCIDENT;
+//
+//RRIGHT_PAREN : '))' -> mode(DEFAULT_MODE);
+//I_WORD : WORD;
+//I_PUNCTUATION: (PUNCT | [[\]])+;
+//I_LINK: '_'+;
+//I_SPACE: [\p{Zs}]+ -> channel(HIDDEN);
 
 
 mode ANNO;
@@ -44,4 +43,5 @@ A_PUNCTUATION: (PUNCT | [[\]])+;
 
 A_SPACE: [\p{Zs}]+ -> channel(HIDDEN);
 A_WORD : WORD;
+A_LINK: '_';
 

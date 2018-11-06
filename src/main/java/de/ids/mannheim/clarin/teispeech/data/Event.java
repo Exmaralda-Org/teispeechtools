@@ -15,7 +15,7 @@ public abstract class Event {
     /**
      * generate ID for the Event
      *
-     * @return
+     * @return the id
      */
     public abstract String mkTime();
 

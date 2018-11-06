@@ -213,7 +213,7 @@ public class GATParser extends AbstractParser {
 //                    Element contributionParent = contribution
 //                            .getParentElement();
                     contribution.setContent(transformedContribution);
-                } catch (Exception ex) {
+                } catch (IOException | JDOMException ex) {
                     ex.printStackTrace();
                     continue;
                 }
@@ -410,7 +410,7 @@ public class GATParser extends AbstractParser {
                     contributionParent.setContent(
                             contributionParent.indexOf(contribution),
                             transformedContribution);
-                } catch (Exception ex) {
+                } catch (IOException | JDOMException ex) {
                     ex.printStackTrace();
                     continue;
                 }

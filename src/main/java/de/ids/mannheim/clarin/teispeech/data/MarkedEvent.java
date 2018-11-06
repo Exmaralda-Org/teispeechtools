@@ -21,12 +21,17 @@ public class MarkedEvent extends Event {
     /**
      * generate ID for end time of marked event
      *
-     * @return
+     * @return the ID
      */
     public String mkEndTime() {
         return "ME_" + nr;
     }
 
+    /**
+     * generate ID reference for end time of marked event
+     *
+     * @return XML-style reference
+     */
     public String mkEndTimeRef() {
         return "#" + mkEndTime();
     }

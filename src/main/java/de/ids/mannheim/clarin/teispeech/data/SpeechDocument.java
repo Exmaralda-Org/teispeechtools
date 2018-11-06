@@ -243,8 +243,11 @@ public class SpeechDocument {
      * {@code <annotationBlock>} {@code @to} to last marked event; remove
      * anchor.
      *
+     * @param original
+     *            the original end event, to be potentially removed
      * @param to
      *            the end event.
+     * @return whether a replacement was done
      */
     public boolean endTurn(Event original, Optional<MarkedEvent> to) {
         // addAnchor(to, currentUtterance);
@@ -339,6 +342,8 @@ public class SpeechDocument {
      *            the event in the timeline
      * @param text
      *            the labelled text
+     * @param startAnchor
+     *            whether a start anchor will be placed
      */
     public void addMarked(MarkedEvent e, String text, boolean startAnchor) {
         if (startAnchor) {
@@ -381,6 +386,16 @@ public class SpeechDocument {
         DocUtilities.makeChange(doc,
                 "created from Simple EXMARaLDA plain text transcript; "
                         + "language set to «" + language + "»");
+    }
+
+    /**
+     * remove empty utterance.
+     */
+    public void cleanUtterance() {
+        if (!currentUtterance.hasChildNodes()) {
+            currentBlock.removeChild(currentUtterance);
+        }
+
     }
 
 }

@@ -35,8 +35,11 @@ public class PatternReader {
      * read Patterns from file
      *
      * @param input
+     *            the input file
      * @throws JDOMException
+     *             XML broken
      * @throws IOException
+     *             file broken
      */
     public PatternReader(File input) throws JDOMException, IOException {
         document = Utilities.parseXMLviaJDOM(new FileInputStream(input));
@@ -46,8 +49,11 @@ public class PatternReader {
      * read Patterns from InputStream
      *
      * @param input
+     *            the InputStream
      * @throws JDOMException
+     *             XML broken
      * @throws IOException
+     *             file broken
      */
     public PatternReader(InputStream input) throws JDOMException, IOException {
         document = Utilities.parseXMLviaJDOM(input);
@@ -60,6 +66,7 @@ public class PatternReader {
      *            the level
      * @return the patterns as a Map: name → Pattern
      * @throws JDOMException
+     *             XML broken
      */
     public Map<String, Pattern> getAllPatterns(int level) throws JDOMException {
         return getAllPatterns(level, "default");
@@ -78,6 +85,7 @@ public class PatternReader {
      *            the language code
      * @return the patterns as a Map: name → Pattern
      * @throws JDOMException
+     *             XML broken
      */
     public Map<String, Pattern> getAllPatterns(int level, String languageCode)
             throws JDOMException {
@@ -112,6 +120,7 @@ public class PatternReader {
      *            the Pattern name
      * @return the Pattern
      * @throws JDOMException
+     *             XML broken
      */
     public Pattern getPattern(int level, String name) throws JDOMException {
         return getPattern(level, name, "default");
@@ -128,6 +137,7 @@ public class PatternReader {
      *            the language name
      * @return the Pattern
      * @throws JDOMException
+     *             XML broken
      */
     public Pattern getPattern(int level, String name, String languageCode)
             throws JDOMException {
@@ -163,6 +173,7 @@ public class PatternReader {
      *            the element whose links to resolve
      * @return the resolved pattern
      * @throws JDOMException
+     *             XML broken
      */
     public String resolveElement(Element e) throws JDOMException {
         return resolveElement(e, "default");
@@ -177,6 +188,7 @@ public class PatternReader {
      *            a language code
      * @return the resolved pattern
      * @throws JDOMException
+     *             XML broken
      */
     public String resolveElement(Element e, String languageCode)
             throws JDOMException {
