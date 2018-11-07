@@ -34,13 +34,13 @@ All functions are also accessible from the command line.  Try:
 
 (after building in root directory)
 ```sh
-java -cp 'target/dependency/*' -jar target/teispeechtools-0.1-SNAPSHOT.jar
+java -cp 'target/dependency/*' -jar target/teispeechtools-0.2-SNAPSHOT.jar
 ```
 
 (in the directory containing the jar)
 
 ```sh
-java -cp dependency/*' -jar teispeechtools-0.1-SNAPSHOT.jar
+java -cp dependency/*' -jar teispeechtools-0.2-SNAPSHOT.jar
 ```
 
 and follow the help. Together with this description, you should get
@@ -225,7 +225,7 @@ java -cp 'target/dependency/*:target/teispeechtools-0.1-SNAPSHOT.jar' \
 to get help. E.g.,
 
 ```sh
-java -cp 'target/dependency/*:target/teispeechtools-0.1-SNAPSHOT.jar' \
+java -cp 'target/dependency/*:target/teispeechtools-0.2-SNAPSHOT.jar' \
     de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner \
     -i src/main/xml/Patterns.xml --language universal --level 2
 ```

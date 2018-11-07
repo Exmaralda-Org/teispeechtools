@@ -112,7 +112,7 @@ public class DictionaryNormalizer implements WordNormalizer {
      * load the dictionary generated from DeReKo data
      *
      * @param force
-     *            whether to force loading even if data already loaded
+     *            the whether to force loading even if data already loaded
      * @throws IOException
      *             if file (included) broken/unavailable
      */

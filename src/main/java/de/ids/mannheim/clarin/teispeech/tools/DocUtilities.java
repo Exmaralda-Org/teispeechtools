@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.jdom2.filter.ElementFilter;
 import org.jdom2.util.IteratorIterable;
+import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;

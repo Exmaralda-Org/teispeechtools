@@ -18,6 +18,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.jdom2.JDOMException;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
