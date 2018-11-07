@@ -56,7 +56,7 @@ public class CLI implements Runnable {
     // @Command() static void normalize
 
     enum Step {
-        text2iso, segmentize, normalize, pos, guess
+        text2iso, segmentize, guess, normalize, pos
     };
 
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing Step, one of: ${COMPLETION-CANDIDATES}")
@@ -130,14 +130,14 @@ public class CLI implements Runnable {
         case text2iso:
             text2iso();
             break;
+        case segmentize:
+            segmentize();
+            break;
         case normalize:
             normalize();
             break;
         case pos:
             pos();
-            break;
-        case segmentize:
-            segmentize();
             break;
         case guess:
             guess();
