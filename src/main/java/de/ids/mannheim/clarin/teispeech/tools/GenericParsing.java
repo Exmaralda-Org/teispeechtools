@@ -33,7 +33,7 @@ public class GenericParsing {
             for (String error : errors) {
                 System.err.println(error);
                 Comment comment = doc.createComment(" " + error + " ");
-                Utilities.insertInFront(el, comment);
+                Utilities.insertAtBeginningOf(comment, el);
             }
         }
     }
