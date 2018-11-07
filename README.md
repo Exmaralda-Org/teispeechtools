@@ -1,6 +1,7 @@
 ---
 author: Bernhard Fisseni
 title: Normalization for TEI XML files
+lang: en
 ---
 
 # Purpose
@@ -226,7 +227,7 @@ to get help. E.g.,
 ```sh
 java -cp 'target/dependency/*:target/teispeechtools-0.1-SNAPSHOT.jar' \
     de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner \
-    -i src/main/xml/Patterns.xml -l universal --level 2
+    -i src/main/xml/Patterns.xml --language universal --level 2
 ```
 
 (only levels 2 and 3 are available)

@@ -110,9 +110,7 @@ public class TEIPOS {
      */
     private void tagByLanguage(String lang, List<Element> utterances,
             boolean force) throws IOException {
-        String modelLang = DocUtilities.languageMap.get(lang);
-        assert modelLang != null;
-        String model = modelMap.get(modelLang);
+        String model = modelMap.get(lang);
         assert model != null;
         String modelFName = modelName(model);
         LOGGER.info("model file is: {}", modelFName);

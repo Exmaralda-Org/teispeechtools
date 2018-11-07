@@ -62,13 +62,9 @@ public class CLI implements Runnable {
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing Step, one of: ${COMPLETION-CANDIDATES}")
     private Step step;
 
-    public enum Level {
-        generic, minimal, basic
-    }
-
     @Option(names = { "-L",
             "--level" }, description = "the level of the transcription (segmentize)")
-    private Level level = Level.generic;
+    private ProcessingLevel level = ProcessingLevel.generic;
 
     @Option(names = { "-l",
             "--language" }, description = "the (default) language of the document an ISO-639 language code")
@@ -153,11 +149,11 @@ public class CLI implements Runnable {
      * @return
      */
     private String checkLanguage(String lang) {
-        if (!DocUtilities.isLanguage(lang)) {
+        if (!LangUtilities.isLanguage(lang)) {
             throw new ParameterException(spec.commandLine(),
                     String.format("«%s» is not a valid language!", lang));
         } else {
-            lang = DocUtilities.getLanguage(lang).get();
+            lang = LangUtilities.getLanguage(lang).get();
         }
         return lang;
     }
@@ -227,7 +223,7 @@ public class CLI implements Runnable {
      * segment an ISO transcription
      */
     public void segmentize() {
-        if (level == Level.generic) {
+        if (level == ProcessingLevel.generic) {
             try {
                 Document doc = builder.parse(inputStream);
                 GenericParsing.process(doc);

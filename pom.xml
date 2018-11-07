@@ -25,8 +25,11 @@
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
-    <!--dependency> <groupId>jaxen</groupId> <artifactId>jaxen</artifactId> 
-      <version>1.1.6</version> </dependency -->
+    <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.1.6</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.jdom/jdom2 -->
     <dependency>
       <groupId>org.jdom</groupId>
