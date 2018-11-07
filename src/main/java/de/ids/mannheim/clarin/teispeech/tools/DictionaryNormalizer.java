@@ -55,15 +55,19 @@ public class DictionaryNormalizer implements WordNormalizer {
 
     private static boolean debug;
 
-    public static final BinaryOperator<String> strCollider = (u, v) -> {
+    private static final BinaryOperator<String> strCollider = (u, v) -> {
         LOGGER.warn("«{}» ignored, already an entry for «{}»", v, u);
         return u;
     };
 
-    public static void loadFolksDict() throws IOException {
-        loadFolksDict(false);
-    }
-
+    /**
+     * load the dictionary generated from the FOLK data
+     *
+     * @param force
+     *            whether to force loading even if data already loaded
+     * @throws IOException
+     *             if file (included) broken/unavailable
+     */
     private static void loadFolksDict(boolean force) throws IOException {
         if (folkLoaded && !force) {
             return;
@@ -86,9 +90,8 @@ public class DictionaryNormalizer implements WordNormalizer {
                         String to = Utilities
                                 .toElementStream(
                                         entry.getElementsByTagName("n"))
-                                .collect(Collectors.maxBy(Comparator
-                                        .comparing(e -> Integer.parseInt(
-                                                e.getAttribute("freq")))))
+                                .max(Comparator.comparing(e -> Integer
+                                        .parseInt(e.getAttribute("freq"))))
                                 .get().getAttribute("corr");
                         dict.put(from, to);
                     });
@@ -105,10 +108,14 @@ public class DictionaryNormalizer implements WordNormalizer {
         return new BufferedReader(derekoReader);
     }
 
-    public static void loadDerekoDict() throws IOException {
-        loadDerekoDict(false);
-    }
-
+    /**
+     * load the dictionary generated from DeReKo data
+     *
+     * @param force
+     *            whether to force loading even if data already loaded
+     * @throws IOException
+     *             if file (included) broken/unavailable
+     */
     private static void loadDerekoDict(boolean force) throws IOException {
         if (derekoLoaded && !force) {
             return;
@@ -134,6 +141,9 @@ public class DictionaryNormalizer implements WordNormalizer {
         derekoLoaded = true;
     }
 
+    /**
+     * load the dictionary compiled from both FOLK and DeReKo
+     */
     private static void loadCompiledDict() {
         InputStream dictSource = DictionaryNormalizer.class
                 .getResourceAsStream(DICT_PATH);
@@ -146,6 +156,10 @@ public class DictionaryNormalizer implements WordNormalizer {
         folkLoaded = true;
     }
 
+    /**
+     * write the combined FOLK/DeReKo dictionary to TSV (will be included in the
+     * JAR if available)
+     */
     public static void writeDict() {
         try (FileWriter outF = new FileWriter(DICT_PATH_FILE)) {
             PrintWriter out = new PrintWriter(outF);
@@ -162,10 +176,13 @@ public class DictionaryNormalizer implements WordNormalizer {
         System.err.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);
     }
 
-    public static void loadDictionary() {
-        loadDictionary(false);
-    }
-
+    /**
+     * load the dictionaries
+     *
+     * @param force
+     *            whether to try loading the compiled dictionary, and whether to
+     *            force loading the DeReKo- and FOLK-derived dictionaries
+     */
     public static void loadDictionary(boolean force) {
         if (!force) {
             try {
@@ -190,11 +207,20 @@ public class DictionaryNormalizer implements WordNormalizer {
         }
     }
 
+    /**
+     * make a {@link DictionaryNormalizer}
+     *
+     * @param debugging
+     *            whether to give more info
+     */
     public DictionaryNormalizer(boolean debugging) {
         debug = debugging;
-        loadDictionary();
+        loadDictionary(false);
     }
 
+    /**
+     * make a non-debugging {@link DictionaryNormalizer}
+     */
     public DictionaryNormalizer() {
         this(false);
     }

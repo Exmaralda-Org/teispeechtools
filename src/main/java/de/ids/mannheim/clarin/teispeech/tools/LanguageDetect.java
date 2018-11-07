@@ -147,8 +147,8 @@ public class LanguageDetect {
                                 .comparingByValue(Comparator.reverseOrder()))
                         .collect(Collectors.toList());
                 List<String> candidates = Seq.seq(wordLanguages.stream())
-                        .limitWhile(e -> e.getValue() == wordLanguages.get(0)
-                                .getValue())
+                        .limitWhile(e -> e.getValue().equals(wordLanguages.get(0)
+                                .getValue()))
                         .map(Map.Entry::getKey).collect(Collectors.toList());
                 if (candidates.size() == 1) {
                     // majority language:
@@ -173,7 +173,7 @@ public class LanguageDetect {
             String text;
             // TODO: What to do about mixed content without <w>?
             if (words.getLength() == 0) {
-                if (utter.getChildNodes().getLength() == 0) {
+                if (utter.getChildNodes().getLength() != 0) {
                     text = utter.getTextContent();
                 } else {
                     // text = "";
@@ -217,7 +217,7 @@ public class LanguageDetect {
                     double measure = languages.get(0).getConfidence();
                     List<String> similar = Seq.seq(languages)
                             .limitWhile(l -> measure / l.getConfidence() < 1.1)
-                            .map(l -> l.getLang()).collect(Collectors.toList());
+                            .map(Language::getLang).collect(Collectors.toList());
                     if (similar.contains(defaultLanguage)) {
                         utter.setAttribute("xml:lang", defaultLanguage);
                     }

@@ -21,9 +21,15 @@ public class AntlrErrorLister extends BaseErrorListener {
 
     private boolean includeLineNo;
 
-    public AntlrErrorLister(boolean numbered) {
+    /**
+     * make an AntlrErrorLister
+     *
+     * @param includeLineNo
+     *            whether to include the line node in the error list
+     */
+    public AntlrErrorLister(boolean includeLineNo) {
         super();
-        this.includeLineNo = numbered;
+        this.includeLineNo = includeLineNo;
     }
 
     public AntlrErrorLister() {
