@@ -173,7 +173,7 @@ public class DictionaryNormalizer implements WordNormalizer {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        System.err.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);
+        System.out.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);
     }
 
     /**
@@ -207,14 +207,17 @@ public class DictionaryNormalizer implements WordNormalizer {
         }
     }
 
+    private final boolean keepCase;
+
     /**
      * make a {@link DictionaryNormalizer}
      *
      * @param debugging
      *            whether to give more info
      */
-    public DictionaryNormalizer(boolean debugging) {
+    public DictionaryNormalizer(boolean keepCase, boolean debugging) {
         debug = debugging;
+        this.keepCase = keepCase;
         loadDictionary(false);
     }
 
@@ -222,11 +225,16 @@ public class DictionaryNormalizer implements WordNormalizer {
      * make a non-debugging {@link DictionaryNormalizer}
      */
     public DictionaryNormalizer() {
-        this(false);
+        this(true, false);
     }
 
     @Override
     public String getNormalised(String in) {
-        return dict.get(in);
+        String seek;
+        if (keepCase)
+            seek = in;
+        else
+            seek = in.toLowerCase();
+        return dict.getOrDefault(seek, in);
     }
 }

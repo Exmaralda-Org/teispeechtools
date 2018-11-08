@@ -84,6 +84,10 @@ public class CLI implements Runnable {
             + "(ONLY guess)", defaultValue = "deu,eng,tur")
     String[] expected;
 
+    @Option(names = { "-k",
+            "--keep-case" }, description = "do not convert to lower case in normalizing; effectively, skip capitalized words")
+    boolean keepCase = false;
+
     @Option(names = { "-L",
             "--level" }, description = "the level of the transcription "
                     + "(segmentize, default: '${DEFAULT-VALUE}')")
@@ -208,7 +212,7 @@ public class CLI implements Runnable {
      * normalize an ISO transcription
      */
     public void normalize() {
-        WordNormalizer wn = new DictionaryNormalizer(true);
+        WordNormalizer wn = new DictionaryNormalizer(keepCase, true);
         TEINormalizer tn = new TEINormalizer(wn, language);
         try {
             Document doc = builder.parse(inputStream);

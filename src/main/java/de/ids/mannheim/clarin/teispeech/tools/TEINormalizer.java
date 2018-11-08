@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.korpora.useful.Utilities;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -78,7 +78,10 @@ public class TEINormalizer {
                     if (!force && el.hasAttribute("norm")) {
                         return;
                     }
-                    String tx = Utilities.removeSpace(el.getTextContent());
+                    String tx = StringUtils.strip(el.getTextContent());
+                    if (tx.isEmpty()) {
+                        return;
+                    }
                     String normal = normalizer.getNormalised(tx);
                     if (normal != null) {
                         String before = el.getAttribute("norm");

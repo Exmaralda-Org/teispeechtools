@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
@@ -194,9 +195,7 @@ public class LanguageDetect {
                         .map(DocUtilities::getTextOrNorm)
                         .collect(Collectors.joining(" "));
             }
-            LOGGER.info("{} {}", Utilities.stripSpace(text),
-                    Utilities.stripSpace(text).isEmpty());
-            if (Utilities.stripSpace(text).isEmpty()) {
+            if (StringUtils.strip(text).isEmpty()) {
                 Comment commy = doc.createComment("– EMPTY –");
                 utter.getParentNode().insertBefore(commy, utter);
                 continue;
