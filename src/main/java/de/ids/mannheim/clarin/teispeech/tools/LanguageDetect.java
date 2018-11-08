@@ -40,7 +40,7 @@ public class LanguageDetect {
     private final static Logger LOGGER = LoggerFactory
             .getLogger(LanguageDetect.class.getName());
 
-    private static final String MODEL_PATH = "/main/resources/langdetect-183.bin";
+    private static final String MODEL_PATH = "langdetect-183.bin";
 
     /**
      * an acceptable ratio between the "best" and the second-best language
@@ -59,7 +59,7 @@ public class LanguageDetect {
     private static LanguageDetector languageDetector;
     static {
         // load the trained Language Detector Model file
-        try (InputStream modelStream = LanguageDetect.class
+        try (InputStream modelStream = LanguageDetect.class.getClassLoader()
                 .getResourceAsStream(MODEL_PATH)) {
 
             LanguageDetectorModel trainedModel = new LanguageDetectorModel(
@@ -72,6 +72,12 @@ public class LanguageDetect {
         }
     }
 
+    // TODO: consider threshold for utterance length and confidence
+    // private static int MIN_UTTERANCE_SIZE = 5;
+    private final int minUtteranceSize;
+    // private static double MIN_CONFIDENCE = 0.1;
+    // difference to next-likely language?
+
     /**
      * make new {@link LanguageDetect};
      *
@@ -83,26 +89,25 @@ public class LanguageDetect {
      * @param expected
      *            the languages that are expected in the document, for
      *            constraining language identification
+     * @param mini
+     *            the minimal length of an utterance to attempt language
+     *            detection
      */
-    public LanguageDetect(Document doc, String language, String[] expected) {
+    public LanguageDetect(Document doc, String language, String[] expected,
+            int mini) {
         this.doc = doc;
         this.language = language != null ? language : "deu";
         if (expected != null && expected.length > 0) {
             expectedLanguages = new HashSet<>();
             expectedLanguages.add(language);
             expectedLanguages.addAll(Arrays.asList(expected));
-
         }
+        this.minUtteranceSize = mini;
     }
 
     public LanguageDetect(Document doc) {
-        this(doc, "deu", new String[] { "tur", "en" });
+        this(doc, "deu", new String[] { "tur", "en" }, 5);
     }
-
-    // TODO: consider threshold for utterance length and confidence
-    private static int MIN_UTTERANCE_SIZE = 5;
-    // private static double MIN_CONFIDENCE = 0.1;
-    // difference to next-likely language?
 
     public Document detect() {
         return detect(false);
@@ -112,8 +117,8 @@ public class LanguageDetect {
      * detect language per {@code <u>}
      *
      * @param force
-     *            force processing even if {@code <u>} has already been
-     *            language-tagged
+     *            whether to force language detection, even if a language tag
+     *            has already been assigned to {@code <u>}.
      *
      * @return the document again
      */
@@ -147,8 +152,8 @@ public class LanguageDetect {
                                 .comparingByValue(Comparator.reverseOrder()))
                         .collect(Collectors.toList());
                 List<String> candidates = Seq.seq(wordLanguages.stream())
-                        .limitWhile(e -> e.getValue().equals(wordLanguages.get(0)
-                                .getValue()))
+                        .limitWhile(e -> e.getValue()
+                                .equals(wordLanguages.get(0).getValue()))
                         .map(Map.Entry::getKey).collect(Collectors.toList());
                 if (candidates.size() == 1) {
                     // majority language:
@@ -162,8 +167,7 @@ public class LanguageDetect {
                 }
             }
             // haven't found language yet:
-            if (words.getLength() > 0
-                    && words.getLength() < MIN_UTTERANCE_SIZE) {
+            if (words.getLength() > 0 && words.getLength() < minUtteranceSize) {
                 Comment com = doc.createComment(
                         "too few words to make a good language prediction");
                 utter.getParentNode().insertBefore(com, utter);
@@ -173,10 +177,16 @@ public class LanguageDetect {
             String text;
             // TODO: What to do about mixed content without <w>?
             if (words.getLength() == 0) {
-                if (utter.getChildNodes().getLength() != 0) {
-                    text = utter.getTextContent();
-                } else {
-                    // text = "";
+                if (utter.getChildNodes().getLength() == 0) {
+                    unprocessed++;
+                    continue;
+                }
+                text = utter.getTextContent();
+                if (text.split("\\p{Zs}").length < minUtteranceSize) {
+                    Comment com = doc.createComment(
+                            "too few words to make a good language prediction");
+                    utter.getParentNode().insertBefore(com, utter);
+                    unprocessed++;
                     continue;
                 }
             } else {
@@ -217,7 +227,8 @@ public class LanguageDetect {
                     double measure = languages.get(0).getConfidence();
                     List<String> similar = Seq.seq(languages)
                             .limitWhile(l -> measure / l.getConfidence() < 1.1)
-                            .map(Language::getLang).collect(Collectors.toList());
+                            .map(Language::getLang)
+                            .collect(Collectors.toList());
                     if (similar.contains(defaultLanguage)) {
                         utter.setAttribute("xml:lang", defaultLanguage);
                     }

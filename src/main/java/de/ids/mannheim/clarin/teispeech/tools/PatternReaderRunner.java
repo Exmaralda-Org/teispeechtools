@@ -27,8 +27,12 @@ import picocli.CommandLine.Spec;
  * @author bfi
  *
  */
-@Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, version = "patternreader 0.1")
+@Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, versionProvider = de.ids.mannheim.clarin.teispeech.tools.VersionProvider.class)
 public class PatternReaderRunner implements Runnable {
+    /**
+     * @param args
+     *            the command line arguments ;-).
+     */
     public static void main(String[] args) {
         CommandLine.run(new PatternReaderRunner(), args);
     }

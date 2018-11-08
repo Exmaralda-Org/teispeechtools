@@ -33,6 +33,7 @@ files.
 All functions are also accessible from the command line.  Try:
 
 (after building in root directory)
+
 ```sh
 java -cp 'target/dependency/*' -jar target/teispeechtools-0.2-SNAPSHOT.jar
 ```
@@ -40,7 +41,7 @@ java -cp 'target/dependency/*' -jar target/teispeechtools-0.2-SNAPSHOT.jar
 (in the directory containing the jar)
 
 ```sh
-java -cp dependency/*' -jar teispeechtools-0.2-SNAPSHOT.jar
+java -cp 'dependency/*' -jar teispeechtools-0.2-SNAPSHOT.jar
 ```
 
 and follow the help. Together with this description, you should get
@@ -81,12 +82,12 @@ Input
   (generic, cGAT minimal, cGAT basic) and potentially `<anchor>`
   elements referring to the `<timeline>`.  This can be the output of
   the previously described plain text conversion.
-  
+
 Output
 : a TEI-conformant XML document in which the `<u>` elements have been
   segmented into words `<w>` on the one hand and conventions have been
   resolved to XML markup like `<pause>`, `<gap>` etc.
-  
+
 Parameters
 : You can specify:
 
@@ -105,10 +106,10 @@ Input
   analysed into `<w>` (other contents possible).  In the first case,
   the whole text content (excluding) will be processed; in the latter
   case, only the contents of `<w>` elements will be processed.
-  
+
 Output
 : a TEI-conformant XML document where the `<u>` have been annoted with
-  `@xml:lang` attributes where the algorithm reached a decision. Cases
+  `@xml:lang` attributes where the [algorithm](https://opennlp.apache.org/docs/1.9.0/manual/opennlp.html#tools.langdetect) reached a decision. Cases
   of doubt are reported in XML comments.  If languages are equally
   probable, the document languare is preferred.
 
@@ -117,7 +118,15 @@ Parameters
 
     - the `language` of the document (if there is language information
       in the document, it will be preferred),
-
+    - the `expected languages` of the document, to constrain the
+      search space, [which contains 103
+      languages](http://opennlp.apache.org/models.html), for language
+      detection.  The more precisely you know which languages are
+      expected, the better detection will work.
+    - the `minimal count` of words so that language detection is even
+      tried (default: 5, which is already pretty low).
+    - whether to `force` language detection, even if a language tag
+      has already been assigned to `<u>`.
 
 ## OrthoNormal-like Normalization (command `normalize`)
 
@@ -135,6 +144,8 @@ Parameters
 
     - the `language` of the document (if there is language information
       in the document, it will be preferred).
+    - whether to `force` normalization, even if `<w>`s already have
+      `@norm` attributes.
 
 
 This service is based on the algorithm in [OrthoNormal (German
@@ -177,6 +188,8 @@ Parameters
 
     - the `language` of the document (if there is language information
       in the document, it will be preferred).
+    - whether to `force` tagging, even if a pos tag has already been
+      assigned to `<w>`.
 
 
 # Building and inspecting

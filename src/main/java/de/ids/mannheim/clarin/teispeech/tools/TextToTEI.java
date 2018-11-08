@@ -60,7 +60,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     private SpeechDocument spd;
     private CommonTokenStream tokens;
-    private static final String TEMPLATE_PATH = "/main/xml/NewFile.xml";
+    private static final String TEMPLATE_PATH = "NewFile.xml";
 
     /**
      * Constructor
@@ -74,7 +74,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     public TextToTEI(CommonTokenStream tokens, String language) {
         this.tokens = tokens;
-        try (InputStream templateSource = TextToTEI.class
+        try (InputStream templateSource = TextToTEI.class.getClassLoader()
                 .getResourceAsStream(TEMPLATE_PATH)) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dbf.newDocumentBuilder();

@@ -30,16 +30,16 @@ public class GATParser extends AbstractParser {
     private static XPathFactory xpf = XPathFactory.instance();
 
     // String PATTERNS_FILE_PATH = "/org/exmaralda/folker/data/Patterns.xml";
-    static String PATTERNS_FILE_PATH = "/main/xml/Patterns.xml";
+    static String PATTERNS_FILE_PATH = "Patterns.xml";
 
     private Map<String, Pattern> minimalPatterns;
-    static String MINIMAL_TRANSFORMER_FILE_PATH = "/main/xsl/transformcontribution.xsl";
+    static String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
     // String MINIMAL_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution.xsl";
     private XSLTransformer minimalTransformer;
 
     private Map<String, Pattern> basicPatterns;
-    static String BASIC_TRANSFORMER_FILE_PATH = "/main/xsl/transformcontribution_basic.xsl";
+    static String BASIC_TRANSFORMER_FILE_PATH = "transformcontribution_basic.xsl";
     // String BASIC_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
     private XSLTransformer basicTransformer;
@@ -50,17 +50,17 @@ public class GATParser extends AbstractParser {
 
     public GATParser(String languageCode) throws JDOMException, IOException {
 
-        PatternReader pr = new PatternReader(
-                GATParser.class.getResourceAsStream(PATTERNS_FILE_PATH));
+        PatternReader pr = new PatternReader(GATParser.class.getClassLoader()
+                .getResourceAsStream(PATTERNS_FILE_PATH));
         minimalPatterns = pr.getAllPatterns(2, languageCode);
         basicPatterns = pr.getAllPatterns(3, languageCode);
 
         minimalTransformer = new XSLTransformer(
-                Utilities.parseXMLviaJDOM(GATParser.class
+                Utilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
                         .getResourceAsStream(MINIMAL_TRANSFORMER_FILE_PATH)));
 
         basicTransformer = new XSLTransformer(
-                Utilities.parseXMLviaJDOM(GATParser.class
+                Utilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
                         .getResourceAsStream(BASIC_TRANSFORMER_FILE_PATH)));
 
     };

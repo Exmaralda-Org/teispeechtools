@@ -38,7 +38,9 @@ import picocli.CommandLine.Spec;
  * @author bfi
  *
  */
-@Command(description = "process documents of annotated speech", name = "spindel", mixinStandardHelpOptions = true, version = "spindel 0.1")
+@Command(description = "process documents of speech annotated "
+        + "according to TEI/ISO", sortOptions = false, name = "spindel"
+                + "", mixinStandardHelpOptions = true, versionProvider = de.ids.mannheim.clarin.teispeech.tools.VersionProvider.class)
 public class CLI implements Runnable {
 
     // @Option(names = {"-v", "--verbose"}, description = "give more info")
@@ -48,11 +50,9 @@ public class CLI implements Runnable {
     private boolean indent = false;
     // @Command() static void normalize
 
-    @Option(names = "--expected", split = ",", description = "comma-separated list of expected languages besides main language; by default deu,eng,tur (ONLY guess)")
-    String[] expected = { "deu", "eng", "tur" };
-
-    @Option(names = {
-            "--force" }, description = "force STEP even if it has been executed already (not for text2iso!)")
+    @Option(names = { "--force" }, description = "force STEP even if "
+            + "the corresponding annotation exists already "
+            + "(NOT for text2iso, segmentize)")
     private boolean force = false;
     // @Command() static void normalize
 
@@ -60,16 +60,9 @@ public class CLI implements Runnable {
         text2iso, segmentize, guess, normalize, pos
     };
 
-    @Parameters(index = "0", paramLabel = "STEP", description = "Processing Step, one of: ${COMPLETION-CANDIDATES}")
+    @Parameters(index = "0", paramLabel = "STEP", description = "Processing "
+            + "Step, one of: ${COMPLETION-CANDIDATES}")
     private Step step;
-
-    @Option(names = { "-L",
-            "--level" }, description = "the level of the transcription (segmentize)")
-    private ProcessingLevel level = ProcessingLevel.generic;
-
-    @Option(names = { "-l",
-            "--language" }, description = "the (default) language of the document an ISO-639 language code")
-    private String language = "deu";
 
     @Option(names = { "-i",
             "--input" }, description = "file to read from, by default STDIN")
@@ -78,6 +71,30 @@ public class CLI implements Runnable {
     @Option(names = { "-o",
             "--output" }, description = "file to write to, by default STDOUT")
     private File outFile;
+
+    @Option(names = { "-l",
+            "--language" }, description = "the (default) language "
+                    + "of the document, an ISO-639 language code "
+                    + "(default: '${DEFAULT-VALUE}')")
+    private String language = "deu";
+
+    @Option(names = "--expected", split = ",", description = "comma-separated "
+            + "list of expected languages besides the main language; "
+            + "by default '${DEFAULT-VALUE}' "
+            + "(ONLY guess)", defaultValue = "deu,eng,tur")
+    String[] expected;
+
+    @Option(names = { "-L",
+            "--level" }, description = "the level of the transcription "
+                    + "(segmentize, default: '${DEFAULT-VALUE}')")
+    private ProcessingLevel level = ProcessingLevel.generic;
+
+    @Option(names = {
+            "--minimal" }, description = "the `minimal count` of words so "
+                    + "that language detection is even "
+                    + "tried (default: ${DEFAULT-VALUE}, "
+                    + "which is already pretty low)")
+    private int minimalLength = 5;
 
     @Spec
     private CommandSpec spec; // injected by picocli
@@ -211,7 +228,8 @@ public class CLI implements Runnable {
     public void guess() {
         try {
             Document doc = builder.parse(inputStream);
-            LanguageDetect ld = new LanguageDetect(doc, language, expected);
+            LanguageDetect ld = new LanguageDetect(doc, language, expected,
+                    minimalLength);
             ld.detect(force);
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {

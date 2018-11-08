@@ -52,7 +52,7 @@ public class TEIPOS {
     /**
      * file with TreeTagger model names
      */
-    private static final String MODELS_PATH = "/main/resources/treeTagger-languages.json";
+    private static final String MODELS_PATH = "treeTagger-languages.json";
 
     /**
      * models for TreeTagger – three letter language code to model file name
@@ -63,7 +63,8 @@ public class TEIPOS {
         ObjectMapper mapper = new ObjectMapper();
         try {
             modelMap = mapper.readValue(
-                    TEIPOS.class.getResourceAsStream(MODELS_PATH),
+                    TEIPOS.class.getClassLoader()
+                            .getResourceAsStream(MODELS_PATH),
                     new TypeReference<Map<String, String>>() {
                     });
         } catch (IOException e) {

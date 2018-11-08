@@ -45,10 +45,10 @@ public class DictionaryNormalizer implements WordNormalizer {
             .getLogger(DictionaryNormalizer.class.getName());
 
     // where to load dictionaries from:
-    private static final String FOLKS_PATH = "/main/resources/FOLK_Normalization_Lexicon.xml";
-    private static String DEREKO_PATH = "/main/resources/dereko_capital_only.txt";
-    private static String DICT_PATH = "/main/resources/dict.tsv";
-    private static String DICT_PATH_FILE = "src" + DICT_PATH;
+    private static final String FOLKS_PATH = "FOLK_Normalization_Lexicon.xml";
+    private static String DEREKO_PATH = "dereko_capital_only.txt";
+    private static String DICT_PATH = "dict.tsv";
+    private static String DICT_PATH_FILE = "src/main/resources/" + DICT_PATH;
 
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
@@ -73,7 +73,7 @@ public class DictionaryNormalizer implements WordNormalizer {
             return;
         }
         try (InputStream folkSource = DictionaryNormalizer.class
-                .getResourceAsStream(FOLKS_PATH)) {
+                .getClassLoader().getResourceAsStream(FOLKS_PATH)) {
             Document document;
             try {
                 document = Utilities.parseXML(folkSource);
@@ -101,7 +101,7 @@ public class DictionaryNormalizer implements WordNormalizer {
     }
 
     private static BufferedReader getDerekoReader() {
-        InputStream derekoStream = DictionaryNormalizer.class
+        InputStream derekoStream = DictionaryNormalizer.class.getClassLoader()
                 .getResourceAsStream(DEREKO_PATH);
         InputStreamReader derekoReader = new InputStreamReader(derekoStream,
                 Charset.forName("windows-1252"));
@@ -145,7 +145,7 @@ public class DictionaryNormalizer implements WordNormalizer {
      * load the dictionary compiled from both FOLK and DeReKo
      */
     private static void loadCompiledDict() {
-        InputStream dictSource = DictionaryNormalizer.class
+        InputStream dictSource = DictionaryNormalizer.class.getClassLoader()
                 .getResourceAsStream(DICT_PATH);
         InputStreamReader dictReader = new InputStreamReader(dictSource);
         BufferedReader dictBReader = new BufferedReader(dictReader);

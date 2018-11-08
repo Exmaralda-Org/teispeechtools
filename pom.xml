@@ -19,8 +19,21 @@
   <build>
     <resources>
       <resource>
-        <directory>src</directory>
+        <directory>src/main/xml</directory>
         <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/xsl</directory>
+        <includes>
+          <include>**/*.xsl</include>
+        </includes>
+      </resource>
+      <!-- resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.xsl</include>
           <include>**/*.xml</include>
           <include>**/*.bin</include>
           <include>**/*.xsl</include>
@@ -28,6 +41,10 @@
           <include>**/*.tsv</include>
           <include>**/*.json</include>
         </includes>
+      </resource -->
+      <resource>
+        <directory>src/main/resources/properties</directory>
+        <filtering>true</filtering>
       </resource>
     </resources>
     <plugins>
