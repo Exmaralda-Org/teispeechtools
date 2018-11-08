@@ -30,7 +30,7 @@
           <include>**/*.xsl</include>
         </includes>
       </resource>
-      <!-- resource>
+      <resource>
         <directory>src/main/resources</directory>
         <includes>
           <include>**/*.xsl</include>
@@ -41,7 +41,7 @@
           <include>**/*.tsv</include>
           <include>**/*.json</include>
         </includes>
-      </resource -->
+      </resource>
       <resource>
         <directory>src/main/resources/properties</directory>
         <filtering>true</filtering>
