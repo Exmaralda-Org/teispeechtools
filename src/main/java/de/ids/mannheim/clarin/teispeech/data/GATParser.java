@@ -397,8 +397,8 @@ public class GATParser extends AbstractParser {
                     for (Object c : content) {
                         Element e = (Element) c;
                         currentLine.addContent(e);
-                        if (e.getName().equals("boundary") && e
-                                .getAttributeValue("type").equals("final")) {
+                        if ("boundary".equals(e.getName()) && "final"
+                                .equals(e.getAttributeValue("type"))) {
                             transformedContribution.addContent(currentLine);
                             currentLine = new Element("line");
                         }

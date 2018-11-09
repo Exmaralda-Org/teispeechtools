@@ -256,11 +256,11 @@ public class SpeechDocument {
                 lastNode = lastNode.getPreviousSibling();
             }
             if (lastNode.getNodeType() == Node.ELEMENT_NODE
-                    && ((Element) lastNode).getTagName().equals("anchor")) {
+                    && "anchor".equals(((Element) lastNode).getTagName())) {
                 MarkedEvent toM = to.get();
                 Element lastAnchor = (Element) lastNode;
                 String mark = toM.mkEndTimeRef();
-                if (lastAnchor.getAttribute("synch").equals(mark)) {
+                if (mark.equals(lastAnchor.getAttribute("synch"))) {
                     currentUtterance.removeChild(lastAnchor);
                     currentBlock.setAttribute("to", mark);
                     Utilities
@@ -271,8 +271,8 @@ public class SpeechDocument {
                             .toElementStream(
                                     currentBlock.getElementsByTagName("span"))
                             .forEach(b -> {
-                                if (b.getAttribute("to")
-                                        .equals(original.mkTimeRef())) {
+                                if (original.mkTimeRef()
+                                        .equals(b.getAttribute("to"))) {
                                     b.setAttribute("to", mark);
                                 }
                             });

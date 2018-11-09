@@ -65,11 +65,11 @@ public class CLI implements Runnable {
     private Step step;
 
     @Option(names = { "-i",
-            "--input" }, description = "file to read from, by default STDIN")
+            "--input" }, description = "input file , by default STDIN")
     private File inputFile;
 
     @Option(names = { "-o",
-            "--output" }, description = "file to write to, by default STDOUT")
+            "--output" }, description = "output file, by default STDOUT")
     private File outFile;
 
     @Option(names = { "-l",
@@ -78,14 +78,15 @@ public class CLI implements Runnable {
                     + "(default: '${DEFAULT-VALUE}')")
     private String language = "deu";
 
-    @Option(names = "--expected", split = ",", description = "comma-separated "
+    @Option(names = "--expected", description = "comma-separated "
             + "list of expected languages besides the main language; "
             + "by default '${DEFAULT-VALUE}' "
-            + "(ONLY guess)", defaultValue = "deu,eng,tur")
+            + "(ONLY guess)", defaultValue = "deu,eng,tur", split = ",")
     String[] expected;
 
     @Option(names = { "-k",
-            "--keep-case" }, description = "do not convert to lower case in normalizing; effectively, skip capitalized words")
+            "--keep-case" }, description = "do not convert to lower case "
+                    + "when normalizing; effectively, skip capitalized words")
     boolean keepCase = false;
 
     @Option(names = { "-L",
@@ -180,8 +181,10 @@ public class CLI implements Runnable {
         return lang;
     }
 
+    /**
+     * convert to ISO
+     */
     public void text2iso() {
-        // DocUtilities.setupLanguage();
         CharStream inputCS;
         try {
             inputCS = CharStreams.fromStream(inputStream);

@@ -122,7 +122,6 @@ public class LanguageDetect {
      *
      * @return the document again
      */
-    @SuppressWarnings("deprecation")
     public Document detect(boolean force) {
         long processed = 0;
         long unprocessed = 0;
@@ -139,8 +138,8 @@ public class LanguageDetect {
             // language by words:
             List<Element> words = Utilities
                     .toElementStream(utter.getElementsByTagName("w"))
-                    .filter(ut -> !ut.getAttribute("type")
-                            .equals("incomprehensible"))
+                    .filter(ut -> !"incomprehensible"
+                            .equals(ut.getAttribute("type")))
                     .collect(Collectors.toList());
             boolean already = words.stream()
                     .allMatch(e -> e.hasAttribute("xml:lang"));
@@ -185,7 +184,7 @@ public class LanguageDetect {
                     continue;
                 }
                 text = utter.getTextContent();
-                if (text.split("\\p{Zs}").length < minUtteranceSize) {
+                if (StringUtils.split(text).length < minUtteranceSize) {
                     Comment com = doc.createComment(
                             "too few words to make a good language prediction");
                     utter.getParentNode().insertBefore(com, utter);
@@ -193,8 +192,8 @@ public class LanguageDetect {
                     continue;
                 }
             } else {
-                text = words.stream().map(DocUtilities::getTextOrNorm)
-                        .collect(Collectors.joining(" "));
+                text = Seq.seq(words).map(DocUtilities::getTextOrNorm)
+                        .toString(" ");
             }
             if (StringUtils.strip(text).isEmpty()) {
                 Comment commy = doc.createComment("– EMPTY –");
@@ -205,11 +204,13 @@ public class LanguageDetect {
                     .of(languageDetector.predictLanguages(text))
                     .filter(l -> expectedLanguages.contains(l.getLang()))
                     .collect(Collectors.toList());
-            Comment com = doc.createComment(
-                    languages.stream().filter(l -> l.getConfidence() > 0.005)
-                            .map(l -> String.format("%s: %.02f", l.getLang(),
-                                    l.getConfidence()))
-                            .collect(Collectors.joining("; ")));
+            Comment com = doc
+                    .createComment(
+                            Seq.seq(languages)
+                                    .filter(l -> l.getConfidence() > 0.005)
+                                    .map(l -> String.format("%s: %.02f",
+                                            l.getLang(), l.getConfidence()))
+                                    .toString("; "));
             utter.getParentNode().insertBefore(com, utter);
             if (languages.size() >= 2 && languages.get(0).getConfidence() > 0
                     && languages.get(1).getConfidence() > 0
@@ -244,9 +245,11 @@ public class LanguageDetect {
             }
 
         }
-        DocUtilities.makeChange(doc, String.format(
+        String changeMsg = String.format(
                 "detected languages in %d utterances; skipped %d (found: %s).",
-                processed, unprocessed, changed));
+                processed, unprocessed, changed);
+        LOGGER.info(changeMsg);
+        DocUtilities.makeChange(doc, changeMsg);
         return doc;
     }
 
