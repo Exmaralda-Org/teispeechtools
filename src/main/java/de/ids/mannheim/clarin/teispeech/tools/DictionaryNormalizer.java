@@ -212,6 +212,10 @@ public class DictionaryNormalizer implements WordNormalizer {
     /**
      * make a {@link DictionaryNormalizer}
      *
+     * @param keepCase
+     *            whether to keep upper case letters (and hence leave them
+     *            untouched)
+     *
      * @param debugging
      *            whether to give more info
      */

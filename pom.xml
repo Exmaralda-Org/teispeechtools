@@ -51,7 +51,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.8.0</version>
         <configuration>
           <!-- or whatever version you use -->
           <source>1.8</source>
@@ -122,13 +122,6 @@
     </plugins>
   </build>
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.apache.bcel/bcel -->
-    <dependency>
-      <groupId>org.apache.bcel</groupId>
-      <artifactId>bcel</artifactId>
-      <version>6.2</version>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
     <dependency>
       <groupId>jaxen</groupId>

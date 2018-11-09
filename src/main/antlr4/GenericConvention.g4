@@ -18,7 +18,7 @@ contribution: (anno | content)+;
 content: (word | punctuation)+;
 
 word: D_WORD | A_WORD;
-link: D_LINK | A_LINK;
+// link: D_LINK | A_LINK;
 punctuation: PUNCTUATION | A_PUNCTUATION;
 
 anno: LEFT_PAREN anno_content RIGHT_PAREN;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns="http://www.tei-c.org/ns/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0"  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns="http://www.tei-c.org/ns/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0"  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
     <!-- changes on 04-02-2009: -->
     <!-- symbol for clitics is now _ instead of + -->
     <!-- symbol for alternative is now / instaed of | -->
@@ -161,13 +161,13 @@
     <xsl:template match="GAT_STRONG_ACCENT_SYLLABLE/text()">
         <!--xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ!'" />
         <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" /-->
-        <xsl:value-of select="lower-case(.)"/>
+        <xsl:value-of select="fn:lower-case(.)"/>
     </xsl:template>
     
     <xsl:template match="GAT_ACCENT_SYLLABLE/text()">
         <!--xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ'" />
         <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" /-->
-        <xsl:value-of select="lower-case(.)"/>
+        <xsl:value-of select="fn:lower-case(.)"/>
     </xsl:template>
     
     <xsl:template match="GAT_LENGTHENING">
@@ -179,7 +179,7 @@
         </xsl:element>
     </xsl:template>
 
-    // TODO: what?
+    <!-- TODO: what? -->
     <xsl:template match="GAT_LATCHING">
       <vocal>
         <desc>latching</desc>
