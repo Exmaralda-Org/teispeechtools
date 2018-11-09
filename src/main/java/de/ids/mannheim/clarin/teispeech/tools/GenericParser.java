@@ -9,7 +9,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.AssimilatedContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.IncomprehensibleContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.PauseContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.PunctuationContext;
@@ -67,11 +66,11 @@ public class GenericParser extends GenericConventionBaseListener {
     @Override
     public void enterWord(WordContext ctx) {
         Element el = doc.createElement("w");
-        if (ctx.getParent().getRuleContext()
-                .getRuleIndex() == new AssimilatedContext(null, 0)
-                        .getRuleIndex()) {
-            el.setAttribute("type", "assimilated");
-        }
+//        if (ctx.getParent().getRuleContext()
+//                .getRuleIndex() == new AssimilatedContext(null, 0)
+//                        .getRuleIndex()) {
+//            el.setAttribute("type", "assimilated");
+//        }
         AnchorSerialization.deserializeAnchor(el, ctx.getText().trim(),
                 anchors);
         currentParent.appendChild(el);
@@ -79,8 +78,8 @@ public class GenericParser extends GenericConventionBaseListener {
 
     @Override
     public void enterIncomprehensible(IncomprehensibleContext ctx) {
-        Element gap = doc.createElement("gap");
-        gap.setAttribute("reason", "incomprehensible");
+        Element gap = doc.createElement("w");
+        gap.setAttribute("type", "incomprehensible");
         gap.setAttribute("dur",
                 String.format("%d syl", ctx.getText().length() / 3));
         currentParent.appendChild(gap);

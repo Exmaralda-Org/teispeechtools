@@ -258,7 +258,6 @@ public class CLI implements Runnable {
         } else {
             try {
                 org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
-                // TODO: language?
                 GATParser parser = new GATParser();
                 parser.parseDocument(doc, level.ordinal() + 1);
                 DocUtilities.makeChange(doc, String.format(

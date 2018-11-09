@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
@@ -118,7 +119,10 @@ public class TEIPOS {
         treeTagger.setModel(modelFName);
         for (Element u : utterances) {
             List<Element> words = Utilities
-                    .toElementList(u.getElementsByTagName("w"));
+                    .toElementStream(u.getElementsByTagName("w"))
+                    .filter(ut -> !ut.getAttribute("type")
+                            .equals("incomprehensible"))
+                    .collect(Collectors.toList());
             if (!force && words.stream().allMatch(e -> e.hasAttribute("pos"))) {
                 continue;
             }

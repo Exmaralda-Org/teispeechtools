@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import opennlp.tools.langdetect.Language;
 import opennlp.tools.langdetect.LanguageDetector;
@@ -138,12 +137,15 @@ public class LanguageDetect {
                     .getLanguage((Element) utter.getParentNode(), language);
 
             // language by words:
-            NodeList words = utter.getElementsByTagName("w");
-            boolean already = Utilities.toElementStream(words)
+            List<Element> words = Utilities
+                    .toElementStream(utter.getElementsByTagName("w"))
+                    .filter(ut -> !ut.getAttribute("type")
+                            .equals("incomprehensible"))
+                    .collect(Collectors.toList());
+            boolean already = words.stream()
                     .allMatch(e -> e.hasAttribute("xml:lang"));
             if (already) {
-                List<Entry<String, Long>> wordLanguages = Utilities
-                        .toElementStream(words)
+                List<Entry<String, Long>> wordLanguages = words.stream()
                         .filter(e -> e.hasAttribute("xml:lang"))
                         .map(e -> e.getAttribute("xml:lang"))
                         .collect(Collectors.groupingBy(Function.identity(),
@@ -168,7 +170,7 @@ public class LanguageDetect {
                 }
             }
             // haven't found language yet:
-            if (words.getLength() > 0 && words.getLength() < minUtteranceSize) {
+            if (words.size() > 0 && words.size() < minUtteranceSize) {
                 Comment com = doc.createComment(
                         "too few words to make a good language prediction");
                 utter.getParentNode().insertBefore(com, utter);
@@ -177,7 +179,7 @@ public class LanguageDetect {
             }
             String text;
             // TODO: What to do about mixed content without <w>?
-            if (words.getLength() == 0) {
+            if (words.size() == 0) {
                 if (utter.getChildNodes().getLength() == 0) {
                     unprocessed++;
                     continue;
@@ -191,8 +193,7 @@ public class LanguageDetect {
                     continue;
                 }
             } else {
-                text = Utilities.toElementStream(words)
-                        .map(DocUtilities::getTextOrNorm)
+                text = words.stream().map(DocUtilities::getTextOrNorm)
                         .collect(Collectors.joining(" "));
             }
             if (StringUtils.strip(text).isEmpty()) {

@@ -22,7 +22,8 @@ conti : CONTI;
 
 speaker :  HWORD;
 
-action : LBRACKET AWORD+ RBRACKET ;
+action : LBRACKET aword+ RBRACKET | LLPAREN aword+ RRPAREN;
+aword: AWORD | CAWORD;
 comment : LBRACE IWORD+ RBRACE;
 
 text : (word | marked) ;

@@ -15,20 +15,18 @@ text : contribution +;
 contribution: (anno | content)+;
 
 // TODO: Anführungs‚zeichen‘setzung im Wort?
-content: (assimilated | word | punctuation)+;
+content: (word | punctuation)+;
 
 word: D_WORD | A_WORD;
 link: D_LINK | A_LINK;
 punctuation: PUNCTUATION | A_PUNCTUATION;
-
-assimilated: link word;
 
 anno: LEFT_PAREN anno_content RIGHT_PAREN;
 anno_content: pause | (uncertain | incomprehensible )+;
 
 a_word: A_WORD;
 
-uncertain: (assimilated | word | punctuation)+;
+uncertain: (word | punctuation)+;
 incomprehensible: A_INCOMPREHENSIBLE;
 a_punctuation: A_PUNCTUATION;
 

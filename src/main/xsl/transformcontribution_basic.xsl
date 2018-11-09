@@ -30,7 +30,7 @@
     
     <xsl:template match="GAT_PAUSE">
         <xsl:element name="pause">
-            <xsl:attribute name="duration">
+            <xsl:attribute name="type">
                 <xsl:choose>
                     <xsl:when test="text()='(.)'">micro</xsl:when>
                     <xsl:when test="text()='(-)'">short</xsl:when>
@@ -43,10 +43,10 @@
     </xsl:template>
     
     <xsl:template match="GAT_NON_PHO">
-        <xsl:element name="non-phonological">
-            <xsl:attribute name="description">
+        <xsl:element name="incident">
+            <xsl:element name="desc">
                 <xsl:value-of select="substring-before(substring-after(text(),'(('), '))')"/>
-            </xsl:attribute>
+            </xsl:element>
         </xsl:element>
     </xsl:template>
     
@@ -57,16 +57,17 @@
     </xsl:template>
     
     <xsl:template match="GAT_BREATHE">
-        <xsl:element name="breathe">
-            <xsl:attribute name="type">
+        <xsl:element name="incident">
+            <xsl:attribute name="length">
+                <xsl:value-of select="string-length()-1"/>
+            </xsl:attribute>
+            <xsl:element name="desc">
+              breathe
                 <!-- changed on 04-02-2009 -->
                 <!-- changed on 06-04-2008 -->
                 <xsl:if test="substring(text(),1,1)='°'">in</xsl:if>
                 <xsl:if test="substring(text(),string-length(),1)='°'">out</xsl:if>
-            </xsl:attribute>
-            <xsl:attribute name="length">
-                <xsl:value-of select="string-length()-1"/>
-            </xsl:attribute>
+            </xsl:element>
         </xsl:element>
     </xsl:template>
 
@@ -86,9 +87,9 @@
     </xsl:template>
     
     <xsl:template match="GAT_ALTERNATIVE">
-        <alternative>
+        <choice>
             <xsl:apply-templates select="GAT_WORD"/>
-        </alternative>
+        </choice>
     </xsl:template>
     
     <xsl:template match="GAT_WORDBOUNDARY">
@@ -99,6 +100,7 @@
         <!-- do nothing -->
     </xsl:template>
 
+    <!-- TODO: what? -->
     <xsl:template match="GAT_COMMENT_START_ESCAPED">
         <xsl:element name="comment">
             <xsl:attribute name="position">start</xsl:attribute>
@@ -145,11 +147,11 @@
     </xsl:template>
     
     <xsl:template match="GAT_STRONG_ACCENT_SYLLABLE | GAT_ACCENT_SYLLABLE">
-        <xsl:element name="stress">
+        <xsl:element name="seg">
             <xsl:attribute name="type">
                 <xsl:choose>
-                    <xsl:when test="self::GAT_ACCENT_SYLLABLE">normal</xsl:when>
-                    <xsl:otherwise>strong</xsl:otherwise>
+                    <xsl:when test="self::GAT_ACCENT_SYLLABLE">accentuated normal</xsl:when>
+                    <xsl:otherwise>accentuated strong</xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
             <xsl:apply-templates/>
@@ -157,28 +159,31 @@
     </xsl:template>
     
     <xsl:template match="GAT_STRONG_ACCENT_SYLLABLE/text()">
-        <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ!'" />
-        <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" />
-        <xsl:value-of select="translate(., $uppercase, $smallcase)"/>
+        <!--xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ!'" />
+        <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" /-->
+        <xsl:value-of select="lower-case(.)"/>
     </xsl:template>
     
     <xsl:template match="GAT_ACCENT_SYLLABLE/text()">
-        <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ'" />
-        <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" />
-        <xsl:value-of select="translate(., $uppercase, $smallcase)"/>
+        <!--xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ'" />
+        <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" /-->
+        <xsl:value-of select="lower-case(.)"/>
     </xsl:template>
     
-    
     <xsl:template match="GAT_LENGTHENING">
-        <xsl:element name="lengthening">
+      <xsl:element name="seg">
+        <xsl:attribute name="type">lengthening</xsl:attribute>
             <xsl:attribute name="degree">
                 <xsl:value-of select="string-length()"/>
             </xsl:attribute>            
         </xsl:element>
     </xsl:template>
 
+    // TODO: what?
     <xsl:template match="GAT_LATCHING">
-        <latching/>
+      <vocal>
+        <desc>latching</desc>
+      </vocal>
     </xsl:template>
     
 

@@ -216,7 +216,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterAction(ActionContext ctx) {
-        String tx = ctx.AWORD().stream().map(w -> w.getText())
+        String tx = ctx.aword().stream().map(w -> w.getText())
                 .collect(Collectors.joining(" "));
         spd.addIncident(currentBegin, currentEnd, tx);
     }

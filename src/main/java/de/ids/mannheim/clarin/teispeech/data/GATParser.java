@@ -30,22 +30,24 @@ public class GATParser extends AbstractParser {
     private static XPathFactory xpf = XPathFactory.instance();
 
     // String PATTERNS_FILE_PATH = "/org/exmaralda/folker/data/Patterns.xml";
-    static String PATTERNS_FILE_PATH = "Patterns.xml";
+    static final String PATTERNS_FILE_PATH = "Patterns.xml";
 
     private Map<String, Pattern> minimalPatterns;
-    static String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
+    static final String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
     // String MINIMAL_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution.xsl";
     private XSLTransformer minimalTransformer;
 
     private Map<String, Pattern> basicPatterns;
-    static String BASIC_TRANSFORMER_FILE_PATH = "transformcontribution_basic.xsl";
+    static final String BASIC_TRANSFORMER_FILE_PATH = "transformcontribution_basic.xsl";
     // String BASIC_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
     private XSLTransformer basicTransformer;
 
     public GATParser() throws JDOMException, IOException {
         this("universal");
+        System.setProperty("javax.xml.transform.TransformerFactory",
+                "net.sf.saxon.TransformerFactoryImpl");
     }
 
     public GATParser(String languageCode) throws JDOMException, IOException {
