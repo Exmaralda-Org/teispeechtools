@@ -63,7 +63,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     private static final String TEMPLATE_PATH = "NewFile.xml";
 
     /**
-     * Constructor
+     * Constructor:
      *
      * prepare XML template.
      *

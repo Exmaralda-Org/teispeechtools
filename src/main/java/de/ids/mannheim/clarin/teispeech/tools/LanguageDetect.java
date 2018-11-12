@@ -178,7 +178,7 @@ public class LanguageDetect {
             }
             String text;
             // TODO: What to do about mixed content without <w>?
-            if (words.size() == 0) {
+            if (words.isEmpty()) {
                 if (utter.getChildNodes().getLength() == 0) {
                     unprocessed++;
                     continue;

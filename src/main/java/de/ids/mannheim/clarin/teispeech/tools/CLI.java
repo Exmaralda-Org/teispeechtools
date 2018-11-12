@@ -57,7 +57,7 @@ public class CLI implements Runnable {
     // @Command() static void normalize
 
     enum Step {
-        text2iso, segmentize, guess, normalize, pos
+        text2iso, segmentize, guess, normalize, pos, identify, unidentify
     };
 
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing "
@@ -161,6 +161,12 @@ public class CLI implements Runnable {
         case guess:
             guess();
             break;
+        case identify:
+            identify();
+            break;
+        case unidentify:
+            unidentify();
+            break;
         }
     }
 
@@ -242,7 +248,6 @@ public class CLI implements Runnable {
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     /**
@@ -279,4 +284,25 @@ public class CLI implements Runnable {
             }
         }
     }
+
+    public void identify() {
+        try {
+            Document doc = builder.parse(inputStream);
+            DocumentIdentifier.makeIDs(doc);
+            Utilities.outputXML(outStream, doc, indent);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void unidentify() {
+        try {
+            Document doc = builder.parse(inputStream);
+            DocumentIdentifier.removeIDs(doc);
+            Utilities.outputXML(outStream, doc, indent);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

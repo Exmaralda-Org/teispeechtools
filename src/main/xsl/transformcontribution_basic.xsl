@@ -158,16 +158,18 @@
         </xsl:element>
     </xsl:template>
     
+    <!-- TODO: changed to function for non-German -->
     <xsl:template match="GAT_STRONG_ACCENT_SYLLABLE/text()">
         <!--xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ!'" />
         <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" /-->
-        <xsl:value-of select="fn:lower-case(.)"/>
+        <xsl:value-of select="lower-case(.)"/>
     </xsl:template>
     
+    <!-- TODO: changed to function for non-German -->
     <xsl:template match="GAT_ACCENT_SYLLABLE/text()">
         <!--xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ'" />
         <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyzäöü'" /-->
-        <xsl:value-of select="fn:lower-case(.)"/>
+        <xsl:value-of select="lower-case(.)"/>
     </xsl:template>
     
     <xsl:template match="GAT_LENGTHENING">

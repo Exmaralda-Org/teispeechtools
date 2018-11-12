@@ -58,8 +58,9 @@ public class GenericParsing {
             return;
         }
         String tx = el.getTextContent();
-        while (el.hasChildNodes())
+        while (el.hasChildNodes()) {
             el.removeChild(el.getFirstChild());
+        }
         AntlrErrorLister lister = new AntlrErrorLister(false);
         GenericConventionLexer lexer = new GenericConventionLexer(
                 CharStreams.fromString(tx));

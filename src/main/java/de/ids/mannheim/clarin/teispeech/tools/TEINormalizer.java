@@ -73,7 +73,6 @@ public class TEINormalizer {
         // TODO: currently, we only support German normalization!
         words.forEach((lang, ws) -> {
             if ("deu".equals(lang)) {
-
                 ws.forEach(el -> {
                     if (!force && el.hasAttribute("norm")) {
                         return;

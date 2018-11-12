@@ -15,6 +15,11 @@ import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.Punctuatio
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.UncertainContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.WordContext;
 
+/**
+ * parse utterances according to generic conventions
+ *
+ * @author bfi
+ */
 public class GenericParser extends GenericConventionBaseListener {
 
     private final Document doc;
@@ -23,6 +28,16 @@ public class GenericParser extends GenericConventionBaseListener {
 
     private Deque<String> anchors;
 
+    /**
+     * make a parser
+     *
+     * @param current
+     *            the current utterance as a DOM XML element, already cleaned of
+     *            anchors
+     * @param anchors
+     *            the anchors (if any) originally contained in {@code current}
+     *            and to be restored while parsing.
+     */
     public GenericParser(Element current, Deque<String> anchors) {
         this.doc = current.getOwnerDocument();
         currentUtterance = current;
@@ -32,7 +47,7 @@ public class GenericParser extends GenericConventionBaseListener {
 
     @Override
     public void enterPause(PauseContext ctx) {
-        String length = "";
+        String length;
         int charLength = ctx.getText().length();
         switch (charLength) {
         case 1:
@@ -41,9 +56,6 @@ public class GenericParser extends GenericConventionBaseListener {
         case 2:
             length = "medium";
             break;
-//        case 3:
-//            length = "long";
-//            break;
         default:
             length = Seq.of(IntStream.range(3, charLength)).map(i -> "very ")
                     .toString();
@@ -66,11 +78,6 @@ public class GenericParser extends GenericConventionBaseListener {
     @Override
     public void enterWord(WordContext ctx) {
         Element el = doc.createElement("w");
-//        if (ctx.getParent().getRuleContext()
-//                .getRuleIndex() == new AssimilatedContext(null, 0)
-//                        .getRuleIndex()) {
-//            el.setAttribute("type", "assimilated");
-//        }
         AnchorSerialization.deserializeAnchor(el, ctx.getText().trim(),
                 anchors);
         currentParent.appendChild(el);
