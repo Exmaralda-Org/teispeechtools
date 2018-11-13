@@ -1,0 +1,22 @@
+TOM: .....
+tom: .....
+TIM: .....
+TOM: .....
+tom: .....
+TOM: Hallo, Tim!
+TIM: Hallo, Tom.
+TOM:       Hallo,      Timotheus!
+TIMOTHEUS: Hallihallo, Tom      .
+TOM: Ich fang einfach mal an zu reden.
+     Aber so richtig weiß ich nicht, was.
+TOM: [winkt] Hallo, Tim!
+TIM: [winkt] Hallo, Tom.
+KIM: ((incomprehensible))
+WIM: [nods]
+TIM: ++++++ +++!
+TOM: ++++++ +++!
+TOM: [winkt] Hallo, Tim! {Salut, Tim!}
+TIM: [winkt] Hallo, Tom. {Salut, Tom!}
+TOM: [winkt] Hallo, <Tim!>1> {Salut, Tim!}
+TIM: [winkt] <Hallo>1>, Tom. {Salut, Tom!}
+
