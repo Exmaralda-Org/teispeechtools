@@ -4,20 +4,21 @@
 # Purpose
 
 This describes the generic conventions for transcripts of spoken
-language that are  supported by both the [IDS
+language that are supported by both the [IDS
 TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and
 this library. They are applied in the `segmentize` step of processing.
 
 
 # Specification and Examples
 
-0. This works on un-analysed
+0. The segmentation works on un-analysed
    [`<u>`](http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-u.html)
    elements in a TEI-ISO transcript document, as it can be produced
    from the [Simple EXMARaLDA format](Simple-Exmaralda.md).
    
    Utterances `<u>` that contain anything besides text content and
-   time `<anchor>`s are not analysed.
+   time `<anchor>`s are not analysed. Comments and processing
+   instructions inside `<u>` will be removed.
    
 1. An utterance `<u>` is mainly split into words that will be
    annotated as
