@@ -183,8 +183,7 @@ public class SpeechDocument {
     }
 
     /**
-     * adds {@code <u>} with surrounding block and sets
-     * {@link #currentUtterance}
+     * adds {@code <u>} with surrounding block and remembers current Utterance
      *
      * @param from
      *            begin event
