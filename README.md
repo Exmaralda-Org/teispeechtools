@@ -29,8 +29,7 @@ files.
 
 All functions are also accessible from the command line. Try:
 
-(after building in root
-directory)
+(after building in root directory)
 
 ``` sh
 java -cp 'target/dependency/*' -jar target/teispeechtools-0.2-SNAPSHOT.jar
@@ -45,6 +44,9 @@ java -cp 'dependency/*' -jar teispeechtools-0.2-SNAPSHOT.jar
 and follow the help. Together with this description, you should get
 along well. If not, contact [Bernhard
 Fisseni](mailto:fisseni@ids-mannheim.de?subect=TEI+Transcription+tools)
+
+A simple [wrapper script](spindel.sh) is available.
+
 
 # Tools
 
@@ -177,7 +179,6 @@ Normalization:
     [TreeTagger](http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/).
 
   - Parameters  
-    You can specify:
     
       - the `language` of the document (if there is language information
         in the document, it will be preferred).
@@ -203,6 +204,7 @@ the CLI (see below). If you only want to use the CLI, you can run:
 This will pull in the sources and make a runnable
 [JAR](https://en.wikipedia.org/wiki/JAR_%28file_format%29)
 
+
 ## Compile Dictionary
 
 To speed up loading time, one can compile the dictionary, which combines
@@ -211,7 +213,7 @@ dictionary is contained in downloads. From the root directory of the
 project, execute:
 
 ``` sh
-java -cp 'target/teispeechtools-0.1-SNAPSHOT.jar:target/dependency/*' \
+java -cp 'target/teispeechtools-0.2-SNAPSHOT.jar:target/dependency/*' \
     de.ids.mannheim.clarin.teispeech.tools.DictMaker
 ```
 
@@ -221,7 +223,7 @@ To check the files with regular expressions for transcription
 conventions by running:
 
 ``` sh
-java -cp 'target/dependency/*:target/teispeechtools-0.1-SNAPSHOT.jar' \
+java -cp 'target/dependency/*:target/teispeechtools-0.2-SNAPSHOT.jar' \
     de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner -h
 ```
 

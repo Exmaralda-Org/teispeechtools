@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 rm -f TEST_LOG.txt
 
 for f in src/test/txt/Input-*.txt ; do
