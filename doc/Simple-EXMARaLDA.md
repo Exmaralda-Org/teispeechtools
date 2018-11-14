@@ -22,6 +22,9 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     > parentheses have special functions in the format.  Therefore
     > they may only be used as specified below.  They cannot occur
     > within the transcription in any other way.
+    
+    > Note TS: Lines also occur in temporal order in cases of overlap, 
+    > so : "Lines occur in temporal order of their starting points. For cases of overlap, see paragraph 8"
 
 1. Every line starts with a short tag indicating the speaker, which is
    followed by a colon.
@@ -91,6 +94,10 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     TOM: [winkt] Hallo, Tim!
     TIM: [winkt] Hallo, Tom.
     ```
+    > Note TS: Yes, but we used to put `<incident>` either inside `<u>`
+    > or outside (i.e. between) `<annotationBlock>` whereas
+    > you put it inside `<annotationBlock>` but outside `<u>`
+    > not sure what the better way is
 
 5. Incomprehensible utterances are transcribed using
    double-parenthesis notation:
@@ -104,6 +111,10 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     ```
     WIM: [nods]
     ```
+
+    > Really similarly? It's round brackets in the first and square 
+    > ones in the second. They end up at different places in the TEI.
+
 
 6. Single incomprehensible words can be indicated by spans of tripple
    pluses, where every span signifies a syllable:
