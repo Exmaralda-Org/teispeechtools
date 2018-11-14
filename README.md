@@ -67,10 +67,8 @@ Fisseni](mailto:fisseni@ids-mannheim.de?subect=TEI+Transcription+tools)
     annotation is situated with respect to the `<timeline>`.
 
   - Parameters  
-    can be specified:
     
-      - the `language` of the
-utterance.
+      - the `language` of the utterance.
 
 ## Segmentation according to transcription convention (CLI command `segmentize`)
 
@@ -91,7 +89,6 @@ utterance.
     resolved to XML markup like `<pause>`, `<gap>` etc.
 
   - Parameters  
-    You can specify:
     
       - the `language` of the document (if there is language information
         in the document, it will be preferred),
@@ -116,7 +113,6 @@ utterance.
     languages are equally probable, the document languare is preferred.
 
   - Parameters  
-    You can specify:
     
       - the `language` of the document (if there is language information
         in the document, it will be preferred),
@@ -142,7 +138,6 @@ utterance.
     normalization is only applied to text in German.
 
   - Parameters  
-    You can specify:
     
       - the `language` of the document (if there is language information
         in the document, it will be preferred).
