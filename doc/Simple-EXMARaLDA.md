@@ -137,8 +137,9 @@ aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
     TOM: ++++++ +++!
     ```
     
-    > This annotation will only be resolved when parsing the text for
-    > transcription conventions, e.g. with the `generic` parsing.
+    > This annotation will only be resolved when [parsing the text for
+    > transcription conventions](Generic-Conventions.md),
+    > e.g. with the `generic` parsing.
 
 7. Uncertain content is placed in single parentheses; parentheses are
    allowed to contain incomprehensible content.
@@ -148,8 +149,9 @@ aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
     TOM: (++++++ Tom!)
     ```
     
-    > This annotation will only be resolved when parsing the text for
-    > transcription conventions, e.g. with the `generic` parsing.
+    > This annotation will only be resolved when [parsing the text for
+    > transcription conventions](Generic-Conventions.md),
+    > e.g. with the `generic` parsing.
 
 
 8. Pauses are indicated by full stops in parentheses. Pause lengths
@@ -159,8 +161,9 @@ aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
     ```
     TIM: Hallo (...) Wim!
     ```
-    > This annotation will only be resolved when parsing the text for
-    > transcription conventions, e.g. with the `generic` parsing.
+    > This annotation will only be resolved when [parsing the text for
+    > transcription conventions](Generic-Conventions.md),
+    > e.g. with the `generic` parsing.
 
 9. An annotation of the utterance, e.g. a translation or a general
    commentary, can be placed in curly brackets behind the
