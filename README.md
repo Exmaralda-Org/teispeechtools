@@ -6,6 +6,11 @@ spoken data in
 of the tools can also be applied to TEI documents which are at least
 `<w>`-annotated.
 
+In principle, target documents are those conforming to the ISO standard
+[ISO 24624:2016(E)](https://www.iso.org/standard/37338.html) ‘Language
+resource management -- Transcription of spoken language’.
+
+
 # Availability
 
 This is the library containing the tools. A [companion
@@ -47,7 +52,8 @@ Fisseni](mailto:fisseni@ids-mannheim.de?subect=TEI+Transcription+tools)
 
   - Input  
     a [plain text](https://en.wikipedia.org/wiki/Plain_text) file
-    containing a transcription in the Simple EXMARaLDA format. This
+    containing a transcription in the [Simple EXMARaLDA
+    format](doc/Simple-EXMARaLDA.md). This
     format permits to encode utterances and overlap between them as well
     as incidents occurring independently or simultaneously to an
     utterance and a commentary (e.g. a translation) on utterances or
@@ -71,9 +77,13 @@ utterance.
   - Input  
     a TEI-conformant XML document containing `<u>` elements which
     contain plain text formatted according to a transcription convention
-    (generic, cGAT minimal, cGAT basic) and potentially `<anchor>`
-    elements referring to the `<timeline>`. This can be the output of
-    the previously described plain text conversion.
+    ([generic](doc/Generic-Conventions.md),
+    [cGAT](https://ids-pub.bsz-bw.de/frontdoor/index/index/docId/4616)
+    minimal,
+    [cGAT](https://ids-pub.bsz-bw.de/frontdoor/index/index/docId/4616)
+    basic) and potentially `<anchor>` elements referring to the
+    `<timeline>`. This can be the output of the previously described
+    plain text conversion.
 
   - Output  
     a TEI-conformant XML document in which the `<u>` elements have been
