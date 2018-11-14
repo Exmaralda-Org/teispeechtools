@@ -1,13 +1,13 @@
 <h1 class="title">Simple EXMARaLDA Examples (DRAFT!)</h1>
 <div class="author">Bernhard Fisseni, Thomas Schmidt</div>
-...
+
 
 This is based on Thomas Schmidt's *Appendix A: Simple EXMARaLDA
 Conventions* in [EXMARaLDA's Partitur-Editor
 manual](http://www.exmaralda.org/pdf/Partitur-Editor_Manual.pdf).  The
 conventions described here are supported by both the [IDS
-TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
-[EXMARaLDA](http://exmaralda.org/)'s
+TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services,
+aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
 [Partitur-Editor](http://exmaralda.org/en/partitur-editor-en/).
 
 
@@ -140,7 +140,29 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     > This annotation will only be resolved when parsing the text for
     > transcription conventions, e.g. with the `generic` parsing.
 
-7. An annotation of the utterance, e.g. a translation or a general
+7. Uncertain content is placed in single parentheses; parentheses are
+   allowed to contain incomprehensible content.
+
+    ```
+    TIM: (Hallo) Tim!
+    TOM: (++++++ Tom!)
+    ```
+    
+    > This annotation will only be resolved when parsing the text for
+    > transcription conventions, e.g. with the `generic` parsing.
+
+
+8. Pauses are indicated by full stops in parentheses. Pause lengths
+   are determined by the number of full stops (short, medium, long,
+   very+ long).
+
+    ```
+    TIM: Hallo (...) Wim!
+    ```
+    > This annotation will only be resolved when parsing the text for
+    > transcription conventions, e.g. with the `generic` parsing.
+
+9. An annotation of the utterance, e.g. a translation or a general
    commentary, can be placed in curly brackets behind the
    utterance. It is treated as temporally coextensive to the
    annotation. In the ISO format, it obtains its own `<spanGrp
@@ -151,11 +173,10 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     TIM: [winkt] Hallo, Tom. {Salut, Tom!}
     ```
 
-
-8. Overlapping parts of the utterances of different speakers are
-   placed into angle brackets. The closing angle bracket is followed
-   by any desired string that indexes the overlapping of the
-   utterances, followed by another closing angle bracket.
+10. Overlapping parts of the utterances of different speakers are
+    placed into angle brackets. The closing angle bracket is followed
+    by any desired string that indexes the overlapping of the
+    utterances, followed by another closing angle bracket.
 
 
     ```
@@ -242,8 +263,8 @@ following TEI ISO document.
          </transcriptionDesc>
       </encodingDesc>
       <revisionDesc>
-         <change when="2018-11-14T09:13:35.083Z">
-             created from Simple EXMARaLDA plain text transcript;
+         <change when="2018-11-14T10:57:57.294Z">
+             created from Simple EXMARaLDA plain text transcript; 
              language set to «deu»
          </change>
       </revisionDesc>
@@ -289,10 +310,16 @@ following TEI ISO document.
          <when id="B_19"/>
          <when id="E_19"/>
          <when id="B_20"/>
+         <when id="E_20"/>
+         <when id="B_21"/>
+         <when id="E_21"/>
+         <when id="B_22"/>
+         <when id="E_22"/>
+         <when id="B_23"/>
          <!--marked as ‹1› in the input.-->
          <when id="M_1"/>
          <when id="ME_1"/>
-         <when id="E_21"/>
+         <when id="E_24"/>
       </timeline>
       <body>
          <annotationBlock from="#B_1" to="#E_1" who="TOM">
@@ -356,40 +383,49 @@ following TEI ISO document.
          <annotationBlock from="#B_17" to="#E_17" who="TOM">
             <u>++++++ +++!</u>
          </annotationBlock>
-         <incident end="#E_18" start="#B_18">
-            <desc>winkt</desc>
-         </incident>
-         <annotationBlock from="#B_18" to="#E_18" who="TOM">
-            <u>Hallo, Tim!</u>
-            <spanGrp>
-               <span from="#B_18" to="#E_18" type="comment">Salut, Tim!</span>
-            </spanGrp>
+         <annotationBlock from="#B_18" to="#E_18" who="TIM">
+            <u>(Hallo) Tim!</u>
          </annotationBlock>
-         <incident end="#E_19" start="#B_19">
-            <desc>winkt</desc>
-         </incident>
-         <annotationBlock from="#B_19" to="#E_19" who="TIM">
-            <u>Hallo, Tom.</u>
-            <spanGrp>
-               <span from="#B_19" to="#E_19" type="comment">Salut, Tom!</span>
-            </spanGrp>
+         <annotationBlock from="#B_19" to="#E_19" who="TOM">
+            <u>(++++++ Tom!)</u>
          </annotationBlock>
-         <incident end="#E_20" start="#B_20">
-            <desc>winkt</desc>
-         </incident>
-         <annotationBlock from="#B_20" to="#ME_1" who="TOM">
-            <u>Hallo, <anchor synch="#M_1"/>Tim!</u>
-            <spanGrp>
-               <span from="#B_20" to="#ME_1" type="comment">Salut, Tim!</span>
-            </spanGrp>
+         <annotationBlock from="#B_20" to="#E_20" who="TIM">
+            <u>Hallo (...) Wim!</u>
          </annotationBlock>
          <incident end="#E_21" start="#B_21">
             <desc>winkt</desc>
          </incident>
-         <annotationBlock from="M_1" to="#E_21" who="TIM">
+         <annotationBlock from="#B_21" to="#E_21" who="TOM">
+            <u>Hallo, Tim!</u>
+            <spanGrp>
+               <span from="#B_21" to="#E_21" type="comment">Salut, Tim!</span>
+            </spanGrp>
+         </annotationBlock>
+         <incident end="#E_22" start="#B_22">
+            <desc>winkt</desc>
+         </incident>
+         <annotationBlock from="#B_22" to="#E_22" who="TIM">
+            <u>Hallo, Tom.</u>
+            <spanGrp>
+               <span from="#B_22" to="#E_22" type="comment">Salut, Tom!</span>
+            </spanGrp>
+         </annotationBlock>
+         <incident end="#E_23" start="#B_23">
+            <desc>winkt</desc>
+         </incident>
+         <annotationBlock from="#B_23" to="#ME_1" who="TOM">
+            <u>Hallo, <anchor synch="#M_1"/>Tim!</u>
+            <spanGrp>
+               <span from="#B_23" to="#ME_1" type="comment">Salut, Tim!</span>
+            </spanGrp>
+         </annotationBlock>
+         <incident end="#E_24" start="#B_24">
+            <desc>winkt</desc>
+         </incident>
+         <annotationBlock from="M_1" to="#E_24" who="TIM">
             <u>Hallo<anchor synch="#ME_1"/>, Tom.</u>
             <spanGrp>
-               <span from="#M_1" to="#E_21" type="comment">Salut, Tom!</span>
+               <span from="#M_1" to="#E_24" type="comment">Salut, Tom!</span>
             </spanGrp>
          </annotationBlock>
       </body>

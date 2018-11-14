@@ -10,15 +10,11 @@ options {tokenVocab=GenericConventionLexer;}
 
 text : contribution +;
 
-// TODO: incidents have been taken care of by square bracket annotation?
-//contribution: (anno | incident | content)+;
 contribution: (anno | content)+;
 
-// TODO: Anführungs‚zeichen‘setzung im Wort?
-content: (word | punctuation)+;
+content: (word | incomprehensible | punctuation)+;
 
-word: D_WORD | A_WORD;
-// link: D_LINK | A_LINK;
+word: D_WORD | A_WORD ;
 punctuation: PUNCTUATION | A_PUNCTUATION;
 
 anno: LEFT_PAREN anno_content RIGHT_PAREN;
@@ -27,13 +23,7 @@ anno_content: pause | (uncertain | incomprehensible )+;
 a_word: A_WORD;
 
 uncertain: (word | punctuation)+;
-incomprehensible: A_INCOMPREHENSIBLE;
+incomprehensible: A_INCOMPREHENSIBLE | INCOMPREHENSIBLE;
 a_punctuation: A_PUNCTUATION;
 
 pause: PAUSE;
-
-// incident: LLEFT_PAREN incident_content RRIGHT_PAREN;
-// 
-// incident_content: (i_word i_punctuation?)+;
-// i_word: I_WORD;
-// i_punctuation: I_PUNCTUATION;

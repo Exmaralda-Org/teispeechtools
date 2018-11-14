@@ -15,6 +15,9 @@ KIM: ((incomprehensible))
 WIM: [nods]
 TIM: ++++++ +++!
 TOM: ++++++ +++!
+TIM: (Hallo) Tim!
+TOM: (++++++ Tom!)
+TIM: Hallo (...) Wim!
 TOM: [winkt] Hallo, Tim! {Salut, Tim!}
 TIM: [winkt] Hallo, Tom. {Salut, Tom!}
 TOM: [winkt] Hallo, <Tim!>1> {Salut, Tim!}

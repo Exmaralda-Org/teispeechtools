@@ -392,7 +392,7 @@ public class SpeechDocument {
     }
 
     /**
-     * remove empty utterance.
+     * remove utterance or annotation block if empty.
      */
     public void cleanUtterance() {
         if (!currentUtterance.hasChildNodes()) {

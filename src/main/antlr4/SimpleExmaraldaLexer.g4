@@ -46,7 +46,7 @@ WORD : (~[() \t[{<>}\]\r\n] | '\\'[[{<>}])+ | '('|')' ;
 // PUNCT : [;,:.!?()]+ ;
 LANGLE : '<' -> mode(MARK_TEXT);
 LBRACKET : '[' -> mode(ACTION);
-LBRACE : '{'  -> mode(INFO);
+LBRACE : '{' -> mode(INFO);
 NSPACE : [\t ]+ -> channel(HIDDEN);
 CONTI : FNEWLINE [\t ]+;
 NNEWLINE : FNEWLINE -> mode(DEFAULT_MODE), skip;

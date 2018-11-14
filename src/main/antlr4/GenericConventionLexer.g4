@@ -27,14 +27,6 @@ INCOMPREHENSIBLE: '+++'+;
 
 SPACE: WHITE+ -> channel(HIDDEN);
 
-//mode INCIDENT;
-//
-//RRIGHT_PAREN : '))' -> mode(DEFAULT_MODE);
-//I_WORD : WORD;
-//I_PUNCTUATION: (PUNCT | [[\]])+;
-//I_LINK: '_'+;
-//I_SPACE: WHITE+ -> channel(HIDDEN);
-
 
 mode ANNO;
 RIGHT_PAREN: ')' -> mode(DEFAULT_MODE);

@@ -8,7 +8,7 @@ options {tokenVocab=SimpleExmaraldaLexer;}
 
 @header{package de.ids.mannheim.clarin.teispeech.tools;}
 
-transcript :  line+ ;
+transcript : line+ ;
 
 line : turn | empty_line ;
 
@@ -20,7 +20,7 @@ content : (action? text+ comment? | action | caction) conti?;
 
 conti : CONTI;
 
-speaker :  HWORD;
+speaker : HWORD;
 
 action : LBRACKET aword+ RBRACKET;
 caction: LLPAREN aword+ RRPAREN;
@@ -29,6 +29,5 @@ aword: AWORD | CAWORD;
 comment : LBRACE IWORD+ RBRACE;
 
 text : (word | marked) ;
-word :  WORD ;
+word : WORD ;
 marked : LANGLE MWORD+ T_RANGLE MARK_ID RANGLE;
-

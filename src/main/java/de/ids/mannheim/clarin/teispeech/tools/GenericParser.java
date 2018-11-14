@@ -57,8 +57,11 @@ public class GenericParser extends GenericConventionBaseListener {
             length = "medium";
             break;
         default:
-            length = Seq.of(IntStream.range(3, charLength)).map(i -> "very ")
-                    .toString();
+            length = "";
+            if (charLength > 3) {
+                length = Seq.of(IntStream.range(3, charLength))
+                        .map(i -> "very ").toString();
+            }
             length += "long";
             break;
         }

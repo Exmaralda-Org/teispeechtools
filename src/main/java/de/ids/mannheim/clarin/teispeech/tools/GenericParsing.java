@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.apache.commons.lang3.StringUtils;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -27,12 +28,15 @@ public class GenericParsing {
      * @param errors
      *            list of errors
      */
-    private static void makeErrorList(List<String> errors, Element el) {
+    private static void makeErrorList(List<String> errors, Element el,
+            String tx) {
         Document doc = el.getOwnerDocument();
         if (errors.size() > 0) {
             for (String error : errors) {
                 System.err.println(error);
-                Comment comment = doc.createComment(" " + error + " ");
+                Comment comment = doc.createComment("original input: " + tx);
+                Utilities.insertAtBeginningOf(comment, el);
+                comment = doc.createComment(" " + error + " ");
                 Utilities.insertAtBeginningOf(comment, el);
             }
         }
@@ -51,7 +55,13 @@ public class GenericParsing {
         }
         Deque<String> anchors = AnchorSerialization.serializeAnchors(el);
         if (Utilities.toStream(el.getChildNodes())
-                .anyMatch(n -> n.getNodeType() == Node.ELEMENT_NODE)) {
+                .anyMatch(n -> n.getNodeType() == Node.ELEMENT_NODE
+                        && !((Element) n).getTagName().equals("incident"))
+                || (Utilities.toStream(el.getChildNodes())
+                        .anyMatch(n -> n.getNodeType() == Node.ELEMENT_NODE
+                                && ((Element) n).getTagName()
+                                        .equals("incident"))
+                        && !StringUtils.strip(el.getTextContent()).isEmpty())) {
             Comment comm = el.getOwnerDocument().createComment(
                     "This node was not parsed, as it contains mixed content.");
             el.insertBefore(comm, el.getFirstChild());
@@ -72,7 +82,7 @@ public class GenericParsing {
         ParseTree tree = parser.text();
         GenericParser gp = new GenericParser(el, anchors);
         walker.walk(gp, tree);
-        makeErrorList(lister.getList(), el);
+        makeErrorList(lister.getList(), el, tx);
     }
 
     /**
