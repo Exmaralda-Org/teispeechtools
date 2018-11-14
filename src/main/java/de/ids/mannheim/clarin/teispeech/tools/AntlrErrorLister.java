@@ -37,7 +37,7 @@ public class AntlrErrorLister extends BaseErrorListener {
     }
 
     /**
-     * catch errors and put a message in {@link #errorList}
+     * catch errors and put a message in the errorList
      */
     @Override
     public void syntaxError(org.antlr.v4.runtime.Recognizer<?, ?> recognizer,
@@ -54,7 +54,7 @@ public class AntlrErrorLister extends BaseErrorListener {
     }
 
     /**
-     * @return {@link #errorList}
+     * @return a list of error messages
      */
     public List<String> getList() {
         return errorList;

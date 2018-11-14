@@ -13,8 +13,7 @@ import org.w3c.dom.Element;
 /**
  * a normalizer for the TEI transcription format.
  *
- * Mainly applies the normalizer {@link #normalizer} to all &lt;w&gt; Elements
- * in a document.
+ * Mainly applies the normalizer to all &lt;w&gt; Elements in a document.
  *
  * @author bfi
  *
@@ -56,7 +55,7 @@ public class TEINormalizer {
     }
 
     /**
-     * normalize an XML document using the normalizer {@link #normalizer}.
+     * normalize an XML document using the normalizer
      *
      * @param doc
      *            the XML file DOM

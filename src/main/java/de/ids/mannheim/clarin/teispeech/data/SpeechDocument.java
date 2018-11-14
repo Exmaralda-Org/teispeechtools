@@ -65,7 +65,7 @@ public class SpeechDocument {
     }
 
     /**
-     * @return the XML DOM document {@link #doc}
+     * @return the XML DOM document
      */
     public Document getDocument() {
         return doc;
