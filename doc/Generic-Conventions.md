@@ -14,7 +14,7 @@ this library. They are applied in the `segmentize` step of processing.
 0. The segmentation works on un-analysed
    [`<u>`](http://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-u.html)
    elements in a TEI-ISO transcript document, as it can be produced
-   from the [Simple EXMARaLDA format](Simple-Exmaralda.md).
+   from the [Simple EXMARaLDA format](Simple-EXMARaLDA.md).
    
    Utterances `<u>` that contain anything besides text content and
    time `<anchor>`s are not analysed. Comments and processing
