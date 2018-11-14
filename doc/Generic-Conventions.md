@@ -18,7 +18,8 @@ this library. They are applied in the `segmentize` step of processing.
    
    Utterances `<u>` that contain anything besides text content and
    time `<anchor>`s are not analysed. Comments and processing
-   instructions inside `<u>` will be removed.
+   instructions inside `<u>` will be removed. Whitespace will be
+   normalized.
    
 1. An utterance `<u>` is mainly split into words that will be
    annotated as
