@@ -13,11 +13,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,12 +102,24 @@ public class DictionaryNormalizer implements WordNormalizer {
         }
     }
 
-    private static BufferedReader getDerekoReader() {
-        InputStream derekoStream = DictionaryNormalizer.class.getClassLoader()
-                .getResourceAsStream(DEREKO_PATH);
-        InputStreamReader derekoReader = new InputStreamReader(derekoStream,
-                Charset.forName("windows-1252"));
-        return new BufferedReader(derekoReader);
+    /**
+     * Do something with the DeReKo file
+     *
+     * @param con
+     *            a Consumer that uses the {@link BufferedReader} on the DeReKo
+     *            file
+     */
+    private static void withDerekoReader(Consumer<BufferedReader> con) {
+        try (InputStream derekoStream = DictionaryNormalizer.class
+                .getClassLoader().getResourceAsStream(DEREKO_PATH);
+                InputStreamReader derekoReader = new InputStreamReader(
+                        derekoStream, Charset.forName("windows-1252"));
+                BufferedReader buf = new BufferedReader(derekoReader)) {
+            con.accept(buf);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -121,39 +135,43 @@ public class DictionaryNormalizer implements WordNormalizer {
             return;
         }
         if (debug) {
-            try (BufferedReader derekoReader = getDerekoReader()) {
+            withDerekoReader(derekoReader -> {
                 // only for statistics at the moment
                 Map<String, String> derekoDict = derekoReader.lines().parallel()
-                        .map(String::trim)
+                        .map(StringUtils::strip)
                         .collect(Collectors.toMap(l -> l.toLowerCase(),
                                 Function.identity(), strCollider,
                                 ConcurrentHashMap::new));
                 LOGGER.info("DEREKO: {} entries", derekoDict.size());
-            }
+            });
         }
-        try (BufferedReader derekoReader = getDerekoReader()) {
+        withDerekoReader(derekoReader -> {
             derekoReader.lines()
                     // .parallel() // uncomment if order is irrelevant
-                    .map(String::trim).filter(s -> !s.isEmpty())
+                    .map(StringUtils::strip).filter(s -> !s.isEmpty())
                     .forEach(l -> dict.putIfAbsent(l.toLowerCase(), l));
-        }
-        LOGGER.info("Final dictionary: {} entries", dict.size());
-        derekoLoaded = true;
+            LOGGER.info("Final dictionary: {} entries", dict.size());
+            derekoLoaded = true;
+        });
     }
 
     /**
      * load the dictionary compiled from both FOLK and DeReKo
      */
     private static void loadCompiledDict() {
-        InputStream dictSource = DictionaryNormalizer.class.getClassLoader()
-                .getResourceAsStream(DICT_PATH);
-        InputStreamReader dictReader = new InputStreamReader(dictSource);
-        BufferedReader dictBReader = new BufferedReader(dictReader);
-        dict = dictBReader.lines().parallel().map(l -> l.split("\t"))
-                .collect(Collectors.toMap(l -> l[0], l -> l[1], strCollider,
-                        ConcurrentHashMap::new));
-        derekoLoaded = true;
-        folkLoaded = true;
+        try (InputStream dictSource = DictionaryNormalizer.class
+                .getClassLoader().getResourceAsStream(DICT_PATH);
+                InputStreamReader dictReader = new InputStreamReader(
+                        dictSource);
+                BufferedReader dictBReader = new BufferedReader(dictReader);) {
+            dict = dictBReader.lines().parallel().map(l -> l.split("\t"))
+                    .collect(Collectors.toMap(l -> l[0], l -> l[1], strCollider,
+                            ConcurrentHashMap::new));
+            derekoLoaded = true;
+            folkLoaded = true;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -161,8 +179,9 @@ public class DictionaryNormalizer implements WordNormalizer {
      * JAR if available)
      */
     public static void writeDict() {
-        try (FileWriter outF = new FileWriter(DICT_PATH_FILE)) {
-            PrintWriter out = new PrintWriter(outF);
+        try (FileWriter outF = new FileWriter(DICT_PATH_FILE);
+                PrintWriter out = new PrintWriter(outF);) {
+
             Collator collator = Collator.getInstance(Locale.GERMAN);
             collator.setStrength(Collator.PRIMARY);
             dict.entrySet().stream()
@@ -170,7 +189,6 @@ public class DictionaryNormalizer implements WordNormalizer {
                     .forEach(entry -> out.println(String.format("%s\t%s",
                             entry.getKey(), entry.getValue())));
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
         System.out.format("Wrote dictionary to <%s>.\n", DICT_PATH_FILE);

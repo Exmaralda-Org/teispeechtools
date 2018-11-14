@@ -3,6 +3,7 @@ package de.ids.mannheim.clarin.teispeech.tools;
 import java.util.Deque;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -81,8 +82,8 @@ public class GenericParser extends GenericConventionBaseListener {
     @Override
     public void enterWord(WordContext ctx) {
         Element el = doc.createElement("w");
-        AnchorSerialization.deserializeAnchor(el, ctx.getText().trim(),
-                anchors);
+        AnchorSerialization.deserializeAnchor(el,
+                StringUtils.strip(ctx.getText()), anchors);
         currentParent.appendChild(el);
     }
 

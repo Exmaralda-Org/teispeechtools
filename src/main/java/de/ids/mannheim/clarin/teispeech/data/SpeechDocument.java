@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -252,7 +253,7 @@ public class SpeechDocument {
         if (to.isPresent()) {
             Node lastNode = currentUtterance.getLastChild();
             while (lastNode.getNodeType() == Node.TEXT_NODE
-                    && lastNode.getTextContent().trim().isEmpty()) {
+                    && StringUtils.strip(lastNode.getTextContent()).isEmpty()) {
                 lastNode = lastNode.getPreviousSibling();
             }
             if (lastNode.getNodeType() == Node.ELEMENT_NODE

@@ -50,7 +50,7 @@ public class GenericParsing {
      *
      */
     public static void process(Element el) {
-        if (el.getTextContent().trim().isEmpty()) {
+        if (StringUtils.strip(el.getTextContent()).isEmpty()) {
             return;
         }
         Deque<String> anchors = AnchorSerialization.serializeAnchors(el);
