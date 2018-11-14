@@ -27,6 +27,7 @@ import de.ids.mannheim.clarin.teispeech.data.Event;
 import de.ids.mannheim.clarin.teispeech.data.MarkedEvent;
 import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ActionContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.CactionContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.CommentContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ContentContext;
 import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.MarkedContext;
@@ -218,7 +219,17 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     public void enterAction(ActionContext ctx) {
         String tx = ctx.aword().stream().map(w -> w.getText())
                 .collect(Collectors.joining(" "));
-        spd.addIncident(currentBegin, currentEnd, tx);
+        spd.addIncident(currentBegin, currentEnd, tx, true);
+    }
+
+    /**
+     * incident encountered
+     */
+    @Override
+    public void enterCaction(CactionContext ctx) {
+        String tx = ctx.aword().stream().map(w -> w.getText())
+                .collect(Collectors.joining(" "));
+        spd.addIncident(currentBegin, currentEnd, tx, false);
     }
 
     /**

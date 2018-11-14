@@ -1,6 +1,5 @@
----
-title: Simple EXMARaLDA Examples
-author: Bernhard Fisseni, Thomas Schmidt
+<h1 class="title">Simple EXMARaLDA Examples (DRAFT!)</h1>
+<div class="author">Bernhard Fisseni, Thomas Schmidt</div>
 ...
 
 This is based on Thomas Schmidt's *Appendix A: Simple EXMARaLDA
@@ -23,8 +22,8 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     > they may only be used as specified below.  They cannot occur
     > within the transcription in any other way.
     
-    > Note TS: Lines also occur in temporal order in cases of overlap, 
-    > so : "Lines occur in temporal order of their starting points. For cases of overlap, see paragraph 8"
+    > Lines occur in temporal order of their starting points. For
+    > cases of overlap, see paragraph 8.
 
 1. Every line starts with a short tag indicating the speaker, which is
    followed by a colon.
@@ -94,27 +93,41 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
     TOM: [winkt] Hallo, Tim!
     TIM: [winkt] Hallo, Tom.
     ```
+    <div class="discussion">
     > Note TS: Yes, but we used to put `<incident>` either inside `<u>`
     > or outside (i.e. between) `<annotationBlock>` whereas
     > you put it inside `<annotationBlock>` but outside `<u>`
     > not sure what the better way is
+    >
+    > Note BF: Not sure about what the semantics of an `<incident>`
+    > inside `<u>` is. I assumed that sibling elements inside an
+    > utterance are (by default) consecutive and sibling elements
+    > inside an `<annotationBlock>` simultaneous but clearly (somehow)
+    > related.  For separate `<annotationBlock>`s, you have to specify
+    > the temporal relation (which I do, too, anyway), and the
+    > ‘closeness’ gets lost, which is probably not very important.  We
+    > should standardize on one.  To avoid temporal ambiguity, I would
+    > prefer `<incident>` outside `<u>` for this case.
+    > For the case of incomprehensible content, putting it inside an
+    > `<u>` feels right.
+    > The parser and processor were changed so that `[incidents]` go
+    > before the `<annotationBlock>` (same time anchors) and
+    > `((incomprehensibles))` go inside the utterance. OK?
+    </div>
 
 5. Incomprehensible utterances are transcribed using
-   double-parenthesis notation:
+   double-parenthesis notation and are treated as utterances:
 
     ```
     KIM: ((incomprehensible))
     ```
 
-    Similarly for non-verbal actions that are not accompanied by an utterance:
+    Similarly for non-verbal actions that are not accompanied by an
+    utterance; however, these are not treated as utterances:
 
     ```
     WIM: [nods]
     ```
-
-    > Really similarly? It's round brackets in the first and square 
-    > ones in the second. They end up at different places in the TEI.
-
 
 6. Single incomprehensible words can be indicated by spans of tripple
    pluses, where every span signifies a syllable:
@@ -130,7 +143,7 @@ TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and by
 7. An annotation of the utterance, e.g. a translation or a general
    commentary, can be placed in curly brackets behind the
    utterance. It is treated as temporally coextensive to the
-   annotation. In the ISO format, it obtains its own `<spangrp
+   annotation. In the ISO format, it obtains its own `<spanGrp
    type="comment">`.
 
     ```
@@ -229,9 +242,9 @@ following TEI ISO document.
          </transcriptionDesc>
       </encodingDesc>
       <revisionDesc>
-         <change when="2018-11-13T14:06:25.462Z">
-         created from Simple EXMARaLDA
-         plain text transcript; language set to «deu»
+         <change when="2018-11-14T09:13:35.083Z">
+             created from Simple EXMARaLDA plain text transcript;
+             language set to «deu»
          </change>
       </revisionDesc>
    </teiHeader>
@@ -315,63 +328,65 @@ following TEI ISO document.
          <annotationBlock from="#B_11" to="#E_11" who="TOM">
             <u>Aber so richtig weiß ich nicht, was.</u>
          </annotationBlock>
+         <incident end="#E_12" start="#B_12">
+            <desc>winkt</desc>
+         </incident>
          <annotationBlock from="#B_12" to="#E_12" who="TOM">
-            <incident end="#E_12" start="#B_12">
-               <desc>winkt</desc>
-            </incident>
             <u>Hallo, Tim!</u>
          </annotationBlock>
+         <incident end="#E_13" start="#B_13">
+            <desc>winkt</desc>
+         </incident>
          <annotationBlock from="#B_13" to="#E_13" who="TIM">
-            <incident end="#E_13" start="#B_13">
-               <desc>winkt</desc>
-            </incident>
             <u>Hallo, Tom.</u>
          </annotationBlock>
          <annotationBlock from="#B_14" to="#E_14" who="KIM">
-            <u>((incomprehensible))</u>
+            <u>
+               <incident end="#E_14" start="#B_14">
+                  <desc>incomprehensible</desc>
+               </incident>
+            </u>
          </annotationBlock>
-         <annotationBlock from="#B_15" to="#E_15" who="WIM">
-            <incident end="#E_15" start="#B_15">
-               <desc>nods</desc>
-            </incident>
-         </annotationBlock>
+         <incident end="#E_15" start="#B_15">
+            <desc>nods</desc>
+         </incident>
          <annotationBlock from="#B_16" to="#E_16" who="TIM">
             <u>++++++ +++!</u>
          </annotationBlock>
          <annotationBlock from="#B_17" to="#E_17" who="TOM">
             <u>++++++ +++!</u>
          </annotationBlock>
+         <incident end="#E_18" start="#B_18">
+            <desc>winkt</desc>
+         </incident>
          <annotationBlock from="#B_18" to="#E_18" who="TOM">
-            <incident end="#E_18" start="#B_18">
-               <desc>winkt</desc>
-            </incident>
             <u>Hallo, Tim!</u>
             <spanGrp>
                <span from="#B_18" to="#E_18" type="comment">Salut, Tim!</span>
             </spanGrp>
          </annotationBlock>
+         <incident end="#E_19" start="#B_19">
+            <desc>winkt</desc>
+         </incident>
          <annotationBlock from="#B_19" to="#E_19" who="TIM">
-            <incident end="#E_19" start="#B_19">
-               <desc>winkt</desc>
-            </incident>
             <u>Hallo, Tom.</u>
             <spanGrp>
                <span from="#B_19" to="#E_19" type="comment">Salut, Tom!</span>
             </spanGrp>
          </annotationBlock>
+         <incident end="#E_20" start="#B_20">
+            <desc>winkt</desc>
+         </incident>
          <annotationBlock from="#B_20" to="#ME_1" who="TOM">
-            <incident end="#ME_1" start="#B_20">
-               <desc>winkt</desc>
-            </incident>
             <u>Hallo, <anchor synch="#M_1"/>Tim!</u>
             <spanGrp>
                <span from="#B_20" to="#ME_1" type="comment">Salut, Tim!</span>
             </spanGrp>
          </annotationBlock>
+         <incident end="#E_21" start="#B_21">
+            <desc>winkt</desc>
+         </incident>
          <annotationBlock from="M_1" to="#E_21" who="TIM">
-            <incident end="#E_21" start="M_1">
-               <desc>winkt</desc>
-            </incident>
             <u>Hallo<anchor synch="#ME_1"/>, Tom.</u>
             <spanGrp>
                <span from="#M_1" to="#E_21" type="comment">Salut, Tom!</span>

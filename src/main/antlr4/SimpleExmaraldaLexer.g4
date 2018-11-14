@@ -13,8 +13,8 @@ COLON : ':' -> mode(NORMAL);
 NEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
 
 mode COMMENTED_ACTION;
-CAWORD : ~[\t \]\n\r]+;
 RRPAREN: '))' -> mode(NORMAL);
+CAWORD : ~[)\t \n\r]+ | ')';
 CASPACE : [\t ]+ -> channel(HIDDEN);
 
 
@@ -41,12 +41,12 @@ RANGLE : '>' -> mode(NORMAL);
 
 
 mode NORMAL;
-WORD : (~[ \t[{<>}\]\r\n] | '\\'[[{<>}])+ ;
+LLPAREN : '((' -> mode(COMMENTED_ACTION);
+WORD : (~[() \t[{<>}\]\r\n] | '\\'[[{<>}])+ | '('|')' ;
 // PUNCT : [;,:.!?()]+ ;
 LANGLE : '<' -> mode(MARK_TEXT);
 LBRACKET : '[' -> mode(ACTION);
 LBRACE : '{'  -> mode(INFO);
-LLPAREN : '))' -> mode(COMMENTED_ACTION);
 NSPACE : [\t ]+ -> channel(HIDDEN);
 CONTI : FNEWLINE [\t ]+;
 NNEWLINE : FNEWLINE -> mode(DEFAULT_MODE), skip;

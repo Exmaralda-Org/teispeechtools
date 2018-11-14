@@ -359,8 +359,11 @@ public class SpeechDocument {
      *            the start of the current block
      * @param text
      *            description of the incident
+     * @param extraPose
+     *            whether to embed into utterance or prepose to annotation block
      */
-    public void addIncident(Event from, Event to, String text) {
+    public void addIncident(Event from, Event to, String text,
+            boolean extraPose) {
         Element incident = doc.createElement("incident");
         Element desc = doc.createElement("desc");
         // Element incident = doc.createElementNS(NameSpaces.TEI_NS,
@@ -371,8 +374,12 @@ public class SpeechDocument {
         incident.appendChild(desc);
         incident.setAttribute("start", from.mkTimeRef());
         incident.setAttribute("end", to.mkTimeRef());
-        currentUtterance.getParentNode().insertBefore(incident,
-                currentUtterance);
+        if (extraPose) {
+            currentUtterance.getParentNode().getParentNode()
+                    .insertBefore(incident, currentUtterance.getParentNode());
+        } else {
+            Utilities.insertAtBeginningOf(incident, currentUtterance);
+        }
     }
 
     /**
@@ -391,7 +398,9 @@ public class SpeechDocument {
         if (!currentUtterance.hasChildNodes()) {
             currentBlock.removeChild(currentUtterance);
         }
-
+        if (!currentBlock.hasChildNodes()) {
+            currentBlock.getParentNode().removeChild(currentBlock);
+        }
     }
 
 }
