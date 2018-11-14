@@ -187,6 +187,16 @@ Normalization:
 
 # Building and inspecting
 
+
+## Dependencies
+
+Besides the dependencies available via
+[Maven](https://maven.apache.org/), needs [some utility
+functions](https://github.com/teoric/java-utilities). These can be
+locally [`mvn
+install`ed](https://maven.apache.org/plugins/maven-install-plugin/usage.html).
+
+
 ## Compilation
 
 ``` sh

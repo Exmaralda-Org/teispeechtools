@@ -56,7 +56,7 @@ public class CLI implements Runnable {
     private boolean force = false;
     // @Command() static void normalize
 
-    enum Step {
+    private enum Step {
         text2iso, segmentize, guess, normalize, pos, identify, unidentify
     };
 
