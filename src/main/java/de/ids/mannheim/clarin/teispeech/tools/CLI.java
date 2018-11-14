@@ -40,7 +40,7 @@ import picocli.CommandLine.Spec;
  */
 @Command(description = "process documents of speech annotated "
         + "according to TEI/ISO", sortOptions = false, name = "spindel"
-                + "", mixinStandardHelpOptions = true, versionProvider = de.ids.mannheim.clarin.teispeech.tools.VersionProvider.class)
+                + "", mixinStandardHelpOptions = true, versionProvider = VersionProvider.class)
 public class CLI implements Runnable {
 
     // @Option(names = {"-v", "--verbose"}, description = "give more info")
@@ -75,7 +75,7 @@ public class CLI implements Runnable {
     @Option(names = { "-l",
             "--language" }, description = "the (default) language "
                     + "of the document, an ISO-639 language code "
-                    + "(default: '${DEFAULT-VALUE}')")
+                    + "(default: '${DEFAULT-VALUE}'; normalize, pos)")
     private String language = "deu";
 
     @Option(names = "--expected", description = "comma-separated "
@@ -125,8 +125,8 @@ public class CLI implements Runnable {
 
     @Override
     public void run() {
-        System.err.println(String.format("STEP is %s with %s and language %s",
-                step, inputFile, language));
+//        System.err.println(String.format("STEP is %s with %s and language %s",
+//                step, inputFile, language));
         if (outFile != null) {
             try {
                 outStream = new FileOutputStream(outFile);
