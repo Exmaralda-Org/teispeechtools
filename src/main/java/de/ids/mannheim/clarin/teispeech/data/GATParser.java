@@ -18,8 +18,6 @@ import org.jdom2.transform.XSLTransformer;
 import org.jdom2.util.IteratorIterable;
 import org.jdom2.xpath.XPathFactory;
 import org.korpora.useful.Utilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 
@@ -36,8 +34,8 @@ public class GATParser extends AbstractParser {
     static final String PATTERNS_FILE_PATH = "Patterns.xml";
     static final Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
 
-    private final static Logger LOGGER = LoggerFactory
-            .getLogger(GATParser.class.getName());
+//    private final static Logger LOGGER = LoggerFactory
+//            .getLogger(GATParser.class.getName());
     private Map<String, Pattern> minimalPatterns;
     static final String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
     // String MINIMAL_TRANSFORMER_FILE_PATH =

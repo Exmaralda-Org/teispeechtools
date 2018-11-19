@@ -104,12 +104,12 @@ public class SpeechDocument {
             comment = doc
                     .createComment("  please refer to online documentation "
                             + "on how to correct them. ]");
+            head.insertBefore(comment, before);
             for (String error : errors) {
                 comment = doc.createComment("  - " + error + " ");
                 head.insertBefore(comment, before);
             }
             comment = doc.createComment("[ end of parsing errors ]");
-            head.insertBefore(comment, before);
             head.insertBefore(comment, before);
         }
     }
