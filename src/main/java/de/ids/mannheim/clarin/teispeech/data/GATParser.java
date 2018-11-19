@@ -11,12 +11,15 @@ import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
 import org.jdom2.Text;
 import org.jdom2.filter.ElementFilter;
 import org.jdom2.transform.XSLTransformer;
 import org.jdom2.util.IteratorIterable;
 import org.jdom2.xpath.XPathFactory;
 import org.korpora.useful.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 
@@ -31,7 +34,10 @@ public class GATParser extends AbstractParser {
 
     // String PATTERNS_FILE_PATH = "/org/exmaralda/folker/data/Patterns.xml";
     static final String PATTERNS_FILE_PATH = "Patterns.xml";
+    static final Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
 
+    private final static Logger LOGGER = LoggerFactory
+            .getLogger(GATParser.class.getName());
     private Map<String, Pattern> minimalPatterns;
     static final String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
     // String MINIMAL_TRANSFORMER_FILE_PATH =
@@ -67,6 +73,53 @@ public class GATParser extends AbstractParser {
 
     };
 
+    /**
+     * set level and version at appropriate place in &lt;teiHeader&gt;
+     *
+     * @param doc
+     *            JDOM document
+     * @param level
+     *            the level
+     * @param version
+     *            the version
+     */
+    private void setLevel(Document doc, String level, String version) {
+        Element transDesc = Utilities.getElementByTagName(doc.getRootElement(),
+                "transcriptionDesc", TEI_NS);
+        if (transDesc == null) {
+            transDesc = new Element("transcriptionDesc", TEI_NS);
+            // insert after appInfo
+            Element ai = Utilities.getElementByTagName(doc.getRootElement(),
+                    "appInfo", TEI_NS);
+            if (ai != null) {
+                int pos = ai.getParent().indexOf(ai);
+                ai.getParent().addContent(pos + 1, transDesc);
+                // or in encodingDesc
+            } else {
+                Element eDe = Utilities.getElementByTagName(
+                        doc.getRootElement(), "encodingDesc", TEI_NS);
+                if (eDe == null) {
+                    Element header = Utilities.getElementByTagName(
+                            doc.getRootElement(), "teiHeader", TEI_NS);
+                    if (header == null) {
+                        header = new Element("teiHeader", TEI_NS);
+                        doc.getRootElement().addContent(0, header);
+                    } else {
+                        eDe = new Element("encodingDesc", TEI_NS);
+                        header.addContent(eDe);
+                    }
+                }
+                eDe.addContent(0, transDesc);
+            }
+        }
+        transDesc.setAttribute("ident", level, TEI_NS);
+        if (version == null) {
+            transDesc.removeAttribute("version", TEI_NS);
+        } else {
+            transDesc.setAttribute("version", version, TEI_NS);
+        }
+    }
+
     @Override
     public void parseDocument(Document doc, int parseLevel) {
         if (parseLevel == 0) {
@@ -74,6 +127,7 @@ public class GATParser extends AbstractParser {
         }
 
         if (parseLevel == 1) {
+            setLevel(doc, "cGAT minimal", "1.0");
             IteratorIterable<Element> contributionIterator = doc
                     .getDescendants(new ElementFilter("contribution"));
             List<Element> contributions = new ArrayList<>();
@@ -117,6 +171,7 @@ public class GATParser extends AbstractParser {
                 }
             }
         } else if (parseLevel == 2) {
+            setLevel(doc, "cGAT basic", "1.0");
             IteratorIterable<Element> unparsedIterator = doc
                     .getDescendants(new ElementFilter("u"));
             List<Element> unparseds = new ArrayList<>();

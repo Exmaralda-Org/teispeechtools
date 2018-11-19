@@ -285,6 +285,9 @@ public class CLI implements Runnable {
         }
     }
 
+    /**
+     * add XML IDs
+     */
     public void identify() {
         try {
             Document doc = builder.parse(inputStream);
@@ -295,6 +298,9 @@ public class CLI implements Runnable {
         }
     }
 
+    /**
+     * add XML IDs
+     */
     public void unidentify() {
         try {
             Document doc = builder.parse(inputStream);

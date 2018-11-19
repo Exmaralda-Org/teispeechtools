@@ -10,15 +10,13 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.jdom2.filter.ElementFilter;
-import org.jdom2.util.IteratorIterable;
+import org.jdom2.Namespace;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
@@ -134,13 +132,30 @@ public class DocUtilities {
     public static Document makeChange(Document doc, String change) {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
-        NodeList revDescs = doc.getElementsByTagName("revisionDesc");
-        if (revDescs.getLength() > 0) {
-            Element changeEl = doc.createElement("change");
-            changeEl.setAttribute("when", stamp);
-            changeEl.appendChild(doc.createTextNode(change));
-            revDescs.item(0).appendChild(changeEl);
+        Element revDesc = Utilities
+                .getElementByTagName(doc.getDocumentElement(), "revisionDesc");
+        if (revDesc == null) {
+            revDesc = doc.createElementNS(NameSpaces.TEI_NS, "revisionDesc");
+            Element eDe = Utilities.getElementByTagName(
+                    doc.getDocumentElement(), "encodingDesc");
+            if (eDe == null) {
+                eDe = doc.createElementNS(NameSpaces.TEI_NS, "encodingDesc");
+                Element header = Utilities.getElementByTagName(
+                        doc.getDocumentElement(), "teiHeader");
+                if (header == null) {
+                    header = doc.createElementNS(NameSpaces.TEI_NS,
+                            "teiHeader");
+                    Utilities.insertAtBeginningOf(header,
+                            doc.getDocumentElement());
+                }
+                Utilities.insertAtBeginningOf(eDe, header);
+            }
+            Utilities.insertAtBeginningOf(revDesc, eDe);
         }
+        Element changeEl = doc.createElement("change");
+        changeEl.setAttribute("when", stamp);
+        changeEl.appendChild(doc.createTextNode(change));
+        Utilities.insertAtBeginningOf(changeEl, revDesc);
         return doc;
     }
 
@@ -155,16 +170,31 @@ public class DocUtilities {
      */
     public static org.jdom2.Document makeChange(org.jdom2.Document doc,
             String change) {
+        Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
-        IteratorIterable<org.jdom2.Element> revDescs = doc
-                .getDescendants(new ElementFilter("revisionDesc"));
-        if (revDescs.hasNext()) {
+        org.jdom2.Element revDesc = Utilities.getElementByTagName(
+                doc.getRootElement(), "revisionDesc", TEI_NS);
+        if (revDesc == null) {
+            revDesc = new org.jdom2.Element("transcriptionDesc", TEI_NS);
+            org.jdom2.Element eDe = Utilities.getElementByTagName(
+                    doc.getRootElement(), "encodingDesc", TEI_NS);
+            if (eDe == null) {
+                org.jdom2.Element header = Utilities.getElementByTagName(
+                        doc.getRootElement(), "teiHeader", TEI_NS);
+                if (header == null) {
+                    header = new org.jdom2.Element("teiHeader", TEI_NS);
+                    doc.getRootElement().addContent(0, header);
+                } else {
+                    eDe = new org.jdom2.Element("encodingDesc", TEI_NS);
+                    header.addContent(eDe);
+                }
+            }
             org.jdom2.Element changeEl = new org.jdom2.Element("change",
                     NameSpaces.TEI_NS);
             changeEl.setAttribute("when", stamp);
             changeEl.addContent(new org.jdom2.Text(change));
-            revDescs.next().addContent(changeEl);
+            revDesc.addContent(changeEl);
         }
         return doc;
     }
