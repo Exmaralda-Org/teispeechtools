@@ -77,7 +77,7 @@ public class AnchorSerialization {
      * @return list of anchor {@code @synch} values
      */
     public static Deque<String> serializeAnchors(Element el) {
-        NodeList anchors = el.getElementsByTagName("anchor");
+        NodeList anchors = el.getElementsByTagNameNS("*", "anchor");
         Deque<String> anchorQ = new ArrayDeque<>();
         for (int i = anchors.getLength() - 1; i >= 0; i--) {
             Element a = (Element) anchors.item(i);
@@ -95,7 +95,7 @@ public class AnchorSerialization {
      *            the document that contains {@code u} and anchors
      */
     public static void serializeAnchors(Document doc) {
-        Utilities.toElementStream(doc.getElementsByTagName("u"))
+        Utilities.toElementStream(doc.getElementsByTagNameNS("*", "u"))
                 .forEach(el -> serializeAnchors(el));
     }
 }

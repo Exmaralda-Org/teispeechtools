@@ -127,7 +127,7 @@ public class LanguageDetect {
         long unprocessed = 0;
         Map<String, Integer> changed = new HashMap<>();
         List<Element> utterances = Utilities
-                .toElementList(doc.getElementsByTagName("u"));
+                .toElementList(doc.getElementsByTagNameNS("*", "u"));
         for (Element utter : utterances) {
             if (!force && utter.hasAttribute("xml:lang")) {
                 continue;
@@ -137,7 +137,7 @@ public class LanguageDetect {
 
             // language by words:
             List<Element> words = Utilities
-                    .toElementStream(utter.getElementsByTagName("w"))
+                    .toElementStream(utter.getElementsByTagNameNS("*", "w"))
                     .filter(ut -> !"incomprehensible"
                             .equals(ut.getAttribute("type")))
                     .collect(Collectors.toList());

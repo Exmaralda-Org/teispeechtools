@@ -226,7 +226,7 @@ public class CLI implements Runnable {
         try {
             Document doc = builder.parse(inputStream);
             System.err.format("Have got %d <w> nodes.\n",
-                    doc.getElementsByTagName("w").getLength());
+                    doc.getElementsByTagNameNS("*", "w").getLength());
             tn.normalize(doc, force);
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {

@@ -78,7 +78,7 @@ public class SpeechDocument {
      *            should be an ISO 639-1 three letter code
      */
     public void setLanguage(String language) {
-        ((Element) doc.getElementsByTagName("text").item(0))
+        ((Element) doc.getElementsByTagNameNS("*", "text").item(0))
                 .setAttributeNS(NameSpaces.XML_NS, "lang", language);
     }
 
@@ -94,16 +94,14 @@ public class SpeechDocument {
      */
     public void makeErrorList(List<String> errors) {
         if (errors.size() > 0) {
-            Element head = (Element) doc.getElementsByTagName("teiHeader")
+            Element head = (Element) doc.getElementsByTagNameNS("*", "teiHeader")
                     .item(0);
-            Element before = (Element) doc.getElementsByTagName("profileDesc")
+            Element before = (Element) doc.getElementsByTagNameNS("*", "profileDesc")
                     .item(0);
-            Comment comment = doc
-                    .createComment("[ There were errors parsing your text: ");
-            head.insertBefore(comment, before);
-            comment = doc
-                    .createComment("  please refer to online documentation "
-                            + "on how to correct them. ]");
+            Comment comment = doc.createComment(
+                    String.format("[ There were errors parsing your text. "
+                            + " Please refer to online documentation "
+                            + "on how to correct them. ]"));
             head.insertBefore(comment, before);
             for (String error : errors) {
                 comment = doc.createComment("  - " + error + " ");
@@ -121,7 +119,7 @@ public class SpeechDocument {
      *            {@link Deque} of events
      */
     public void makeTimeLine(Deque<Event> events) {
-        Element timeLine = (Element) doc.getElementsByTagName("timeline")
+        Element timeLine = (Element) doc.getElementsByTagNameNS("*", "timeline")
                 .item(0);
         Iterator<Event> iter = events.descendingIterator();
         while (iter.hasNext()) {
@@ -156,7 +154,7 @@ public class SpeechDocument {
         // <abbr>LB</abbr>
         // </persName>
         // </person>
-        Element list = (Element) doc.getElementsByTagName("particDesc").item(0);
+        Element list = (Element) doc.getElementsByTagNameNS("*", "particDesc").item(0);
         speakers.stream().sorted().forEach(s -> {
             Element person = doc.createElementNS(NameSpaces.TEI_NS, "person");
             Element persName = doc.createElementNS(NameSpaces.TEI_NS,
@@ -195,7 +193,7 @@ public class SpeechDocument {
         // Element utterance = doc.createElementNS(NameSpaces.TEI_NS, "u");
         Element utterance = doc.createElement("u");
         block.appendChild(utterance);
-        Element body = (Element) doc.getElementsByTagName("body").item(0);
+        Element body = (Element) doc.getElementsByTagNameNS("*", "body").item(0);
         body.appendChild(block);
         currentBlock = block;
         currentUtterance = utterance;
@@ -204,9 +202,9 @@ public class SpeechDocument {
     public void changeBlockStart(Event original, MarkedEvent from) {
         String mark = from.mkTime();
         currentBlock.setAttribute("from", mark);
-        Utilities.toElementStream(currentBlock.getElementsByTagName("incident"))
+        Utilities.toElementStream(currentBlock.getElementsByTagNameNS("*", "incident"))
                 .forEach(b -> b.setAttribute("start", mark));
-        Utilities.toElementStream(currentBlock.getElementsByTagName("span"))
+        Utilities.toElementStream(currentBlock.getElementsByTagNameNS("*", "span"))
                 .forEach(b -> {
                     if (b.getAttribute("from") == original.mkTimeRef()) {
                         b.setAttribute("from", mark);
@@ -265,11 +263,11 @@ public class SpeechDocument {
                     currentBlock.setAttribute("to", mark);
                     Utilities
                             .toElementStream(currentBlock
-                                    .getElementsByTagName("incident"))
+                                    .getElementsByTagNameNS("*", "incident"))
                             .forEach(b -> b.setAttribute("end", mark));
                     Utilities
                             .toElementStream(
-                                    currentBlock.getElementsByTagName("span"))
+                                    currentBlock.getElementsByTagNameNS("*", "span"))
                             .forEach(b -> {
                                 if (original.mkTimeRef()
                                         .equals(b.getAttribute("to"))) {

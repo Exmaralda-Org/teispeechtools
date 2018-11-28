@@ -86,12 +86,12 @@ public class DictionaryNormalizer implements WordNormalizer {
                 throw new RuntimeException(
                         "XML parsing broken! – " + ex.getMessage());
             }
-            Utilities.toElementStream(document.getElementsByTagName("entry"))
+            Utilities.toElementStream(document.getElementsByTagNameNS("*", "entry"))
                     .forEach(entry -> {
                         String from = entry.getAttribute("form");
                         String to = Utilities
                                 .toElementStream(
-                                        entry.getElementsByTagName("n"))
+                                        entry.getElementsByTagNameNS("*", "n"))
                                 .max(Comparator.comparing(e -> Integer
                                         .parseInt(e.getAttribute("freq"))))
                                 .get().getAttribute("corr");

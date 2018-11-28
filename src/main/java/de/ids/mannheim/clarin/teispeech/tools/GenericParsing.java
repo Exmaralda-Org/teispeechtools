@@ -93,7 +93,7 @@ public class GenericParsing {
      *            the TEI document
      */
     public static void process(Document doc) {
-        Utilities.toElementStream(doc.getElementsByTagName("u"))
+        Utilities.toElementStream(doc.getElementsByTagNameNS("*", "u"))
                 .forEach(u -> process(u));
         DocUtilities.makeChange(doc,
                 "segmented according to generic transcription conventions");

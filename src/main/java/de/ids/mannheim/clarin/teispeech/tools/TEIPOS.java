@@ -119,7 +119,7 @@ public class TEIPOS {
         treeTagger.setModel(modelFName);
         for (Element u : utterances) {
             List<Element> words = Utilities
-                    .toElementStream(u.getElementsByTagName("w"))
+                    .toElementStream(u.getElementsByTagNameNS("*", "w"))
                     .filter(ut -> !ut.getAttribute("type")
                             .equals("incomprehensible"))
                     .collect(Collectors.toList());

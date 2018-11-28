@@ -75,7 +75,7 @@ public class DocUtilities {
         assert "u".equals(el.getTagName());
         String lang = getLanguage(el, defaultL);
         Map<String, Long> freq = Utilities
-                .toElementStream(el.getElementsByTagName("w"))
+                .toElementStream(el.getElementsByTagNameNS("*", "w"))
                 .collect(Collectors.groupingBy(w -> {
                     // words without language tag are counted as having the
                     // language of the {@code <u>}
@@ -105,7 +105,7 @@ public class DocUtilities {
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL) {
-        return Utilities.toStream(doc.getElementsByTagName(tagName))
+        return Utilities.toStream(doc.getElementsByTagNameNS("*", tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
                         u -> getUtteranceLanguage(u, defaultL),
@@ -133,15 +133,15 @@ public class DocUtilities {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
         Element revDesc = Utilities
-                .getElementByTagName(doc.getDocumentElement(), "revisionDesc");
+                .getElementByTagNameNS(doc.getDocumentElement(), NameSpaces.TEI_NS, "revisionDesc");
         if (revDesc == null) {
             revDesc = doc.createElementNS(NameSpaces.TEI_NS, "revisionDesc");
-            Element eDe = Utilities.getElementByTagName(
-                    doc.getDocumentElement(), "encodingDesc");
+            Element eDe = Utilities.getElementByTagNameNS(
+                    doc.getDocumentElement(), NameSpaces.TEI_NS, "encodingDesc");
             if (eDe == null) {
                 eDe = doc.createElementNS(NameSpaces.TEI_NS, "encodingDesc");
-                Element header = Utilities.getElementByTagName(
-                        doc.getDocumentElement(), "teiHeader");
+                Element header = Utilities.getElementByTagNameNS(
+                        doc.getDocumentElement(), NameSpaces.TEI_NS, "teiHeader");
                 if (header == null) {
                     header = doc.createElementNS(NameSpaces.TEI_NS,
                             "teiHeader");
@@ -238,7 +238,7 @@ public class DocUtilities {
      * @return the document, for chaining
      */
     public static Document addComment(Document doc, String commentText) {
-        Element body = (Element) doc.getElementsByTagName("body");
+        Element body = (Element) doc.getElementsByTagNameNS("*", "body");
         Comment comment = doc.createComment(commentText);
         body.getParentNode().insertBefore(comment, body);
         return doc;
