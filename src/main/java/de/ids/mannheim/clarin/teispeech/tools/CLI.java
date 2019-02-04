@@ -113,6 +113,7 @@ public class CLI implements Runnable {
     private static DocumentBuilder builder;
     static {
         try {
+            factory.setNamespaceAware(true);
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             throw new RuntimeException(e);

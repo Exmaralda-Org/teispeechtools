@@ -78,8 +78,8 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         try (InputStream templateSource = TextToTEI.class.getClassLoader()
                 .getResourceAsStream(TEMPLATE_PATH)) {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
             DocumentBuilder builder = dbf.newDocumentBuilder();
-
             Document doc = builder.parse(templateSource);
             spd = new SpeechDocument(doc, language);
         } catch (IOException e1) {
