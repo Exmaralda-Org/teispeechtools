@@ -36,10 +36,22 @@ public class DocumentIdentifier {
     private final static Logger LOGGER = LoggerFactory
             .getLogger(DocumentIdentifier.class.getName());
 
+    /**
+     * a DocumentIdentifier for an XML document
+     *
+     * @param doc
+     *            the DOM document
+     */
     public DocumentIdentifier(Document doc) {
         this.doc = doc;
     }
 
+    /**
+     * add identifier to an element
+     *
+     * @param el
+     *            DOM Element
+     */
     public void makeID(Element el) {
         Supplier<String> make = () -> PREFIX + "_" + (lastId++);
         String candidate = make.get();
@@ -57,10 +69,20 @@ public class DocumentIdentifier {
         }
     }
 
+    /**
+     * get the document
+     *
+     * @return the document
+     */
     public Document getDocument() {
         return doc;
     }
 
+    /**
+     * add identifiers to document
+     *
+     * @return the DocumentIdentifier instance, for chaining
+     */
     public DocumentIdentifier makeIDs() {
         System.setProperty("javax.xml.transform.TransformerFactory",
                 "net.sf.saxon.TransformerFactoryImpl");
@@ -87,11 +109,25 @@ public class DocumentIdentifier {
         return this;
     }
 
+    /**
+     * add identifiers to a document
+     *
+     * @param doc
+     *            the XML document (DOM)
+     * @return doc with identifiers
+     */
     public static Document makeIDs(Document doc) {
         DocumentIdentifier di = new DocumentIdentifier(doc);
         return di.makeIDs().getDocument();
     }
 
+    /**
+     * add identifiers to a document
+     *
+     * @param jdoc
+     *            the XML document (jDOM)
+     * @return doc with identifiers DOM
+     */
     public static Document makeIDs(org.jdom2.Document jdoc) {
         try {
             DocumentIdentifier di = new DocumentIdentifier(
@@ -102,10 +138,23 @@ public class DocumentIdentifier {
         }
     }
 
+    /**
+     * add identifiers to a document
+     *
+     * @param jdoc
+     *            the XML document (jDOM)
+     * @return doc with identifiers jDOM
+     */
     public static org.jdom2.Document jmakeIDs(org.jdom2.Document jdoc) {
         return Utilities.convertDOMtoJDOM(makeIDs(jdoc));
     }
 
+    /**
+     * remove identifiers from document
+     *
+     * @param doc
+     *            the XML document (DOM)
+     */
     public static void removeIDs(Document doc) {
         System.setProperty("javax.xml.transform.TransformerFactory",
                 "net.sf.saxon.TransformerFactoryImpl");
