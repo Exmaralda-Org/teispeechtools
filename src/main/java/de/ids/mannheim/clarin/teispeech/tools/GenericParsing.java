@@ -10,6 +10,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.lang3.StringUtils;
 import org.korpora.useful.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,6 +24,9 @@ import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
  */
 public class GenericParsing {
 
+    private final static Logger LOGGER = LoggerFactory
+            .getLogger(GenericParser.class.getName());
+
     /**
      * insert list of parsing errors as comments
      *
@@ -33,7 +38,7 @@ public class GenericParsing {
         Document doc = el.getOwnerDocument();
         if (errors.size() > 0) {
             for (String error : errors) {
-                System.err.println(error);
+                LOGGER.error(error);
                 Comment comment = doc.createComment("original input: " + tx);
                 Utilities.insertAtBeginningOf(comment, el);
                 comment = doc.createComment(" " + error + " ");

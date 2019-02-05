@@ -10,7 +10,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jdom2.JDOMException;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
@@ -75,7 +74,7 @@ public class DocumentIdentifier {
                 assert n == null || NameSpaces.XML_NS.equals(n);
                 return e.getAttribute("id");
             }).collect(Collectors.toSet());
-            System.err.println(IDs);
+//            System.err.println(IDs);
             XPath xPath = XPathFactory.newInstance().newXPath();
             // note that Java is confused about @xml:id
             String unindentifiedXPath = "//*[not(@id)]";
@@ -112,15 +111,14 @@ public class DocumentIdentifier {
                 "net.sf.saxon.TransformerFactoryImpl");
         try {
             XPath xp = new XPathFactoryImpl().newXPath();
-            NodeList identified = (NodeList) xp.compile("//*[@id]")
+            NodeList identified = (NodeList) xp
+                    .compile("//*[./@*[local-name() = 'id' and starts-with(., '"
+                            + PREFIX + "')] ]")
                     .evaluate(doc, XPathConstants.NODESET);
             Utilities.toElementStream(identified).forEach(e -> {
-                if (StringUtils.startsWith(
-                        e.getAttributeNS("http://www.w3.org/XML/1998/namespace",
-                                "xml:id"),
-                        PREFIX)) {
-                    e.removeAttribute("xml:id");
-                }
+                e.removeAttributeNS("http://www.w3.org/XML/1998/namespace",
+                        "id");
+                e.removeAttribute("id");
             });
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
