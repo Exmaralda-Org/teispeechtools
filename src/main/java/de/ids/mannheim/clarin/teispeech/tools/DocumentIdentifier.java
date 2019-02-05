@@ -60,9 +60,9 @@ public class DocumentIdentifier {
         }
         IDs.add(candidate);
         NameChecker.isValidNCName(candidate);
-        Node n = el.getAttributeNode("id");
+        Node n = el.getAttributeNodeNS(NameSpaces.XML_NS, "id");
         if (n == null || NameSpaces.XML_NS.equals(n.getNamespaceURI())) {
-            el.setAttributeNS("http://www.w3.org/XML/1998/namespace", "id",
+            el.setAttributeNS(NameSpaces.XML_NS, "id",
                     candidate);
         } else {
             LOGGER.warn("skipped ID attribute with wrong namespace");
@@ -89,17 +89,15 @@ public class DocumentIdentifier {
         try {
             XPath xpf = new XPathFactoryImpl().newXPath();
             // note that Java is confused about @xml:id
-            NodeList IDNodes = (NodeList) xpf.compile("//*[@id]").evaluate(doc,
+            NodeList IDNodes = (NodeList) xpf.compile("//*[@*[local-name() = 'id']]").evaluate(doc,
                     XPathConstants.NODESET);
-            IDs = Utilities.toElementStream(IDNodes).map(e -> {
-                String n = e.getAttributeNode("id").getNamespaceURI();
-                assert n == null || NameSpaces.XML_NS.equals(n);
-                return e.getAttribute("id");
-            }).collect(Collectors.toSet());
+            IDs = Utilities.toElementStream(IDNodes).map(
+                    e -> e.getAttributeNS(NameSpaces.XML_NS, "id"))
+                    .collect(Collectors.toSet());
 //            System.err.println(IDs);
             XPath xPath = XPathFactory.newInstance().newXPath();
             // note that Java is confused about @xml:id
-            String unindentifiedXPath = "//*[not(@id)]";
+            String unindentifiedXPath = "//*[not(@*[local-name() = 'id'])]";
             NodeList unidentified = (NodeList) xPath.compile(unindentifiedXPath)
                     .evaluate(doc, XPathConstants.NODESET);
             Utilities.toElementStream(unidentified).forEach(this::makeID);

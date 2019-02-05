@@ -25,7 +25,7 @@ public abstract class Event {
      * @return XML-style reference
      */
     public String mkTimeRef() {
-        return "#" + mkTime();
+        return mkTime();
     };
 
 }

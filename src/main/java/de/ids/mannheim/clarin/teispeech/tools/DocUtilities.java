@@ -105,7 +105,7 @@ public class DocUtilities {
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL) {
-        return Utilities.toStream(doc.getElementsByTagNameNS("*", tagName))
+        return Utilities.toStream(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
                         u -> getUtteranceLanguage(u, defaultL),
@@ -152,8 +152,8 @@ public class DocUtilities {
             }
             Utilities.insertAtBeginningOf(revDesc, eDe);
         }
-        Element changeEl = doc.createElement("change");
-        changeEl.setAttribute("when", stamp);
+        Element changeEl = doc.createElementNS(NameSpaces.TEI_NS, "change");
+        changeEl.setAttributeNS(NameSpaces.TEI_NS, "when", stamp);
         changeEl.appendChild(doc.createTextNode(change));
         Utilities.insertAtBeginningOf(changeEl, revDesc);
         return doc;

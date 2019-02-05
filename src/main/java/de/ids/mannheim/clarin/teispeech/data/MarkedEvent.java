@@ -33,7 +33,7 @@ public class MarkedEvent extends Event {
      * @return XML-style reference
      */
     public String mkEndTimeRef() {
-        return "#" + mkEndTime();
+        return mkEndTime();
     }
 
     public String getMark() {

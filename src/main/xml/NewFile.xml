@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<tei:TEI xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xml="http://www.w3.org/XML/1998/namespace">
-  <teiHeader>
-    <profileDesc>
-      <particDesc>
-      </particDesc>
-    </profileDesc>
-    <encodingDesc>
-      <appInfo>
-        <application ident="IDS_TEI_Webstuhl" version="0.1">
-          <label>IDS TEI-Webstuhl</label>
-          <desc>TEI Conversion Webservices</desc>
-        </application>
-      </appInfo>
-      <transcriptionDesc ident="generic" version="2018">
-        <desc>
+  <tei:teiHeader>
+    <tei:profileDesc>
+      <tei:particDesc/>
+    </tei:profileDesc>
+    <tei:encodingDesc>
+      <tei:appInfo>
+        <tei:application ident="IDS_TEI_Webstuhl" version="0.1">
+          <tei:label>IDS TEI-Webstuhl</tei:label>
+          <tei:desc>TEI Conversion Webservices</tei:desc>
+        </tei:application>
+      </tei:appInfo>
+      <tei:transcriptionDesc ident="generic" version="2018">
+        <tei:desc>
           <!--Fill me in-->
-        </desc>
-        <label>
+        </tei:desc>
+        <tei:label>
           <!--Fill me in-->
-        </label>
-      </transcriptionDesc>
-    </encodingDesc>
-    <revisionDesc>
-    </revisionDesc>
-  </teiHeader>
-  <text>
-    <timeline unit="ORDER"/>
-    <body>
-    </body>
-  </text>
-</TEI>
+        </tei:label>
+      </tei:transcriptionDesc>
+    </tei:encodingDesc>
+    <tei:revisionDesc/>
+  </tei:teiHeader>
+  <tei:text>
+    <tei:timeline unit="ORDER"/>
+    <tei:body/>
+  </tei:text>
+</tei:TEI>

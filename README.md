@@ -72,6 +72,7 @@ A simple [wrapper script](spindel.sh) is available.
     
       - the `language` of the utterance.
 
+
 ## Segmentation according to transcription convention (CLI command `segmentize`)
 
   - Input  
@@ -97,6 +98,7 @@ A simple [wrapper script](spindel.sh) is available.
       - the transcription convention which the text contents of the
         `<u>` follows. Currently `generic`, (cGAT) `minimal` and (cGAT)
         `basic` are supported.
+
 
 ## Language-detection (CLI command `guess`)
 
@@ -127,6 +129,7 @@ A simple [wrapper script](spindel.sh) is available.
         tried (default: 5, which is already pretty low).
       - whether to `force` language detection, even if a language tag
         has already been assigned to `<u>`.
+
 
 ## OrthoNormal-like Normalization (command `normalize`)
 
@@ -167,6 +170,7 @@ Normalization:
     consulted and a normalization is chosen.
   - Step 3: Out-of-dictionary words are left as is.
 
+
 ## POS-Tagging with the TreeTagger
 
   - Input  
@@ -184,6 +188,8 @@ Normalization:
         in the document, it will be preferred).
       - whether to `force` tagging, even if a pos tag has already been
         assigned to `<w>`.
+
+
 
 # Building and inspecting
 
@@ -226,6 +232,7 @@ project, execute:
 java -cp 'target/teispeechtools-0.2-SNAPSHOT.jar:target/dependency/*' \
     de.ids.mannheim.clarin.teispeech.tools.DictMaker
 ```
+
 
 ## Check Pattern files
 

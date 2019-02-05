@@ -53,10 +53,10 @@ public class AnchorSerialization {
                         .createTextNode(rest.substring(lastEnd, mat.start())));
             }
             lastEnd = mat.end();
-            Element anchor = parent.getOwnerDocument().createElement("anchor");
+            Element anchor = parent.getOwnerDocument().createElementNS(NameSpaces.TEI_NS, "anchor");
             String anchorText = anchors.removeFirst();
             if (!anchorText.isEmpty()) {
-                anchor.setAttribute("synch", anchorText);
+                anchor.setAttributeNS(NameSpaces.TEI_NS, "synch", anchorText);
             }
             ret.add(anchor);
         }
@@ -77,11 +77,11 @@ public class AnchorSerialization {
      * @return list of anchor {@code @synch} values
      */
     public static Deque<String> serializeAnchors(Element el) {
-        NodeList anchors = el.getElementsByTagNameNS("*", "anchor");
+        NodeList anchors = el.getElementsByTagNameNS(NameSpaces.TEI_NS, "anchor");
         Deque<String> anchorQ = new ArrayDeque<>();
         for (int i = anchors.getLength() - 1; i >= 0; i--) {
             Element a = (Element) anchors.item(i);
-            anchorQ.push(a.getAttribute("synch"));
+            anchorQ.push(a.getAttributeNS(NameSpaces.TEI_NS, "synch"));
             Text tx = el.getOwnerDocument().createTextNode(ANCHOR_START);
             a.getParentNode().replaceChild(tx, a);
         }
@@ -95,7 +95,7 @@ public class AnchorSerialization {
      *            the document that contains {@code u} and anchors
      */
     public static void serializeAnchors(Document doc) {
-        Utilities.toElementStream(doc.getElementsByTagNameNS("*", "u"))
+        Utilities.toElementStream(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(el -> serializeAnchors(el));
     }
 }
