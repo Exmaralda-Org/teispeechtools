@@ -96,7 +96,7 @@ public class DocumentIdentifier {
             IDs = Utilities.toElementStream(IDNodes)
                     .map(e -> e.getAttribute("xml:id"))
                     .collect(Collectors.toSet());
-            LOGGER.info(IDs.toString());
+//            LOGGER.info(IDs.toString());
             XPath xPath = XPathFactory.newInstance().newXPath();
             // note that Java is confused about @xml:id
             String unindentifiedXPath = "//*[not(@*[local-name() = 'id' and namespace-uri() = '"

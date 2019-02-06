@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+
 /**
  * a normalizer for the TEI transcription format.
  *
@@ -73,7 +75,8 @@ public class TEINormalizer {
         words.forEach((lang, ws) -> {
             if ("deu".equals(lang)) {
                 ws.forEach(el -> {
-                    if (!force && el.hasAttribute("norm")) {
+                    if (!force
+                            && el.hasAttributeNS(NameSpaces.TEI_NS, "norm")) {
                         return;
                     }
                     String tx = StringUtils.strip(el.getTextContent());
@@ -82,7 +85,8 @@ public class TEINormalizer {
                     }
                     String normal = normalizer.getNormalised(tx);
                     if (normal != null) {
-                        String before = el.getAttribute("norm");
+                        String before = el.getAttributeNS(NameSpaces.TEI_NS,
+                                "norm");
                         if (!before.isEmpty()) {
                             if (!before.equals(normal)) {
                                 LOGGER.info("ReNormalized {} -> {} [was: {}]",
@@ -91,7 +95,7 @@ public class TEINormalizer {
                         } else {
                             LOGGER.info("Normalized {} -> {}", tx, normal);
                         }
-                        el.setAttribute("norm", normal);
+                        el.setAttributeNS(NameSpaces.TEI_NS, "norm", normal);
                     } else {
                         LOGGER.info("Cannot normalize «{}».", tx);
                     }

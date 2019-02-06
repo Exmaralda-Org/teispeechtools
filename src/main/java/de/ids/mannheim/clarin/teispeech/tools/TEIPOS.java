@@ -123,10 +123,11 @@ public class TEIPOS {
             List<Element> words = Utilities
                     .toElementStream(
                             u.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
-                    .filter(ut -> !ut.getAttribute("type")
+                    .filter(ut -> !ut.getAttributeNS(NameSpaces.TEI_NS, "type")
                             .equals("incomprehensible"))
                     .collect(Collectors.toList());
-            if (!force && words.stream().allMatch(e -> e.hasAttribute("pos"))) {
+            if (!force && words.stream().allMatch(
+                    e -> e.hasAttributeNS(NameSpaces.TEI_NS, "pos"))) {
                 continue;
             }
             try {
@@ -157,8 +158,8 @@ public class TEIPOS {
                         : Utilities.removeSpace(elly.getTextContent());
             });
             treeTagger.setHandler((token, pos, lemma) -> {
-                token.setAttribute("pos", pos);
-                token.setAttribute("lemma", lemma);
+                token.setAttributeNS(NameSpaces.TEI_NS, "pos", pos);
+                token.setAttributeNS(NameSpaces.TEI_NS, "lemma", lemma);
             });
             List<String> tagged = new ArrayList<>();
             List<String> untagged = new ArrayList<>();
