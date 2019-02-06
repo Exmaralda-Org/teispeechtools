@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+
 /**
  * A normalizer based on the dictionaries from the EXMARaLDA project, namely
  * <ul>
@@ -86,12 +88,14 @@ public class DictionaryNormalizer implements WordNormalizer {
                 throw new RuntimeException(
                         "XML parsing broken! – " + ex.getMessage());
             }
-            Utilities.toElementStream(document.getElementsByTagNameNS("*", "entry"))
+            Utilities
+                    .toElementStream(document
+                            .getElementsByTagNameNS(NameSpaces.TEI_NS, "entry"))
                     .forEach(entry -> {
                         String from = entry.getAttribute("form");
                         String to = Utilities
-                                .toElementStream(
-                                        entry.getElementsByTagNameNS("*", "n"))
+                                .toElementStream(entry.getElementsByTagNameNS(
+                                        NameSpaces.TEI_NS, "n"))
                                 .max(Comparator.comparing(e -> Integer
                                         .parseInt(e.getAttribute("freq"))))
                                 .get().getAttribute("corr");

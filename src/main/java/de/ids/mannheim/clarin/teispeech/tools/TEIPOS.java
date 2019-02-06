@@ -18,6 +18,8 @@ import org.w3c.dom.Element;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+
 /**
  * POS-tag documents in the TEI transcription format with the TreeTagger
  *
@@ -119,7 +121,8 @@ public class TEIPOS {
         treeTagger.setModel(modelFName);
         for (Element u : utterances) {
             List<Element> words = Utilities
-                    .toElementStream(u.getElementsByTagNameNS("*", "w"))
+                    .toElementStream(
+                            u.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
                     .filter(ut -> !ut.getAttribute("type")
                             .equals("incomprehensible"))
                     .collect(Collectors.toList());
@@ -159,7 +162,7 @@ public class TEIPOS {
             });
             List<String> tagged = new ArrayList<>();
             List<String> untagged = new ArrayList<>();
-            DocUtilities.groupByLanguage("u", doc, language)
+            DocUtilities.groupByLanguage("u", doc, language, false)
                     .forEach((uLanguage, utters) -> {
                         if (modelMap.containsKey(uLanguage)) {
                             try {

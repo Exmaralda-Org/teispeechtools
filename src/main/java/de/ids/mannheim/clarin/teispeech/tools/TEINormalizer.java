@@ -65,7 +65,7 @@ public class TEINormalizer {
      */
     public Document normalize(Document doc, boolean force) {
         Map<String, List<Element>> words = DocUtilities.groupByLanguage("w",
-                doc, language);
+                doc, language, false);
 
         List<String> processed = new ArrayList<>();
         List<String> unprocessed = new ArrayList<>();

@@ -27,9 +27,11 @@ public class DocUtilities {
      *
      * @param el
      *            the DOM XML Element
+     * @param keepLocale
+     *            whether to keep the rest of the locale after the language code
      * @return Optional containing the language code, or empty
      */
-    public static Optional<String> getLanguage(Element el) {
+    public static Optional<String> getLanguage(Element el, Boolean keepLocale) {
         String lang = el.getAttribute("xml:lang");
         for (Node parent = el.getParentNode(); lang.isEmpty() && parent != null
                 && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent
@@ -37,7 +39,11 @@ public class DocUtilities {
             lang = ((Element) parent).getAttribute("xml:lang");
         }
         if (!lang.isEmpty()) {
-            return LangUtilities.getLanguage(lang);
+            if (keepLocale) {
+                return LangUtilities.getLanguageLocale(lang);
+            } else {
+                return LangUtilities.getLanguage(lang);
+            }
         } else {
             return Optional.empty();
         }
@@ -50,10 +56,13 @@ public class DocUtilities {
      *            the DOM XML Element
      * @param defaultL
      *            the default language
+     * @param keepLocale
+     *            whether to keep the rest of the locale after the language code
      * @return the corresponding three letter ISO 639-2 language code
      */
-    public static String getLanguage(Element el, String defaultL) {
-        Optional<String> ret = getLanguage(el);
+    public static String getLanguage(Element el, String defaultL,
+            Boolean keepLocale) {
+        Optional<String> ret = getLanguage(el, keepLocale);
         if (ret.isPresent()) {
             return ret.get();
         } else {
@@ -69,17 +78,22 @@ public class DocUtilities {
      *            the utterance element
      * @param defaultL
      *            the default language
+     * @param keepLocale
+     *            whether to keep the rest of the locale after the language code
      * @return the determined language
      */
-    public static String getUtteranceLanguage(Element el, String defaultL) {
+    public static String getUtteranceLanguage(Element el, String defaultL,
+            Boolean keepLocale) {
         assert "u".equals(el.getTagName());
-        String lang = getLanguage(el, defaultL);
+        String lang = getLanguage(el, defaultL, keepLocale);
         Map<String, Long> freq = Utilities
-                .toElementStream(el.getElementsByTagNameNS("*", "w"))
+                .toElementStream(
+                        el.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
                 .collect(Collectors.groupingBy(w -> {
                     // words without language tag are counted as having the
                     // language of the {@code <u>}
-                    return w.hasAttribute("lang") ? w.getAttribute("lang")
+                    return w.hasAttribute("xml:lang")
+                            ? w.getAttribute("xml:lang")
                             : lang;
                 }, Collectors.counting()));
         Optional<Entry<String, Long>> maxLang = freq.entrySet().stream()
@@ -101,20 +115,24 @@ public class DocUtilities {
      *            XML document
      * @param defaultL
      *            default language
+     * @param keepLocale
+     *            whether to keep the rest of the locale after the language code
      * @return the elements grouped by language
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
-            Document doc, String defaultL) {
-        return Utilities.toStream(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, tagName))
+            Document doc, String defaultL, Boolean keepLocale) {
+        return Utilities
+                .toStream(
+                        doc.getElementsByTagNameNS(NameSpaces.TEI_NS, tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
-                        u -> getUtteranceLanguage(u, defaultL),
+                        u -> getUtteranceLanguage(u, defaultL, keepLocale),
                         Collectors.toList()));
     }
 
     public static String getTextOrNorm(Element el) {
-        if (el.hasAttribute("norm")) {
-            return el.getAttribute("norm");
+        if (el.hasAttributeNS(NameSpaces.TEI_NS, "norm")) {
+            return el.getAttributeNS(NameSpaces.TEI_NS, "norm");
         } else {
             return el.getTextContent();
         }
@@ -132,16 +150,18 @@ public class DocUtilities {
     public static Document makeChange(Document doc, String change) {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
-        Element revDesc = Utilities
-                .getElementByTagNameNS(doc.getDocumentElement(), NameSpaces.TEI_NS, "revisionDesc");
+        Element revDesc = Utilities.getElementByTagNameNS(
+                doc.getDocumentElement(), NameSpaces.TEI_NS, "revisionDesc");
         if (revDesc == null) {
             revDesc = doc.createElementNS(NameSpaces.TEI_NS, "revisionDesc");
             Element eDe = Utilities.getElementByTagNameNS(
-                    doc.getDocumentElement(), NameSpaces.TEI_NS, "encodingDesc");
+                    doc.getDocumentElement(), NameSpaces.TEI_NS,
+                    "encodingDesc");
             if (eDe == null) {
                 eDe = doc.createElementNS(NameSpaces.TEI_NS, "encodingDesc");
                 Element header = Utilities.getElementByTagNameNS(
-                        doc.getDocumentElement(), NameSpaces.TEI_NS, "teiHeader");
+                        doc.getDocumentElement(), NameSpaces.TEI_NS,
+                        "teiHeader");
                 if (header == null) {
                     header = doc.createElementNS(NameSpaces.TEI_NS,
                             "teiHeader");
@@ -238,7 +258,8 @@ public class DocUtilities {
      * @return the document, for chaining
      */
     public static Document addComment(Document doc, String commentText) {
-        Element body = (Element) doc.getElementsByTagNameNS("*", "body");
+        Element body = (Element) doc.getElementsByTagNameNS(NameSpaces.TEI_NS,
+                "body");
         Comment comment = doc.createComment(commentText);
         body.getParentNode().insertBefore(comment, body);
         return doc;

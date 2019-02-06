@@ -80,7 +80,7 @@ public class SpeechDocument {
     public void setLanguage(String language) {
         Element el = Utilities.getElementByTagNameNS(doc, NameSpaces.TEI_NS,
                 "text");
-        el.setAttributeNS(NameSpaces.XML_NS, "lang", language);
+        el.setAttribute("xml:lang", language);
     }
 
     public void setCurrentSpeaker(String name) {
@@ -96,9 +96,11 @@ public class SpeechDocument {
     public void makeErrorList(List<String> errors) {
         if (errors.size() > 0) {
             Element head = (Element) doc
-                    .getElementsByTagNameNS("*", "teiHeader").item(0);
+                    .getElementsByTagNameNS(NameSpaces.TEI_NS, "teiHeader")
+                    .item(0);
             Element before = (Element) doc
-                    .getElementsByTagNameNS("*", "profileDesc").item(0);
+                    .getElementsByTagNameNS(NameSpaces.TEI_NS, "profileDesc")
+                    .item(0);
             Comment comment = doc.createComment(
                     String.format("[ There were errors parsing your text. "
                             + " Please refer to online documentation "
@@ -120,8 +122,8 @@ public class SpeechDocument {
      *            {@link Deque} of events
      */
     public void makeTimeLine(Deque<Event> events) {
-        Element timeLine = (Element) doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "timeline")
-                .item(0);
+        Element timeLine = (Element) doc
+                .getElementsByTagNameNS(NameSpaces.TEI_NS, "timeline").item(0);
         Iterator<Event> iter = events.descendingIterator();
         while (iter.hasNext()) {
             Event e = iter.next();
@@ -134,8 +136,7 @@ public class SpeechDocument {
                         + ((MarkedEvent) e).getMark() + "› in the input.");
                 timeLine.insertBefore(explainMark, el);
                 el = doc.createElement("when");
-                el.setAttribute("xml:id",
-                        ((MarkedEvent) e).mkEndTime());
+                el.setAttribute("xml:id", ((MarkedEvent) e).mkEndTime());
                 timeLine.appendChild(el);
             }
         }
@@ -154,7 +155,8 @@ public class SpeechDocument {
         // <abbr>LB</abbr>
         // </persName>
         // </person>
-        Element list = (Element) doc.getElementsByTagNameNS("*", "particDesc")
+        Element list = (Element) doc
+                .getElementsByTagNameNS(NameSpaces.TEI_NS, "particDesc")
                 .item(0);
         speakers.stream().sorted().forEach(s -> {
             Element person = doc.createElementNS(NameSpaces.TEI_NS, "person");
@@ -165,14 +167,15 @@ public class SpeechDocument {
             abbr.appendChild(tx);
             persName.appendChild(abbr);
             person.appendChild(persName);
-            person.setAttributeNS(NameSpaces.XML_NS, "id", s);
+            person.setAttribute("xml:id", s);
             person.setAttributeNS(NameSpaces.TEI_NS, "n", s);
             list.appendChild(person);
         });
     }
 
     public Element addAnnotationBlock(Event from, Event to) {
-        Element block = doc.createElementNS(NameSpaces.TEI_NS, "annotationBlock");
+        Element block = doc.createElementNS(NameSpaces.TEI_NS,
+                "annotationBlock");
         // Element block = doc.createElementNS(NameSpaces.TEI_NS,
         // "annotationBlock");
         block.setAttributeNS(NameSpaces.TEI_NS, "who", currentSpeaker);
@@ -191,10 +194,10 @@ public class SpeechDocument {
      */
     public void addBlockUtterance(Event from, Event to) {
         Element block = addAnnotationBlock(from, to);
-         Element utterance = doc.createElementNS(NameSpaces.TEI_NS, "u");
+        Element utterance = doc.createElementNS(NameSpaces.TEI_NS, "u");
         block.appendChild(utterance);
-        Element body = (Element) doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "body")
-                .item(0);
+        Element body = (Element) doc
+                .getElementsByTagNameNS(NameSpaces.TEI_NS, "body").item(0);
         body.appendChild(block);
         currentBlock = block;
         currentUtterance = utterance;
@@ -204,14 +207,16 @@ public class SpeechDocument {
         String mark = from.mkTime();
         currentBlock.setAttributeNS(NameSpaces.TEI_NS, "from", mark);
         Utilities
-                .toElementStream(
-                        currentBlock.getElementsByTagNameNS(NameSpaces.TEI_NS, "incident"))
-                .forEach(b -> b.setAttributeNS(NameSpaces.TEI_NS, "start", mark));
+                .toElementStream(currentBlock
+                        .getElementsByTagNameNS(NameSpaces.TEI_NS, "incident"))
+                .forEach(b -> b.setAttributeNS(NameSpaces.TEI_NS, "start",
+                        mark));
         Utilities
-                .toElementStream(
-                        currentBlock.getElementsByTagNameNS(NameSpaces.TEI_NS, "span"))
+                .toElementStream(currentBlock
+                        .getElementsByTagNameNS(NameSpaces.TEI_NS, "span"))
                 .forEach(b -> {
-                    if (b.getAttributeNS(NameSpaces.TEI_NS, "start") == original.mkTimeRef()) {
+                    if (b.getAttributeNS(NameSpaces.TEI_NS, "start") == original
+                            .mkTimeRef()) {
                         b.setAttributeNS(NameSpaces.TEI_NS, "start", mark);
                     }
                 });
@@ -263,20 +268,26 @@ public class SpeechDocument {
                 MarkedEvent toM = to.get();
                 Element lastAnchor = (Element) lastNode;
                 String mark = toM.mkEndTimeRef();
-                if (mark.equals(lastAnchor.getAttributeNS(NameSpaces.TEI_NS, "synch"))) {
+                if (mark.equals(lastAnchor.getAttributeNS(NameSpaces.TEI_NS,
+                        "synch"))) {
                     currentUtterance.removeChild(lastAnchor);
                     currentBlock.setAttributeNS(NameSpaces.TEI_NS, "to", mark);
                     Utilities
-                            .toElementStream(currentBlock
-                                    .getElementsByTagNameNS(NameSpaces.TEI_NS, "incident"))
-                            .forEach(b -> b.setAttributeNS(NameSpaces.TEI_NS, "end", mark));
+                            .toElementStream(
+                                    currentBlock.getElementsByTagNameNS(
+                                            NameSpaces.TEI_NS, "incident"))
+                            .forEach(b -> b.setAttributeNS(NameSpaces.TEI_NS,
+                                    "end", mark));
                     Utilities
-                            .toElementStream(currentBlock
-                                    .getElementsByTagNameNS(NameSpaces.TEI_NS, "span"))
+                            .toElementStream(
+                                    currentBlock.getElementsByTagNameNS(
+                                            NameSpaces.TEI_NS, "span"))
                             .forEach(b -> {
-                                if (original.mkTimeRef()
-                                        .equals(b.getAttributeNS(NameSpaces.TEI_NS, "to"))) {
-                                    b.setAttributeNS(NameSpaces.TEI_NS, "to", mark);
+                                if (original.mkTimeRef().equals(
+                                        b.getAttributeNS(NameSpaces.TEI_NS,
+                                                "to"))) {
+                                    b.setAttributeNS(NameSpaces.TEI_NS, "to",
+                                            mark);
                                 }
                             });
                     return true;

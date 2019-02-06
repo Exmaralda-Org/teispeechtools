@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
 /**
  * converter from plain text to TEI ISO
@@ -98,7 +99,9 @@ public class GenericParsing {
      *            the TEI document
      */
     public static void process(Document doc) {
-        Utilities.toElementStream(doc.getElementsByTagNameNS("*", "u"))
+        Utilities
+                .toElementStream(
+                        doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(u -> process(u));
         DocUtilities.makeChange(doc,
                 "segmented according to generic transcription conventions");

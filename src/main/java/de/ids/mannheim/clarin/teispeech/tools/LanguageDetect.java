@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
 import org.korpora.useful.Utilities;
@@ -114,7 +115,7 @@ public class LanguageDetect {
     }
 
     /**
-     * detect language per {@code <u>}
+     * count language per {@code <u>}
      *
      * @param force
      *            whether to force language detection, even if a language tag
@@ -127,17 +128,17 @@ public class LanguageDetect {
         long unprocessed = 0;
         Map<String, Integer> changed = new HashMap<>();
         List<Element> utterances = Utilities
-                .toElementList(doc.getElementsByTagNameNS("*", "u"));
+                .toElementList(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"));
         for (Element utter : utterances) {
             if (!force && utter.hasAttribute("xml:lang")) {
                 continue;
             }
             String defaultLanguage = DocUtilities
-                    .getLanguage((Element) utter.getParentNode(), language);
+                    .getLanguage((Element) utter.getParentNode(), language, false);
 
             // language by words:
             List<Element> words = Utilities
-                    .toElementStream(utter.getElementsByTagNameNS("*", "w"))
+                    .toElementStream(utter.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
                     .filter(ut -> !"incomprehensible"
                             .equals(ut.getAttribute("type")))
                     .collect(Collectors.toList());

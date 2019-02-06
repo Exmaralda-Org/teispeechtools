@@ -24,6 +24,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import de.ids.mannheim.clarin.teispeech.data.GATParser;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
@@ -227,7 +228,8 @@ public class CLI implements Runnable {
         try {
             Document doc = builder.parse(inputStream);
             System.err.format("Have got %d <w> nodes.\n",
-                    doc.getElementsByTagNameNS("*", "w").getLength());
+                    doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "w")
+                            .getLength());
             tn.normalize(doc, force);
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
