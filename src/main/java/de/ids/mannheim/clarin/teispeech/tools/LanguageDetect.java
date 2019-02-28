@@ -134,7 +134,7 @@ public class LanguageDetect {
                 continue;
             }
             String defaultLanguage = DocUtilities
-                    .getLanguage((Element) utter.getParentNode(), language, false);
+                    .getLanguage((Element) utter.getParentNode(), language, 1);
 
             // language by words:
             List<Element> words = Utilities

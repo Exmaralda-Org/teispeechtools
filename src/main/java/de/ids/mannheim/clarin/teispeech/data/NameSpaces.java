@@ -20,4 +20,9 @@ public class NameSpaces {
      * the XSLT namespace
      */
     public static String XSLT_NS = "http://www.w3.org/1999/XSL/Transform";
+
+    /**
+     * a temporary namespace
+     */
+    public static String TEMP_NS = "http://www.ids-mannheim.de/clarin/web/services/temporary/name/space";
 }

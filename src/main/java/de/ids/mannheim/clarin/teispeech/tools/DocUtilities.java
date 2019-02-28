@@ -27,11 +27,11 @@ public class DocUtilities {
      *
      * @param el
      *            the DOM XML Element
-     * @param keepLocale
-     *            whether to keep the rest of the locale after the language code
+     * @param maxComponents
+     *            the maximal number of language + locale components
      * @return Optional containing the language code, or empty
      */
-    public static Optional<String> getLanguage(Element el, Boolean keepLocale) {
+    public static Optional<String> getLanguage(Element el, int maxComponents) {
         String lang = el.getAttribute("xml:lang");
         for (Node parent = el.getParentNode(); lang.isEmpty() && parent != null
                 && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent
@@ -39,11 +39,7 @@ public class DocUtilities {
             lang = ((Element) parent).getAttribute("xml:lang");
         }
         if (!lang.isEmpty()) {
-            if (keepLocale) {
-                return LangUtilities.getLanguageLocale(lang);
-            } else {
-                return LangUtilities.getLanguage(lang);
-            }
+            return LangUtilities.getLanguageLocale(lang, maxComponents);
         } else {
             return Optional.empty();
         }
@@ -56,13 +52,13 @@ public class DocUtilities {
      *            the DOM XML Element
      * @param defaultL
      *            the default language
-     * @param keepLocale
-     *            whether to keep the rest of the locale after the language code
+     * @param maxComponents
+     *            the maximal number of language + locale components
      * @return the corresponding three letter ISO 639-2 language code
      */
     public static String getLanguage(Element el, String defaultL,
-            Boolean keepLocale) {
-        Optional<String> ret = getLanguage(el, keepLocale);
+            int maxComponents) {
+        Optional<String> ret = getLanguage(el, maxComponents);
         if (ret.isPresent()) {
             return ret.get();
         } else {
@@ -78,14 +74,14 @@ public class DocUtilities {
      *            the utterance element
      * @param defaultL
      *            the default language
-     * @param keepLocale
-     *            whether to keep the rest of the locale after the language code
+     * @param maxComponents
+     *            the maximal number of language + locale components
      * @return the determined language
      */
     public static String getUtteranceLanguage(Element el, String defaultL,
-            Boolean keepLocale) {
+            int maxComponents) {
         assert "u".equals(el.getTagName());
-        String lang = getLanguage(el, defaultL, keepLocale);
+        String lang = getLanguage(el, defaultL, maxComponents);
         Map<String, Long> freq = Utilities
                 .toElementStream(
                         el.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
@@ -115,18 +111,18 @@ public class DocUtilities {
      *            XML document
      * @param defaultL
      *            default language
-     * @param keepLocale
-     *            whether to keep the rest of the locale after the language code
+     * @param maxComponents
+     *            the maximal number of language + locale components
      * @return the elements grouped by language
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
-            Document doc, String defaultL, Boolean keepLocale) {
+            Document doc, String defaultL, int maxComponents) {
         return Utilities
                 .toStream(
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
-                        u -> getUtteranceLanguage(u, defaultL, keepLocale),
+                        u -> getUtteranceLanguage(u, defaultL, maxComponents),
                         Collectors.toList()));
     }
 
