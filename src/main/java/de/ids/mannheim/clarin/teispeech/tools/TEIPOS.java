@@ -145,25 +145,23 @@ public class TEIPOS {
      * @param force
      *            whether to force tagging even if utterance already tagged
      *
-     * @return current {@link TEIPOS} instance, for chaining
+     * @return document, for chaining
      */
     public Document posTag(boolean force) {
 
         // aggregate by language to avoid restarting the tagger all the time
         treeTagger = new TreeTaggerWrapper<>();
         try {
-            treeTagger.setAdapter(elly -> {
-                return elly.hasAttribute("normalizer")
-                        ? elly.getAttribute("normalizer")
-                        : Utilities.removeSpace(elly.getTextContent());
-            });
+            treeTagger.setAdapter(elly -> elly.hasAttribute("normalizer")
+                    ? elly.getAttribute("normalizer")
+                    : Utilities.removeSpace(elly.getTextContent()));
             treeTagger.setHandler((token, pos, lemma) -> {
                 token.setAttributeNS(NameSpaces.TEI_NS, "pos", pos);
                 token.setAttributeNS(NameSpaces.TEI_NS, "lemma", lemma);
             });
             List<String> tagged = new ArrayList<>();
             List<String> untagged = new ArrayList<>();
-            DocUtilities.groupByLanguage("u", doc, language, false)
+            DocUtilities.groupByLanguage("u", doc, language, 1)
                     .forEach((uLanguage, utters) -> {
                         if (modelMap.containsKey(uLanguage)) {
                             try {
