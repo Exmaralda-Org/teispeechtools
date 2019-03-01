@@ -51,13 +51,15 @@ public class GraphToPhoneme {
      * http://clarin.phonetik.uni-muenchen.de/BASWebServices/services/help
      */
     private static final String[] PERMITTED_LOCALES_ARRAY = { "aus-AU", "cat",
-            "cat-ES", "deu", "deu-DE", "ekk-EE", "eng", "eng-AU", "eng-GB",
-            "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin", "fin-FI", "fra-FR",
-            "gsw-CH", "gsw-CH-BE", "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG",
-            "gsw-CH-ZH", "guf-AU", "gup-AU", "hat", "hat-HT", "hun", "hun-HU",
-            "ita", "ita-IT", "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT",
-            "nld", "nld-NL", "nor-NO", "nze", "pol", "pol-PL", "ron-RO",
-            "rus-RU", "slk-SK", "spa-ES", "sqi-AL", "swe-SE" };
+            "cat-ES", "deu", "deu-DE",
+            // TODO: should we map "est" and "ee" to "ekk"?
+            "ekk-EE", "eng", "eng-AU", "eng-GB", "eng-NZ", "eng-US", "eus-ES",
+            "eus-FR", "fin", "fin-FI", "fra-FR", "gsw-CH", "gsw-CH-BE",
+            "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG", "gsw-CH-ZH", "guf-AU",
+            "gup-AU", "hat", "hat-HT", "hun", "hun-HU", "ita", "ita-IT",
+            "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT", "nld", "nld-NL",
+            "nor-NO", "nze", "pol", "pol-PL", "ron-RO", "rus-RU", "slk-SK",
+            "spa-ES", "sqi-AL", "swe-SE" };
 
     /*
      * base URL for transcription service

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.jdom2.Namespace;
@@ -17,6 +19,7 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
@@ -259,6 +262,96 @@ public class DocUtilities {
         Comment comment = doc.createComment(commentText);
         body.getParentNode().insertBefore(comment, body);
         return doc;
+    }
+
+    public static boolean isTEI(Element el, String localName) {
+        return (el.getNamespaceURI() == NameSpaces.TEI_NS
+                && el.getLocalName() == localName);
+    }
+
+    // TODO: allow exponential notation?
+    public static final Pattern TIME_PATTERN = Pattern
+            .compile("(?i)P?T?([0-9.])s?");
+
+    public static Optional<Double> getDuration(String measurement) {
+        Matcher matcher = TIME_PATTERN.matcher(measurement);
+        if (matcher.matches()) {
+            return Optional.of(Double.parseDouble(matcher.group(1)));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<Double> getDuration(Element el) {
+        return getDuration(el.getAttributeNS(NameSpaces.TEI_NS, "dur"));
+    }
+
+    public static NodeList getTimeLine(Document doc) {
+        Element timeLine = Utilities.getElementByTagNameNS(doc,
+                NameSpaces.TEI_NS, "timeline");
+        if (timeLine == null) {
+            throw new RuntimeException(
+                    "Cannot process document with no time line!");
+        }
+        NodeList line = timeLine.getElementsByTagNameNS(NameSpaces.TEI_NS,
+                "when");
+        if (line == null || line.getLength() == 0) {
+            throw new RuntimeException(
+                    "Cannot process document with no time line elements!");
+        }
+        return line;
+    }
+
+    public static Element getTimeRoot(Document doc) {
+        NodeList whens = getTimeLine(doc);
+        return (Element) whens.item(0);
+    }
+
+    public static String unPoundMark(String id) {
+        if (id.startsWith("#")) {
+            id = id.substring(1);
+        }
+        return id;
+    }
+
+    public static String generateID(Document doc, String pattern) {
+        int i = 1;
+        String newId;
+        do {
+            newId = String.format("%s_%d", pattern, i);
+        } while (doc.getElementById(newId) != null);
+        return newId;
+    }
+
+    public static void setNewId(Element el, String pattern) {
+        String newId = generateID(el.getOwnerDocument(), pattern);
+        el.setAttributeNS(NameSpaces.XML_NS, "id", newId);
+    }
+
+    public static Optional<Double> getOffset(Document doc, String id) {
+        id = unPoundMark(id);
+        NodeList timeLine = getTimeLine(doc);
+        Element root = getTimeRoot(doc);
+        String rootID = root.getAttributeNS(NameSpaces.XML_NS, "id");
+        Optional<Double> ret = Optional.empty();
+        if (id.equals(rootID)) {
+            ret = Optional.of(0d);
+        } else {
+            Element el = doc.getElementById(id);
+            Optional<Double> elTime = getDuration(
+                    el.getAttributeNS(NameSpaces.TEI_NS, "interval"));
+            String refID = unPoundMark(
+                    el.getAttributeNS(NameSpaces.TEI_NS, "since"));
+            Optional<Double> offSet = Optional.empty();
+            if (!rootID.equals(refID) && refID.length() > 0) {
+                offSet = getOffset(doc, refID);
+            }
+            ret = elTime;
+            if (offSet.isPresent() && elTime.isPresent()) {
+                ret = Optional.of(ret.get() + elTime.get());
+            }
+        }
+        return ret;
     }
 
 }
