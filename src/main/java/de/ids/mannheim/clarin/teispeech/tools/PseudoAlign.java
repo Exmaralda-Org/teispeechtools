@@ -234,10 +234,16 @@ public class PseudoAlign {
         // what's the unit of 1 relative duration:
         double quantum = absDuration / relDuration;
         double upToNow = 0;
-        Element timeRoot = DocUtilities.getTimeRoot(doc);
         Element lastWhen = doc.getElementById(
                 DocUtilities.unPoundMark(u.getAttributeNS(TEI_NS, "start")));
         Element refWhen = lastWhen;
+        Optional<Double> refOffsetOpt = DocUtilities.getOffset(refWhen);
+        if (!refOffsetOpt.isPresent()) {
+            throw new RuntimeException("No offset calculable!");
+        }
+        double refOffset = refOffsetOpt.get();
+        String rootID = DocUtilities.getTimeRoot(doc).getAttributeNS(XML_NS,
+                "id");
         String refId = refWhen.getAttributeNS(XML_NS, "id");
         // add when elements to time line
         for (Element el : uChildren) {
@@ -267,8 +273,8 @@ public class PseudoAlign {
                 lastWhen.setAttributeNS(TEI_NS, "dur",
                         String.format("%.1g", len));
             lastWhen.setAttributeNS(TEI_NS, "interval",
-                    String.format("%.1g", upToNow));
-            lastWhen.setAttributeNS(TEI_NS, "since", refId);
+                    String.format("%.1g", refOffset + upToNow));
+            lastWhen.setAttributeNS(TEI_NS, "since", rootID);
             Element endAnchor = doc.createElementNS(TEI_NS, "anchor");
         }
         if (absDuration - upToNow < 0.1) {

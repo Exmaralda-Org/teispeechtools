@@ -302,11 +302,26 @@ public class DocUtilities {
         return line;
     }
 
+    /**
+     * get the root Element of the time line, i.e. the first event
+     *
+     * @param doc
+     *            the DOM document
+     * @return the fi
+     */
     public static Element getTimeRoot(Document doc) {
         NodeList whens = getTimeLine(doc);
         return (Element) whens.item(0);
     }
 
+    /**
+     * remove pound mark (\#) from beginning of String
+     *
+     * @param id
+     *            the String potentially starting with a pound mark
+     *
+     * @return the cleaned-up String
+     */
     public static String unPoundMark(String id) {
         if (id.startsWith("#")) {
             id = id.substring(1);
@@ -314,6 +329,15 @@ public class DocUtilities {
         return id;
     }
 
+    /**
+     * generate new ID following a pattern by adding a number
+     *
+     * @param doc
+     *            the document wherein the ID must be unique
+     * @param pattern
+     *            the ID follows
+     * @return the ID
+     */
     public static String generateID(Document doc, String pattern) {
         int i = 1;
         String newId;
@@ -323,9 +347,22 @@ public class DocUtilities {
         return newId;
     }
 
+    /**
+     * set new ID following a pattern by adding a number
+     *
+     * @param el
+     *            the element to be identified
+     * @param pattern
+     *            the pattern
+     */
     public static void setNewId(Element el, String pattern) {
         String newId = generateID(el.getOwnerDocument(), pattern);
         el.setAttributeNS(NameSpaces.XML_NS, "id", newId);
+    }
+
+    public static Optional<Double> getOffset(Element el) {
+        return getOffset(el.getOwnerDocument(),
+                el.getAttributeNS(NameSpaces.XML_NS, "id"));
     }
 
     public static Optional<Double> getOffset(Document doc, String id) {
