@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 import org.jdom2.Namespace;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,6 +26,9 @@ import org.w3c.dom.NodeList;
 import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
 public class DocUtilities {
+
+    private final static Logger LOGGER = LoggerFactory
+            .getLogger(DocUtilities.class.getName());
 
     /**
      * get language of element, ascending the element tree recursively.
@@ -131,7 +136,7 @@ public class DocUtilities {
 
     public static String getTextOrNorm(Element el) {
         if (el.hasAttributeNS(NameSpaces.TEI_NS, "norm")) {
-            return el.getAttributeNS(NameSpaces.TEI_NS, "norm");
+            return DocUtilities.getTEI(el, "norm");
         } else {
             return el.getTextContent();
         }
@@ -269,9 +274,23 @@ public class DocUtilities {
                 && el.getLocalName() == localName);
     }
 
+
+    public static String getTEI(Element el, String localName) {
+        assert el != null;
+        assert localName != null;
+        LOGGER.info("{} {} {}", el, NameSpaces.TEI_NS, localName);
+        String attNS = el.getAttributeNS(NameSpaces.TEI_NS, localName);
+        assert attNS != null;
+        String ret = "".equals(attNS) ?
+                el.getAttribute(localName)
+                : attNS;
+        LOGGER.info(ret);
+        return ret;
+    }
+
     // TODO: allow exponential notation?
     public static final Pattern TIME_PATTERN = Pattern
-            .compile("(?i)P?T?([0-9.])s?");
+            .compile("(?i)P?T?([0-9.]+)s?");
 
     public static Optional<Double> getDuration(String measurement) {
         Matcher matcher = TIME_PATTERN.matcher(measurement);
@@ -283,7 +302,7 @@ public class DocUtilities {
     }
 
     public static Optional<Double> getDuration(Element el) {
-        return getDuration(el.getAttributeNS(NameSpaces.TEI_NS, "dur"));
+        return getDuration(DocUtilities.getTEI(el, "dur"));
     }
 
     public static NodeList getTimeLine(Document doc) {
@@ -339,25 +358,25 @@ public class DocUtilities {
      * @return the ID
      */
     public static String generateID(Document doc, String pattern) {
-        int i = 1;
+        int i = 0;
         String newId;
         do {
+            i++;
             newId = String.format("%s_%d", pattern, i);
-        } while (doc.getElementById(newId) != null);
+        } while (Utilities.getElementByID(doc, newId) != null);
         return newId;
     }
 
     /**
      * set new ID following a pattern by adding a number
-     *
-     * @param el
+     *  @param el
      *            the element to be identified
      * @param pattern
-     *            the pattern
      */
-    public static void setNewId(Element el, String pattern) {
+    public static String setNewId(Element el, String pattern) {
         String newId = generateID(el.getOwnerDocument(), pattern);
-        el.setAttributeNS(NameSpaces.XML_NS, "id", newId);
+        el.setAttribute("xml:id", newId);
+        return newId;
     }
 
     public static Optional<Double> getOffset(Element el) {
@@ -370,15 +389,18 @@ public class DocUtilities {
         NodeList timeLine = getTimeLine(doc);
         Element root = getTimeRoot(doc);
         String rootID = root.getAttributeNS(NameSpaces.XML_NS, "id");
-        Optional<Double> ret = Optional.empty();
+        LOGGER.info("ROOT_ID: {}", rootID);
+        Optional<Double> ret;
         if (id.equals(rootID)) {
             ret = Optional.of(0d);
         } else {
-            Element el = doc.getElementById(id);
+            Element el = Utilities.getElementByID(doc, id);
             Optional<Double> elTime = getDuration(
-                    el.getAttributeNS(NameSpaces.TEI_NS, "interval"));
+                    getTEI(el, "interval"));
             String refID = unPoundMark(
-                    el.getAttributeNS(NameSpaces.TEI_NS, "since"));
+                    getTEI(el, "since"));
+            LOGGER.info(">> {} {}  time: {} [{}]  ref: {}",
+                    id, el, elTime, getTEI(el, "interval"), refID);
             Optional<Double> offSet = Optional.empty();
             if (!rootID.equals(refID) && refID.length() > 0) {
                 offSet = getOffset(doc, refID);
@@ -388,6 +410,7 @@ public class DocUtilities {
                 ret = Optional.of(ret.get() + elTime.get());
             }
         }
+        LOGGER.info("RET: {}", ret);
         return ret;
     }
 

@@ -58,7 +58,7 @@ public class CLI implements Runnable {
     // @Command() static void normalize
 
     private enum Step {
-        text2iso, segmentize, guess, normalize, pos, identify, unidentify
+        text2iso, segmentize, guess, normalize, pos, identify, unidentify, align;
     };
 
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing "
@@ -168,6 +168,9 @@ public class CLI implements Runnable {
             break;
         case unidentify:
             unidentify();
+            break;
+        case align:
+            pseudoAlign();
             break;
         }
     }
@@ -285,6 +288,20 @@ public class CLI implements Runnable {
             } catch (JDOMException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    /**
+     * add XML IDs
+     */
+    public void pseudoAlign() {
+        try {
+            Document doc = builder.parse(inputStream);
+            PseudoAlign aligner = new PseudoAlign(doc, language);
+            aligner.calculateUtterances(true);
+            Utilities.outputXML(outStream, doc, indent);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
         }
     }
 

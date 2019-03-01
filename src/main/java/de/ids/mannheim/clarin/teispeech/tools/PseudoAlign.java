@@ -63,32 +63,35 @@ public class PseudoAlign {
     public Optional<Double> getUtteranceDuration(Element el) {
         // TODO: check for local anchors and do something about it
         Optional<Double> duration = DocUtilities.getDuration(el);
+        LOGGER.info("duration: {}", duration);
         if (!duration.isPresent()) {
-            String start = el.getAttributeNS(TEI_NS, "start");
-            String end = el.getAttributeNS(TEI_NS, "end");
+            String start = DocUtilities.getTEI(el, "start");
+            String end = DocUtilities.getTEI(el, "end");
             if (DocUtilities.isTEI(el, "u")) {
+                System.err.format("inspect parent <%s> <%s>\n", start, end);
                 Element par = ((Element) el.getParentNode());
                 if (DocUtilities.isTEI(par, "annotationBlock")) {
-                    if (start == "") {
-                        start = par.getAttributeNS(TEI_NS, "start");
-                        if ("".equals(start))
+                    System.err.println("annotationBlock");
+                    if ("".equals(start)) {
+                        start = DocUtilities.getTEI(par, "start");
+                        if (!"".equals(start))
                             el.setAttributeNS(TEI_NS, "start", start);
                     }
-                    if (end == "") {
-                        end = par.getAttributeNS(TEI_NS, "end");
-                        if ("".equals(end))
+                    if ("".equals(end)) {
+                        end = DocUtilities.getTEI(par, "end");
+                        if (!"".equals(end))
                             el.setAttributeNS(TEI_NS, "end", end);
                     }
                 }
             }
-            try {
-                Optional<Double> startTime = DocUtilities.getDuration(start);
-                Optional<Double> endTime = DocUtilities.getDuration(end);
-                if (startTime.isPresent() && endTime.isPresent())
-                    duration = Optional.of(endTime.get() - startTime.get());
-            } catch (NullPointerException | NumberFormatException e) {
-                // return Optional.empty();
-            }
+            LOGGER.info("start: {}   end: {}", start, end);
+            Optional<Double> startTime = DocUtilities.getOffset(
+                    Utilities.getElementByID(doc, start));
+            Optional<Double> endTime = DocUtilities.getOffset(
+                    Utilities.getElementByID(doc, end));
+            LOGGER.info("{}: {}   {}: {}", start, startTime, end, endTime);
+            if (startTime.isPresent() && endTime.isPresent())
+                duration = Optional.of(endTime.get() - startTime.get());
         }
         return duration;
     }
@@ -187,12 +190,11 @@ public class PseudoAlign {
                                 .map(el -> el.getTextContent())
                                 .toArray(s -> new String[s]);
                     }
-                    Seq.seq(words)
-                            .zip(Arrays.asList(
-                                    GraphToPhoneme.countSigns(transWords)))
-                            .forEach(tup -> tup.v1.setAttributeNS(
-                                    NameSpaces.TEMP_NS, "rel-length",
-                                    tup.v2.toString()));
+                    System.err.println(Arrays.stream(transWords).collect(Collectors.joining(", ")));
+                    for (int i=0; i < words.size(); i++) {
+                        words.get(i).setAttribute("rel-length",
+                                String.format("%d", GraphToPhoneme.countSigns(transWords)[i]));
+                    }
                 });
         // TODO: calculate!
         Utilities
@@ -210,17 +212,20 @@ public class PseudoAlign {
         List<Element> uChildren = Utilities.toStream(u.getChildNodes())
                 .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
                 .map(n -> (Element) n).collect(Collectors.toList());
+        System.err.format("children: %d\n", uChildren.size());
         Optional<Double> duration = getUtteranceDuration(u);
         if (!duration.isPresent()) {
+            LOGGER.warn("Utterance without duration: {}", u.getTextContent()
+                    .replace("\n", " "));
             return;
         }
         double absDuration = duration.get();
         int relDuration = 0;
         // calculate relative durations and time to distribute over them
         for (Element el : uChildren) {
-            int d = 0;
+            System.err.println(el);
             if (DocUtilities.isTEI(el, "w")) {
-                d = Integer.parseInt(el.getAttributeNS(TEMP_NS, "rel-length"));
+                relDuration += Integer.parseInt(el.getAttribute("rel-length"));
             } else if (DocUtilities.isTEI(el, "pause")) {
                 Time dur = getPausePhoneDuration(el);
                 if (dur instanceof RelativeTime)
@@ -233,24 +238,26 @@ public class PseudoAlign {
         }
         // what's the unit of 1 relative duration:
         double quantum = absDuration / relDuration;
+        LOGGER.info("abs: {}, rel: {}, q: {}", absDuration, relDuration, quantum);
         double upToNow = 0;
-        Element lastWhen = doc.getElementById(
-                DocUtilities.unPoundMark(u.getAttributeNS(TEI_NS, "start")));
+        Element lastWhen = Utilities.getElementByID(doc,
+                DocUtilities.unPoundMark(DocUtilities.getTEI(u, "start")));
         Element refWhen = lastWhen;
+        LOGGER.info("WHEN");
         Optional<Double> refOffsetOpt = DocUtilities.getOffset(refWhen);
         if (!refOffsetOpt.isPresent()) {
             throw new RuntimeException("No offset calculable!");
         }
         double refOffset = refOffsetOpt.get();
-        String rootID = DocUtilities.getTimeRoot(doc).getAttributeNS(XML_NS,
-                "id");
-        String refId = refWhen.getAttributeNS(XML_NS, "id");
+        String rootID = DocUtilities.getTimeRoot(doc).getAttribute("xml:id");
+        String refId = refWhen.getAttribute("xml:id");
         // add when elements to time line
+        int i = 0;
         for (Element el : uChildren) {
             int d = 0;
             double absD = 0;
             if (DocUtilities.isTEI(el, "w")) {
-                d = Integer.parseInt(el.getAttributeNS(TEMP_NS, "rel-length"));
+                d = Integer.parseInt(el.getAttribute("rel-length"));
             } else if (DocUtilities.isTEI(el, "pause")) {
                 Time dur = getPausePhoneDuration(el);
                 if (dur instanceof RelativeTime)
@@ -267,20 +274,24 @@ public class PseudoAlign {
                 upToNow += absD;
             }
             Element newWhen = doc.createElementNS(TEI_NS, "when");
-            DocUtilities.setNewId(newWhen, refId);
-            Utilities.insertAfterMe(lastWhen, newWhen);
+            String newID = DocUtilities.setNewId(newWhen, refId);
+            Utilities.insertAfterMe(newWhen, lastWhen);
+            lastWhen = newWhen;
             if (len > 0)
-                lastWhen.setAttributeNS(TEI_NS, "dur",
-                        String.format("%.1g", len));
+                lastWhen.setAttributeNS(TEI_NS,     "dur",
+                        String.format("%.1f", len));
             lastWhen.setAttributeNS(TEI_NS, "interval",
-                    String.format("%.1g", refOffset + upToNow));
+                    String.format("%.1f", refOffset + upToNow));
             lastWhen.setAttributeNS(TEI_NS, "since", rootID);
             Element endAnchor = doc.createElementNS(TEI_NS, "anchor");
+            endAnchor.setAttributeNS(TEI_NS, "sync", newID);
+            Utilities.insertAfterMe(endAnchor, el);
         }
         if (absDuration - upToNow < 0.1) {
-            LOGGER.warn(String.format("%.2g seconds unused",
+            LOGGER.warn(String.format("%.2f seconds unused",
                     absDuration - upToNow));
         }
+        i ++;
     }
 
 }
