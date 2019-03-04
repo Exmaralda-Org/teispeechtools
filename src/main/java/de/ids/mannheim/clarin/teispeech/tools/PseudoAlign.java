@@ -1,8 +1,6 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
-import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEMP_NS;
-import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -32,8 +30,8 @@ public class PseudoAlign {
     private final static Logger LOGGER = LoggerFactory
             .getLogger(PseudoAlign.class.getName());
 
-
-    private static NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.ROOT);
+    private static NumberFormat NUMBER_FORMAT = NumberFormat
+            .getInstance(Locale.ROOT);
 
     static {
         NUMBER_FORMAT.setMinimumFractionDigits(0);
@@ -51,25 +49,56 @@ public class PseudoAlign {
     private final Document doc;
 
     /**
+     * whether to store the transcriptions in the document
+     */
+    private boolean phoneticise;
+
+    /**
+     * whether to count relative duration in (pseudo)phones if possible
+     */
+    private boolean usePhones;
+
+    /**
+     * whether to force transcription
+     */
+    private boolean force;
+
+    /**
      * make new {@link PseudoAlign} for
      *
      * @param doc
      *            a DOM XML document
      * @param language
-     *            the language
+     *            the default document language
+     * @param usePhones
+     *            whether to count relative duration in (pseudo)phones if
+     *            possible
+     * @param phoneticise
+     *            whether to store the transcriptions in the document
+     * @param force
+     *            whether to force transcription
+     *
      */
-    public PseudoAlign(Document doc, String language) {
+    public PseudoAlign(Document doc, String language, boolean usePhones,
+            boolean phoneticise, boolean force) {
         this.language = language;
         this.doc = doc;
-    }
-
-    public class AnchorSurplusException extends Exception {
-        public AnchorSurplusException(String id, int count) {
-            super(String.format("%s has %d anchors; cannot get duration", id,
-                    count));
+        this.phoneticise = phoneticise;
+        this.usePhones = usePhones;
+        this.force = force;
+        if (!usePhones && phoneticise) {
+            LOGGER.warn(
+                    "phoneticise but not usePhones is not useful: phoneticise ignored.");
         }
     }
 
+    /**
+     * get duration of element, measured in seconds
+     *
+     * @param el
+     *            the element
+     * @return the duration
+     */
     public Optional<Double> getUtteranceDuration(Element el) {
         // TODO: check for local anchors and do something about it
         Optional<Double> duration = DocUtilities.getDuration(el);
@@ -92,11 +121,11 @@ public class PseudoAlign {
                     }
                 }
             }
-            Optional<Double> startTime = DocUtilities.getOffset(
-                    Utilities.getElementByID(doc, start));
-            Optional<Double> endTime = DocUtilities.getOffset(
-                    Utilities.getElementByID(doc, end));
-            LOGGER.info("{} -> {}   {} -> {}", start, startTime, end, endTime);
+            Optional<Double> startTime = DocUtilities
+                    .getOffset(Utilities.getElementByID(doc, start));
+            Optional<Double> endTime = DocUtilities
+                    .getOffset(Utilities.getElementByID(doc, end));
+            LOGGER.info("{} -> {}    {} -> {}", start, startTime, end, endTime);
             if (startTime.isPresent() && endTime.isPresent())
                 duration = Optional.of(endTime.get() - startTime.get());
         }
@@ -106,9 +135,7 @@ public class PseudoAlign {
     private abstract class Time {
         protected Number t;
 
-        public Number get() {
-            return t;
-        }
+        abstract public Number get();
 
         public Time(Number t) {
             this.t = t;
@@ -137,6 +164,13 @@ public class PseudoAlign {
         }
     }
 
+    /**
+     * get duration of pause measured in (pseudo)phones
+     *
+     * @param el
+     *            pause element
+     * @return duration
+     */
     public Time getPausePhoneDuration(Element el) {
         Optional<Double> duration = DocUtilities.getDuration(el);
         if (duration.isPresent()) {
@@ -167,13 +201,11 @@ public class PseudoAlign {
     /**
      * pos-tag the document
      *
-     * @param phoneticise
-     *            whether to store the transcriptions in the document
      *
      * @return document, for chaining
      */
     // TODO: Do we need Boolean force
-    public Document calculateUtterances(boolean phoneticise) {
+    public Document calculateUtterances() {
 
         // aggregate by language to minimise calls to web service
         DocUtilities.groupByLanguage("w", doc, language, 1)
@@ -181,7 +213,8 @@ public class PseudoAlign {
                     Optional<String> locale = GraphToPhoneme
                             .correspondsTo(language);
                     String[] transWords;
-                    if (locale.isPresent()) {
+                    if (usePhones && locale.isPresent()) {
+                        // work with transcriptions
                         String text = Seq.seq(words)
                                 .map(el -> el.getTextContent()).toString(" ");
                         Optional<String[]> transcribed = GraphToPhoneme
@@ -189,17 +222,26 @@ public class PseudoAlign {
                         transWords = transcribed.get();
                         if (phoneticise) {
                             Seq.seq(words).zip(Arrays.asList(transWords))
-                                    .forEach(tup -> tup.v1.setAttributeNS(
-                                            TEI_NS, "phon", tup.v2));
+                                    .forEach(tup -> {
+                                        if (!force || (!tup.v1
+                                                .hasAttributeNS(TEI_NS, "phon")
+                                                && !!tup.v1.hasAttribute(
+                                                        "phon"))) {
+                                            tup.v1.setAttributeNS(TEI_NS,
+                                                    "phon", tup.v2);
+                                        }
+                                    });
                         }
                     } else {
+                        // fall back to counting letters
                         transWords = Seq.seq(words)
                                 .map(el -> el.getTextContent())
                                 .toArray(s -> new String[s]);
                     }
-                    for (int i=0; i < words.size(); i++) {
-                        words.get(i).setAttribute("rel-length",
-                                String.format("%d", GraphToPhoneme.countSigns(transWords)[i]));
+                    for (int i = 0; i < words.size(); i++) {
+                        words.get(i).setAttribute("rel-length", String.format(
+                                "%d",
+                                GraphToPhoneme.countSigns(transWords)[i]));
                     }
                 });
         // TODO: calculate!
@@ -220,8 +262,8 @@ public class PseudoAlign {
                 .map(n -> (Element) n).collect(Collectors.toList());
         Optional<Double> duration = getUtteranceDuration(u);
         if (!duration.isPresent()) {
-            LOGGER.warn("Utterance without duration: {}", u.getTextContent()
-                    .replace("\n", " "));
+            LOGGER.warn("Utterance without duration: {}",
+                    u.getTextContent().replace("\n", " "));
             return;
         }
         double absDuration = duration.get();
@@ -242,7 +284,8 @@ public class PseudoAlign {
         }
         // what's the unit of 1 relative duration:
         double quantum = absDuration / relDuration;
-        LOGGER.info("abs: {}, rel: {}, q: {}", absDuration, relDuration, quantum);
+        LOGGER.info("abs: {}, rel: {}, q: {}", absDuration, relDuration,
+                quantum);
         double upToNow = 0;
         Element lastWhen = Utilities.getElementByID(doc,
                 DocUtilities.unPoundMark(DocUtilities.getTEI(u, "start")));
@@ -256,7 +299,6 @@ public class PseudoAlign {
         String rootID = DocUtilities.getTimeRoot(doc).getAttribute("xml:id");
         String refId = refWhen.getAttribute("xml:id");
         // add when elements to time line
-        int i = 0;
         for (Element el : uChildren) {
             int d = 0;
             double absD = 0;
@@ -282,7 +324,7 @@ public class PseudoAlign {
             Utilities.insertAfterMe(newWhen, lastWhen);
             lastWhen = newWhen;
             if (len > 0)
-                lastWhen.setAttributeNS(TEI_NS,     "dur",
+                lastWhen.setAttributeNS(TEI_NS, "dur",
                         NUMBER_FORMAT.format(len));
             lastWhen.setAttributeNS(TEI_NS, "interval",
                     NUMBER_FORMAT.format(refOffset + upToNow));
@@ -295,7 +337,6 @@ public class PseudoAlign {
             LOGGER.warn(String.format("%f seconds unused",
                     (absDuration - upToNow)));
         }
-        i ++;
     }
 
 }

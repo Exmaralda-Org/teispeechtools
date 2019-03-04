@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 import org.jdom2.Namespace;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,8 +25,8 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
 public class DocUtilities {
 
-    private final static Logger LOGGER = LoggerFactory
-            .getLogger(DocUtilities.class.getName());
+//    private final static Logger LOGGER = LoggerFactory
+//            .getLogger(DocUtilities.class.getName());
 
     // TODO: Allow exponential notation?
     // TODO: What does "PT" etc. mean?
@@ -429,6 +427,15 @@ public class DocUtilities {
                 el.getAttributeNS(NameSpaces.XML_NS, "id"));
     }
 
+    /**
+     * get time offset for an ID referring to a timeLine element
+     *
+     * @param doc
+     *            the XML document
+     * @param id
+     *            the XML ID
+     * @return the time offset
+     */
     public static Optional<Double> getOffset(Document doc, String id) {
         id = unPoundMark(id);
         Element root = getTimeRoot(doc);

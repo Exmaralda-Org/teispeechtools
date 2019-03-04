@@ -58,7 +58,8 @@ public class CLI implements Runnable {
     // @Command() static void normalize
 
     private enum Step {
-        text2iso, segmentize, guess, normalize, pos, identify, unidentify, align;
+        text2iso, segmentize, guess, normalize, pos, identify, unidentify,
+        align;
     };
 
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing "
@@ -101,6 +102,16 @@ public class CLI implements Runnable {
                     + "tried (default: ${DEFAULT-VALUE}, "
                     + "which is already pretty low)")
     private int minimalLength = 5;
+
+    @Option(names = { "-p",
+            "--use-phones" }, description = "use (pseudo)phones "
+                    + "for pseudoalignment (default: ${DEFAULT-VALUE})")
+    boolean usePhones = true;
+    @Option(names = { "-t",
+            "--transcribe" }, description = "add phonetic canonical transcription"
+                    + "in pseudoalignment (default: ${DEFAULT-VALUE}, only used "
+                    + "if --use-phones)")
+    boolean transcribe = true;
 
     @Spec
     private CommandSpec spec; // injected by picocli
@@ -241,6 +252,10 @@ public class CLI implements Runnable {
 
     }
 
+    public void normalise() {
+        normalize();
+    }
+
     /**
      * guess languages in an ISO transcription
      */
@@ -297,8 +312,9 @@ public class CLI implements Runnable {
     public void pseudoAlign() {
         try {
             Document doc = builder.parse(inputStream);
-            PseudoAlign aligner = new PseudoAlign(doc, language);
-            aligner.calculateUtterances(true);
+            PseudoAlign aligner = new PseudoAlign(doc, language, usePhones,
+                    transcribe, force);
+            aligner.calculateUtterances();
             Utilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);

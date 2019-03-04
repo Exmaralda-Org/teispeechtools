@@ -87,6 +87,11 @@ public class GraphToPhoneme {
                 if (!already_permitted.contains(active)) {
                     LOCALES.put(active, loc);
                 }
+                if ("ekk".equals(components[0])) {
+                    components[0] = "est";
+                    active = String.join("-",
+                            Arrays.copyOfRange(components, 0, i));
+                }
             }
         }
     }
