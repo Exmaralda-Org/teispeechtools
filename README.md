@@ -209,10 +209,8 @@ Normalization:
         in the document, it will be preferred).
       - whether to `force` tagging, even if a pos tag has already been
         assigned to `<w>`.
-      - whether to `transcribe` using [BAS Web
-        Services](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface).
-        See the [BAS
-        documentation](http://clarin.phonetik.uni-muenchen.de/BASWebServices/help)
+      - whether to `transcribe` using [BAS Web Services](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface).
+        See the [BAS documentation](http://clarin.phonetik.uni-muenchen.de/BASWebServices/help)
         ("runG2P") for the supported locales (non-ISO-693 codes like
         `nze` are not supported here).  The service will do some
         adjustment to be able to transcribe (e.g., accept `ltz` and not
