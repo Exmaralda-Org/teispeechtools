@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/normal.iml" filepath="$PROJECT_DIR$/.idea/normal.iml" />
-      <module fileurl="file://$PROJECT_DIR$/teispeechtools.iml" filepath="$PROJECT_DIR$/teispeechtools.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../teispeechtools (1).iml" filepath="$PROJECT_DIR$/../teispeechtools (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/teispeechtools (1).iml" filepath="$PROJECT_DIR$/teispeechtools (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/teispeechtools (2).iml" filepath="$PROJECT_DIR$/teispeechtools (2).iml" />
     </modules>
   </component>
 </project>

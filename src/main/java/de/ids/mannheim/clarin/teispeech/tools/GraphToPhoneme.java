@@ -50,16 +50,16 @@ public class GraphToPhoneme {
      * list of admissible locales from
      * http://clarin.phonetik.uni-muenchen.de/BASWebServices/services/help
      */
+    // TODO: should we map "est" and "ee" to "ekk"?
+    // TODO: better: map codes to canonical 639-1/-2 code if possible
     private static final String[] PERMITTED_LOCALES_ARRAY = { "aus-AU", "cat",
-            "cat-ES", "deu", "deu-DE",
-            // TODO: should we map "est" and "ee" to "ekk"?
-            "ekk-EE", "eng", "eng-AU", "eng-GB", "eng-NZ", "eng-US", "eus-ES",
-            "eus-FR", "fin", "fin-FI", "fra-FR", "gsw-CH", "gsw-CH-BE",
-            "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG", "gsw-CH-ZH", "guf-AU",
-            "gup-AU", "hat", "hat-HT", "hun", "hun-HU", "ita", "ita-IT",
-            "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT", "nld", "nld-NL",
-            "nor-NO", "nze", "pol", "pol-PL", "ron-RO", "rus-RU", "slk-SK",
-            "spa-ES", "sqi-AL", "swe-SE" };
+            "cat-ES", "deu", "deu-DE", "ekk-EE", "eng", "eng-AU", "eng-GB",
+            "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin", "fin-FI", "fra-FR",
+            "gsw-CH", "gsw-CH-BE", "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG",
+            "gsw-CH-ZH", "guf-AU", "gup-AU", "hat", "hat-HT", "hun", "hun-HU",
+            "ita", "ita-IT", "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT",
+            "nld", "nld-NL", "nor-NO", "nze", "pol", "pol-PL", "ron-RO",
+            "rus-RU", "slk-SK", "spa-ES", "sqi-AL", "swe-SE" };
 
     /*
      * base URL for transcription service
@@ -173,9 +173,9 @@ public class GraphToPhoneme {
      * @return the word lengths in signs
      */
     public static int[] countSigns(Optional<String[]> words,
-            Boolean syllabified) {
+            boolean syllabified) {
         if (words.isPresent())
-            return countSigns(words.get(), syllabified);
+            return countSigns(words.get());
         else
             return new int[] {};
     }

@@ -280,7 +280,7 @@ public class DocUtilities {
      *            Element
      * @param localName
      *            name of the element to test for
-     * @return whether el is TEI:localName
+     * @return whether el is tei:&lt;localName&gt;
      */
     public static boolean isTEI(Element el, String localName) {
         return (el.getNamespaceURI() == NameSpaces.TEI_NS
@@ -337,7 +337,7 @@ public class DocUtilities {
      *
      * @param doc
      *            the document
-     * @return the timeline
+     * @return the time line
      */
     public static NodeList getTimeLine(Document doc) {
         Element timeLine = Utilities.getElementByTagNameNS(doc,
