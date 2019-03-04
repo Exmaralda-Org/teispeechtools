@@ -91,6 +91,9 @@ public class GraphToPhoneme {
                     components[0] = "est";
                     active = String.join("-",
                             Arrays.copyOfRange(components, 0, i));
+                    if (!already_permitted.contains(active)) {
+                        LOCALES.put(active, loc);
+                    }
                 }
             }
         }
