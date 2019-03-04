@@ -175,13 +175,13 @@ public class GraphToPhoneme {
     public static int[] countSigns(Optional<String[]> words,
             boolean syllabified) {
         if (words.isPresent())
-            return countSigns(words.get());
+            return countSigns(words.get(), syllabified);
         else
             return new int[] {};
     }
 
     /**
-     * @see #countSigns(Optional, Boolean)
+     * @see #countSigns(Optional, boolean)
      * @param words
      *            (not syllabified)
      * @return the word lengths in signs
@@ -191,7 +191,7 @@ public class GraphToPhoneme {
     }
 
     /**
-     * @see #countSigns(Optional, Boolean)
+     * @see #countSigns(Optional, boolean)
      * @param text
      *            a string to be split in words and transcribed
      * @param separator
@@ -204,7 +204,7 @@ public class GraphToPhoneme {
 
     /**
      * @param text
-     *            the text to count word lenghts for
+     *            the text to count word lengths for
      * @see #countSigns(String)
      * @return number of characters
      **/
@@ -231,7 +231,7 @@ public class GraphToPhoneme {
     }
 
     /**
-     * @see #countSigns(Optional, Boolean)
+     * @see #countSigns(Optional, boolean)
      * @param words
      *            an array of transcribed words
      * @return lengths of individual words

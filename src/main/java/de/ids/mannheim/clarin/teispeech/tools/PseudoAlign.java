@@ -204,7 +204,8 @@ public class PseudoAlign {
      *
      * @return document, for chaining
      */
-    // TODO: Do we need Boolean force
+    // TODO: Do we need Boolean force?
+    // TODO: Do we need to disallow syllabification?
     public Document calculateUtterances() {
 
         // aggregate by language to minimise calls to web service
@@ -213,13 +214,18 @@ public class PseudoAlign {
                     Optional<String> locale = GraphToPhoneme
                             .correspondsTo(language);
                     String[] transWords;
-                    if (usePhones && locale.isPresent()) {
+                    boolean transcribe = usePhones && locale.isPresent();
+                    if (transcribe) {
                         // work with transcriptions
                         String text = Seq.seq(words)
                                 .map(el -> el.getTextContent()).toString(" ");
                         Optional<String[]> transcribed = GraphToPhoneme
-                                .getTranscription(text, uLanguage, false);
+                                .getTranscription(text, uLanguage, true);
                         transWords = transcribed.get();
+
+                        // TODO: ignore single letter words, or treat
+                        // apostrophes specially?
+                        // otherwise, we get wouldn'[ti:].
                         if (phoneticise) {
                             Seq.seq(words).zip(Arrays.asList(transWords))
                                     .forEach(tup -> {
@@ -238,10 +244,11 @@ public class PseudoAlign {
                                 .map(el -> el.getTextContent())
                                 .toArray(s -> new String[s]);
                     }
+                    int[] transcribed = GraphToPhoneme.countSigns(transWords,
+                            transcribe);
                     for (int i = 0; i < words.size(); i++) {
-                        words.get(i).setAttribute("rel-length", String.format(
-                                "%d",
-                                GraphToPhoneme.countSigns(transWords)[i]));
+                        words.get(i).setAttribute("rel-length",
+                                String.format("%d", transcribed[i]));
                     }
                 });
         // TODO: calculate!

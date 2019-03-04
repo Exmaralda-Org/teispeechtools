@@ -407,6 +407,7 @@ public class DocUtilities {
      * @param el
      *            the element to be identified
      * @param pattern
+     *            the pattern
      * @return the new ID
      */
     public static String setNewId(Element el, String pattern) {
