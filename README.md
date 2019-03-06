@@ -190,7 +190,7 @@ Normalization:
         assigned to `<w>`.
 
 
-## Pseudo-alignment using (command `align`)
+## Pseudo-alignment using Phonetic Transcription or Orthographic Information (command `align`)
 
   - Input  
     a TEI-conformant XML document 

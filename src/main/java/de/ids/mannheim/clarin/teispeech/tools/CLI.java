@@ -58,9 +58,9 @@ public class CLI implements Runnable {
     // @Command() static void normalize
 
     private enum Step {
-        text2iso, segmentize, guess, normalize, pos, identify, unidentify,
-        align;
-    };
+        text2iso, segmentize, guess, normalize, pos,
+        align, identify, unidentify
+    }
 
     @Parameters(index = "0", paramLabel = "STEP", description = "Processing "
             + "Step, one of: ${COMPLETION-CANDIDATES}")
@@ -250,10 +250,6 @@ public class CLI implements Runnable {
             throw new RuntimeException(e);
         }
 
-    }
-
-    public void normalise() {
-        normalize();
     }
 
     /**
