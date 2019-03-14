@@ -11,6 +11,7 @@ import org.w3c.dom.Text;
 
 import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.IncomprehensibleContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.MicropauseContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.PauseContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.PunctuationContext;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.UncertainContext;
@@ -44,6 +45,13 @@ public class GenericParser extends GenericConventionBaseListener {
         currentUtterance = current;
         currentParent = current;
         this.anchors = anchors;
+    }
+
+    @Override
+    public void enterMicropause(MicropauseContext ctx) {
+        Element pause = doc.createElement("pause");
+        pause.setAttribute("type", "micro");
+        currentParent.appendChild(pause);
     }
 
     @Override
@@ -93,6 +101,7 @@ public class GenericParser extends GenericConventionBaseListener {
         gap.setAttribute("type", "incomprehensible");
         gap.setAttribute("dur",
                 String.format("%d syl", ctx.getText().length() / 3));
+        gap.appendChild(gap.getOwnerDocument().createTextNode(ctx.getText()));
         currentParent.appendChild(gap);
     }
 

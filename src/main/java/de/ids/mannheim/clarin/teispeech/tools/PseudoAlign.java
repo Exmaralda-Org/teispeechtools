@@ -131,38 +131,38 @@ public class PseudoAlign {
         }
         return duration;
     }
-
-    private abstract class Time {
-        protected Number t;
-
-        abstract public Number get();
-
-        public Time(Number t) {
-            this.t = t;
-        }
-    }
-
-    private class AbsoluteTime extends Time {
-        public AbsoluteTime(Double t) {
-            super(t);
-        }
-
-        @Override
-        public Double get() {
-            return (Double) t;
-        }
-    }
-
-    private class RelativeTime extends Time {
-        public RelativeTime(Integer t) {
-            super(t);
-        }
-
-        @Override
-        public Integer get() {
-            return (Integer) t;
-        }
-    }
+//
+//    private abstract class Time {
+//        protected Number t;
+//
+//        abstract public Number get();
+//
+//        public Time(Number t) {
+//            this.t = t;
+//        }
+//    }
+//
+//    private class AbsoluteTime extends Time {
+//        public AbsoluteTime(Double t) {
+//            super(t);
+//        }
+//
+//        @Override
+//        public Double get() {
+//            return (Double) t;
+//        }
+//    }
+//
+//    private class RelativeTime extends Time {
+//        public RelativeTime(Integer t) {
+//            super(t);
+//        }
+//
+//        @Override
+//        public Integer get() {
+//            return (Integer) t;
+//        }
+//    }
 
     /**
      * get duration of pause measured in (pseudo)phones
@@ -171,41 +171,51 @@ public class PseudoAlign {
      *            pause element
      * @return duration
      */
-    public Time getPausePhoneDuration(Element el) {
+    public double getPausePhoneDuration(Element el) {
         Optional<Double> duration = DocUtilities.getDuration(el);
         if (duration.isPresent()) {
-            return new AbsoluteTime(duration.get());
+            return duration.get();
         } else {
-            int dur = 0;
-            String type = el.getAttributeNS(TEI_NS, "type");
+            double dur = 0;
+            String type = DocUtilities.getTEI(el, "type");
             if (!"".equals(type)) {
-                while (type.startsWith("very ")) {
-                    dur += 3;
-                    type = type.substring(5);
+                if (type.endsWith("long")) {
+                    while (type.startsWith("very ")) {
+                        dur += 0.3;
+                        type = type.substring(5);
+                    }
                 }
                 switch (type) {
                 case "long":
-                    dur += 3;
-                    // NO BREAK
+                    dur += 0.9;
+                    break;
                 case "medium":
-                    dur += 3;
-                    // NO BREAK
+                    dur = 0.65;
+                    break;
                 case "short":
-                    dur += 3;
+                    dur = 0.35;
+                    break;
+                case "micro":
+                    dur = 0.1;
+                    break;
+                default:
+                    throw new RuntimeException("unknown pause type: «"
+                            + DocUtilities.getTEI(el, "type") + "»!");
                 }
             }
-            return new RelativeTime(dur);
+            return dur;
         }
     }
 
     /**
-     * pos-tag the document
+     * calculate relative length of utterances the document
      *
      *
      * @return document, for chaining
      */
     // TODO: Do we need Boolean force?
     // TODO: Do we need to disallow syllabification?
+    // TODO: Allow to use normalized orthography, not CA transcription?
     public Document calculateUtterances() {
 
         // aggregate by language to minimise calls to web service
@@ -280,11 +290,7 @@ public class PseudoAlign {
             if (DocUtilities.isTEI(el, "w")) {
                 relDuration += Integer.parseInt(el.getAttribute("rel-length"));
             } else if (DocUtilities.isTEI(el, "pause")) {
-                Time dur = getPausePhoneDuration(el);
-                if (dur instanceof RelativeTime)
-                    relDuration += ((RelativeTime) dur).get();
-                else
-                    absDuration -= ((AbsoluteTime) dur).get();
+                absDuration -= getPausePhoneDuration(el);
             } else {
                 LOGGER.warn("Skipped {}", el.getTagName());
             }
@@ -312,15 +318,11 @@ public class PseudoAlign {
             if (DocUtilities.isTEI(el, "w")) {
                 d = Integer.parseInt(el.getAttribute("rel-length"));
             } else if (DocUtilities.isTEI(el, "pause")) {
-                Time dur = getPausePhoneDuration(el);
-                if (dur instanceof RelativeTime)
-                    d = ((RelativeTime) dur).get();
-                else
-                    absD = ((AbsoluteTime) dur).get();
+                absD += getPausePhoneDuration(el);
             }
             double len = 0;
             if (d > 0) {
-                // word or relative pause or
+                // word
                 len = quantum * d;
                 upToNow += len;
             } else if (absD > 0) {

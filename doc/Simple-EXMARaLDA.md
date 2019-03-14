@@ -145,38 +145,47 @@ aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
    allowed to contain incomprehensible content.
 
     ```
-    TIM: (Hallo) Tim!
-    TOM: (++++++ Tom!)
+    TIM: (Hallo) Tom!
+    TOM: (++++++ Tim!)
     ```
     
     > This annotation will only be resolved when [parsing the text for
     > transcription conventions](Generic-Conventions.md),
     > e.g. with the `generic` parsing.
 
-
-8. Pauses are indicated by full stops in parentheses. Pause lengths
-   are determined by the number of full stops (short, medium, long,
-   very+ long).
+8. Micropauses are indicated by a full stop in parentheses.
 
     ```
-    TIM: Hallo (...) Wim!
+    TIM: Hallo (.) Wim!
     ```
     > This annotation will only be resolved when [parsing the text for
     > transcription conventions](Generic-Conventions.md),
     > e.g. with the `generic` parsing.
 
-9. An annotation of the utterance, e.g. a translation or a general
-   commentary, can be placed in curly brackets behind the
-   utterance. It is treated as temporally coextensive to the
-   annotation. In the ISO format, it obtains its own `<spanGrp
-   type="comment">`.
+9. Pauses are indicated by dashes
+   ([U+002D](https://www.fileformat.info/info/unicode/char/2d/index.htm))
+   in parentheses. Pause lengths are determined by the number of full
+   stops (short, medium, long, very+ long).
+
+    ```
+    TIM: Hallo (---) Wum!
+    ```
+    > This annotation will only be resolved when [parsing the text for
+    > transcription conventions](Generic-Conventions.md),
+    > e.g. with the `generic` parsing.
+
+10. An annotation of the utterance, e.g. a translation or a general
+    commentary, can be placed in curly brackets behind the
+    utterance. It is treated as temporally coextensive to the
+    annotation. In the ISO format, it obtains its own `<spanGrp
+    type="comment">`.
 
     ```
     TOM: [winkt] Hallo, Tim! {Salut, Tim!}
     TIM: [winkt] Hallo, Tom. {Salut, Tom!}
     ```
 
-10. Overlapping parts of the utterances of different speakers are
+11. Overlapping parts of the utterances of different speakers are
     placed into angle brackets. The closing angle bracket is followed
     by any desired string that indexes the overlapping of the
     utterances, followed by another closing angle bracket.

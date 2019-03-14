@@ -18,7 +18,7 @@ word: D_WORD | A_WORD ;
 punctuation: PUNCTUATION | A_PUNCTUATION;
 
 anno: LEFT_PAREN anno_content RIGHT_PAREN;
-anno_content: pause | (uncertain | incomprehensible )+;
+anno_content: micropause | pause | (uncertain | incomprehensible )+;
 
 a_word: A_WORD;
 
@@ -27,3 +27,4 @@ incomprehensible: A_INCOMPREHENSIBLE | INCOMPREHENSIBLE;
 a_punctuation: A_PUNCTUATION;
 
 pause: PAUSE;
+micropause: MICROPAUSE;
