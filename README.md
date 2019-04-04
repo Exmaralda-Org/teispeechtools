@@ -62,8 +62,8 @@ A simple [wrapper script](spindel.sh) is available.
     incidents.
 
   - Output  
-    a transcription file conforming to the TEI specification, which is
-    already split in annotations: `<annotationBlock>` and `<u>`,
+    a transcription file conforming to the TEI specification which is
+    split intoto utterances: `<annotationBlock>` and `<u>`,
     `<incident>` elements together with `<spanGrp>`s containing the
     commentary. A `<timeline>` is derived from the text, and all
     annotation is situated with respect to the `<timeline>`.
@@ -110,11 +110,11 @@ A simple [wrapper script](spindel.sh) is available.
     case, only the contents of `<w>` elements will be processed.
 
   - Output  
-    a TEI-conformant XML document where the `<u>` have been annoted with
+    a TEI-conformant XML document where the `<u>` have been annotated with
     `@xml:lang` attributes where the
     [algorithm](https://opennlp.apache.org/docs/1.9.0/manual/opennlp.html#tools.langdetect)
     reached a decision. Cases of doubt are reported in XML comments. If
-    languages are equally probable, the document languare is preferred.
+    languages are equally probable, the document language is preferred.
 
   - Parameters  
     
@@ -138,7 +138,7 @@ A simple [wrapper script](spindel.sh) is available.
     been analysed into `<w>` (other contents possible).
 
   - Output  
-    a TEI-conformant XML document where the `<w>` have been annoted with
+    a TEI-conformant XML document where the `<w>` have been annotated with
     a `@norm` attribute containing the normalized form. Currently,
     normalization is only applied to text in German.
 
@@ -211,7 +211,7 @@ Normalization:
         assigned to `<w>`.
       - whether to `transcribe` using [BAS Web Services](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface).
         See the [BAS documentation](http://clarin.phonetik.uni-muenchen.de/BASWebServices/help)
-        ("runG2P") for the supported locales (non-ISO-693 codes like
+        ("runG2P") for the supported locales (non-ISO-639 codes like
         `nze` are not supported here).  The service will do some
         adjustment to be able to transcribe (e.g., accept `ltz` and not
         just the full `ltz-LU` for Luxemburgish).  Transcription is only
