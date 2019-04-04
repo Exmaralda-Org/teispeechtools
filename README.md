@@ -14,7 +14,7 @@ resource management -- Transcription of spoken language’.
 # Availability
 
 This is the library containing the tools. A [companion
-website](https://clarin.ids-mannheim.de/webstuhl) describes how the
+website](https://clarin.ids-mannheim.de/teilicht) describes how the
 functionality can be accessed as
 [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful
 [web services](https://en.wikipedia.org/wiki/Web_service) where you can

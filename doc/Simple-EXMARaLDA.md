@@ -6,8 +6,8 @@ This is based on Thomas Schmidt's *Appendix A: Simple EXMARaLDA
 Conventions* in [EXMARaLDA's Partitur-Editor
 manual](http://www.exmaralda.org/pdf/Partitur-Editor_Manual.pdf).  The
 conventions described here are supported by both the [IDS
-TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services,
-aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
+TEILicht](http://clarin.ids-mannheim.de/teilicht) web services,
+by this library, and by [EXMARaLDA](http://exmaralda.org/)'s
 [Partitur-Editor](http://exmaralda.org/en/partitur-editor-en/).
 
 
@@ -216,7 +216,7 @@ aby this library, and by [EXMARaLDA](http://exmaralda.org/)'s
 
 # Example document
 
-Running the example document through IDS TEI-Webstuhl produces the
+Running the example document through IDS TEILicht produces the
 following TEI ISO document.
 
 
@@ -260,8 +260,8 @@ following TEI ISO document.
       </profileDesc>
       <encodingDesc>
          <appInfo>
-            <application ident="IDS_TEI_Webstuhl" version="0.1">
-               <label>IDS TEI-Webstuhl</label>
+            <application ident="IDS_TEILicht" version="0.1">
+               <label>IDS TEILicht</label>
                <desc>TEI Conversion Webservices</desc>
             </application>
          </appInfo>

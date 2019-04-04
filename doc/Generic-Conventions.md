@@ -5,7 +5,7 @@
 
 This describes the generic conventions for transcripts of spoken
 language that are supported by both the [IDS
-TEI-Webstuhl](http://clarin.ids-mannheim.de/webstuhl) web services and
+TEILicht](http://clarin.ids-mannheim.de/teilicht) web services and
 this library. They are applied in the `segmentize` step of processing.
 
 
@@ -87,8 +87,8 @@ format](Simple-Exmaralda.md) documentation is parsed as follows:
       </profileDesc>
       <encodingDesc>
          <appInfo>
-            <application ident="IDS_TEI_Webstuhl" version="0.1">
-               <label>IDS TEI-Webstuhl</label>
+            <application ident="IDS_TEILicht" version="0.1">
+               <label>IDS TEILicht</label>
                <desc>TEI Conversion Webservices</desc>
             </application>
          </appInfo>
