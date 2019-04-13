@@ -551,6 +551,7 @@ public class PseudoAlign {
                 // System.err.format("%s -> %s", from, ref);
                 dist = paths.get(Pair.of(from, ref));
             } else {
+                // elements not on the way, e.g. because of overlap
                 dist = Seq.seq(distances).filter(
                         d -> d.to.equals(ref) && position.containsKey(d.from)
                 ).minBy(d -> d.rel).get();
