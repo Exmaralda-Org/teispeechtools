@@ -282,8 +282,7 @@ public class PseudoAlign {
         if (itemLength.isPresent())
             applyItemLength(itemLength.get());
         // TODO: remove relative lengths after testing
-        // Utilities.toElementStream(doc.getElementsByTagNameNS(TEI_NS, "w"))
-        // .forEach(el -> el.removeAttributeNS(TEMP_NS, "rel-length"));
+        // USE XSLT!
         DocUtilities.makeChange(doc, "Pseudo-aligned");
     }
 
@@ -450,7 +449,6 @@ public class PseudoAlign {
         try {
             nodes = (NodeList) blocky.evaluate(doc, XPathConstants.NODESET);
             Map<String, Integer> order = getOrder(whenList);
-            System.err.println(order);
 
             // elements that are next to each other:
             {
@@ -462,7 +460,6 @@ public class PseudoAlign {
                     do {
                         Element uNext = (Element) nodes.item(i + 1);
                         String startNext = getAttTEI(uNext, "start");
-                        System.err.format("SN: %s, E: %s\n", startNext, end);
                         if (end.equals(startNext) ||
                                 // no overlap:
                                 order.get(startNext) > order.get(end)) {
@@ -513,7 +510,7 @@ public class PseudoAlign {
         String goal = getAttXML(whenList.get(0), "id");
         List<String> way = findPathR(getAttXML(whenList.get(whenList.size() - 1), "id"), goal);
         if (way != null) {
-            System.err.println(way);
+            // System.err.println(way);
             int rel = 0;
             double abs = 0d;
             for (int i = 0;  i < way.size() - 1; i++) {
@@ -523,8 +520,8 @@ public class PseudoAlign {
                     abs += d.abs;
                 }
             }
-            System.err.format(">>> (%f - %f) / %d = %f\n", timeLength, abs, rel,
-                    ((timeLength - abs) / rel));
+            // System.err.format(">>> (%f - %f) / %d = %f\n", timeLength, abs, rel,
+            //         ((timeLength - abs) / rel));
             return Optional.of((timeLength - abs) / rel);
         }
         return Optional.empty();
@@ -538,20 +535,15 @@ public class PseudoAlign {
         Map<String,Double> position = new HashMap<>();
         String start = getAttXML(whenList.get(0), "id");
         position.put(start, 0d);
-        System.err.println(distances);
-        System.err.println("GO!");
         Map<String, LinkedHashSet<String>> accessible = new HashMap<>();
         for (int i = 1; i < whenList.size(); i++) {
             Element event = whenList.get(i);
             String ref = getAttXML(event, "id");
-            System.err.println(ref);
+            // System.err.println(ref);
             Optional<Distance> dist = Seq.seq(distances).filter(
                     d -> d.to.equals(ref) && position.containsKey(d.from)
             ).minBy(d -> d.rel);
             double step = dist.get().abs + dist.get().rel * itemLength;
-            System.err.println(ref);
-            // System.err.println(accessibleRev);
-            // System.err.println(accessibleRev.get(ref));
             double pos = i < whenList.size() ? position.get(dist.get().from) + step
                     : timeLength;
             position.put(ref, pos);
