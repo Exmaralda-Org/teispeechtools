@@ -6,6 +6,10 @@ lexer grammar SimpleExmaraldaLexer;
 
 @header{package de.ids.mannheim.clarin.teispeech.tools;}
 
+channels {
+    BACKSLASH
+}
+
 SPACE : [\t ]+ -> channel(HIDDEN);
 
 HWORD : ~[:\t \n\r]+;
@@ -23,12 +27,14 @@ mode ACTION;
 AWORD : ~[\t \]\n\r]+;
 RBRACKET: ']' -> mode(NORMAL);
 ASPACE : [\t ]+ -> channel(HIDDEN);
+A_DIRECT_CONTI : '\\' [\t ]* FNEWLINE [\t ]+ -> channel(BACKSLASH);
 
 
 mode INFO;
 IWORD : ~[\t }\n\r]+;
 RBRACE: '}' -> mode(NORMAL);
 ISPACE : [\t ]+ -> channel(HIDDEN);
+I_DIRECT_CONTI : '\\' [\t ]* FNEWLINE [\t ]+ -> channel(BACKSLASH);
 
 mode MARK_TEXT;
 MWORD : ~[>\n\r]+;
@@ -48,6 +54,7 @@ LANGLE : '<' -> mode(MARK_TEXT);
 LBRACKET : '[' -> mode(ACTION);
 LBRACE : '{' -> mode(INFO);
 NSPACE : [\t ]+ -> channel(HIDDEN);
+DIRECT_CONTI : '\\' [\t ]* FNEWLINE [\t ]+ -> channel(BACKSLASH);
 CONTI : FNEWLINE [\t ]+;
 NNEWLINE : FNEWLINE -> mode(DEFAULT_MODE), skip;
 fragment FNEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');

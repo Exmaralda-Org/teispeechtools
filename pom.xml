@@ -189,7 +189,7 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>3.8.0</version>
+      <version>3.9.6</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-distr -->
     <dependency>

@@ -24,8 +24,10 @@ TOM: [winkt] Hallo, Tim<Tim!>2> {Salut, Tim!}
 TIM: [winkt] <Hallo>2>, Tom. {Salut, Tom!}
 WIM: [winkt] <Halli>2>hallo Tom. {Salut, Tom!}
 
-TOM: [winkt und hüpft] Hallo, Tim! {Salut, Tim!}
-  Lange nicht mehr gesehen.
+TOM: [winkt und hüpft] Hallo, Tim! {Salut, \
+  Tim!}
+  Lange nicht mehr \
+  gesehen.
 TIM: [winkt und lacht] Hallo, Tom. {Salut, Tom!}
         Stimmt.  Wie geht's Dir? {Comment ça va?}
 

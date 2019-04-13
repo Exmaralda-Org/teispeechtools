@@ -2,7 +2,7 @@
  * Grammar for the Simple EXMARaLDA plain text format:
  */
 
-grammar GenericConvention;
+parser grammar GenericConvention;
 
 options {tokenVocab=GenericConventionLexer;}
 

@@ -35,6 +35,7 @@ this library. They are applied in the `segmentize` step of processing.
     TIM: (Hallo) Tim!
     TOM: (++++++ Tom!)
     ```
+    > It is not practical to use parentheses within parentheses.
 
 3. Pauses are indicated by full stops in parentheses. Pause lengths
    are determined by the number of full stops (short, medium, long,

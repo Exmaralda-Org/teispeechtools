@@ -3,14 +3,14 @@ package de.ids.mannheim.clarin.teispeech.tools;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
+import net.sf.saxon.BasicTransformerFactory;
 
 import org.jdom2.Namespace;
 import org.korpora.useful.LangUtilities;
@@ -22,6 +22,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
 
 public class DocUtilities {
 
@@ -96,7 +110,7 @@ public class DocUtilities {
         String lang = getLanguage(el, defaultL, maxComponents);
         Map<String, Long> freq = Utilities
                 .toElementStream(
-                        el.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
+                        el.getElementsByTagNameNS(TEI_NS, "w"))
                 .collect(Collectors.groupingBy(w -> {
                     // words without language tag are counted as having the
                     // language of the {@code <u>}
@@ -131,7 +145,7 @@ public class DocUtilities {
             Document doc, String defaultL, int maxComponents) {
         return Utilities
                 .toStream(
-                        doc.getElementsByTagNameNS(NameSpaces.TEI_NS, tagName))
+                        doc.getElementsByTagNameNS(TEI_NS, tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
                         u -> getUtteranceLanguage(u, defaultL, maxComponents),
@@ -139,8 +153,8 @@ public class DocUtilities {
     }
 
     public static String getTextOrNorm(Element el) {
-        if (el.hasAttributeNS(NameSpaces.TEI_NS, "norm")) {
-            return DocUtilities.getTEI(el, "norm");
+        if (el.hasAttributeNS(TEI_NS, "norm")) {
+            return DocUtilities.getAttTEI(el, "norm");
         } else {
             return el.getTextContent();
         }
@@ -159,19 +173,19 @@ public class DocUtilities {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
         Element revDesc = Utilities.getElementByTagNameNS(
-                doc.getDocumentElement(), NameSpaces.TEI_NS, "revisionDesc");
+                doc.getDocumentElement(), TEI_NS, "revisionDesc");
         if (revDesc == null) {
-            revDesc = doc.createElementNS(NameSpaces.TEI_NS, "revisionDesc");
+            revDesc = doc.createElementNS(TEI_NS, "revisionDesc");
             Element eDe = Utilities.getElementByTagNameNS(
-                    doc.getDocumentElement(), NameSpaces.TEI_NS,
+                    doc.getDocumentElement(), TEI_NS,
                     "encodingDesc");
             if (eDe == null) {
-                eDe = doc.createElementNS(NameSpaces.TEI_NS, "encodingDesc");
+                eDe = doc.createElementNS(TEI_NS, "encodingDesc");
                 Element header = Utilities.getElementByTagNameNS(
-                        doc.getDocumentElement(), NameSpaces.TEI_NS,
+                        doc.getDocumentElement(), TEI_NS,
                         "teiHeader");
                 if (header == null) {
-                    header = doc.createElementNS(NameSpaces.TEI_NS,
+                    header = doc.createElementNS(TEI_NS,
                             "teiHeader");
                     Utilities.insertAtBeginningOf(header,
                             doc.getDocumentElement());
@@ -180,8 +194,8 @@ public class DocUtilities {
             }
             Utilities.insertAtBeginningOf(revDesc, eDe);
         }
-        Element changeEl = doc.createElementNS(NameSpaces.TEI_NS, "change");
-        changeEl.setAttributeNS(NameSpaces.TEI_NS, "when", stamp);
+        Element changeEl = doc.createElementNS(TEI_NS, "change");
+        changeEl.setAttributeNS(TEI_NS, "when", stamp);
         changeEl.appendChild(doc.createTextNode(change));
         Utilities.insertAtBeginningOf(changeEl, revDesc);
         return doc;
@@ -266,7 +280,7 @@ public class DocUtilities {
      * @return the document, for chaining
      */
     public static Document addComment(Document doc, String commentText) {
-        Element body = (Element) doc.getElementsByTagNameNS(NameSpaces.TEI_NS,
+        Element body = (Element) doc.getElementsByTagNameNS(TEI_NS,
                 "body");
         Comment comment = doc.createComment(commentText);
         body.getParentNode().insertBefore(comment, body);
@@ -283,8 +297,18 @@ public class DocUtilities {
      * @return whether el is tei:&lt;localName&gt;
      */
     public static boolean isTEI(Element el, String localName) {
-        return (el.getNamespaceURI() == NameSpaces.TEI_NS
+        return (el.getNamespaceURI() == TEI_NS
                 && el.getLocalName() == localName);
+    }
+
+    public static String getAtt(Element el, String nameSpace, String localName) {
+        assert el != null;
+        assert localName != null;
+        String attNS = el.getAttributeNS(nameSpace, localName);
+        assert attNS != null;
+        String ret = "".equals(attNS) ? el.getAttribute(localName) : attNS;
+//        System.err.format("%s/@%s: «%s» (%s)\n", el.getTagName(), localName, ret, attNS);
+        return ret;
     }
 
     /**
@@ -296,13 +320,12 @@ public class DocUtilities {
      *            the local name of the attribute
      * @return the value of the attribute, or ""
      */
-    public static String getTEI(Element el, String localName) {
-        assert el != null;
-        assert localName != null;
-        String attNS = el.getAttributeNS(NameSpaces.TEI_NS, localName);
-        assert attNS != null;
-        String ret = "".equals(attNS) ? el.getAttribute(localName) : attNS;
-        return ret;
+    public static String getAttTEI(Element el, String localName) {
+        return getAtt(el, TEI_NS, localName);
+    }
+
+    public static String getAttXML(Element el, String localName) {
+        return getAtt(el, XML_NS, localName);
     }
 
     /**
@@ -329,7 +352,7 @@ public class DocUtilities {
      * @return optional number representing duration
      */
     public static Optional<Double> getDuration(Element el) {
-        return getDuration(DocUtilities.getTEI(el, "dur"));
+        return getDuration(DocUtilities.getAttTEI(el, "dur"));
     }
 
     /**
@@ -339,14 +362,23 @@ public class DocUtilities {
      *            the document
      * @return the time line
      */
-    public static NodeList getTimeLine(Document doc) {
+    public static Element getTimeLine(Document doc) {
         Element timeLine = Utilities.getElementByTagNameNS(doc,
-                NameSpaces.TEI_NS, "timeline");
+                TEI_NS, "timeline");
         if (timeLine == null) {
             throw new RuntimeException(
                     "Cannot process document with no time line!");
         }
-        NodeList line = timeLine.getElementsByTagNameNS(NameSpaces.TEI_NS,
+        return timeLine;
+    }
+
+    public static NodeList getWhens(Document doc) {
+        Element timeLine = getTimeLine(doc);
+        return getWhens(timeLine);
+    }
+
+    public static NodeList getWhens(Element timeLine) {
+        NodeList line = timeLine.getElementsByTagNameNS(TEI_NS,
                 "when");
         if (line == null || line.getLength() == 0) {
             throw new RuntimeException(
@@ -354,6 +386,7 @@ public class DocUtilities {
         }
         return line;
     }
+
 
     /**
      * get the root Element of the time line, i.e. the first event
@@ -363,7 +396,7 @@ public class DocUtilities {
      * @return the first event
      */
     public static Element getTimeRoot(Document doc) {
-        NodeList whens = getTimeLine(doc);
+        NodeList whens = getWhens(doc);
         return (Element) whens.item(0);
     }
 
@@ -425,7 +458,7 @@ public class DocUtilities {
      */
     public static Optional<Double> getOffset(Element el) {
         return getOffset(el.getOwnerDocument(),
-                el.getAttributeNS(NameSpaces.XML_NS, "id"));
+                el.getAttributeNS(XML_NS, "id"));
     }
 
     /**
@@ -440,14 +473,14 @@ public class DocUtilities {
     public static Optional<Double> getOffset(Document doc, String id) {
         id = unPoundMark(id);
         Element root = getTimeRoot(doc);
-        String rootID = root.getAttributeNS(NameSpaces.XML_NS, "id");
+        String rootID = root.getAttributeNS(XML_NS, "id");
         Optional<Double> ret;
         if (id.equals(rootID)) {
             ret = Optional.of(0d);
         } else {
             Element el = Utilities.getElementByID(doc, id);
-            Optional<Double> elTime = getDuration(getTEI(el, "interval"));
-            String refID = unPoundMark(getTEI(el, "since"));
+            Optional<Double> elTime = getDuration(getAttTEI(el, "interval"));
+            String refID = unPoundMark(getAttTEI(el, "since"));
             Optional<Double> offSet = Optional.empty();
             if (!rootID.equals(refID) && refID.length() > 0) {
                 offSet = getOffset(doc, refID);
@@ -458,6 +491,43 @@ public class DocUtilities {
             }
         }
         return ret;
+    }
+
+    public static DocumentBuilderFactory dbf;
+    public static DocumentBuilder db;
+    static {
+        dbf = DocumentBuilderFactoryImpl.newInstance() ;
+        try {
+            db = dbf.newDocumentBuilder() ;
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException("No DocumentBuilder – YOUR JAVA IS VERY BROKEN!");
+        }
+    }
+    private static TransformerFactory stf = new BasicTransformerFactory();
+
+    public static Templates getTemplate(String path){
+        try {
+            return stf.newTemplates(
+                    new StreamSource(DocUtilities.class.getResourceAsStream("markdown/tei-to-markdown.xsl")));
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(String.format("XSLT broken: «%s»", path));
+        }
+    }
+
+    public static Document transform(String path, Document inDoc) {
+        return transform(getTemplate(path), inDoc);
+    }
+
+    public static Document transform(Templates template, Document inDoc){
+        try {
+            Document doc = db.newDocument() ;
+            DOMResult result = new DOMResult(doc);
+            DOMSource source = new DOMSource(inDoc);
+            template.newTransformer().transform(source, result);
+            return doc;
+        } catch (TransformerException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

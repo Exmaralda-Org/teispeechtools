@@ -26,15 +26,15 @@ import de.ids.mannheim.clarin.teispeech.data.EndEvent;
 import de.ids.mannheim.clarin.teispeech.data.Event;
 import de.ids.mannheim.clarin.teispeech.data.MarkedEvent;
 import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ActionContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.CactionContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.CommentContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.ContentContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.MarkedContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.SpeakerContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.TextContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.TranscriptContext;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaParser.WordContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.ActionContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.CactionContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.CommentContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.ContentContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.MarkedContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.SpeakerContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.TextContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.TranscriptContext;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda.WordContext;
 import net.sf.saxon.om.NameChecker;
 
 /**

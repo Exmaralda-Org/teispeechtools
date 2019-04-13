@@ -227,6 +227,9 @@ public class GraphToPhoneme {
         Stream<String> wordStream = Stream.of(words);
         if (syllabified) // remove syllable limits
             wordStream = wordStream.map(s -> s.replace(".", ""));
+        wordStream = wordStream.map(s ->
+                s.replaceAll("[-\\p{javaWhitespace}]", ""));
+
         return wordStream.mapToInt(word -> word.length()).toArray();
     }
 

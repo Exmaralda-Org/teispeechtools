@@ -25,7 +25,7 @@ public class TextToTEIConversion {
         SimpleExmaraldaLexer lexer = new SimpleExmaraldaLexer(input);
         lexer.addErrorListener(lister);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        SimpleExmaraldaParser parser = new SimpleExmaraldaParser(tokens);
+        SimpleExmaralda parser = new SimpleExmaralda(tokens);
         parser.addErrorListener(lister);
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTree tree = parser.transcript();

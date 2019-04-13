@@ -222,6 +222,8 @@ Normalization:
         duration to assign to the `<w>`. If no transcription
         is possible, or transcription is disabled, the number of letters
         will be used to pseudo-align.
+      - the `time` length of the utterance
+      - (to be added) a number of items after which to insert anchors
 
 
 # Building and inspecting

@@ -10,12 +10,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.IncomprehensibleContext;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.MicropauseContext;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.PauseContext;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.PunctuationContext;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.UncertainContext;
-import de.ids.mannheim.clarin.teispeech.tools.GenericConventionParser.WordContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention.IncomprehensibleContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention.MicropauseContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention.PauseContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention.PunctuationContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention.UncertainContext;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention.WordContext;
+
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
 
 /**
  * parse utterances according to generic conventions
@@ -49,7 +51,7 @@ public class GenericParser extends GenericConventionBaseListener {
 
     @Override
     public void enterMicropause(MicropauseContext ctx) {
-        Element pause = doc.createElement("pause");
+        Element pause = doc.createElementNS(TEI_NS, "pause");
         pause.setAttribute("type", "micro");
         currentParent.appendChild(pause);
     }
@@ -74,14 +76,14 @@ public class GenericParser extends GenericConventionBaseListener {
             length += "long";
             break;
         }
-        Element pause = doc.createElement("pause");
+        Element pause = doc.createElementNS(TEI_NS, "pause");
         pause.setAttribute("type", length);
         currentParent.appendChild(pause);
     }
 
     @Override
     public void enterPunctuation(PunctuationContext ctx) {
-        Element pc = doc.createElement("pc");
+        Element pc = doc.createElementNS(TEI_NS, "pc");
         Text content = doc.createTextNode(ctx.getText());
         pc.appendChild(content);
         currentParent.appendChild(pc);
@@ -89,7 +91,7 @@ public class GenericParser extends GenericConventionBaseListener {
 
     @Override
     public void enterWord(WordContext ctx) {
-        Element el = doc.createElement("w");
+        Element el = doc.createElementNS(TEI_NS, "w");
         AnchorSerialization.deserializeAnchor(el,
                 StringUtils.strip(ctx.getText()), anchors);
         currentParent.appendChild(el);
@@ -97,17 +99,15 @@ public class GenericParser extends GenericConventionBaseListener {
 
     @Override
     public void enterIncomprehensible(IncomprehensibleContext ctx) {
-        Element gap = doc.createElement("w");
+        Element gap = doc.createElementNS(TEI_NS, "w");
         gap.setAttribute("type", "incomprehensible");
-        gap.setAttribute("dur",
-                String.format("%d syl", ctx.getText().length() / 3));
         gap.appendChild(gap.getOwnerDocument().createTextNode(ctx.getText()));
         currentParent.appendChild(gap);
     }
 
     @Override
     public void enterUncertain(UncertainContext ctx) {
-        currentParent = doc.createElement("unclear");
+        currentParent = doc.createElementNS(TEI_NS, "unclear");
     }
 
     @Override

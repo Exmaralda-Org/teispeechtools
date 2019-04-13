@@ -152,6 +152,8 @@ by this library, and by [EXMARaLDA](http://exmaralda.org/)'s
     > This annotation will only be resolved when [parsing the text for
     > transcription conventions](Generic-Conventions.md),
     > e.g. with the `generic` parsing.
+    >
+    > It is not practical to use parentheses within parentheses.
 
 8. Micropauses are indicated by a full stop in parentheses.
 

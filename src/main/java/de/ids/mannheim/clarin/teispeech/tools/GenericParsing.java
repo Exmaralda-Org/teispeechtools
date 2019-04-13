@@ -82,7 +82,7 @@ public class GenericParsing {
                 CharStreams.fromString(tx));
         lexer.addErrorListener(lister);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        GenericConventionParser parser = new GenericConventionParser(tokens);
+        GenericConvention parser = new GenericConvention(tokens);
         parser.addErrorListener(lister);
         ParseTreeWalker walker = new ParseTreeWalker();
         ParseTree tree = parser.text();

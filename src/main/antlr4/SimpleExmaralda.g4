@@ -2,7 +2,7 @@
  * Grammar for the Simple EXMARaLDA plain text format:
  */
 
-grammar SimpleExmaralda;
+parser grammar SimpleExmaralda;
 
 options {tokenVocab=SimpleExmaraldaLexer;}
 

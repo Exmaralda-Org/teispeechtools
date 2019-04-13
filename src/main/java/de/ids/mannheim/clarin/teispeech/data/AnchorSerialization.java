@@ -14,6 +14,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
+
 /**
  * This contains a slightly dirty trick to treat anchors in words
  *
@@ -81,7 +83,7 @@ public class AnchorSerialization {
         Deque<String> anchorQ = new ArrayDeque<>();
         for (int i = anchors.getLength() - 1; i >= 0; i--) {
             Element a = (Element) anchors.item(i);
-            anchorQ.push(a.getAttributeNS(NameSpaces.TEI_NS, "synch"));
+            anchorQ.push(DocUtilities.getAttTEI(a, "synch"));
             Text tx = el.getOwnerDocument().createTextNode(ANCHOR_START);
             a.getParentNode().replaceChild(tx, a);
         }
