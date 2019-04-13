@@ -319,7 +319,10 @@ public class PseudoAlign {
     }
 
     private List<Distance> distances = new ArrayList<>();
-    private Map<String, Integer> rest = new HashMap<>();
+    // private Map<String, Integer> rest = new HashMap<>();
+    List<Element> whenList = new ArrayList<>();
+    List<String> way = new ArrayList<>();
+    Map<Pair<String, String>, Distance> paths = new HashMap<>();
 
     private void makeDistance(Element u, String from, String to,
                               int relDuration,
@@ -438,15 +441,11 @@ public class PseudoAlign {
         }
     }
 
-    List<Element> whenList = new ArrayList<>();
-    List<String> way = new ArrayList<>();
-
     // TODO: What about empty incidents?
     private Optional<Double> relItemLength() {
         NodeList whens = DocUtilities.getWhens(doc);
         whenList = Utilities.toElementList(whens);
         NodeList nodes = null;
-        Map<Pair<String, String>, Distance> paths = new HashMap<>();
         try {
             nodes = (NodeList) blocky.evaluate(doc, XPathConstants.NODESET);
             Map<String, Integer> order = getOrder(whenList);
@@ -502,7 +501,9 @@ public class PseudoAlign {
                                 new LinkedHashSet<>());
                         if (!accessibleRev.get(to).contains(from)){
                             accessibleRev.get(to).add(from);
-                            distances.add(new Distance(0, 0d, from, to));
+                            Distance distance = new Distance(0, 0d, from, to);
+                            distances.add(distance);
+                            paths.put(Pair.of(distance.from, distance.to), distance);
                         }
                     });
         } catch (XPathExpressionException e) {
@@ -548,9 +549,7 @@ public class PseudoAlign {
             if (way.contains(ref)) {
                 String from = way.get(way.indexOf(ref) - 1);
                 // System.err.format("%s -> %s", from, ref);
-                dist = Seq.seq(distances).findFirst(
-                        d -> d.from.equals(from) &&
-                                d.to.equals(ref)).get();
+                dist = paths.get(Pair.of(from, ref));
             } else {
                 dist = Seq.seq(distances).filter(
                         d -> d.to.equals(ref) && position.containsKey(d.from)
@@ -560,6 +559,8 @@ public class PseudoAlign {
             // System.err.println(position);
             double pos = i < whenList.size() ? position.get(dist.from) + step
                     : timeLength;
+            // uncomment to test for rounding error:
+            // pos = position.get(dist.from) + step;
             position.put(ref, pos);
             event.setAttributeNS(TEI_NS, "interval", String.format("%.4f", pos));
             event.setAttributeNS(TEI_NS, "since", start);
