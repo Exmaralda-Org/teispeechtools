@@ -361,7 +361,7 @@ public class PseudoAlign {
         // System.err.println(possible);
         for (String next : Seq.seq(possible).toList()) {
             if (goal.equals(next)) {
-                return Seq.of(next).toList();
+                return Seq.of(next, from).toList();
             } else {
                 // System.err.format("@%s: %s -> %s\n", from, next, goal);
                 List<String> ret = findPathR(next, goal);
@@ -439,6 +439,7 @@ public class PseudoAlign {
     }
 
     List<Element> whenList = new ArrayList<>();
+    List<String> way = new ArrayList<>();
 
     // TODO: What about empty incidents?
     private Optional<Double> relItemLength() {
@@ -508,7 +509,7 @@ public class PseudoAlign {
             throw new RuntimeException(e);
         }
         String goal = getAttXML(whenList.get(0), "id");
-        List<String> way = findPathR(getAttXML(whenList.get(whenList.size() - 1), "id"), goal);
+        way = findPathR(getAttXML(whenList.get(whenList.size() - 1), "id"), goal);
         if (way != null) {
             // System.err.println(way);
             int rel = 0;
@@ -536,15 +537,28 @@ public class PseudoAlign {
         String start = getAttXML(whenList.get(0), "id");
         position.put(start, 0d);
         Map<String, LinkedHashSet<String>> accessible = new HashMap<>();
+        // System.err.println(distances);
+        System.err.println(way);
+        // System.err.println(accessibleRev);
         for (int i = 1; i < whenList.size(); i++) {
             Element event = whenList.get(i);
             String ref = getAttXML(event, "id");
             // System.err.println(ref);
-            Optional<Distance> dist = Seq.seq(distances).filter(
-                    d -> d.to.equals(ref) && position.containsKey(d.from)
-            ).minBy(d -> d.rel);
-            double step = dist.get().abs + dist.get().rel * itemLength;
-            double pos = i < whenList.size() ? position.get(dist.get().from) + step
+            Distance dist;
+            if (way.contains(ref)) {
+                String from = way.get(way.indexOf(ref) - 1);
+                // System.err.format("%s -> %s", from, ref);
+                dist = Seq.seq(distances).findFirst(
+                        d -> d.from.equals(from) &&
+                                d.to.equals(ref)).get();
+            } else {
+                dist = Seq.seq(distances).filter(
+                        d -> d.to.equals(ref) && position.containsKey(d.from)
+                ).minBy(d -> d.rel).get();
+            }
+            double step = dist.abs + dist.rel * itemLength;
+            // System.err.println(position);
+            double pos = i < whenList.size() ? position.get(dist.from) + step
                     : timeLength;
             position.put(ref, pos);
             event.setAttributeNS(TEI_NS, "interval", String.format("%.4f", pos));
