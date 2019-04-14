@@ -40,59 +40,21 @@ import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getTimeLine;
 @SuppressWarnings("WeakerAccess")
 public class PseudoAlign {
 
+    private final static Logger LOGGER = LoggerFactory
+            .getLogger(PseudoAlign.class.getName());
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat
+            .getInstance(Locale.ROOT);
+    private final static XPathExpression interesting;
+    private final static XPathExpression blocky;
+
     static {
         Locale.setDefault(Locale.ROOT);
     }
-
-    private final static Logger LOGGER = LoggerFactory
-            .getLogger(PseudoAlign.class.getName());
-
-    private static final NumberFormat NUMBER_FORMAT = NumberFormat
-            .getInstance(Locale.ROOT);
 
     static {
         NUMBER_FORMAT.setMinimumFractionDigits(0);
         NUMBER_FORMAT.setMaximumFractionDigits(3);
     }
-
-    /**
-     * default language
-     */
-    private final String language;
-    private final double offset;
-
-    /**
-     * XML DOM document
-     */
-    private Document doc;
-
-    public Document getDoc() {
-        return doc;
-    }
-
-    /**
-     * length of audio in seconds
-     */
-    private final double timeLength;
-
-
-    /**
-     * whether to store the transcriptions in the document
-     */
-    private final boolean phoneticise;
-
-    /**
-     * whether to count relative duration in (pseudo)phones if possible
-     */
-    private final boolean usePhones;
-
-    /**
-     * whether to force transcription
-     */
-    private final boolean force;
-
-    private final static XPathExpression interesting;
-    private final static XPathExpression blocky;
 
     static {
         try {
@@ -113,6 +75,54 @@ public class PseudoAlign {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * default language
+     */
+    private final String language;
+    private final double offset;
+    /**
+     * length of audio in seconds
+     */
+    private final double timeLength;
+    /**
+     * whether to store the transcriptions in the document
+     */
+    private final boolean phoneticise;
+    /**
+     * whether to count relative duration in (pseudo)phones if possible
+     */
+    private final boolean usePhones;
+    /**
+     * whether to force transcription
+     */
+    private final boolean force;
+    /**
+     * distances in the document
+     */
+    private final List<Distance> distances = new ArrayList<>();
+    /**
+     * paths between events in the document
+     */
+    private final Map<Pair<String, String>, Distance> paths = new HashMap<>();
+    /**
+     * reverse accessibility: Going *backwards*,
+     * there is a path from every Key to the members of its Value.
+     */
+    private final Map<String, LinkedHashSet<String>> accessibleRev =
+            new HashMap<>();
+    /**
+     * XML DOM document
+     */
+    private Document doc;
+    /**
+     * events of the timeline
+     */
+    private List<Element> whenList = new ArrayList<>();
+    /**
+     * path from first to last event
+     */
+    private List<String> way = new ArrayList<>();
 
     /**
      * make new PseudoAlign for
@@ -148,6 +158,60 @@ public class PseudoAlign {
                     "phoneticise but not usePhones is not useful: phoneticise" +
                             " ignored.");
         }
+    }
+
+    /**
+     * increase all counters in Map (int version)
+     *
+     * @param map
+     *         the Map
+     * @param addendum
+     *         the amount to increase
+     * @param <T>
+     *         the type of the counters
+     */
+    private static <T> void incAllCounters(Map<T, Integer> map, int addendum) {
+        for (Map.Entry<T, Integer> entry : map.entrySet()) {
+            entry.setValue(entry.getValue() + addendum);
+        }
+    }
+
+    /**
+     * increase all counters in Map (double version)
+     *
+     * @param map
+     *         the Map
+     * @param addendum
+     *         the amount to increase
+     * @param <T>
+     *         the type of the counters
+     */
+    private static <T> void incAllCounters(Map<T, Double> map,
+                                           double addendum) {
+        for (Map.Entry<T, Double> entry : map.entrySet()) {
+            entry.setValue(entry.getValue() + addendum);
+        }
+    }
+
+    /**
+     * make a Hash that gives the position for every event
+     *
+     * @param whens
+     *         the events
+     * @return the Hash EventName -> Position
+     */
+    private static Map<String, Integer> getOrder(List<Element> whens) {
+        Map<String, Integer> order = new HashMap<>();
+        for (int i = 0; i < whens.size(); i++) {
+            Element el = whens.get(i);
+            String elID = getAttXML(el, "id");
+            order.put(elID, i);
+        }
+        return order;
+    }
+
+    public Document getDoc() {
+        return doc;
     }
 
     /**
@@ -320,131 +384,11 @@ public class PseudoAlign {
         DocUtilities.makeChange(doc, "Pseudo-aligned");
     }
 
-    /**
-     * increase all counters in Map (int version)
-     *
-     * @param map
-     *         the Map
-     * @param addendum
-     *         the amount to increase
-     * @param <T>
-     *         the type of the counters
-     */
-    private static <T> void incAllCounters(Map<T, Integer> map, int addendum) {
-        for (Map.Entry<T, Integer> entry : map.entrySet()) {
-            entry.setValue(entry.getValue() + addendum);
-        }
-    }
-
-    /**
-     * increase all counters in Map (double version)
-     *
-     * @param map
-     *         the Map
-     * @param addendum
-     *         the amount to increase
-     * @param <T>
-     *         the type of the counters
-     */
-    private static <T> void incAllCounters(Map<T, Double> map,
-                                           double addendum) {
-        for (Map.Entry<T, Double> entry : map.entrySet()) {
-            entry.setValue(entry.getValue() + addendum);
-        }
-    }
-
-    /**
-     * distance between elements
-     */
-    private class Distance {
-        final int rel;
-        final double abs;
-        final String from;
-        final String to;
-
-        /**
-         * create a distance between elements
-         *
-         * @param rel
-         *         distance in characters / pseudophones
-         * @param abs
-         *         distance in time, esp. pauses
-         * @param from
-         *         first element
-         * @param to
-         *         second element
-         */
-        Distance(int rel, double abs, String from, String to) {
-            this.rel = rel;
-            this.abs = abs;
-            this.from = from;
-            this.to = to;
-        }
-
-        /**
-         * generate string representation
-         *
-         * @return string representation
-         */
-        @Override
-        public String toString() {
-            return String.format("{Δ<%s, %s> == <%d, -%.3f>}",
-                    from, to, rel, abs);
-        }
-    }
-
-    /**
-     * distances in the document
-     */
-    private final List<Distance> distances = new ArrayList<>();
-
-    /**
-     * events of the timeline
-     */
-    private List<Element> whenList = new ArrayList<>();
-
-    /**
-     * path from first to last event
-     */
-    private List<String> way = new ArrayList<>();
-
-    /**
-     * paths between events in the document
-     */
-    private final Map<Pair<String, String>, Distance> paths = new HashMap<>();
-
-    /**
-     * reverse accessibility: Going *backwards*,
-     * there is a path from every Key to the members of its Value.
-     */
-    private final Map<String, LinkedHashSet<String>> accessibleRev =
-            new HashMap<>();
-
-
     private void makeDistance(String from, String to,
                               int relDuration,
                               double absDuration) {
         distances.add(new Distance(relDuration, absDuration, from, to));
     }
-
-
-    /**
-     * make a Hash that gives the position for every event
-     *
-     * @param whens
-     *         the events
-     * @return the Hash EventName -> Position
-     */
-    private static Map<String, Integer> getOrder(List<Element> whens) {
-        Map<String, Integer> order = new HashMap<>();
-        for (int i = 0; i < whens.size(); i++) {
-            Element el = whens.get(i);
-            String elID = getAttXML(el, "id");
-            order.put(elID, i);
-        }
-        return order;
-    }
-
 
     /**
      * find a way {@code from} from to {@code goal}
@@ -553,8 +497,6 @@ public class PseudoAlign {
         }
     }
 
-    // TODO: What about empty incidents?
-
     /**
      * determine the length of a pseudophone
      *
@@ -650,6 +592,8 @@ public class PseudoAlign {
         }
         return Optional.empty();
     }
+
+    // TODO: What about empty incidents?
 
     /**
      * determine lenth of annotationBlocks
@@ -850,7 +794,7 @@ public class PseudoAlign {
                                 .addTextBody("com", "no")
                                 .addTextBody("syl", getSyllables ? "yes" : "no")
                                 .addTextBody("outsym", "ipa").addTextBody(
-                                        "oform",
+                                "oform",
                                 "txt")
                                 .addTextBody("iform", "list") // txt?
                                 .addTextBody("align", "no").addTextBody("lng"
@@ -1039,6 +983,46 @@ public class PseudoAlign {
                 System.out.println(String.format("Syllables: %s",
                         Arrays.toString(countSyllables(text, "deu"))));
             }
+        }
+    }
+
+    /**
+     * distance between elements
+     */
+    private class Distance {
+        final int rel;
+        final double abs;
+        final String from;
+        final String to;
+
+        /**
+         * create a distance between elements
+         *
+         * @param rel
+         *         distance in characters / pseudophones
+         * @param abs
+         *         distance in time, esp. pauses
+         * @param from
+         *         first element
+         * @param to
+         *         second element
+         */
+        Distance(int rel, double abs, String from, String to) {
+            this.rel = rel;
+            this.abs = abs;
+            this.from = from;
+            this.to = to;
+        }
+
+        /**
+         * generate string representation
+         *
+         * @return string representation
+         */
+        @Override
+        public String toString() {
+            return String.format("{Δ<%s, %s> == <%d, -%.3f>}",
+                    from, to, rel, abs);
         }
     }
 }
