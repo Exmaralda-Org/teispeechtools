@@ -38,8 +38,8 @@ import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
 
 public class DocUtilities {
 
-//    private final static Logger LOGGER = LoggerFactory
-//            .getLogger(DocUtilities.class.getName());
+   // private final static Logger LOGGER = LoggerFactory
+   //         .getLogger(DocUtilities.class.getName());
 
     // TODO: Allow exponential notation?
     // TODO: What does "PT" etc. mean?
@@ -301,7 +301,7 @@ public class DocUtilities {
         String attNS = el.getAttributeNS(nameSpace, localName);
         assert attNS != null;
         String ret = "".equals(attNS) ? el.getAttribute(localName) : attNS;
-//        System.err.format("%s/@%s: «%s» (%s)\n", el.getTagName(), localName, ret, attNS);
+       // System.err.format("%s/@%s: «%s» (%s)\n", el.getTagName(), localName, ret, attNS);
         return ret;
     }
 
@@ -502,7 +502,7 @@ public class DocUtilities {
     public static Templates getTemplate(String path){
         try {
             return stf.newTemplates(
-                    new StreamSource(DocUtilities.class.getResourceAsStream("markdown/tei-to-markdown.xsl")));
+                    new StreamSource(DocUtilities.class.getResourceAsStream(path)));
         } catch (TransformerConfigurationException e) {
             throw new RuntimeException(String.format("XSLT broken: «%s»", path));
         }

@@ -49,7 +49,11 @@ public class PseudoAlign {
     /**
      * XML DOM document
      */
-    private final Document doc;
+    private Document doc;
+
+    Document getDoc () {
+        return doc;
+    }
 
     /**
      * length of audio in seconds
@@ -280,10 +284,12 @@ public class PseudoAlign {
                 .forEach(this::annotateSingleUtterance);
         Optional<Double> itemLength = relItemLength();
         itemLength.ifPresent(this::applyItemLength);
+        cleanUp();
         // TODO: remove relative lengths after testing
         // USE XSLT!
         DocUtilities.makeChange(doc, "Pseudo-aligned");
     }
+
 
     private static <T> void incAllCounters(Map<T, Integer> map, int addendum) {
         for (Map.Entry<T, Integer> entry : map.entrySet()) {
@@ -526,12 +532,13 @@ public class PseudoAlign {
     private void applyItemLength (Double itemLength) {
         Comment comment = doc.createComment(
                 String.format(" length per item: %.4f seconds", itemLength));
-        Utilities.getElementByTagNameNS(doc, TEI_NS, "body").appendChild(comment);
+        Utilities.insertAtBeginningOf(comment,
+                Utilities.getElementByTagNameNS(doc, TEI_NS, "body"));
         Map<String,Double> position = new HashMap<>();
         String start = getAttXML(whenList.get(0), "id");
         position.put(start, 0d);
         // System.err.println(distances);
-        System.err.println(way);
+        // System.err.println(way);
         // System.err.println(accessibleRev);
         for (int i = 1; i < whenList.size(); i++) {
             Element event = whenList.get(i);
@@ -558,6 +565,10 @@ public class PseudoAlign {
             event.setAttributeNS(TEI_NS, "interval", String.format("%.4fs", pos));
             event.setAttributeNS(TEI_NS, "since", start);
         }
+    }
+
+    private void cleanUp(){
+        doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
     }
 
 }

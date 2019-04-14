@@ -124,7 +124,6 @@ public class SpeechDocument {
     public void makeTimeLine(Deque<Event> events) {
         Element timeLine = (Element) doc
                 .getElementsByTagNameNS(TEI_NS, "timeline").item(0);
-        System.err.println(Seq.seq(events.stream()).map(e -> e.mkTime()).toList());
         Iterator<Event> iter = events.descendingIterator();
         while (iter.hasNext()) {
             Event e = iter.next();
@@ -216,7 +215,6 @@ public class SpeechDocument {
         Node sib;
         do {
             sib = currentBlock.getPreviousSibling();
-            System.err.print(((Element)sib).getLocalName());
             if (sib.getNodeType() == Node.ELEMENT_NODE &&
                     sib.getLocalName().equals("incident")) {
                 Element elSib = (Element) sib;

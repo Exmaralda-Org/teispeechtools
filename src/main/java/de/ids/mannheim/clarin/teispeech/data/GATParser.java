@@ -187,15 +187,15 @@ public class GATParser extends AbstractParser {
                 for (Content c : unparsed.getContent()) {
                     if (c instanceof Text) {
                         String eventText = ((Text) c).getText();
-                        System.err.println("ETEXT: " + eventText);
+                        // System.err.println("ETEXT: " + eventText);
                         if (!(minimalPatterns.get("GAT_EVENT")
                                 .matcher(eventText).matches())) {
-                            System.err.println(String.format(
-                                    "EVENT DID NOT MATCH: «%s»", eventText));
+                            // System.err.println(String.format(
+                            //         "EVENT DID NOT MATCH: «%s»", eventText));
                             totalParseOK = false;
                             break;
                         }
-                        System.err.println("MATCHED!");
+                        // System.err.println("MATCHED!");
                         text += eventText;
                     } else {
                         Element e = (Element) c;
@@ -207,8 +207,8 @@ public class GATParser extends AbstractParser {
                 totalParseOK = totalParseOK && (minimalPatterns
                         .get("GAT_CONTRIBUTION").matcher(text).matches());
                 if (!totalParseOK) {
-                    System.err.println(
-                            "TOTAL PARSE FAILED: " + unparsed.getText());
+                    // System.err.println(
+                    //         "TOTAL PARSE FAILED: " + unparsed.getText());
                     continue;
                 }
                 try {
@@ -265,7 +265,7 @@ public class GATParser extends AbstractParser {
                     insertTimeReferences(contribution, timePositions);
                     List<Content> v = new ArrayList<>();
                     v.add(contribution);
-                    System.err.println(Utilities.elementToString(contribution));
+                    // System.err.println(Utilities.elementToString(contribution));
                     List<Content> transformedContribution = minimalTransformer
                             .transform(v);
 //                    Element contributionParent = contribution

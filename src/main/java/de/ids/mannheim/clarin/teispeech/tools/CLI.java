@@ -141,8 +141,8 @@ public class CLI implements Runnable {
 
     @Override
     public void run() {
-//        System.err.println(String.format("STEP is %s with %s and language %s",
-//                step, inputFile, language));
+       // System.err.println(String.format("STEP is %s with %s and language %s",
+       //         step, inputFile, language));
         if (outFile != null) {
             try {
                 outStream = new FileOutputStream(outFile);
@@ -315,7 +315,7 @@ public class CLI implements Runnable {
             PseudoAlign aligner = new PseudoAlign(doc, language, usePhones,
                     transcribe, force, timeLength);
             aligner.calculateUtterances();
-            Utilities.outputXML(outStream, doc, indent);
+            Utilities.outputXML(outStream, aligner.getDoc(), indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
