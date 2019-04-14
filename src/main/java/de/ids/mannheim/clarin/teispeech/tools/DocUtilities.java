@@ -148,7 +148,7 @@ public class DocUtilities {
 
     public static String getTextOrNorm(Element el) {
         if (el.hasAttributeNS(TEI_NS, "norm")) {
-            return DocUtilities.getAttTEI(el, "norm");
+            return el.getAttribute("norm");
         } else {
             return el.getTextContent();
         }
@@ -189,7 +189,7 @@ public class DocUtilities {
             Utilities.insertAtBeginningOf(revDesc, eDe);
         }
         Element changeEl = doc.createElementNS(TEI_NS, "change");
-        changeEl.setAttributeNS(TEI_NS, "when", stamp);
+        changeEl.setAttribute("when", stamp);
         changeEl.appendChild(doc.createTextNode(change));
         Utilities.insertAtBeginningOf(changeEl, revDesc);
         return doc;
@@ -346,7 +346,7 @@ public class DocUtilities {
      * @return optional number representing duration
      */
     public static Optional<Double> getDuration(Element el) {
-        return getDuration(DocUtilities.getAttTEI(el, "dur"));
+        return getDuration(el.getAttribute("dur"));
     }
 
     /**
@@ -473,8 +473,8 @@ public class DocUtilities {
             ret = Optional.of(0d);
         } else {
             Element el = Utilities.getElementByID(doc, id);
-            Optional<Double> elTime = getDuration(getAttTEI(el, "interval"));
-            String refID = unPoundMark(getAttTEI(el, "since"));
+            Optional<Double> elTime = getDuration(el.getAttribute("interval"));
+            String refID = unPoundMark(el.getAttribute("since"));
             Optional<Double> offSet = Optional.empty();
             if (!rootID.equals(refID) && refID.length() > 0) {
                 offSet = getOffset(doc, refID);

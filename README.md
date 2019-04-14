@@ -223,6 +223,8 @@ Normalization:
         is possible, or transcription is disabled, the number of letters
         will be used to pseudo-align.
       - the `time` length of the utterance
+      - the `offset` of the utterance, i.e. the time of the first
+        timeline event.
       - (to be added) a number of items after which to insert anchors
 
 

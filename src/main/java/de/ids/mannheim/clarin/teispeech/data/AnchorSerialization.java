@@ -83,7 +83,7 @@ public class AnchorSerialization {
         Deque<String> anchorQ = new ArrayDeque<>();
         for (int i = anchors.getLength() - 1; i >= 0; i--) {
             Element a = (Element) anchors.item(i);
-            anchorQ.push(DocUtilities.getAttTEI(a, "synch"));
+            anchorQ.push(a.getAttribute("synch"));
             Text tx = el.getOwnerDocument().createTextNode(ANCHOR_START);
             a.getParentNode().replaceChild(tx, a);
         }

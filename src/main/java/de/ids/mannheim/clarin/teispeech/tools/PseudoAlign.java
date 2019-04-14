@@ -17,8 +17,7 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import javax.xml.xpath.*;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
-import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getAttXML;
-import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getAttTEI;
+import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.*;
 
 /**
  * Pseudo-align documents in the TEI transcription format with the TreeTagger
@@ -30,6 +29,7 @@ public class PseudoAlign {
     static {
         Locale.setDefault(Locale.ROOT);
     }
+
     private final static Logger LOGGER = LoggerFactory
             .getLogger(PseudoAlign.class.getName());
 
@@ -45,13 +45,14 @@ public class PseudoAlign {
      * default language
      */
     private final String language;
+    private final double offset;
 
     /**
      * XML DOM document
      */
     private Document doc;
 
-    public Document getDoc () {
+    public Document getDoc() {
         return doc;
     }
 
@@ -59,7 +60,6 @@ public class PseudoAlign {
      * length of audio in seconds
      */
     private final double timeLength;
-
 
 
     /**
@@ -108,13 +108,15 @@ public class PseudoAlign {
      * @param timeLength  length of audio in seconds
      */
     public PseudoAlign(Document doc, String language, boolean usePhones,
-                       boolean phoneticise, boolean force, double timeLength) {
+                       boolean phoneticise, boolean force, double timeLength,
+                       double offset) {
         this.language = language;
         this.doc = doc;
         this.phoneticise = phoneticise;
         this.usePhones = usePhones;
         this.force = force;
         this.timeLength = timeLength;
+        this.offset = offset;
         if (!usePhones && phoneticise) {
             LOGGER.warn(
                     "phoneticise but not usePhones is not useful: phoneticise ignored.");
@@ -132,20 +134,20 @@ public class PseudoAlign {
         Optional<Double> duration = DocUtilities.getDuration(el);
         LOGGER.info("utterance duration: {}", duration);
         if (!duration.isPresent()) {
-            String start = getAttTEI(el, "start");
-            String end = getAttTEI(el, "end");
+            String start = el.getAttribute("start");
+            String end = el.getAttribute("end");
             if (DocUtilities.isTEI(el, "u")) {
                 Element par = ((Element) el.getParentNode());
                 if (DocUtilities.isTEI(par, "annotationBlock")) {
                     if ("".equals(start)) {
-                        start = getAttTEI(par, "start");
+                        start = par.getAttribute("start");
                         if (!"".equals(start))
-                            el.setAttributeNS(TEI_NS, "start", start);
+                            el.setAttribute("start", start);
                     }
                     if ("".equals(end)) {
-                        end = getAttTEI(par, "end");
+                        end = par.getAttribute("end");
                         if (!"".equals(end))
-                            el.setAttributeNS(TEI_NS, "end", end);
+                            el.setAttribute("end", end);
                     }
                 }
             }
@@ -172,7 +174,7 @@ public class PseudoAlign {
             return duration.get();
         } else {
             double dur = 0;
-            String type = getAttTEI(el, "type");
+            String type = el.getAttribute("type");
             if (!"".equals(type)) {
                 if (type.endsWith("long")) {
                     while (type.startsWith("very ")) {
@@ -195,7 +197,7 @@ public class PseudoAlign {
                         break;
                     default:
                         throw new RuntimeException("unknown pause type: «"
-                                + getAttTEI(el, "type") + "»!");
+                                + el.getAttribute("type") + "»!");
                 }
             }
             return dur;
@@ -204,7 +206,6 @@ public class PseudoAlign {
 
     /**
      * calculate relative length of utterances the document
-     *
      */
     // TODO: Do we need Boolean force?
     // TODO: Do we need to disallow syllabification?
@@ -220,7 +221,7 @@ public class PseudoAlign {
                     boolean transcribe = usePhones && locale.isPresent();
                     List<Element> words = Seq.seq(initWords)
                             .filter(w -> !("incomprehensible".equals(
-                                    getAttTEI(w, "type"))))
+                                    w.getAttribute("type"))))
                             .toList();
                     if (transcribe) {
                         // only transcribe "normal" words
@@ -238,8 +239,7 @@ public class PseudoAlign {
                                                 .hasAttributeNS(TEI_NS, "phon")
                                                 && !tup.v1.hasAttribute(
                                                 "phon"))) {
-                                            tup.v1.setAttributeNS(TEI_NS,
-                                                    "phon", tup.v2);
+                                            tup.v1.setAttribute("phon", tup.v2);
                                         }
                                     });
                         }
@@ -265,7 +265,7 @@ public class PseudoAlign {
                     // treat incomprehensible words:
                     List<Element> unWords = Seq.seq(initWords)
                             .filter(w -> ("incomprehensible".equals(
-                                    getAttTEI(w, "type"))))
+                                    w.getAttribute("type"))))
                             .toList();
                     String[] unStrings = Seq.seq(unWords).
                             map(Element::getTextContent).
@@ -389,8 +389,8 @@ public class PseudoAlign {
         }
         Map<String, Double> absDuration = new HashMap<>();
         Element par = (Element) u.getParentNode();
-        String currentEl = DocUtilities.unPoundMark(getAttTEI(par, "start"));
-        String endEl = DocUtilities.unPoundMark(getAttTEI(par, "end"));
+        String currentEl = DocUtilities.unPoundMark(par.getAttribute("start"));
+        String endEl = DocUtilities.unPoundMark(par.getAttribute("end"));
         Map<String, Integer> relDuration = new HashMap<>();
         relDuration.put(currentEl, 0);
         absDuration.put(currentEl, 0d);
@@ -409,7 +409,7 @@ public class PseudoAlign {
                             now.getLocalName().equals("anchor")) {
                         Element nowEl = ((Element) now);
                         String nowName = DocUtilities.unPoundMark(
-                                getAttTEI(nowEl, "synch"));
+                                nowEl.getAttribute("synch"));
                         for (String name : relDuration.keySet()) {
                             makeDistance(name, nowName, relDuration.get(name) + textTillNow, absDuration.get(name));
                         }
@@ -423,12 +423,12 @@ public class PseudoAlign {
                         incAllCounters(relRest, count);
                     }
                 }
-               // for (String name : relRest.keySet()) {
-               //     Element delta = u.getOwnerDocument().createElement("rel-rest");
-               //     delta.setAttribute("after", name);
-               //     delta.setAttribute("rel", String.valueOf(relRest.get(name)));
-               //     u.appendChild(delta);
-               // }
+                // for (String name : relRest.keySet()) {
+                //     Element delta = u.getOwnerDocument().createElement("rel-rest");
+                //     delta.setAttribute("after", name);
+                //     delta.setAttribute("rel", String.valueOf(relRest.get(name)));
+                //     u.appendChild(delta);
+                // }
             } else if (DocUtilities.isTEI(el, "pause")) {
                 incAllCounters(absDuration, getPausePhoneDuration(el));
             } else {
@@ -454,11 +454,11 @@ public class PseudoAlign {
                 int i = 0;
                 do {
                     Element u = (Element) nodes.item(i);
-                    String end = getAttTEI(u, "end");
+                    String end = u.getAttribute("end");
                     boolean checked = false;
                     do {
                         Element uNext = (Element) nodes.item(i + 1);
-                        String startNext = getAttTEI(uNext, "start");
+                        String startNext = uNext.getAttribute("start");
                         if (end.equals(startNext) ||
                                 // no overlap:
                                 order.get(startNext) > order.get(end)) {
@@ -494,11 +494,11 @@ public class PseudoAlign {
             Utilities.toElementStream(nodes)
                     .filter(e -> e.getLocalName().equals("incident"))
                     .forEachOrdered(e -> {
-                        String from = getAttTEI(e, "start");
-                        String to = getAttTEI(e, "end");
+                        String from = e.getAttribute("start");
+                        String to = e.getAttribute("end");
                         accessibleRev.putIfAbsent(to,
                                 new LinkedHashSet<>());
-                        if (!accessibleRev.get(to).contains(from)){
+                        if (!accessibleRev.get(to).contains(from)) {
                             accessibleRev.get(to).add(from);
                             Distance distance = new Distance(0, 0d, from, to);
                             distances.add(distance);
@@ -514,9 +514,9 @@ public class PseudoAlign {
             // System.err.println(way);
             int rel = 0;
             double abs = 0d;
-            for (int i = 0;  i < way.size() - 1; i++) {
+            for (int i = 0; i < way.size() - 1; i++) {
                 Distance d = paths.get(Pair.of(way.get(i), way.get(i + 1)));
-                if (d != null){
+                if (d != null) {
                     rel += d.rel;
                     abs += d.abs;
                 }
@@ -529,17 +529,20 @@ public class PseudoAlign {
     }
 
 
-    private void applyItemLength (Double itemLength) {
+    private void applyItemLength(Double itemLength) {
         Comment comment = doc.createComment(
                 String.format(" length per item: %.4f seconds", itemLength));
         Utilities.insertAtBeginningOf(comment,
                 Utilities.getElementByTagNameNS(doc, TEI_NS, "body"));
-        Map<String,Double> position = new HashMap<>();
+        Map<String, Double> position = new HashMap<>();
         String start = getAttXML(whenList.get(0), "id");
         position.put(start, 0d);
         // System.err.println(distances);
         // System.err.println(way);
         // System.err.println(accessibleRev);
+
+        getTimeLine(doc).setAttribute("unit", "s");
+        whenList.get(0).setAttribute("absolute", String.format("%.4fs", offset));
         for (int i = 1; i < whenList.size(); i++) {
             Element event = whenList.get(i);
             String ref = getAttXML(event, "id");
@@ -562,12 +565,13 @@ public class PseudoAlign {
             // uncomment to test for rounding error:
             // pos = position.get(dist.from) + step;
             position.put(ref, pos);
-            event.setAttributeNS(TEI_NS, "interval", String.format("%.4fs", pos));
-            event.setAttributeNS(TEI_NS, "since", start);
+            event.setAttribute("interval",
+                    String.format("%.4fs", pos));
+            event.setAttribute("since", start);
         }
     }
 
-    private void cleanUp(){
+    private void cleanUp() {
         doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
     }
 

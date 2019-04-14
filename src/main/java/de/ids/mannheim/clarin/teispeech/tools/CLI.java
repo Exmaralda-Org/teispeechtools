@@ -113,8 +113,12 @@ public class CLI implements Runnable {
     boolean transcribe = true;
 
     @Option(names = { "-T", "--time" }, description = "audio length in seconds"
-            + "(default: ${DEFAULT-VALUE})")
+            + "(alignment, default: ${DEFAULT-VALUE})")
     double timeLength = 100d;
+
+    @Option(names = { "-O", "--offset" }, description = "audio offset in seconds"
+            + "(alignment, default: ${DEFAULT-VALUE})")
+    double offset = 0d;
 
     @Spec
     private CommandSpec spec; // injected by picocli
@@ -313,7 +317,7 @@ public class CLI implements Runnable {
             boolean usePhones = !useGraphs;
             Document doc = builder.parse(inputStream);
             PseudoAlign aligner = new PseudoAlign(doc, language, usePhones,
-                    transcribe, force, timeLength);
+                    transcribe, force, timeLength, offset);
             aligner.calculateUtterances();
             Utilities.outputXML(outStream, aligner.getDoc(), indent);
         } catch (IOException | SAXException e) {
