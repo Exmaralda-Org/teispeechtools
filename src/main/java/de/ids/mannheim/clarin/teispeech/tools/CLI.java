@@ -40,22 +40,22 @@ import picocli.CommandLine.Spec;
  * a command line interface for the annotation processing work flow
  *
  * @author bfi
- *
  */
 @SuppressWarnings({"CanBeFinal", "unused"})
 @Command(description = "process documents of speech annotated "
         + "according to TEI/ISO", sortOptions = false, name = "spindel"
-                + "", mixinStandardHelpOptions = true, versionProvider = VersionProvider.class)
+        + "", mixinStandardHelpOptions = true, versionProvider =
+        VersionProvider.class)
 public class CLI implements Runnable {
 
     // @Option(names = {"-v", "--verbose"}, description = "give more info")
     // private boolean verbose = false;
     //
-    @Option(names = { "--indent" }, description = "indent")
+    @Option(names = {"--indent"}, description = "indent")
     private boolean indent = false;
     // @Command() static void normalize
 
-    @Option(names = { "--force" }, description = "force STEP even if "
+    @Option(names = {"--force"}, description = "force STEP even if "
             + "the corresponding annotation exists already "
             + "(NOT for text2iso, segmentize)")
     private boolean force = false;
@@ -69,18 +69,18 @@ public class CLI implements Runnable {
             + "Step, one of: ${COMPLETION-CANDIDATES}")
     private Step step;
 
-    @Option(names = { "-i",
-            "--input" }, description = "input file , by default STDIN")
+    @Option(names = {"-i",
+            "--input"}, description = "input file , by default STDIN")
     private File inputFile;
 
-    @Option(names = { "-o",
-            "--output" }, description = "output file, by default STDOUT")
+    @Option(names = {"-o",
+            "--output"}, description = "output file, by default STDOUT")
     private File outFile;
 
-    @Option(names = { "-l",
-            "--language" }, description = "the (default) language "
-                    + "of the document, an ISO-639 language code "
-                    + "(default: '${DEFAULT-VALUE}'; normalize, pos)")
+    @Option(names = {"-l",
+            "--language"}, description = "the (default) language "
+            + "of the document, an ISO-639 language code "
+            + "(default: '${DEFAULT-VALUE}'; normalize, pos)")
     private String language = "deu";
 
     @Option(names = "--expected", description = "comma-separated "
@@ -90,42 +90,44 @@ public class CLI implements Runnable {
     private
     String[] expected;
 
-    @Option(names = { "-k",
-            "--keep-case" }, description = "do not convert to lower case "
-                    + "when normalizing; effectively, skip capitalized words")
+    @Option(names = {"-k",
+            "--keep-case"}, description = "do not convert to lower case "
+            + "when normalizing; effectively, skip capitalized words")
     private
     boolean keepCase = false;
 
-    @Option(names = { "-L",
-            "--level" }, description = "the level of the transcription "
-                    + "(segmentize, default: '${DEFAULT-VALUE}')")
+    @Option(names = {"-L",
+            "--level"}, description = "the level of the transcription "
+            + "(segmentize, default: '${DEFAULT-VALUE}')")
     private ProcessingLevel level = ProcessingLevel.generic;
 
     @Option(names = {
-            "--minimal" }, description = "the `minimal count` of words so "
-                    + "that language detection is even "
-                    + "tried (default: ${DEFAULT-VALUE}, "
-                    + "which is already pretty low)")
+            "--minimal"}, description = "the `minimal count` of words so "
+            + "that language detection is even "
+            + "tried (default: ${DEFAULT-VALUE}, "
+            + "which is already pretty low)")
     private int minimalLength = 5;
 
-    @Option(names = { "-p",
-            "--use-graphs" }, description = "use graphs instead of (pseudo)phones "
-                    + "for pseudoalignment (default: ${DEFAULT-VALUE})")
+    @Option(names = {"-p",
+            "--use-graphs"}, description = "use graphs instead of (pseudo)" +
+            "phones "
+            + "for pseudoalignment (default: ${DEFAULT-VALUE})")
     private
     boolean useGraphs;
-    @Option(names = { "-t",
-            "--transcribe" }, description = "add phonetic canonical transcription"
-                    + "in pseudoalignment (default: ${DEFAULT-VALUE}, only used "
-                    + "if not --use-graphs)")
+    @Option(names = {"-t",
+            "--transcribe"}, description = "add phonetic canonical " +
+            "transcription"
+            + "in pseudoalignment (default: ${DEFAULT-VALUE}, only used "
+            + "if not --use-graphs)")
     private
     boolean transcribe = true;
 
-    @Option(names = { "-T", "--time" }, description = "audio length in seconds"
+    @Option(names = {"-T", "--time"}, description = "audio length in seconds"
             + "(alignment, default: ${DEFAULT-VALUE})")
     private
     double timeLength = 100d;
 
-    @Option(names = { "-O", "--offset" }, description = "audio offset in seconds"
+    @Option(names = {"-O", "--offset"}, description = "audio offset in seconds"
             + "(alignment, default: ${DEFAULT-VALUE})")
     private
     double offset = 0d;
@@ -140,6 +142,7 @@ public class CLI implements Runnable {
     private static final DocumentBuilderFactory factory = DocumentBuilderFactory
             .newInstance();
     private static final DocumentBuilder builder;
+
     static {
         try {
             factory.setNamespaceAware(true);
@@ -155,8 +158,9 @@ public class CLI implements Runnable {
 
     @Override
     public void run() {
-       // System.err.println(String.format("STEP is %s with %s and language %s",
-       //         step, inputFile, language));
+        // System.err.println(String.format("STEP is %s with %s and language
+        // %s",
+        //         step, inputFile, language));
         if (outFile != null) {
             try {
                 outStream = new FileOutputStream(outFile);
@@ -176,30 +180,30 @@ public class CLI implements Runnable {
         expected = Stream.of(expected).map(this::checkLanguage)
                 .toArray(String[]::new);
         switch (step) {
-        case text2iso:
-            text2iso();
-            break;
-        case segmentize:
-            segmentize();
-            break;
-        case normalize:
-            normalize();
-            break;
-        case pos:
-            pos();
-            break;
-        case guess:
-            guess();
-            break;
-        case identify:
-            identify();
-            break;
-        case unidentify:
-            unidentify();
-            break;
-        case align:
-            pseudoAlign();
-            break;
+            case text2iso:
+                text2iso();
+                break;
+            case segmentize:
+                segmentize();
+                break;
+            case normalize:
+                normalize();
+                break;
+            case pos:
+                pos();
+                break;
+            case guess:
+                guess();
+                break;
+            case identify:
+                identify();
+                break;
+            case unidentify:
+                unidentify();
+                break;
+            case align:
+                pseudoAlign();
+                break;
         }
     }
 
@@ -207,7 +211,7 @@ public class CLI implements Runnable {
      * check language parameters
      *
      * @param lang
-     *            a String given as a language
+     *         a String given as a language
      * @return normalized language
      */
     private String checkLanguage(String lang) {
@@ -276,7 +280,8 @@ public class CLI implements Runnable {
     private void guess() {
         try {
             Document doc = builder.parse(inputStream);
-            SpeechDocument.LanguageDetect ld = new SpeechDocument.LanguageDetect(doc, language, expected,
+            SpeechDocument.LanguageDetect ld =
+                    new SpeechDocument.LanguageDetect(doc, language, expected,
                     minimalLength);
             ld.detect(force);
             Utilities.outputXML(outStream, doc, indent);
