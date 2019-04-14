@@ -112,16 +112,23 @@ public class PseudoAlign {
     }
 
     /**
-     * make new {@link PseudoAlign} for
+     * make new PseudoAlign for
      *
-     * @param doc         a DOM XML document
-     * @param language    the default document language
-     * @param usePhones   whether to count relative duration in (pseudo)phones if
-     *                    possible
-     * @param phoneticise whether to store the transcriptions in the document
-     * @param force       whether to force transcription
-     * @param timeLength  length of audio in seconds
-     * @param offset      the time offset of the first timeline event
+     * @param doc
+     *         a DOM XML document
+     * @param language
+     *         the default document language
+     * @param usePhones
+     *         whether to count relative duration in (pseudo)phones if
+     *         possible
+     * @param phoneticise
+     *         whether to store the transcriptions in the document
+     * @param force
+     *         whether to force transcription
+     * @param timeLength
+     *         length of audio in seconds
+     * @param offset
+     *         the time offset of the first timeline event
      */
     public PseudoAlign(Document doc, String language, boolean usePhones,
                        boolean phoneticise, boolean force, double timeLength,
@@ -142,7 +149,8 @@ public class PseudoAlign {
     /**
      * get duration of element, measured in seconds
      *
-     * @param el the element
+     * @param el
+     *         the element
      * @return the duration
      */
     public Optional<Double> getUtteranceDuration(Element el) {
@@ -181,7 +189,8 @@ public class PseudoAlign {
     /**
      * get duration of pause measured in (pseudo)phones
      *
-     * @param el pause element
+     * @param el
+     *         pause element
      * @return duration
      */
     private double getPausePhoneDuration(Element el) {
@@ -307,25 +316,59 @@ public class PseudoAlign {
         DocUtilities.makeChange(doc, "Pseudo-aligned");
     }
 
-
+    /**
+     * increase all counters in Map (int version)
+     *
+     * @param map
+     *         the Map
+     * @param addendum
+     *         the amount to increase
+     * @param <T>
+     *         the type of the counters
+     */
     private static <T> void incAllCounters(Map<T, Integer> map, int addendum) {
         for (Map.Entry<T, Integer> entry : map.entrySet()) {
             entry.setValue(entry.getValue() + addendum);
         }
     }
 
+    /**
+     * increase all counters in Map (double version)
+     *
+     * @param map
+     *         the Map
+     * @param addendum
+     *         the amount to increase
+     * @param <T>
+     *         the type of the counters
+     */
     private static <T> void incAllCounters(Map<T, Double> map, double addendum) {
         for (Map.Entry<T, Double> entry : map.entrySet()) {
             entry.setValue(entry.getValue() + addendum);
         }
     }
 
+    /**
+     * distance between elements
+     */
     private class Distance {
         final int rel;
         final double abs;
         final String from;
         final String to;
 
+        /**
+         * create a distance between elements
+         *
+         * @param rel
+         *         distance in characters / pseudophones
+         * @param abs
+         *         distance in time, esp. pauses
+         * @param from
+         *         first element
+         * @param to
+         *         second element
+         */
         Distance(int rel, double abs, String from, String to) {
             this.rel = rel;
             this.abs = abs;
@@ -333,6 +376,11 @@ public class PseudoAlign {
             this.to = to;
         }
 
+        /**
+         * generate string representation
+         *
+         * @return string representation
+         */
         @Override
         public String toString() {
             return String.format("{Δ<%s, %s> == <%d, -%.3f>}",
@@ -340,11 +388,32 @@ public class PseudoAlign {
         }
     }
 
+    /**
+     * distances in the document
+     */
     private final List<Distance> distances = new ArrayList<>();
-    // private Map<String, Integer> rest = new HashMap<>();
+
+    /**
+     * events of the timeline
+     */
     private List<Element> whenList = new ArrayList<>();
+
+    /**
+     * path from first to last event
+     */
     private List<String> way = new ArrayList<>();
+
+    /**
+     * paths between events in the document
+     */
     private final Map<Pair<String, String>, Distance> paths = new HashMap<>();
+
+    /**
+     * reverse accessibility: Going *backwards*,
+     * there is a path from every Key to the members of its Value.
+     */
+    private final Map<String, LinkedHashSet<String>> accessibleRev = new HashMap<>();
+
 
     private void makeDistance(String from, String to,
                               int relDuration,
@@ -353,6 +422,13 @@ public class PseudoAlign {
     }
 
 
+    /**
+     * make a Hash that gives the position for every event
+     *
+     * @param whens
+     *         the events
+     * @return the Hash EventName -> Position
+     */
     private static Map<String, Integer> getOrder(List<Element> whens) {
         Map<String, Integer> order = new HashMap<>();
         for (int i = 0; i < whens.size(); i++) {
@@ -363,13 +439,14 @@ public class PseudoAlign {
         return order;
     }
 
-    private final Map<String, LinkedHashSet<String>> accessibleRev = new HashMap<>();
 
     /**
      * find a way {@code from} from to {@code goal}
      *
-     * @param from start of passage
-     * @param goal end of passage (first event)
+     * @param from
+     *         start of passage
+     * @param goal
+     *         end of passage (first event)
      * @return null or passage
      */
     private List<String> findPathR(String from, String goal) {
@@ -393,6 +470,12 @@ public class PseudoAlign {
         return null;
     }
 
+    /**
+     * annotate a single utterance
+     *
+     * @param u
+     *         the utterance
+     */
     private void annotateSingleUtterance(Element u) {
 
         List<Element> uChildren;
@@ -458,6 +541,12 @@ public class PseudoAlign {
     }
 
     // TODO: What about empty incidents?
+
+    /**
+     * determine the length of a pseudophone
+     *
+     * @return length in seconds
+     */
     private Optional<Double> relItemLength() {
         NodeList whens = DocUtilities.getWhens(doc);
         whenList = Utilities.toElementList(whens);
@@ -545,7 +634,12 @@ public class PseudoAlign {
         return Optional.empty();
     }
 
-
+    /**
+     * determine lenth of annotationBlocks
+     *
+     * @param itemLength
+     *         seconds per item
+     */
     private void applyItemLength(Double itemLength) {
         Comment comment = doc.createComment(
                 String.format(" length per item: %.4f seconds", itemLength));
@@ -589,6 +683,9 @@ public class PseudoAlign {
         }
     }
 
+    /**
+     * cleanup document, remove temporary annotation
+     */
     private void cleanUp() {
         doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
     }
@@ -622,16 +719,16 @@ public class PseudoAlign {
          */
         // TODO: should we map "est" and "ee" to "ekk"?
         // TODO: better: map codes to canonical 639-1/-2 code if possible
-        private static final String[] PERMITTED_LOCALES_ARRAY = { "aus-AU", "cat",
+        private static final String[] PERMITTED_LOCALES_ARRAY = {"aus-AU", "cat",
                 "cat-ES", "deu", "deu-DE", "ekk-EE", "eng", "eng-AU", "eng-GB",
                 "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin", "fin-FI", "fra-FR",
                 "gsw-CH", "gsw-CH-BE", "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG",
                 "gsw-CH-ZH", "guf-AU", "gup-AU", "hat", "hat-HT", "hun", "hun-HU",
                 "ita", "ita-IT", "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT",
                 "nld", "nld-NL", "nor-NO", "nze", "pol", "pol-PL", "ron-RO",
-                "rus-RU", "slk-SK", "spa-ES", "sqi-AL", "swe-SE" };
+                "rus-RU", "slk-SK", "spa-ES", "sqi-AL", "swe-SE"};
 
-        /*
+        /**
          * base URL for transcription service
          */
         private final static String BASE_URL = "https://clarin.phonetik.uni-muenchen.de/BASWebServices/services/runG2P";
@@ -645,7 +742,11 @@ public class PseudoAlign {
          */
         private static final Pattern WORD_SEPARATOR = Pattern.compile("\t");
 
+        /**
+         * locales permitted in annotation, including some substitutions
+         */
         private static final Map<String, String> LOCALES = new HashMap<>();
+
         static {
             List<String> already_permitted = Arrays.asList(PERMITTED_LOCALES_ARRAY);
             for (String loc : PERMITTED_LOCALES_ARRAY) {
@@ -669,6 +770,15 @@ public class PseudoAlign {
             }
         }
 
+        /**
+         * have a text transcribed according to a locale
+         *
+         * @param text
+         *         the text
+         * @param loc
+         *         the locale
+         * @return the transcription
+         */
         private static Optional<String[]> getTranscription(String text, String loc) {
             return getTranscription(text, loc, false);
         }
@@ -689,15 +799,15 @@ public class PseudoAlign {
          * get a transcription from the web service
          *
          * @param text
-         *            running text
+         *         running text
          * @param loc
-         *            locale
+         *         locale
          * @param getSyllables
-         *            whether to have the transcription syllabified
+         *         whether to have the transcription syllabified
          * @return an Optional containing the list of transcribed words or emptiness
          */
         public static Optional<String[]> getTranscription(String text, String loc,
-                boolean getSyllables) {
+                                                          boolean getSyllables) {
             Optional<String[]> ret = Optional.empty();
             try {
                 URIBuilder uriBui = new URIBuilder(BASE_URL);
@@ -736,10 +846,10 @@ public class PseudoAlign {
          * count signs in transcription
          *
          * @param words
-         *            an {@link Optional} array of transcribed words
+         *         an {@link Optional} array of transcribed words
          * @param syllabified
-         *            whether syllable separators (full stops) are present and
-         *            should be removed
+         *         whether syllable separators (full stops) are present and
+         *         should be removed
          * @return the word lengths in signs
          */
         private static int[] countSigns(Optional<String[]> words,
@@ -747,26 +857,26 @@ public class PseudoAlign {
             if (words.isPresent())
                 return countSigns(words.get(), syllabified);
             else
-                return new int[] {};
+                return new int[]{};
         }
 
         /**
-         * @see #countSigns(Optional, boolean)
          * @param words
-         *            (not syllabified)
+         *         (not syllabified)
          * @return the word lengths in signs
+         * @see #countSigns(Optional, boolean)
          */
         public static int[] countSigns(Optional<String[]> words) {
             return countSigns(words, false);
         }
 
         /**
-         * @see #countSigns(Optional, boolean)
          * @param text
-         *            a string to be split in words and transcribed
+         *         a string to be split in words and transcribed
          * @param separator
-         *            the word separator {@link Pattern}
+         *         the word separator {@link Pattern}
          * @return number of characters
+         * @see #countSigns(Optional, boolean)
          */
         public static int[] countSigns(String text, Pattern separator) {
             return countSigns(separator.split(text));
@@ -774,9 +884,9 @@ public class PseudoAlign {
 
         /**
          * @param text
-         *            the text to count word lengths for
-         * @see #countSigns(String)
+         *         the text to count word lengths for
          * @return number of characters
+         * @see #countSigns(String[])
          **/
         private static int[] countSigns(String text) {
             return countSigns(text.split("\\s+"));
@@ -786,10 +896,10 @@ public class PseudoAlign {
          * count signs in transcription
          *
          * @param words
-         *            an array of transcribed words
+         *         an array of transcribed words
          * @param syllabified
-         *            whether syllable separators (full stops) are present and
-         *            should be removed
+         *         whether syllable separators (full stops) are present and
+         *         should be removed
          * @return the word lengths in signs
          */
 
@@ -804,16 +914,23 @@ public class PseudoAlign {
         }
 
         /**
-         * @see #countSigns(Optional, boolean)
          * @param words
-         *            an array of transcribed words
+         *         an array of transcribed words
          * @return lengths of individual words
+         * @see #countSigns(Optional, boolean)
          */
         private static int[] countSigns(String[] words) {
             Stream<String> wordStream = Stream.of(words);
             return wordStream.mapToInt(String::length).toArray();
         }
 
+        /**
+         * count signs in transcription
+         *
+         * @param words
+         *         the transcribed words
+         * @return the number of syllables for each word
+         **/
         private static int[] countSyllables(String[] words) {
             Stream<String> wordStream = Stream.of(words);
             return wordStream.mapToInt(word -> word.split("\\.").length).toArray();
@@ -823,9 +940,9 @@ public class PseudoAlign {
          * count syllables in transcription
          *
          * @param words
-         *            an array of transcribed words
+         *         an array of transcribed words
          * @param loc
-         *            the locale
+         *         the locale
          * @return the word lengths in signs
          */
         private static int[] countSyllables(String words, String loc) {
@@ -833,13 +950,27 @@ public class PseudoAlign {
             if (result.isPresent())
                 return countSyllables(result.get());
             else
-                return new int[] {};
+                return new int[]{};
         }
 
+        /**
+         * print phone/letter counts in transcription, {@link #printCounts(int[])}
+         *
+         * @param text
+         *         text to be transcribed
+         * @return string representation of counts
+         */
         public static String printCounts(String text) {
             return printCounts(countSigns(text));
         }
 
+        /**
+         * print phone/letter counts in transcription
+         *
+         * @param counted
+         *         the counted letters/phones
+         * @return string representation of counts
+         */
         private static String printCounts(int[] counted) {
             return Seq.seq(Arrays.stream(counted)).map(i -> {
                 String format = "% " + i + "d";
@@ -847,6 +978,12 @@ public class PseudoAlign {
             }).toString(" ");
         }
 
+        /**
+         * program to test transcription: transcribe all arguments as German text
+         *
+         * @param args
+         *         supposedly single words
+         */
         public static void main(String[] args) {
             String text = "Dies Beispiel ist bezaubernd schön – Strumpf!";
             if (args.length > 0) {
