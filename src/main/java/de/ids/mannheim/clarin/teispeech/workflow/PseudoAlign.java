@@ -1,15 +1,7 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpEntity;
@@ -23,15 +15,22 @@ import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
-
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
-import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.*;
+import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getAttXML;
+import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getTimeLine;
 
 /**
  * Pseudo-align documents in the TEI transcription format with the TreeTagger
@@ -100,11 +99,15 @@ public class PseudoAlign {
             XPath xPath = XPathFactory.newInstance().newXPath();
             interesting =
                     xPath.compile(String.format(
-                            ".//*[(local-name() = 'w' or local-name() ='pause') and namespace-uri() = '%s']|.//text()",
+                            ".//*[(local-name() = 'w' or local-name() " +
+                                    "='pause') and namespace-uri() = '%s']|" +
+                                    ".//text()",
                             TEI_NS));
             blocky =
                     xPath.compile(String.format(
-                            ".//*[(local-name() = 'annotationBlock' or local-name() ='incident') and namespace-uri() = '%s']",
+                            ".//*[(local-name() = 'annotationBlock' or " +
+                                    "local-name() ='incident') and " +
+                                    "namespace-uri() = '%s']",
                             TEI_NS));
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
@@ -142,7 +145,8 @@ public class PseudoAlign {
         this.offset = offset;
         if (!usePhones && phoneticise) {
             LOGGER.warn(
-                    "phoneticise but not usePhones is not useful: phoneticise ignored.");
+                    "phoneticise but not usePhones is not useful: phoneticise" +
+                            " ignored.");
         }
     }
 
@@ -342,7 +346,8 @@ public class PseudoAlign {
      * @param <T>
      *         the type of the counters
      */
-    private static <T> void incAllCounters(Map<T, Double> map, double addendum) {
+    private static <T> void incAllCounters(Map<T, Double> map,
+                                           double addendum) {
         for (Map.Entry<T, Double> entry : map.entrySet()) {
             entry.setValue(entry.getValue() + addendum);
         }
@@ -412,7 +417,8 @@ public class PseudoAlign {
      * reverse accessibility: Going *backwards*,
      * there is a path from every Key to the members of its Value.
      */
-    private final Map<String, LinkedHashSet<String>> accessibleRev = new HashMap<>();
+    private final Map<String, LinkedHashSet<String>> accessibleRev =
+            new HashMap<>();
 
 
     private void makeDistance(String from, String to,
@@ -497,11 +503,13 @@ public class PseudoAlign {
         // calculate relative durations and time to distribute over them
         for (Element el : uChildren) {
             if (DocUtilities.isTEI(el, "w")) {
-                incAllCounters(relDuration, Integer.parseInt(el.getAttribute("rel-length")));
+                incAllCounters(relDuration, Integer.parseInt(el.getAttribute(
+                        "rel-length")));
                 // count text length in characters for anchors in words
                 int textTillNow = 0;
                 Map<String, Integer> relRest = new HashMap<>();
-                for (Iterator<Node> iNo = Utilities.toIterator(el.getChildNodes());
+                for (Iterator<Node> iNo =
+                     Utilities.toIterator(el.getChildNodes());
                      iNo.hasNext(); ) {
                     Node now = iNo.next();
                     // set anchor to text length
@@ -511,7 +519,9 @@ public class PseudoAlign {
                         String nowName = DocUtilities.unPoundMark(
                                 nowEl.getAttribute("synch"));
                         for (String name : relDuration.keySet()) {
-                            makeDistance(name, nowName, relDuration.get(name) + textTillNow, absDuration.get(name));
+                            makeDistance(name, nowName,
+                                    relDuration.get(name) + textTillNow,
+                                    absDuration.get(name));
                         }
                         relRest.put(nowName, 0);
                     } else if (now.getNodeType() == Node.TEXT_NODE ||
@@ -524,9 +534,11 @@ public class PseudoAlign {
                     }
                 }
                 // for (String name : relRest.keySet()) {
-                //     Element delta = u.getOwnerDocument().createElement("rel-rest");
+                //     Element delta = u.getOwnerDocument().createElement
+                //     ("rel-rest");
                 //     delta.setAttribute("after", name);
-                //     delta.setAttribute("rel", String.valueOf(relRest.get(name)));
+                //     delta.setAttribute("rel", String.valueOf(relRest.get
+                //     (name)));
                 //     u.appendChild(delta);
                 // }
             } else if (DocUtilities.isTEI(el, "pause")) {
@@ -536,7 +548,8 @@ public class PseudoAlign {
             }
         }
         for (String name : relDuration.keySet()) {
-            makeDistance(name, endEl, relDuration.get(name), absDuration.get(name));
+            makeDistance(name, endEl, relDuration.get(name),
+                    absDuration.get(name));
         }
     }
 
@@ -568,7 +581,8 @@ public class PseudoAlign {
                         if (end.equals(startNext) ||
                                 // no overlap:
                                 order.get(startNext) > order.get(end)) {
-                            accessibleRev.putIfAbsent(startNext, new LinkedHashSet<>());
+                            accessibleRev.putIfAbsent(startNext,
+                                    new LinkedHashSet<>());
                             accessibleRev.get(startNext).add(end);
                             distances.add(new Distance(0, 0d, end, startNext));
                             checked = true;
@@ -608,14 +622,16 @@ public class PseudoAlign {
                             accessibleRev.get(to).add(from);
                             Distance distance = new Distance(0, 0d, from, to);
                             distances.add(distance);
-                            paths.put(Pair.of(distance.from, distance.to), distance);
+                            paths.put(Pair.of(distance.from, distance.to),
+                                    distance);
                         }
                     });
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
         }
         String goal = getAttXML(whenList.get(0), "id");
-        way = findPathR(getAttXML(whenList.get(whenList.size() - 1), "id"), goal);
+        way = findPathR(getAttXML(whenList.get(whenList.size() - 1), "id"),
+                goal);
         if (way != null) {
             // System.err.println(way);
             int rel = 0;
@@ -627,7 +643,8 @@ public class PseudoAlign {
                     abs += d.abs;
                 }
             }
-            // System.err.format(">>> (%f - %f) / %d = %f\n", timeLength, abs, rel,
+            // System.err.format(">>> (%f - %f) / %d = %f\n", timeLength,
+            // abs, rel,
             //         ((timeLength - abs) / rel));
             return Optional.of((timeLength - abs) / rel);
         }
@@ -653,7 +670,8 @@ public class PseudoAlign {
         // System.err.println(accessibleRev);
 
         getTimeLine(doc).setAttribute("unit", "s");
-        whenList.get(0).setAttribute("absolute", String.format("%.4fs", offset));
+        whenList.get(0).setAttribute("absolute", String.format("%.4fs",
+                offset));
         for (int i = 1; i < whenList.size(); i++) {
             Element event = whenList.get(i);
             String ref = getAttXML(event, "id");
@@ -719,11 +737,14 @@ public class PseudoAlign {
          */
         // TODO: should we map "est" and "ee" to "ekk"?
         // TODO: better: map codes to canonical 639-1/-2 code if possible
-        private static final String[] PERMITTED_LOCALES_ARRAY = {"aus-AU", "cat",
+        private static final String[] PERMITTED_LOCALES_ARRAY = {"aus-AU",
+                "cat",
                 "cat-ES", "deu", "deu-DE", "ekk-EE", "eng", "eng-AU", "eng-GB",
-                "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin", "fin-FI", "fra-FR",
+                "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin", "fin-FI", "fra" +
+                "-FR",
                 "gsw-CH", "gsw-CH-BE", "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG",
-                "gsw-CH-ZH", "guf-AU", "gup-AU", "hat", "hat-HT", "hun", "hun-HU",
+                "gsw-CH-ZH", "guf-AU", "gup-AU", "hat", "hat-HT", "hun", "hun" +
+                "-HU",
                 "ita", "ita-IT", "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT",
                 "nld", "nld-NL", "nor-NO", "nze", "pol", "pol-PL", "ron-RO",
                 "rus-RU", "slk-SK", "spa-ES", "sqi-AL", "swe-SE"};
@@ -731,12 +752,14 @@ public class PseudoAlign {
         /**
          * base URL for transcription service
          */
-        private final static String BASE_URL = "https://clarin.phonetik.uni-muenchen.de/BASWebServices/services/runG2P";
+        private final static String BASE_URL = "https://clarin.phonetik" +
+                ".uni-muenchen.de/BASWebServices/services/runG2P";
 
         /**
          * locale separator
          */
-        private static final Pattern LOCALE_SEPARATOR = Pattern.compile("[_-]+");
+        private static final Pattern LOCALE_SEPARATOR = Pattern.compile("[_" +
+                "-]+");
         /**
          * word separator for transcriptions (tab)
          */
@@ -748,7 +771,8 @@ public class PseudoAlign {
         private static final Map<String, String> LOCALES = new HashMap<>();
 
         static {
-            List<String> already_permitted = Arrays.asList(PERMITTED_LOCALES_ARRAY);
+            List<String> already_permitted =
+                    Arrays.asList(PERMITTED_LOCALES_ARRAY);
             for (String loc : PERMITTED_LOCALES_ARRAY) {
                 LOCALES.put(loc, loc);
                 String[] components = LOCALE_SEPARATOR.split(loc);
@@ -779,7 +803,8 @@ public class PseudoAlign {
          *         the locale
          * @return the transcription
          */
-        private static Optional<String[]> getTranscription(String text, String loc) {
+        private static Optional<String[]> getTranscription(String text,
+                                                           String loc) {
             return getTranscription(text, loc, false);
         }
 
@@ -804,35 +829,47 @@ public class PseudoAlign {
          *         locale
          * @param getSyllables
          *         whether to have the transcription syllabified
-         * @return an Optional containing the list of transcribed words or emptiness
+         * @return an Optional containing the list of transcribed words or
+         * emptiness
          */
-        public static Optional<String[]> getTranscription(String text, String loc,
+        public static Optional<String[]> getTranscription(String text,
+                                                          String loc,
                                                           boolean getSyllables) {
             Optional<String[]> ret = Optional.empty();
             try {
                 URIBuilder uriBui = new URIBuilder(BASE_URL);
-                boolean extendedFeatures = false; // extended for eng-GB and deu?
-                @SuppressWarnings("ConstantConditions") HttpEntity entity = MultipartEntityBuilder.create()
-                        .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
-                        .setCharset(Charset.forName("UTF-8"))
-                        .addBinaryBody("i", text.getBytes(),
-                                ContentType.MULTIPART_FORM_DATA, "input")
-                        .addTextBody("com", "no")
-                        .addTextBody("syl", getSyllables ? "yes" : "no")
-                        .addTextBody("outsym", "ipa").addTextBody("oform", "txt")
-                        .addTextBody("iform", "list") // txt?
-                        .addTextBody("align", "no").addTextBody("lng", loc)
-                        .addTextBody("featset",
-                                extendedFeatures ? "extended" : "standard")
-                        .build();
-                String result = Request.Post(uriBui.build()).body(entity).execute()
-                        .returnContent().asString();
+                boolean extendedFeatures = false; // extended for eng-GB and
+                // deu?
+                @SuppressWarnings("ConstantConditions") HttpEntity entity =
+                        MultipartEntityBuilder.create()
+                                .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+                                .setCharset(Charset.forName("UTF-8"))
+                                .addBinaryBody("i", text.getBytes(),
+                                        ContentType.MULTIPART_FORM_DATA,
+                                        "input")
+                                .addTextBody("com", "no")
+                                .addTextBody("syl", getSyllables ? "yes" : "no")
+                                .addTextBody("outsym", "ipa").addTextBody(
+                                        "oform",
+                                "txt")
+                                .addTextBody("iform", "list") // txt?
+                                .addTextBody("align", "no").addTextBody("lng"
+                                , loc)
+                                .addTextBody("featset",
+                                        extendedFeatures ? "extended" :
+                                                "standard")
+                                .build();
+                String result =
+                        Request.Post(uriBui.build()).body(entity).execute()
+                                .returnContent().asString();
                 Document doc = Utilities.parseXML(result);
-                Element link = Utilities.getElementByTagName(doc, "downloadLink");
+                Element link = Utilities.getElementByTagName(doc,
+                        "downloadLink");
                 if (link != null && !"".equals(link.getTextContent())) {
-                    String retString = Request.Get(link.getTextContent()).execute()
-                            .returnContent().asString(Charset.forName("UTF-8"))
-                            .replace(" ", "");
+                    String retString =
+                            Request.Get(link.getTextContent()).execute()
+                                    .returnContent().asString(Charset.forName("UTF-8"))
+                                    .replace(" ", "");
                     ret = Optional.of(WORD_SEPARATOR.split(retString.trim()));
                 }
             } catch (URISyntaxException | IOException | ParserConfigurationException
@@ -954,7 +991,8 @@ public class PseudoAlign {
         }
 
         /**
-         * print phone/letter counts in transcription, {@link #printCounts(int[])}
+         * print phone/letter counts in transcription,
+         * {@link #printCounts(int[])}
          *
          * @param text
          *         text to be transcribed
@@ -979,7 +1017,8 @@ public class PseudoAlign {
         }
 
         /**
-         * program to test transcription: transcribe all arguments as German text
+         * program to test transcription: transcribe all arguments as German
+         * text
          *
          * @param args
          *         supposedly single words
