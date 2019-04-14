@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.RecognitionException;
  * @author bfi
  *
  */
-class AntlrErrorLister extends BaseErrorListener {
+public class AntlrErrorLister extends BaseErrorListener {
 
     /**
      * list of error messages

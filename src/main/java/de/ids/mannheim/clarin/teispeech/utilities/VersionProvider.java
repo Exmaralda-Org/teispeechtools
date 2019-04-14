@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.utilities;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import picocli.CommandLine.IVersionProvider;
 
-class VersionProvider implements IVersionProvider {
+public class VersionProvider implements IVersionProvider {
 
     /**
      *

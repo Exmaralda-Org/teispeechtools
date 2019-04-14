@@ -5,6 +5,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import de.ids.mannheim.clarin.teispeech.utilities.AntlrErrorLister;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;

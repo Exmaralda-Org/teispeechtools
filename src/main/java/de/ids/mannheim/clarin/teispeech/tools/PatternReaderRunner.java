@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import de.ids.mannheim.clarin.teispeech.utilities.VersionProvider;
 import org.jdom2.JDOMException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +28,7 @@ import picocli.CommandLine.Spec;
  * @author bfi
  *
  */
-@Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, versionProvider = de.ids.mannheim.clarin.teispeech.tools.VersionProvider.class)
+@Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, versionProvider = VersionProvider.class)
 class PatternReaderRunner implements Runnable {
     /**
      * @param args

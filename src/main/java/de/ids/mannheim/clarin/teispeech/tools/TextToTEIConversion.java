@@ -1,6 +1,7 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
 import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
+import de.ids.mannheim.clarin.teispeech.utilities.AntlrErrorLister;
 import net.sf.saxon.om.NameChecker;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
