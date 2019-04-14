@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.jdom2.JDOMException;
@@ -273,7 +274,7 @@ public class CLI implements Runnable {
     private void guess() {
         try {
             Document doc = builder.parse(inputStream);
-            LanguageDetect ld = new LanguageDetect(doc, language, expected,
+            SpeechDocument.LanguageDetect ld = new SpeechDocument.LanguageDetect(doc, language, expected,
                     minimalLength);
             ld.detect(force);
             Utilities.outputXML(outStream, doc, indent);
@@ -357,4 +358,7 @@ public class CLI implements Runnable {
         }
     }
 
+    public enum ProcessingLevel {
+        generic, minimal, basic
+    }
 }
