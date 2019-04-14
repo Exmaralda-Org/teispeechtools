@@ -51,7 +51,7 @@ public class PseudoAlign {
      */
     private Document doc;
 
-    Document getDoc () {
+    public Document getDoc () {
         return doc;
     }
 
