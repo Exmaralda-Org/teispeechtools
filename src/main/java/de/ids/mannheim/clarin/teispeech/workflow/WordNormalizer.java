@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.workflow;
 
 /**
  * A WordNormalizer can normalize single words.
@@ -6,7 +6,7 @@ package de.ids.mannheim.clarin.teispeech.tools;
  * @author bfi
  *
  */
-interface WordNormalizer {
+public interface WordNormalizer {
 
     /**
      * normalize a single word

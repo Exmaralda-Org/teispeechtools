@@ -1,10 +1,14 @@
 
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.workflow;
 
 import java.util.Deque;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConvention;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConventionBaseListener;
+import de.ids.mannheim.clarin.teispeech.tools.GenericConventionLexer;
 import de.ids.mannheim.clarin.teispeech.utilities.AntlrErrorLister;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

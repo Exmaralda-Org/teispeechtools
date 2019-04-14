@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.workflow;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 import org.korpora.useful.Utilities;

@@ -1,9 +1,10 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.workflow;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

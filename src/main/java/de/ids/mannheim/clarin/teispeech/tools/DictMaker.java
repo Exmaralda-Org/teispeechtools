@@ -1,5 +1,7 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
+import de.ids.mannheim.clarin.teispeech.workflow.DictionaryNormalizer;
+
 /**
  * compile a dictionary from the FOLK and DeReKo dictionaries referenced in
  * {@link DictionaryNormalizer}

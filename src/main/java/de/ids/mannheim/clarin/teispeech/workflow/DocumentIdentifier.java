@@ -1,4 +1,4 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.workflow;
 
 import java.util.HashSet;
 import java.util.Set;

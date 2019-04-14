@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
 import de.ids.mannheim.clarin.teispeech.utilities.VersionProvider;
+import de.ids.mannheim.clarin.teispeech.workflow.*;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.jdom2.JDOMException;

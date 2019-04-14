@@ -1,11 +1,15 @@
-package de.ids.mannheim.clarin.teispeech.tools;
+package de.ids.mannheim.clarin.teispeech.workflow;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+import org.apache.commons.lang3.StringUtils;
+import org.korpora.useful.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.text.Collator;
 import java.util.Comparator;
@@ -17,17 +21,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.korpora.useful.Utilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
 /**
  * A normalizer based on the dictionaries from the EXMARaLDA project, namely
