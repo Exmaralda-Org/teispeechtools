@@ -1,11 +1,9 @@
 
 package de.ids.mannheim.clarin.teispeech.workflow;
 
-import java.util.Deque;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
+import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConvention;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionBaseListener;
 import de.ids.mannheim.clarin.teispeech.tools.GenericConventionLexer;
@@ -21,8 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 
-import de.ids.mannheim.clarin.teispeech.data.AnchorSerialization;
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+import java.util.Deque;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
 

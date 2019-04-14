@@ -1,5 +1,16 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.ids.mannheim.clarin.teispeech.data.PatternReader;
+import de.ids.mannheim.clarin.teispeech.utilities.VersionProvider;
+import org.jdom2.JDOMException;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.ParameterException;
+import picocli.CommandLine.Spec;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,25 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import de.ids.mannheim.clarin.teispeech.utilities.VersionProvider;
-import org.jdom2.JDOMException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import de.ids.mannheim.clarin.teispeech.data.PatternReader;
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Option;
-import picocli.CommandLine.ParameterException;
-import picocli.CommandLine.Spec;
-
 /**
  * CLI to read the pattern file and show the expanded Patterns
  *
  * @author bfi
  *
  */
+@SuppressWarnings("FieldCanBeLocal")
 @Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, versionProvider = VersionProvider.class)
 class PatternReaderRunner implements Runnable {
     /**

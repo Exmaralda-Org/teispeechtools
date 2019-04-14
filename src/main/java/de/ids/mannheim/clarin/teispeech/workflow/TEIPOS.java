@@ -1,12 +1,9 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 import org.korpora.useful.Utilities;
@@ -15,10 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * POS-tag documents in the TEI transcription format with the TreeTagger
@@ -28,7 +26,6 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
  * @author bfi
  *
  */
-@SuppressWarnings("WeakerAccess")
 public class TEIPOS {
 
     private final static Logger LOGGER = LoggerFactory

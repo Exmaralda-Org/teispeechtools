@@ -1,19 +1,9 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.stream.Stream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
+import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.GATParser;
+import de.ids.mannheim.clarin.teispeech.data.LanguageDetect;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import de.ids.mannheim.clarin.teispeech.utilities.VersionProvider;
 import de.ids.mannheim.clarin.teispeech.workflow.*;
 import org.antlr.v4.runtime.CharStream;
@@ -25,16 +15,15 @@ import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import de.ids.mannheim.clarin.teispeech.data.GATParser;
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
+import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Option;
-import picocli.CommandLine.ParameterException;
-import picocli.CommandLine.Parameters;
-import picocli.CommandLine.Spec;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.util.stream.Stream;
 
 /**
  * a command line interface for the annotation processing work flow
@@ -90,6 +79,7 @@ public class CLI implements Runnable {
     private
     String[] expected;
 
+    @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {"-k",
             "--keep-case"}, description = "do not convert to lower case "
             + "when normalizing; effectively, skip capitalized words")
@@ -101,6 +91,7 @@ public class CLI implements Runnable {
             + "(segmentize, default: '${DEFAULT-VALUE}')")
     private ProcessingLevel level = ProcessingLevel.generic;
 
+    @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {
             "--minimal"}, description = "the `minimal count` of words so "
             + "that language detection is even "
@@ -114,6 +105,7 @@ public class CLI implements Runnable {
             + "for pseudoalignment (default: ${DEFAULT-VALUE})")
     private
     boolean useGraphs;
+    @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {"-t",
             "--transcribe"}, description = "add phonetic canonical " +
             "transcription"
@@ -122,11 +114,13 @@ public class CLI implements Runnable {
     private
     boolean transcribe = true;
 
+    @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {"-T", "--time"}, description = "audio length in seconds"
             + "(alignment, default: ${DEFAULT-VALUE})")
     private
     double timeLength = 100d;
 
+    @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {"-O", "--offset"}, description = "audio offset in seconds"
             + "(alignment, default: ${DEFAULT-VALUE})")
     private
@@ -280,8 +274,8 @@ public class CLI implements Runnable {
     private void guess() {
         try {
             Document doc = builder.parse(inputStream);
-            SpeechDocument.LanguageDetect ld =
-                    new SpeechDocument.LanguageDetect(doc, language, expected,
+            LanguageDetect ld =
+                    new LanguageDetect(doc, language, expected,
                     minimalLength);
             ld.detect(force);
             Utilities.outputXML(outStream, doc, indent);
@@ -365,7 +359,4 @@ public class CLI implements Runnable {
         }
     }
 
-    public enum ProcessingLevel {
-        generic, minimal, basic
-    }
 }

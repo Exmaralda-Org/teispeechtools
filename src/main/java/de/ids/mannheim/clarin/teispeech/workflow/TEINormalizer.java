@@ -1,17 +1,16 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * a normalizer for the TEI transcription format.
@@ -21,7 +20,6 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
  * @author bfi
  *
  */
-@SuppressWarnings("WeakerAccess")
 public class TEINormalizer {
 
     private final static Logger LOGGER = LoggerFactory
@@ -35,7 +33,7 @@ public class TEINormalizer {
     private final WordNormalizer normalizer;
 
     /**
-     * make new {@link TEINormalizer} that uses a {@link WordNormalizer}
+     * make new {@link DictionaryNormalizer} that uses a {@link WordNormalizer}
      *
      * @param wn
      *            the normalizer

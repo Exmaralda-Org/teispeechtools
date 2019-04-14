@@ -74,7 +74,7 @@ public class TextToTEIConversion {
         /**
          * This records the first overlap mark in an utterance content. It is set if
          * the mark occurs for the second or a later time. Begin events of turns are
-         * moved before <code>firstMark</code> in the timeline later.
+         * moved before {@code firstMark} in the timeline later.
          */
         private SpeechDocument spd;
         private final CommonTokenStream tokens;

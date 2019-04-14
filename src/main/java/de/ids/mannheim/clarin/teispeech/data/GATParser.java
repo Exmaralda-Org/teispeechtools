@@ -1,5 +1,12 @@
 package de.ids.mannheim.clarin.teispeech.data;
 
+import org.jdom2.*;
+import org.jdom2.filter.ElementFilter;
+import org.jdom2.transform.XSLTransformer;
+import org.jdom2.util.IteratorIterable;
+import org.jdom2.xpath.XPathFactory;
+import org.korpora.useful.Utilities;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,20 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.jdom2.Content;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.Namespace;
-import org.jdom2.Text;
-import org.jdom2.filter.ElementFilter;
-import org.jdom2.transform.XSLTransformer;
-import org.jdom2.util.IteratorIterable;
-import org.jdom2.xpath.XPathFactory;
-import org.korpora.useful.Utilities;
-
-import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 
 /**
  *

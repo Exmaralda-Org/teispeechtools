@@ -1,26 +1,10 @@
-package de.ids.mannheim.clarin.teispeech.tools;
-
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+package de.ids.mannheim.clarin.teispeech.data;
 
 import net.sf.saxon.BasicTransformerFactory;
-
 import org.jdom2.Namespace;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +16,17 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
@@ -81,7 +76,7 @@ public class DocUtilities {
      *            the maximal number of language + locale components
      * @return the corresponding three letter ISO 639-2 language code
      */
-    public static String getLanguage(Element el, String defaultL,
+    static String getLanguage(Element el, String defaultL,
             int maxComponents) {
         Optional<String> ret = getLanguage(el, maxComponents);
         return ret.orElse(defaultL);
@@ -146,7 +141,7 @@ public class DocUtilities {
                         Collectors.toList()));
     }
 
-    public static String getTextOrNorm(Element el) {
+    static String getTextOrNorm(Element el) {
         if (el.hasAttributeNS(TEI_NS, "norm")) {
             return el.getAttribute("norm");
         } else {

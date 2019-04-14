@@ -1,8 +1,8 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
 
+import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
 import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
-import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.fluent.Request;
@@ -28,9 +28,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static de.ids.mannheim.clarin.teispeech.data.DocUtilities.getAttXML;
+import static de.ids.mannheim.clarin.teispeech.data.DocUtilities.getTimeLine;
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
-import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getAttXML;
-import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getTimeLine;
 
 /**
  * Pseudo-align documents in the TEI transcription format with the TreeTagger
