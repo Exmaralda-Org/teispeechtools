@@ -14,7 +14,7 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
-    <apache.version>4.5.7</apache.version>
+    <apache.version>4.5.8</apache.version>
     <jackson.version>[2.9.8,)</jackson.version>
   </properties>
   <build>
@@ -106,7 +106,7 @@
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.7.1</version>
+        <version>4.7.2</version>
         <executions>
           <execution>
             <id>antlr</id>
@@ -220,7 +220,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.1.0</version>
         <configuration>
           <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
           <show>public</show>
