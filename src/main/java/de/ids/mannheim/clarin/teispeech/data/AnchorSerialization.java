@@ -14,8 +14,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
-
 /**
  * This contains a slightly dirty trick to treat anchors in words
  *
@@ -29,7 +27,7 @@ public class AnchorSerialization {
      */
     private static final String ANCHOR_START = "ཏჾ፼ཏჾ፼";
 
-    private static Pattern anchor_pat = Pattern
+    private static final Pattern anchor_pat = Pattern
             .compile(AnchorSerialization.ANCHOR_START);
     // .compile(DirtyTricks.ANCHOR_START + ".*?" + DirtyTricks.ANCHOR_END);
 
@@ -45,14 +43,13 @@ public class AnchorSerialization {
      */
     public static void deserializeAnchor(Element parent, String from,
             Deque<String> anchors) {
-        String rest = from;
         List<Node> ret = new ArrayList<>();
-        Matcher mat = anchor_pat.matcher(rest);
+        Matcher mat = anchor_pat.matcher(from);
         int lastEnd = 0;
         while (mat.find(lastEnd)) {
             if (mat.start() > 0) {
                 ret.add(parent.getOwnerDocument()
-                        .createTextNode(rest.substring(lastEnd, mat.start())));
+                        .createTextNode(from.substring(lastEnd, mat.start())));
             }
             lastEnd = mat.end();
             Element anchor = parent.getOwnerDocument().createElementNS(NameSpaces.TEI_NS, "anchor");
@@ -62,7 +59,7 @@ public class AnchorSerialization {
             }
             ret.add(anchor);
         }
-        String remaining = rest.substring(lastEnd);
+        String remaining = from.substring(lastEnd);
         if (!remaining.isEmpty()) {
             ret.add(parent.getOwnerDocument().createTextNode(remaining));
         }
@@ -98,6 +95,6 @@ public class AnchorSerialization {
      */
     public static void serializeAnchors(Document doc) {
         Utilities.toElementStream(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
-                .forEach(el -> serializeAnchors(el));
+                .forEach(AnchorSerialization::serializeAnchors);
     }
 }

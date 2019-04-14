@@ -20,6 +20,7 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
  * @author bfi
  *
  */
+@SuppressWarnings("WeakerAccess")
 public class TEINormalizer {
 
     private final static Logger LOGGER = LoggerFactory
@@ -28,9 +29,9 @@ public class TEINormalizer {
     /**
      * the document language per request; "deu" if nothing is given
      */
-    private String language;
+    private final String language;
 
-    private WordNormalizer normalizer;
+    private final WordNormalizer normalizer;
 
     /**
      * make new {@link TEINormalizer} that uses a {@link WordNormalizer}
@@ -45,11 +46,11 @@ public class TEINormalizer {
         this.language = language != null ? language : "deu";
     }
 
-    public TEINormalizer(WordNormalizer wn) {
+    private TEINormalizer(WordNormalizer wn) {
         this(wn, "deu");
     }
 
-    public TEINormalizer(String language) {
+    private TEINormalizer(String language) {
         normalizer = new DictionaryNormalizer(); // TODO: currently, only
                                                  // German,
         // anyway!
@@ -63,9 +64,8 @@ public class TEINormalizer {
      *            the XML file DOM
      * @param force
      *            whether to force normalization even if already normalized
-     * @return the document again
      */
-    public Document normalize(Document doc, boolean force) {
+    public void normalize(Document doc, boolean force) {
         Map<String, List<Element>> words = DocUtilities.groupByLanguage("w",
                 doc, language, 1);
 
@@ -110,7 +110,6 @@ public class TEINormalizer {
         DocUtilities.makeChange(doc,
                 "normalized words using the OrthoNormal dictionaries",
                 processed, unprocessed);
-        return doc;
     }
 
 }

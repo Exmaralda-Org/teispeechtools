@@ -15,7 +15,6 @@ import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
 import de.ids.mannheim.clarin.teispeech.tools.TextToTEI;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
-import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.getAttTEI;
 
 /**
  * TEI annotated speech document, mainly for use in {@link TextToTEI}
@@ -48,7 +47,7 @@ public class SpeechDocument {
     /**
      * the document language
      */
-    private String language;
+    private final String language;
 
     /**
      * a speech document has
@@ -77,7 +76,7 @@ public class SpeechDocument {
      * @param language
      *            should be an ISO 639-1 three letter code
      */
-    public void setLanguage(String language) {
+    private void setLanguage(String language) {
         Element el = Utilities.getElementByTagNameNS(doc, TEI_NS,
                 "text");
         el.setAttribute("xml:lang", language);
@@ -102,9 +101,9 @@ public class SpeechDocument {
                     .getElementsByTagNameNS(TEI_NS, "profileDesc")
                     .item(0);
             Comment comment = doc.createComment(
-                    String.format("[ There were errors parsing your text. "
+                    "[ There were errors parsing your text. "
                             + " Please refer to online documentation "
-                            + "on how to correct them. ]"));
+                            + "on how to correct them. ]");
             head.insertBefore(comment, before);
             for (String error : errors) {
                 comment = doc.createComment("  - " + error + " ");
@@ -173,7 +172,7 @@ public class SpeechDocument {
         });
     }
 
-    public Element addAnnotationBlock(Event from, Event to) {
+    private Element addAnnotationBlock(Event from, Event to) {
         Element block = doc.createElementNS(TEI_NS,
                 "annotationBlock");
         // Element block = doc.createElementNS(NameSpaces.TEI_NS,
@@ -209,8 +208,8 @@ public class SpeechDocument {
         changeOthers(original, from, false);
     }
 
-    public void changeOthers(Event original, MarkedEvent from,
-                             boolean isEnd){
+    private void changeOthers(Event original, MarkedEvent from,
+                              boolean isEnd){
         String mark = isEnd ? from.mkTime() : from.mkEndTime();
         Node sib;
         do {
@@ -230,14 +229,12 @@ public class SpeechDocument {
         Utilities
                 .toElementStream(currentBlock
                         .getElementsByTagNameNS(TEI_NS, "span"))
-                .forEach(b -> {
-                    Seq.of("start", "end").forEach(att -> {
-                        if (b.getAttribute(att).equals(original
-                                .mkTimeRef())) {
-                            b.setAttribute(att, mark);
-                        }
-                    });
-                });
+                .forEach(b -> Seq.of("start", "end").forEach(att -> {
+                    if (b.getAttribute(att).equals(original
+                            .mkTimeRef())) {
+                        b.setAttribute(att, mark);
+                    }
+                }));
 
     }
 
@@ -254,15 +251,15 @@ public class SpeechDocument {
         addAnchor(at.mkTimeRef(), parent);
     }
 
-    public void addAnchor(String at, Element parent) {
+    private void addAnchor(String at, Element parent) {
         Element anc = doc.createElementNS(TEI_NS, "anchor");
         parent.appendChild(anc);
         anc.setAttribute("synch", at);
     }
 
-    public void addTurn(Event from) {
-        // addAnchor(from, currentUtterance);
-    }
+    // public void addTurn(Event from) {
+    //     // addAnchor(from, currentUtterance);
+    // }
 
     /**
      * if turn ends with marked event, update surrounding
@@ -417,20 +414,6 @@ public class SpeechDocument {
         if (!currentBlock.hasChildNodes()) {
             currentBlock.getParentNode().removeChild(currentBlock);
         }
-    }
-
-    private Map<String, Double> timedEvents = new HashMap<>();
-    private Element timeLineRoot = null;
-
-    public void processTimeLine() {
-        timeLineRoot = DocUtilities.getTimeLine(doc);
-        Utilities.toElementStream(DocUtilities.getWhens(timeLineRoot)).forEach(
-                e -> {
-                    Optional<Double> offset = DocUtilities.getOffset(e);
-                    timedEvents.put(e.getAttribute("xml:id"),
-                            offset.orElse(0d));
-                }
-        );
     }
 
 }

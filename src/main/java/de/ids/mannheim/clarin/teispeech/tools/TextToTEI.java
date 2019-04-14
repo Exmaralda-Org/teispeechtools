@@ -2,14 +2,7 @@ package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +10,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -44,11 +39,12 @@ import net.sf.saxon.om.NameChecker;
  * @author bfi
  *
  */
+@SuppressWarnings("WeakerAccess")
 public class TextToTEI extends SimpleExmaraldaBaseListener {
 
-    private Deque<Event> events = new ArrayDeque<>();
-    private Set<String> speakers = new HashSet<>();
-    private Map<String, MarkedEvent> markedEvents = new LinkedHashMap<>();
+    private final Deque<Event> events = new ArrayDeque<>();
+    private final Set<String> speakers = new HashSet<>();
+    private final Map<String, MarkedEvent> markedEvents = new LinkedHashMap<>();
     private Event currentBegin = null;
     private Event currentEnd = null;
     private int currentPos = 0;
@@ -60,7 +56,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      * moved before <code>firstMark</code> in the timeline later.
      */
     private SpeechDocument spd;
-    private CommonTokenStream tokens;
+    private final CommonTokenStream tokens;
     private static final String TEMPLATE_PATH = "NewFile.xml";
 
     /**
@@ -80,7 +76,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
             DocumentBuilder builder = dbf.newDocumentBuilder();
-            Document doc = builder.parse(templateSource);
+            Document doc = builder.parse(Objects.requireNonNull(templateSource));
             spd = new SpeechDocument(doc, language);
         } catch (IOException e1) {
             throw new RuntimeException("Template missing!");
@@ -104,7 +100,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
     /**
      * remember speaker and check that name is a valid XML ID
      *
-     * @param name
+     * @param name the potential ID
      */
     private void rememberSpeaker(String name) {
         if (NameChecker.isValidNCName(name)) {
@@ -148,7 +144,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         currentEnd = new EndEvent();
         spd.addBlockUtterance(currentBegin, currentEnd);
         events.push(currentBegin);
-        spd.addTurn(currentBegin);
+        // spd.addTurn(currentBegin);
     }
 
     @Override
@@ -179,7 +175,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
         if (left != null && left.size() > 0 && currentPos > 1) {
             spd.addSpace();
         }
-        String tx = ctx.MWORD().stream().map(w -> w.getText())
+        String tx = ctx.MWORD().stream().map(ParseTree::getText)
                 .collect(Collectors.joining(" "));
         String mark = ctx.MARK_ID().getText();
         MarkedEvent m;
@@ -208,7 +204,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
             markedEvents.put(mark, m);
             events.push(m);
         }
-        lastMarked = Optional.ofNullable(m);
+        lastMarked = Optional.of(m);
         spd.addMarked(m, tx, startAnchor);
     }
 
@@ -217,7 +213,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterAction(ActionContext ctx) {
-        String tx = ctx.aword().stream().map(w -> w.getText())
+        String tx = ctx.aword().stream().map(RuleContext::getText)
                 .collect(Collectors.joining(" "));
         spd.addIncident(currentBegin, currentEnd, tx, true);
     }
@@ -227,7 +223,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterCaction(CactionContext ctx) {
-        String tx = ctx.aword().stream().map(w -> w.getText())
+        String tx = ctx.aword().stream().map(RuleContext::getText)
                 .collect(Collectors.joining(" "));
         spd.addIncident(currentBegin, currentEnd, tx, false);
     }
@@ -237,7 +233,7 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     @Override
     public void enterComment(CommentContext ctx) {
-        String tx = ctx.IWORD().stream().map(w -> w.getText())
+        String tx = ctx.IWORD().stream().map(ParseTree::getText)
                 .collect(Collectors.joining(" "));
         spd.addComment(currentBegin, currentEnd, tx);
     }
@@ -261,5 +257,5 @@ public class TextToTEI extends SimpleExmaraldaBaseListener {
      */
     public void makeErrorList(List<String> list) {
         spd.makeErrorList(list);
-    };
+    }
 }

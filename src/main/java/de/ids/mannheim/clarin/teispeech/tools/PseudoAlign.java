@@ -24,6 +24,7 @@ import static de.ids.mannheim.clarin.teispeech.tools.DocUtilities.*;
  *
  * @author bfi
  */
+@SuppressWarnings("WeakerAccess")
 public class PseudoAlign {
 
     static {
@@ -33,7 +34,7 @@ public class PseudoAlign {
     private final static Logger LOGGER = LoggerFactory
             .getLogger(PseudoAlign.class.getName());
 
-    private static NumberFormat NUMBER_FORMAT = NumberFormat
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat
             .getInstance(Locale.ROOT);
 
     static {
@@ -106,6 +107,7 @@ public class PseudoAlign {
      * @param phoneticise whether to store the transcriptions in the document
      * @param force       whether to force transcription
      * @param timeLength  length of audio in seconds
+     * @param offset      the time offset of the first timeline event
      */
     public PseudoAlign(Document doc, String language, boolean usePhones,
                        boolean phoneticise, boolean force, double timeLength,
@@ -168,7 +170,7 @@ public class PseudoAlign {
      * @param el pause element
      * @return duration
      */
-    public double getPausePhoneDuration(Element el) {
+    private double getPausePhoneDuration(Element el) {
         Optional<Double> duration = DocUtilities.getDuration(el);
         if (duration.isPresent()) {
             return duration.get();
@@ -227,7 +229,8 @@ public class PseudoAlign {
                         // only transcribe "normal" words
                         // work with transcriptions
                         String text = Seq.seq(words)
-                                .map(el -> el.getTextContent()).toString(" ");
+                                .map(Node::getTextContent).toString(" ");
+                        //noinspection OptionalGetWithoutIsPresent
                         transWords = GraphToPhoneme
                                 .getTranscription(text, uLanguage, true)
                                 .get();
@@ -244,7 +247,7 @@ public class PseudoAlign {
                                     });
                         }
                         // add transcriptions
-                        int[] transcribedW = GraphToPhoneme
+                        @SuppressWarnings("ConstantConditions") int[] transcribedW = GraphToPhoneme
                                 .countSigns(transWords, transcribe);
                         for (int i = 0; i < words.size(); i++) {
                             words.get(i).setAttribute("rel-length",
@@ -323,11 +326,11 @@ public class PseudoAlign {
         }
     }
 
-    private List<Distance> distances = new ArrayList<>();
+    private final List<Distance> distances = new ArrayList<>();
     // private Map<String, Integer> rest = new HashMap<>();
     private List<Element> whenList = new ArrayList<>();
     private List<String> way = new ArrayList<>();
-    private Map<Pair<String, String>, Distance> paths = new HashMap<>();
+    private final Map<Pair<String, String>, Distance> paths = new HashMap<>();
 
     private void makeDistance(String from, String to,
                               int relDuration,
@@ -346,7 +349,7 @@ public class PseudoAlign {
         return order;
     }
 
-    private Map<String, LinkedHashSet<String>> accessibleRev = new HashMap<>();
+    private final Map<String, LinkedHashSet<String>> accessibleRev = new HashMap<>();
 
     /**
      * find a way {@code from} from to {@code goal}
@@ -554,6 +557,7 @@ public class PseudoAlign {
                 dist = paths.get(Pair.of(from, ref));
             } else {
                 // elements not on the way, e.g. because of overlap
+                //noinspection OptionalGetWithoutIsPresent
                 dist = Seq.seq(distances).filter(
                         d -> d.to.equals(ref) && position.containsKey(d.from)
                 ).minBy(d -> d.rel).get();

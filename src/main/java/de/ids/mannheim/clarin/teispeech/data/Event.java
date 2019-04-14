@@ -9,8 +9,8 @@ package de.ids.mannheim.clarin.teispeech.data;
  */
 public abstract class Event {
 
-    protected static int lastEvent = 0;
-    protected int nr;
+    static int lastEvent = 0;
+    int nr;
 
     /**
      * generate ID for the Event
@@ -26,6 +26,6 @@ public abstract class Event {
      */
     public String mkTimeRef() {
         return mkTime();
-    };
+    }
 
 }

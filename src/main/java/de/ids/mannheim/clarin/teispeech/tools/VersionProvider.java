@@ -1,6 +1,7 @@
 package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 import picocli.CommandLine.IVersionProvider;
@@ -16,8 +17,8 @@ class VersionProvider implements IVersionProvider {
     @Override
     public String[] getVersion() throws IOException {
         final Properties properties = new Properties();
-        properties.load(this.getClass().getClassLoader()
-                .getResourceAsStream("project.properties"));
+        properties.load(Objects.requireNonNull(this.getClass().getClassLoader()
+                .getResourceAsStream("project.properties")));
         String version = properties.getProperty("version");
         return new String[] { version };
     }

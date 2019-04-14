@@ -7,9 +7,9 @@ import org.jdom2.Document;
  *
  * @author Thomas Schmidt
  */
-public abstract class AbstractParser {
+abstract class AbstractParser {
 
-    public AbstractParser() {
+    AbstractParser() {
     }
 
     /**

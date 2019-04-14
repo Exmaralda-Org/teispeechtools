@@ -11,6 +11,7 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
@@ -50,9 +51,9 @@ public class DictionaryNormalizer implements WordNormalizer {
 
     // where to load dictionaries from:
     private static final String FOLKS_PATH = "FOLK_Normalization_Lexicon.xml";
-    private static String DEREKO_PATH = "dereko_capital_only.txt";
-    private static String DICT_PATH = "dict.tsv";
-    private static String DICT_PATH_FILE = "src/main/resources/" + DICT_PATH;
+    private static final String DEREKO_PATH = "dereko_capital_only.txt";
+    private static final String DICT_PATH = "dict.tsv";
+    private static final String DICT_PATH_FILE = "src/main/resources/" + DICT_PATH;
 
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
@@ -93,7 +94,7 @@ public class DictionaryNormalizer implements WordNormalizer {
                             .getElementsByTagNameNS(NameSpaces.TEI_NS, "entry"))
                     .forEach(entry -> {
                         String from = entry.getAttribute("form");
-                        String to = Utilities
+                        @SuppressWarnings("OptionalGetWithoutIsPresent") String to = Utilities
                                 .toElementStream(entry.getElementsByTagNameNS(
                                         NameSpaces.TEI_NS, "n"))
                                 .max(Comparator.comparing(e -> Integer
@@ -116,9 +117,9 @@ public class DictionaryNormalizer implements WordNormalizer {
     private static void withDerekoReader(Consumer<BufferedReader> con) {
         try (InputStream derekoStream = DictionaryNormalizer.class
                 .getClassLoader().getResourceAsStream(DEREKO_PATH);
-                InputStreamReader derekoReader = new InputStreamReader(
-                        derekoStream, Charset.forName("windows-1252"));
-                BufferedReader buf = new BufferedReader(derekoReader)) {
+             InputStreamReader derekoReader = new InputStreamReader(
+                     Objects.requireNonNull(derekoStream), Charset.forName("windows-1252"));
+             BufferedReader buf = new BufferedReader(derekoReader)) {
             con.accept(buf);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -131,10 +132,8 @@ public class DictionaryNormalizer implements WordNormalizer {
      *
      * @param force
      *            the whether to force loading even if data already loaded
-     * @throws IOException
-     *             if file (included) broken/unavailable
      */
-    private static void loadDerekoDict(boolean force) throws IOException {
+    private static void loadDerekoDict(boolean force) {
         if (derekoLoaded && !force) {
             return;
         }
@@ -143,7 +142,7 @@ public class DictionaryNormalizer implements WordNormalizer {
                 // only for statistics at the moment
                 Map<String, String> derekoDict = derekoReader.lines().parallel()
                         .map(StringUtils::strip)
-                        .collect(Collectors.toMap(l -> l.toLowerCase(),
+                        .collect(Collectors.toMap(String::toLowerCase,
                                 Function.identity(), strCollider,
                                 ConcurrentHashMap::new));
                 LOGGER.info("DEREKO: {} entries", derekoDict.size());
@@ -165,9 +164,9 @@ public class DictionaryNormalizer implements WordNormalizer {
     private static void loadCompiledDict() {
         try (InputStream dictSource = DictionaryNormalizer.class
                 .getClassLoader().getResourceAsStream(DICT_PATH);
-                InputStreamReader dictReader = new InputStreamReader(
-                        dictSource);
-                BufferedReader dictBReader = new BufferedReader(dictReader);) {
+             InputStreamReader dictReader = new InputStreamReader(
+                     Objects.requireNonNull(dictSource));
+             BufferedReader dictBReader = new BufferedReader(dictReader)) {
             dict = dictBReader.lines().parallel().map(l -> l.split("\t"))
                     .collect(Collectors.toMap(l -> l[0], l -> l[1], strCollider,
                             ConcurrentHashMap::new));
@@ -184,12 +183,12 @@ public class DictionaryNormalizer implements WordNormalizer {
      */
     public static void writeDict() {
         try (FileWriter outF = new FileWriter(DICT_PATH_FILE);
-                PrintWriter out = new PrintWriter(outF);) {
+                PrintWriter out = new PrintWriter(outF)) {
 
             Collator collator = Collator.getInstance(Locale.GERMAN);
             collator.setStrength(Collator.PRIMARY);
             dict.entrySet().stream()
-                    .sorted(Comparator.comparing(c -> c.getKey(), collator))
+                    .sorted(Comparator.comparing(Map.Entry::getKey, collator))
                     .forEach(entry -> out.println(String.format("%s\t%s",
                             entry.getKey(), entry.getValue())));
         } catch (IOException e) {
@@ -205,6 +204,7 @@ public class DictionaryNormalizer implements WordNormalizer {
      *            whether to try loading the compiled dictionary, and whether to
      *            force loading the DeReKo- and FOLK-derived dictionaries
      */
+    @SuppressWarnings("ConstantConditions")
     public static void loadDictionary(boolean force) {
         if (!force) {
             try {

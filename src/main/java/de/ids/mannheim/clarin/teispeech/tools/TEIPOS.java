@@ -2,7 +2,6 @@ package de.ids.mannheim.clarin.teispeech.tools;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
  * @author bfi
  *
  */
+@SuppressWarnings("WeakerAccess")
 public class TEIPOS {
 
     private final static Logger LOGGER = LoggerFactory
@@ -60,7 +60,8 @@ public class TEIPOS {
     /**
      * models for TreeTagger – three letter language code to model file name
      */
-    private static Map<String, String> modelMap = new HashMap<>();
+    @SuppressWarnings("CanBeFinal")
+    private static Map<String, String> modelMap;
 
     static {
         ObjectMapper mapper = new ObjectMapper();
@@ -95,7 +96,7 @@ public class TEIPOS {
     /**
      * get TreeTagger model file name
      *
-     * @param modelName
+     * @param modelName the model name
      * @return file name
      */
     private static String modelName(String modelName) {
@@ -110,7 +111,6 @@ public class TEIPOS {
      *            the language code
      * @param utterances
      *            the list of &lt;u&gt; elements
-     * @throws IOException
      */
     private void tagByLanguage(String lang, List<Element> utterances,
             boolean force) throws IOException {
@@ -145,9 +145,8 @@ public class TEIPOS {
      * @param force
      *            whether to force tagging even if utterance already tagged
      *
-     * @return document, for chaining
      */
-    public Document posTag(boolean force) {
+    public void posTag(boolean force) {
 
         // aggregate by language to avoid restarting the tagger all the time
         treeTagger = new TreeTaggerWrapper<>();
@@ -181,7 +180,6 @@ public class TEIPOS {
         } finally {
             treeTagger.destroy();
         }
-        return doc;
     }
 
 }

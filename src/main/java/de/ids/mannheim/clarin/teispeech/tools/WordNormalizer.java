@@ -6,7 +6,7 @@ package de.ids.mannheim.clarin.teispeech.tools;
  * @author bfi
  *
  */
-public interface WordNormalizer {
+interface WordNormalizer {
 
     /**
      * normalize a single word

@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 /**
  * converter from plain text to TEI ISO
  */
+@SuppressWarnings("WeakerAccess")
 public class TextToTEIConversion {
 
     /**

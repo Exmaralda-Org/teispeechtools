@@ -56,7 +56,7 @@ public class DocUtilities {
      *            the maximal number of language + locale components
      * @return Optional containing the language code, or empty
      */
-    public static Optional<String> getLanguage(Element el, int maxComponents) {
+    private static Optional<String> getLanguage(Element el, int maxComponents) {
         String lang = el.getAttribute("xml:lang");
         for (Node parent = el.getParentNode(); lang.isEmpty() && parent != null
                 && parent.getNodeType() == Node.ELEMENT_NODE; parent = parent
@@ -99,8 +99,8 @@ public class DocUtilities {
      *            the maximal number of language + locale components
      * @return the determined language
      */
-    public static String getUtteranceLanguage(Element el, String defaultL,
-            int maxComponents) {
+    private static String getUtteranceLanguage(Element el, String defaultL,
+                                               int maxComponents) {
         assert "u".equals(el.getTagName());
         String lang = getLanguage(el, defaultL, maxComponents);
         Map<String, Long> freq = Utilities
@@ -161,9 +161,8 @@ public class DocUtilities {
      *            the DOM Document
      * @param change
      *            the change message
-     * @return the document, for chaining
      */
-    public static Document makeChange(Document doc, String change) {
+    public static void makeChange(Document doc, String change) {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
         Element revDesc = Utilities.getElementByTagNameNS(
@@ -192,7 +191,6 @@ public class DocUtilities {
         changeEl.setAttribute("when", stamp);
         changeEl.appendChild(doc.createTextNode(change));
         Utilities.insertAtBeginningOf(changeEl, revDesc);
-        return doc;
     }
 
     /**
@@ -202,10 +200,9 @@ public class DocUtilities {
      *            the JDOM Document
      * @param change
      *            the change message
-     * @return the document, for chaining
      */
-    public static org.jdom2.Document makeChange(org.jdom2.Document doc,
-            String change) {
+    public static void makeChange(org.jdom2.Document doc,
+                                  String change) {
         Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
@@ -232,7 +229,6 @@ public class DocUtilities {
             changeEl.addContent(new org.jdom2.Text(change));
             revDesc.addContent(changeEl);
         }
-        return doc;
     }
 
     /**
@@ -248,10 +244,9 @@ public class DocUtilities {
      *            the languages that could be processed
      * @param skippedLanguages
      *            the languages which had to be skipped
-     * @return the document, for chaining
      */
-    public static Document makeChange(Document doc, String change,
-            List<String> processedLanguages, List<String> skippedLanguages) {
+    public static void makeChange(Document doc, String change,
+                                  List<String> processedLanguages, List<String> skippedLanguages) {
         String message = change + "; "
                 + (processedLanguages.size() > 0
                         ? "processed " + String.join("/", processedLanguages)
@@ -261,7 +256,7 @@ public class DocUtilities {
                         ? "skipped " + String.join("/", skippedLanguages)
                         : "")
                 + ".";
-        return makeChange(doc, message);
+        makeChange(doc, message);
     }
 
     /**
@@ -295,14 +290,12 @@ public class DocUtilities {
                 && el.getLocalName().equals(localName));
     }
 
-    public static String getAtt(Element el, String nameSpace, String localName) {
+    private static String getAtt(Element el, String nameSpace, String localName) {
         assert el != null;
         assert localName != null;
         String attNS = el.getAttributeNS(nameSpace, localName);
         assert attNS != null;
-        String ret = "".equals(attNS) ? el.getAttribute(localName) : attNS;
-       // System.err.format("%s/@%s: «%s» (%s)\n", el.getTagName(), localName, ret, attNS);
-        return ret;
+        return "".equals(attNS) ? el.getAttribute(localName) : attNS;
     }
 
     /**
@@ -329,7 +322,7 @@ public class DocUtilities {
      *            e.g. "PT12.2s"
      * @return an optional number, e.g. 12.2d or empty()
      */
-    public static Optional<Double> getDuration(String measurement) {
+    private static Optional<Double> getDuration(String measurement) {
         Matcher matcher = TIME_PATTERN.matcher(measurement);
         if (matcher.matches()) {
             return Optional.of(Double.parseDouble(matcher.group(1)));
@@ -371,7 +364,7 @@ public class DocUtilities {
         return getWhens(timeLine);
     }
 
-    public static NodeList getWhens(Element timeLine) {
+    private static NodeList getWhens(Element timeLine) {
         NodeList line = timeLine.getElementsByTagNameNS(TEI_NS,
                 "when");
         if (line == null || line.getLength() == 0) {
@@ -389,7 +382,7 @@ public class DocUtilities {
      *            the DOM document
      * @return the first event
      */
-    public static Element getTimeRoot(Document doc) {
+    private static Element getTimeRoot(Document doc) {
         NodeList whens = getWhens(doc);
         return (Element) whens.item(0);
     }
@@ -418,7 +411,7 @@ public class DocUtilities {
      *            the ID follows
      * @return the ID
      */
-    public static String generateID(Document doc, String pattern) {
+    private static String generateID(Document doc, String pattern) {
         int i = 0;
         String newId;
         do {
@@ -464,7 +457,7 @@ public class DocUtilities {
      *            the XML ID
      * @return the time offset
      */
-    public static Optional<Double> getOffset(Document doc, String id) {
+    private static Optional<Double> getOffset(Document doc, String id) {
         id = unPoundMark(id);
         Element root = getTimeRoot(doc);
         String rootID = root.getAttributeNS(XML_NS, "id");
@@ -487,8 +480,8 @@ public class DocUtilities {
         return ret;
     }
 
-    public static DocumentBuilderFactory dbf;
-    public static DocumentBuilder db;
+    private static final DocumentBuilderFactory dbf;
+    private static final DocumentBuilder db;
     static {
         dbf = DocumentBuilderFactory.newInstance() ;
         try {
@@ -497,9 +490,9 @@ public class DocUtilities {
             throw new RuntimeException("No DocumentBuilder – YOUR JAVA IS VERY BROKEN!");
         }
     }
-    private static TransformerFactory stf = new BasicTransformerFactory();
+    private static final TransformerFactory stf = new BasicTransformerFactory();
 
-    public static Templates getTemplate(String path){
+    private static Templates getTemplate(String path){
         try {
             return stf.newTemplates(
                     new StreamSource(DocUtilities.class.getResourceAsStream(path)));
@@ -512,7 +505,7 @@ public class DocUtilities {
         return transform(getTemplate(path), inDoc);
     }
 
-    public static Document transform(Templates template, Document inDoc){
+    private static Document transform(Templates template, Document inDoc){
         try {
             Document doc = db.newDocument() ;
             DOMResult result = new DOMResult(doc);

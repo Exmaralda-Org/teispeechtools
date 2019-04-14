@@ -9,12 +9,12 @@ public class NameSpaces {
     /**
      * annotations of the Text Encoding Initiative
      */
-    public static String TEI_NS = "http://www.tei-c.org/ns/1.0";
+    public static final String TEI_NS = "http://www.tei-c.org/ns/1.0";
 
     /**
      * the XML namespace
      */
-    public static String XML_NS = "http://www.w3.org/XML/1998/namespace";
+    public static final String XML_NS = "http://www.w3.org/XML/1998/namespace";
 
     /**
      * the XSLT namespace

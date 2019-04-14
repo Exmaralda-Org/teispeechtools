@@ -12,14 +12,14 @@ import org.antlr.v4.runtime.RecognitionException;
  * @author bfi
  *
  */
-public class AntlrErrorLister extends BaseErrorListener {
+class AntlrErrorLister extends BaseErrorListener {
 
     /**
      * list of error messages
      */
-    private List<String> errorList = new ArrayList<>();
+    private final List<String> errorList = new ArrayList<>();
 
-    private boolean includeLineNo;
+    private final boolean includeLineNo;
 
     /**
      * make an AntlrErrorLister

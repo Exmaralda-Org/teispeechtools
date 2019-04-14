@@ -24,13 +24,13 @@ import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
  *
  * @author bfi
  */
-public class GenericParser extends GenericConventionBaseListener {
+class GenericParser extends GenericConventionBaseListener {
 
     private final Document doc;
     private final Element currentUtterance;
     private Element currentParent;
 
-    private Deque<String> anchors;
+    private final Deque<String> anchors;
 
     /**
      * make a parser

@@ -39,6 +39,7 @@ import picocli.CommandLine.Spec;
  * @author bfi
  *
  */
+@SuppressWarnings({"CanBeFinal", "unused"})
 @Command(description = "process documents of speech annotated "
         + "according to TEI/ISO", sortOptions = false, name = "spindel"
                 + "", mixinStandardHelpOptions = true, versionProvider = VersionProvider.class)
@@ -83,11 +84,13 @@ public class CLI implements Runnable {
             + "list of expected languages besides the main language; "
             + "by default '${DEFAULT-VALUE}' "
             + "(ONLY guess)", defaultValue = "deu,eng,tur", split = ",")
+    private
     String[] expected;
 
     @Option(names = { "-k",
             "--keep-case" }, description = "do not convert to lower case "
                     + "when normalizing; effectively, skip capitalized words")
+    private
     boolean keepCase = false;
 
     @Option(names = { "-L",
@@ -105,19 +108,23 @@ public class CLI implements Runnable {
     @Option(names = { "-p",
             "--use-graphs" }, description = "use graphs instead of (pseudo)phones "
                     + "for pseudoalignment (default: ${DEFAULT-VALUE})")
+    private
     boolean useGraphs;
     @Option(names = { "-t",
             "--transcribe" }, description = "add phonetic canonical transcription"
                     + "in pseudoalignment (default: ${DEFAULT-VALUE}, only used "
                     + "if not --use-graphs)")
+    private
     boolean transcribe = true;
 
     @Option(names = { "-T", "--time" }, description = "audio length in seconds"
             + "(alignment, default: ${DEFAULT-VALUE})")
+    private
     double timeLength = 100d;
 
     @Option(names = { "-O", "--offset" }, description = "audio offset in seconds"
             + "(alignment, default: ${DEFAULT-VALUE})")
+    private
     double offset = 0d;
 
     @Spec
@@ -127,9 +134,9 @@ public class CLI implements Runnable {
 
     private InputStream inputStream = System.in;
 
-    private static DocumentBuilderFactory factory = DocumentBuilderFactory
+    private static final DocumentBuilderFactory factory = DocumentBuilderFactory
             .newInstance();
-    private static DocumentBuilder builder;
+    private static final DocumentBuilder builder;
     static {
         try {
             factory.setNamespaceAware(true);
@@ -198,13 +205,14 @@ public class CLI implements Runnable {
      *
      * @param lang
      *            a String given as a language
-     * @return
+     * @return normalized language
      */
     private String checkLanguage(String lang) {
         if (!LangUtilities.isLanguage(lang)) {
             throw new ParameterException(spec.commandLine(),
                     String.format("«%s» is not a valid language!", lang));
         } else {
+            //noinspection OptionalGetWithoutIsPresent
             lang = LangUtilities.getLanguage(lang).get();
         }
         return lang;
@@ -213,7 +221,7 @@ public class CLI implements Runnable {
     /**
      * convert to ISO
      */
-    public void text2iso() {
+    private void text2iso() {
         CharStream inputCS;
         try {
             inputCS = CharStreams.fromStream(inputStream);
@@ -228,7 +236,7 @@ public class CLI implements Runnable {
     /**
      * pos-tag an ISO transcription
      */
-    public void pos() {
+    private void pos() {
         try {
             Document doc = builder.parse(inputStream);
             TEIPOS teipo = new TEIPOS(doc, language);
@@ -243,7 +251,7 @@ public class CLI implements Runnable {
     /**
      * normalize an ISO transcription
      */
-    public void normalize() {
+    private void normalize() {
         WordNormalizer wn = new DictionaryNormalizer(keepCase, true);
         TEINormalizer tn = new TEINormalizer(wn, language);
         try {
@@ -262,7 +270,7 @@ public class CLI implements Runnable {
     /**
      * guess languages in an ISO transcription
      */
-    public void guess() {
+    private void guess() {
         try {
             Document doc = builder.parse(inputStream);
             LanguageDetect ld = new LanguageDetect(doc, language, expected,
@@ -277,7 +285,7 @@ public class CLI implements Runnable {
     /**
      * segment an ISO transcription
      */
-    public void segmentize() {
+    private void segmentize() {
         if (level == ProcessingLevel.generic) {
             try {
                 Document doc = builder.parse(inputStream);
@@ -301,9 +309,7 @@ public class CLI implements Runnable {
                     outputter.setFormat(outFormat);
                 }
                 outputter.output(doc, outStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (JDOMException e) {
+            } catch (IOException | JDOMException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -312,7 +318,7 @@ public class CLI implements Runnable {
     /**
      * add XML IDs
      */
-    public void pseudoAlign() {
+    private void pseudoAlign() {
         try {
             boolean usePhones = !useGraphs;
             Document doc = builder.parse(inputStream);
@@ -328,7 +334,7 @@ public class CLI implements Runnable {
     /**
      * add XML IDs
      */
-    public void identify() {
+    private void identify() {
         try {
             Document doc = builder.parse(inputStream);
             DocumentIdentifier.makeIDs(doc);
@@ -341,7 +347,7 @@ public class CLI implements Runnable {
     /**
      * add XML IDs
      */
-    public void unidentify() {
+    private void unidentify() {
         try {
             Document doc = builder.parse(inputStream);
             DocumentIdentifier.removeIDs(doc);

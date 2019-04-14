@@ -44,7 +44,8 @@ import org.xml.sax.SAXException;
  * <a href="https://iso639-3.sil.org/code_tables/download_tables">list from
  * SIL</a>.
  */
-public class GraphToPhoneme {
+@SuppressWarnings("SameParameterValue")
+class GraphToPhoneme {
 
     /**
      * list of admissible locales from
@@ -75,7 +76,7 @@ public class GraphToPhoneme {
      */
     private static final Pattern WORD_SEPARATOR = Pattern.compile("\t");
 
-    private static Map<String, String> LOCALES = new HashMap<>();
+    private static final Map<String, String> LOCALES = new HashMap<>();
     static {
         List<String> already_permitted = Arrays.asList(PERMITTED_LOCALES_ARRAY);
         for (String loc : PERMITTED_LOCALES_ARRAY) {
@@ -99,7 +100,7 @@ public class GraphToPhoneme {
         }
     }
 
-    public static Optional<String[]> getTranscription(String text, String loc) {
+    private static Optional<String[]> getTranscription(String text, String loc) {
         return getTranscription(text, loc, false);
     }
 
@@ -132,7 +133,7 @@ public class GraphToPhoneme {
         try {
             URIBuilder uriBui = new URIBuilder(BASE_URL);
             boolean extendedFeatures = false; // extended for eng-GB and deu?
-            HttpEntity entity = MultipartEntityBuilder.create()
+            @SuppressWarnings("ConstantConditions") HttpEntity entity = MultipartEntityBuilder.create()
                     .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
                     .setCharset(Charset.forName("UTF-8"))
                     .addBinaryBody("i", text.getBytes(),
@@ -172,8 +173,8 @@ public class GraphToPhoneme {
      *            should be removed
      * @return the word lengths in signs
      */
-    public static int[] countSigns(Optional<String[]> words,
-            boolean syllabified) {
+    private static int[] countSigns(Optional<String[]> words,
+                                    boolean syllabified) {
         if (words.isPresent())
             return countSigns(words.get(), syllabified);
         else
@@ -208,7 +209,7 @@ public class GraphToPhoneme {
      * @see #countSigns(String)
      * @return number of characters
      **/
-    public static int[] countSigns(String text) {
+    private static int[] countSigns(String text) {
         return countSigns(text.split("\\s+"));
     }
 
@@ -230,7 +231,7 @@ public class GraphToPhoneme {
         wordStream = wordStream.map(s ->
                 s.replaceAll("[-\\p{javaWhitespace}]", ""));
 
-        return wordStream.mapToInt(word -> word.length()).toArray();
+        return wordStream.mapToInt(String::length).toArray();
     }
 
     /**
@@ -239,12 +240,12 @@ public class GraphToPhoneme {
      *            an array of transcribed words
      * @return lengths of individual words
      */
-    public static int[] countSigns(String[] words) {
+    private static int[] countSigns(String[] words) {
         Stream<String> wordStream = Stream.of(words);
-        return wordStream.mapToInt(word -> word.length()).toArray();
+        return wordStream.mapToInt(String::length).toArray();
     }
 
-    public static int[] countSyllables(String[] words) {
+    private static int[] countSyllables(String[] words) {
         Stream<String> wordStream = Stream.of(words);
         return wordStream.mapToInt(word -> word.split("\\.").length).toArray();
     }
@@ -258,7 +259,7 @@ public class GraphToPhoneme {
      *            the locale
      * @return the word lengths in signs
      */
-    public static int[] countSyllables(String words, String loc) {
+    private static int[] countSyllables(String words, String loc) {
         Optional<String[]> result = getTranscription(words, loc, true);
         if (result.isPresent())
             return countSyllables(result.get());
@@ -270,7 +271,7 @@ public class GraphToPhoneme {
         return printCounts(countSigns(text));
     }
 
-    public static String printCounts(int[] counted) {
+    private static String printCounts(int[] counted) {
         return Seq.seq(Arrays.stream(counted)).map(i -> {
             String format = "% " + i + "d";
             return String.format(format, i);

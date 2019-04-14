@@ -26,10 +26,11 @@ import org.korpora.useful.Utilities;
  *
  * @author Thomas Schmidt; Bernhard Fisseni
  */
+@SuppressWarnings("SameParameterValue")
 public class PatternReader {
 
     private final Document document;
-    private static XPathFactory xpf = XPathFactory.instance();
+    private static final XPathFactory xpf = XPathFactory.instance();
 
     /**
      * read Patterns from file
@@ -65,10 +66,8 @@ public class PatternReader {
      * @param level
      *            the level
      * @return the patterns as a Map: name → Pattern
-     * @throws JDOMException
-     *             XML broken
      */
-    public Map<String, Pattern> getAllPatterns(int level) throws JDOMException {
+    public Map<String, Pattern> getAllPatterns(int level) {
         return getAllPatterns(level, "default");
     }
 
@@ -82,13 +81,10 @@ public class PatternReader {
      * @param languageCode
      *            the language code
      * @return the patterns as a Map: name → Pattern
-     * @throws JDOMException
-     *             XML broken
      */
-    public Map<String, Pattern> getAllPatterns(int level, String languageCode)
-            throws JDOMException {
+    public Map<String, Pattern> getAllPatterns(int level, String languageCode) {
         Map<String, Pattern> result = new HashMap<>();
-        String xp = "//level[@level='" + Integer.toString(level) + "']/pattern";
+        String xp = "//level[@level='" + level + "']/pattern";
         for (Element e : xpf.compile(xp, Filters.element())
                 .evaluate(document)) {
             String name = e.getAttributeValue("name");
@@ -117,10 +113,8 @@ public class PatternReader {
      * @param name
      *            the Pattern name
      * @return the Pattern
-     * @throws JDOMException
-     *             XML broken
      */
-    public Pattern getPattern(int level, String name) throws JDOMException {
+    public Pattern getPattern(int level, String name) {
         return getPattern(level, name, "default");
     }
 
@@ -134,12 +128,9 @@ public class PatternReader {
      * @param languageCode
      *            the language name
      * @return the Pattern
-     * @throws JDOMException
-     *             XML broken
      */
-    public Pattern getPattern(int level, String name, String languageCode)
-            throws JDOMException {
-        String xp = "//level[@level='" + Integer.toString(level)
+    private Pattern getPattern(int level, String name, String languageCode) {
+        String xp = "//level[@level='" + level
                 + "']/pattern[@name='" + name + "']";
         System.out.println(xp);
         Element e = xpf.compile(xp, Filters.element()).evaluateFirst(document);
@@ -170,10 +161,8 @@ public class PatternReader {
      * @param e
      *            the element whose links to resolve
      * @return the resolved pattern
-     * @throws JDOMException
-     *             XML broken
      */
-    public String resolveElement(Element e) throws JDOMException {
+    public String resolveElement(Element e) {
         return resolveElement(e, "default");
     }
 
@@ -185,17 +174,14 @@ public class PatternReader {
      * @param languageCode
      *            a language code
      * @return the resolved pattern
-     * @throws JDOMException
-     *             XML broken
      */
-    public String resolveElement(Element e, String languageCode)
-            throws JDOMException {
-        String result = "";
+    private String resolveElement(Element e, String languageCode) {
+        StringBuilder result = new StringBuilder();
         List<Content> l = e.getContent();
         for (Object o : l) {
             // System.out.println(o.toString());
             if (o instanceof Text) {
-                result += ((Text) o).getText();
+                result.append(((Text) o).getText());
             } else {
                 Element patternRef = ((Element) o);
                 String refName = patternRef.getAttributeValue("ref");
@@ -216,10 +202,10 @@ public class PatternReader {
                         theRightRegexElement = regexChildOfThisLanguage;
                     }
                 }
-                result += resolveElement(theRightRegexElement, languageCode);
+                result.append(resolveElement(theRightRegexElement, languageCode));
             }
         }
-        return result;
+        return result.toString();
     }
 
 }

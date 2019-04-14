@@ -12,6 +12,6 @@ public class BeginEvent extends Event {
 
     @Override
     public String mkTime() {
-        return "B_" + Integer.toString(nr);
+        return "B_" + nr;
     }
 }

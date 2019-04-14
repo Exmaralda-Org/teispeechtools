@@ -38,6 +38,6 @@ public class MarkedEvent extends Event {
 
     public String getMark() {
         return mark;
-    };
+    }
 
 }

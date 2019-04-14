@@ -28,7 +28,7 @@ import picocli.CommandLine.Spec;
  *
  */
 @Command(description = "read patterns from file", name = "patternreader", mixinStandardHelpOptions = true, versionProvider = de.ids.mannheim.clarin.teispeech.tools.VersionProvider.class)
-public class PatternReaderRunner implements Runnable {
+class PatternReaderRunner implements Runnable {
     /**
      * @param args
      *            the command line arguments ;-).
@@ -38,17 +38,17 @@ public class PatternReaderRunner implements Runnable {
     }
 
     private static final List<Integer> potentialLevels = Arrays
-            .asList(new Integer[] { 2, 3 });
+            .asList(2, 3);
 
     @Option(names = { "-i",
             "--input" }, description = "file to read from, by default STDIN")
     private File inputFile;
     @Option(names = { "-l",
             "--language" }, description = "the language (default: universal)")
-    private String language = "universal";
+    private final String language = "universal";
     @Option(names = { "-L",
             "--level" }, description = "the parsing level (default: 2)")
-    private int level = 2;
+    private final int level = 2;
 
     @Spec
     private CommandSpec spec; // injected by picocli

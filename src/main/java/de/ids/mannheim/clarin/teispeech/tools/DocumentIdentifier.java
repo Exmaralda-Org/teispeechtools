@@ -26,6 +26,7 @@ import net.sf.saxon.xpath.XPathFactoryImpl;
 /**
  * provide IDs für Elements that have none – and remove them
  */
+@SuppressWarnings("WeakerAccess")
 public class DocumentIdentifier {
 
     private final static String PREFIX = "CLARIN_ROUNDTRIP_ID";
@@ -42,6 +43,7 @@ public class DocumentIdentifier {
      * @param doc
      *            the DOM document
      */
+    @SuppressWarnings("WeakerAccess")
     public DocumentIdentifier(Document doc) {
         this.doc = doc;
     }
@@ -52,7 +54,7 @@ public class DocumentIdentifier {
      * @param el
      *            DOM Element
      */
-    public void makeID(Element el) {
+    private void makeID(Element el) {
         Supplier<String> make = () -> PREFIX + "_" + (lastId++);
         String candidate = make.get();
         while (IDs.contains(candidate)) {
@@ -73,7 +75,7 @@ public class DocumentIdentifier {
      *
      * @return the document
      */
-    public Document getDocument() {
+    private Document getDocument() {
         return doc;
     }
 
@@ -82,7 +84,7 @@ public class DocumentIdentifier {
      *
      * @return the DocumentIdentifier instance, for chaining
      */
-    public DocumentIdentifier makeIDs() {
+    private DocumentIdentifier makeIDs() {
         System.setProperty("javax.xml.transform.TransformerFactory",
                 "net.sf.saxon.TransformerFactoryImpl");
         try {
@@ -115,11 +117,10 @@ public class DocumentIdentifier {
      *
      * @param doc
      *            the XML document (DOM)
-     * @return doc with identifiers
      */
-    public static Document makeIDs(Document doc) {
+    public static void makeIDs(Document doc) {
         DocumentIdentifier di = new DocumentIdentifier(doc);
-        return di.makeIDs().getDocument();
+        di.makeIDs();
     }
 
     /**
@@ -129,7 +130,7 @@ public class DocumentIdentifier {
      *            the XML document (jDOM)
      * @return doc with identifiers DOM
      */
-    public static Document makeIDs(org.jdom2.Document jdoc) {
+    private static Document makeIDs(org.jdom2.Document jdoc) {
         try {
             DocumentIdentifier di = new DocumentIdentifier(
                     Utilities.convertJDOMToDOM(jdoc));
@@ -165,9 +166,7 @@ public class DocumentIdentifier {
                     .compile(
                             "//*[./@xml:id[starts-with(., '" + PREFIX + "')] ]")
                     .evaluate(doc, XPathConstants.NODESET);
-            Utilities.toElementStream(identified).forEach(e -> {
-                e.removeAttribute("xml:id");
-            });
+            Utilities.toElementStream(identified).forEach(e -> e.removeAttribute("xml:id"));
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
         }

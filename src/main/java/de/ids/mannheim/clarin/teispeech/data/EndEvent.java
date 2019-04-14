@@ -12,7 +12,7 @@ public class EndEvent extends Event {
 
     @Override
     public String mkTime() {
-        return "E_" + Integer.toString(nr);
+        return "E_" + nr;
     }
 
 }

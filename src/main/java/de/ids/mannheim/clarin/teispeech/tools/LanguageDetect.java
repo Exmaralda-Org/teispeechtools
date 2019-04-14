@@ -36,6 +36,7 @@ import opennlp.tools.langdetect.LanguageDetectorModel;
  * @author bfi
  *
  */
+@SuppressWarnings("WeakerAccess")
 public class LanguageDetect {
 
     private final static Logger LOGGER = LoggerFactory
@@ -57,12 +58,13 @@ public class LanguageDetect {
 
     private Document doc;
 
-    private static LanguageDetector languageDetector;
+    private static final LanguageDetector languageDetector;
     static {
         // load the trained Language Detector Model file
         try (InputStream modelStream = LanguageDetect.class.getClassLoader()
                 .getResourceAsStream(MODEL_PATH)) {
 
+            assert modelStream != null;
             LanguageDetectorModel trainedModel = new LanguageDetectorModel(
                     modelStream);
 
@@ -106,7 +108,7 @@ public class LanguageDetect {
         this.minUtteranceSize = mini;
     }
 
-    public LanguageDetect(Document doc) {
+    private LanguageDetect(Document doc) {
         this(doc, "deu", new String[] { "tur", "en" }, 5);
     }
 

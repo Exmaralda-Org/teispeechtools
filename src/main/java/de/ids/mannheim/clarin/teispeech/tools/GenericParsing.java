@@ -23,6 +23,7 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 /**
  * converter from plain text to TEI ISO
  */
+@SuppressWarnings("WeakerAccess")
 public class GenericParsing {
 
     private final static Logger LOGGER = LoggerFactory
@@ -55,7 +56,7 @@ public class GenericParsing {
      *            the utterance element
      *
      */
-    public static void process(Element el) {
+    private static void process(Element el) {
         if (StringUtils.strip(el.getTextContent()).isEmpty()) {
             return;
         }
@@ -102,7 +103,7 @@ public class GenericParsing {
         Utilities
                 .toElementStream(
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
-                .forEach(u -> process(u));
+                .forEach(GenericParsing::process);
         DocUtilities.makeChange(doc,
                 "segmented according to generic transcription conventions");
     }

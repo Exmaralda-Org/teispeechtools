@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,22 +29,22 @@ import de.ids.mannheim.clarin.teispeech.tools.DocUtilities;
  */
 public class GATParser extends AbstractParser {
 
-    private static XPathFactory xpf = XPathFactory.instance();
+    private static final XPathFactory xpf = XPathFactory.instance();
 
     // String PATTERNS_FILE_PATH = "/org/exmaralda/folker/data/Patterns.xml";
-    static final String PATTERNS_FILE_PATH = "Patterns.xml";
-    static final Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
+    private static final String PATTERNS_FILE_PATH = "Patterns.xml";
+    private static final Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
 
 //    private final static Logger LOGGER = LoggerFactory
 //            .getLogger(GATParser.class.getName());
     private Map<String, Pattern> minimalPatterns;
-    static final String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
+    private static final String MINIMAL_TRANSFORMER_FILE_PATH = "transformcontribution.xsl";
     // String MINIMAL_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution.xsl";
     private XSLTransformer minimalTransformer;
 
     private Map<String, Pattern> basicPatterns;
-    static final String BASIC_TRANSFORMER_FILE_PATH = "transformcontribution_basic.xsl";
+    private static final String BASIC_TRANSFORMER_FILE_PATH = "transformcontribution_basic.xsl";
     // String BASIC_TRANSFORMER_FILE_PATH =
     // "/org/exmaralda/folker/data/transformcontribution_basic.xsl";
     private XSLTransformer basicTransformer;
@@ -54,7 +55,7 @@ public class GATParser extends AbstractParser {
                 "net.sf.saxon.TransformerFactoryImpl");
     }
 
-    public GATParser(String languageCode) throws JDOMException, IOException {
+    private GATParser(@SuppressWarnings("SameParameterValue") String languageCode) throws JDOMException, IOException {
 
         PatternReader pr = new PatternReader(GATParser.class.getClassLoader()
                 .getResourceAsStream(PATTERNS_FILE_PATH));
@@ -69,7 +70,7 @@ public class GATParser extends AbstractParser {
                 Utilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
                         .getResourceAsStream(BASIC_TRANSFORMER_FILE_PATH)));
 
-    };
+    }
 
     /**
      * set level and version at appropriate place in &lt;teiHeader&gt;
@@ -81,7 +82,7 @@ public class GATParser extends AbstractParser {
      * @param version
      *            the version
      */
-    private void setLevel(Document doc, String level, String version) {
+    private void setLevel(Document doc, String level, @SuppressWarnings("SameParameterValue") String version) {
         Element transDesc = Utilities.getElementByTagName(doc.getRootElement(),
                 "transcriptionDesc", TEI_NS);
         if (transDesc == null) {
@@ -107,7 +108,7 @@ public class GATParser extends AbstractParser {
                         header.addContent(eDe);
                     }
                 }
-                eDe.addContent(0, transDesc);
+                Objects.requireNonNull(eDe).addContent(0, transDesc);
             }
         }
         transDesc.setAttribute("ident", level, TEI_NS);
@@ -182,7 +183,7 @@ public class GATParser extends AbstractParser {
             for (Element unparsed : unparseds) {
 
                 List<PositionTimeMapping> timePositions = new ArrayList<>();
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 boolean totalParseOK = true;
                 for (Content c : unparsed.getContent()) {
                     if (c instanceof Text) {
@@ -196,7 +197,7 @@ public class GATParser extends AbstractParser {
                             break;
                         }
                         // System.err.println("MATCHED!");
-                        text += eventText;
+                        text.append(eventText);
                     } else {
                         Element e = (Element) c;
                         String timeID = e.getAttributeValue("synch");
@@ -205,27 +206,26 @@ public class GATParser extends AbstractParser {
                     }
                 }
                 totalParseOK = totalParseOK && (minimalPatterns
-                        .get("GAT_CONTRIBUTION").matcher(text).matches());
+                        .get("GAT_CONTRIBUTION").matcher(text.toString()).matches());
                 if (!totalParseOK) {
                     // System.err.println(
                     //         "TOTAL PARSE FAILED: " + unparsed.getText());
                     continue;
                 }
                 try {
-                    text = parseText(text, "GAT_NON_PHO", minimalPatterns);
-                    text = parseText(text, "GAT_PAUSE", minimalPatterns);
-                    text = parseText(text, "GAT_BREATHE", minimalPatterns);
-                    text = parseText(text, "GAT_UNCERTAIN", minimalPatterns);
+                    text = new StringBuilder(parseText(text.toString(), "GAT_NON_PHO", minimalPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_PAUSE", minimalPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_BREATHE", minimalPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_UNCERTAIN", minimalPatterns));
                     // removed on 06-03-2009
                     // text = parseText(text, "GAT_UNINTELLIGIBLE");
-                    text = parseText(text, "GAT_WORD", minimalPatterns);
-                    text = parseText(text, "GAT_WORDBOUNDARY", minimalPatterns);
-                    Element contribution = unparsed;
+                    text = new StringBuilder(parseText(text.toString(), "GAT_WORD", minimalPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_WORDBOUNDARY", minimalPatterns));
 
                     // Element contribution = unparsed.getParentElement();
-                    Utilities.replaceContentWithParse(contribution, text);
+                    Utilities.replaceContentWithParse(unparsed, text.toString());
 
-                    List<Element> l = contribution.getChildren("GAT_UNCERTAIN"); // drin
+                    List<Element> l = unparsed.getChildren("GAT_UNCERTAIN"); // drin
                                                                                  // lassen
                     List<Element> uncertains = new ArrayList<>();
                     for (Object o : l) {
@@ -247,7 +247,7 @@ public class GATParser extends AbstractParser {
                         Utilities.replaceContentWithParse(uc, ucText);
                     }
 
-                    IteratorIterable<Element> i2 = contribution.getDescendants(
+                    IteratorIterable<Element> i2 = unparsed.getDescendants(
                             new ElementFilter("GAT_ALTERNATIVE"));
                     List<Element> alternatives = new ArrayList<>();
                     while (i2.hasNext()) {
@@ -262,18 +262,17 @@ public class GATParser extends AbstractParser {
                         Utilities.replaceContentWithParse(al, alText);
                     }
 //                    contribution.setAttribute("parse-level", "2");
-                    insertTimeReferences(contribution, timePositions);
+                    insertTimeReferences(unparsed, timePositions);
                     List<Content> v = new ArrayList<>();
-                    v.add(contribution);
+                    v.add(unparsed);
                     // System.err.println(Utilities.elementToString(contribution));
                     List<Content> transformedContribution = minimalTransformer
                             .transform(v);
 //                    Element contributionParent = contribution
 //                            .getParentElement();
-                    contribution.setContent(transformedContribution);
+                    unparsed.setContent(transformedContribution);
                 } catch (IOException | JDOMException ex) {
                     ex.printStackTrace();
-                    continue;
                 }
             }
         } else if (parseLevel == 3) {
@@ -288,7 +287,7 @@ public class GATParser extends AbstractParser {
             }
             for (Element unparsed : unparseds) {
                 List<PositionTimeMapping> timePositions = new ArrayList<>();
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 boolean totalParseOK = true;
                 for (Object c : unparsed.getContent()) {
                     if (c instanceof Text) {
@@ -298,7 +297,7 @@ public class GATParser extends AbstractParser {
                             totalParseOK = false;
                             break;
                         }
-                        text += eventText;
+                        text.append(eventText);
                     } else {
                         Element e = (Element) c;
                         String timeID = e
@@ -314,16 +313,16 @@ public class GATParser extends AbstractParser {
                     // changed 28-03-2012 replace empty boundaries with pipe
                     // symbol boundary
                     totalParseOK = totalParseOK && ((basicPatterns
-                            .get("GAT_CONTRIBUTION").matcher(text).matches())
+                            .get("GAT_CONTRIBUTION").matcher(text.toString()).matches())
                             || basicPatterns.get("GAT_CONTRIBUTION")
                                     .matcher(basicPatterns
                                             .get("GAT_EMPTY_BOUNDARY")
-                                            .matcher(text).replaceAll("| "))
+                                            .matcher(text.toString()).replaceAll("| "))
                                     .matches());
                 } else {
                     totalParseOK = totalParseOK
                             && (basicPatterns.get("GAT_NO_SPEAKER_CONTRIBUTION")
-                                    .matcher(text).matches());
+                                    .matcher(text.toString()).matches());
                 }
                 if (!totalParseOK) {
                     // System.out.println("TOTAL PARSE FAILED");
@@ -333,35 +332,35 @@ public class GATParser extends AbstractParser {
 
                     // make sure angle brackets do not interfere with the XML
                     // parsing
-                    text = text.replaceAll("<", "\u2329").replaceAll(">",
-                            "\u232A");
+                    text = new StringBuilder(text.toString().replaceAll("<", "\u2329").replaceAll(">",
+                            "\u232A"));
 
-                    text = parseText(text, "GAT_PSEUDO_PHRASE_BOUNDARY",
-                            basicPatterns);
+                    text = new StringBuilder(parseText(text.toString(), "GAT_PSEUDO_PHRASE_BOUNDARY",
+                            basicPatterns));
 
-                    text = parseText(text, "GAT_NON_PHO", basicPatterns);
-                    text = parseText(text, "GAT_PAUSE", basicPatterns);
-                    text = parseText(text, "GAT_BREATHE", basicPatterns);
+                    text = new StringBuilder(parseText(text.toString(), "GAT_NON_PHO", basicPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_PAUSE", basicPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_BREATHE", basicPatterns));
 
                     // patterns specific to basic transcription
-                    text = parseText(text, "GAT_COMMENT_START_ESCAPED",
-                            basicPatterns);
-                    text = parseText(text, "GAT_COMMENT_END_ESCAPED",
-                            basicPatterns);
-                    text = parseText(text, "GAT_PHRASE_BOUNDARY",
-                            basicPatterns);
-                    text = parseText(text, "GAT_LATCHING", basicPatterns);
+                    text = new StringBuilder(parseText(text.toString(), "GAT_COMMENT_START_ESCAPED",
+                            basicPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_COMMENT_END_ESCAPED",
+                            basicPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_PHRASE_BOUNDARY",
+                            basicPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_LATCHING", basicPatterns));
                     // end patterns specific to basic transcription
 
-                    text = parseText(text, "GAT_UNCERTAIN", basicPatterns);
+                    text = new StringBuilder(parseText(text.toString(), "GAT_UNCERTAIN", basicPatterns));
                     // removed on 06-03-2009
                     // text = parseText(text, "GAT_UNINTELLIGIBLE");
 
-                    text = parseText(text, "GAT_WORD", basicPatterns);
-                    text = parseText(text, "GAT_WORDBOUNDARY", basicPatterns);
+                    text = new StringBuilder(parseText(text.toString(), "GAT_WORD", basicPatterns));
+                    text = new StringBuilder(parseText(text.toString(), "GAT_WORDBOUNDARY", basicPatterns));
 
                     Element contribution = unparsed.getParentElement();
-                    Utilities.replaceContentWithParse(contribution, text);
+                    Utilities.replaceContentWithParse(contribution, text.toString());
 
                     List<Element> l = contribution.getChildren("GAT_UNCERTAIN");
                     List<Element> uncertains = new ArrayList<>();
@@ -470,7 +469,6 @@ public class GATParser extends AbstractParser {
                             transformedContribution);
                 } catch (IOException | JDOMException ex) {
                     ex.printStackTrace();
-                    continue;
                 }
             }
         }
@@ -478,15 +476,15 @@ public class GATParser extends AbstractParser {
                 String.format("parsed for cGAT level %d.", parseLevel));
     }
 
-    String parseText(String text, String patternName,
-            Map<String, Pattern> patterns) throws JDOMException, IOException {
+    private String parseText(String text, String patternName,
+                             Map<String, Pattern> patterns) throws JDOMException, IOException {
         String docString = "<X>" + text + "</X>";
         // System.out.println("=== " + docString);
         Element e = Utilities.readJDOMFromString(docString).getRootElement();
-        String returnText = "";
+        StringBuilder returnText = new StringBuilder();
         for (Object o : e.getContent()) {
             if (!(o instanceof Text)) {
-                returnText += Utilities.elementToString((Element) o);
+                returnText.append(Utilities.elementToString((Element) o));
                 continue;
             }
             Pattern p = patterns.get(patternName);
@@ -502,9 +500,9 @@ public class GATParser extends AbstractParser {
                 m = p.matcher(thisText);
                 fromWhere = i2 + 2 * patternName.length() + 5;
             }
-            returnText += thisText;
+            returnText.append(thisText);
         }
-        return returnText;
+        return returnText.toString();
     }
 
     private void insertTimeReferences(Element contribution,
@@ -571,12 +569,11 @@ public class GATParser extends AbstractParser {
         }
     }
 
-    public boolean isFullyParsedOnLevel(Document doc, int level)
-            throws JDOMException {
+    public boolean isFullyParsedOnLevel(Document doc, int level) {
         return (xpf
                 .compile(
                         "//contribution[not(@parse-level='"
-                                + Integer.toString(level) + "')]",
+                                + level + "')]",
                         new ElementFilter())
                 .evaluateFirst(doc) == null);
     }
