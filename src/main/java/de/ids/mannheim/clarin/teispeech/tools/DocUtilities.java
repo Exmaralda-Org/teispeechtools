@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import net.sf.saxon.BasicTransformerFactory;
 
 import org.jdom2.Namespace;
@@ -45,7 +44,7 @@ public class DocUtilities {
     // TODO: Allow exponential notation?
     // TODO: What does "PT" etc. mean?
     // TODO: Treat other measurements (ms, min, h)?
-    public static final Pattern TIME_PATTERN = Pattern
+    private static final Pattern TIME_PATTERN = Pattern
             .compile("(?i)P?T?([0-9.]+)s?");
 
     /**
@@ -85,11 +84,7 @@ public class DocUtilities {
     public static String getLanguage(Element el, String defaultL,
             int maxComponents) {
         Optional<String> ret = getLanguage(el, maxComponents);
-        if (ret.isPresent()) {
-            return ret.get();
-        } else {
-            return defaultL;
-        }
+        return ret.orElse(defaultL);
     }
 
     /**
@@ -119,8 +114,7 @@ public class DocUtilities {
                             : lang;
                 }, Collectors.counting()));
         Optional<Entry<String, Long>> maxLang = freq.entrySet().stream()
-                .collect(Collectors
-                        .maxBy(Comparator.comparing(c -> c.getValue())));
+                .max(Comparator.comparing(Entry::getValue));
         if (maxLang.isPresent()) {
             return maxLang.get().getKey();
         } else {
@@ -297,8 +291,8 @@ public class DocUtilities {
      * @return whether el is tei:&lt;localName&gt;
      */
     public static boolean isTEI(Element el, String localName) {
-        return (el.getNamespaceURI() == TEI_NS
-                && el.getLocalName() == localName);
+        return (el.getNamespaceURI().equals(TEI_NS)
+                && el.getLocalName().equals(localName));
     }
 
     public static String getAtt(Element el, String nameSpace, String localName) {
@@ -496,7 +490,7 @@ public class DocUtilities {
     public static DocumentBuilderFactory dbf;
     public static DocumentBuilder db;
     static {
-        dbf = DocumentBuilderFactoryImpl.newInstance() ;
+        dbf = DocumentBuilderFactory.newInstance() ;
         try {
             db = dbf.newDocumentBuilder() ;
         } catch (ParserConfigurationException e) {

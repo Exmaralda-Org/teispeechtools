@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+declare -i i
 let i=0
 FILE=${1%.txt}
 ./spindel.sh text2iso --input=$1 --output=${FILE}-0-text2iso.xml --indent

@@ -223,9 +223,9 @@ public class PseudoAlign {
                         // work with transcriptions
                         String text = Seq.seq(words)
                                 .map(el -> el.getTextContent()).toString(" ");
-                        Optional<String[]> transcribed = GraphToPhoneme
-                                .getTranscription(text, uLanguage, true);
-                        transWords = transcribed.get();
+                        transWords = GraphToPhoneme
+                                .getTranscription(text, uLanguage, true)
+                                .get();
 
                         if (phoneticise) {
                             Seq.seq(words).zip(Arrays.asList(transWords))
@@ -249,7 +249,7 @@ public class PseudoAlign {
                     } else {
                         // fall back to counting letters
                         transWords = Seq.seq(words)
-                                .map(el -> el.getTextContent())
+                                .map(Node::getTextContent)
                                 .toArray(String[]::new);
                     }
                     int[] lettered = GraphToPhoneme.countSigns(transWords,
@@ -277,10 +277,9 @@ public class PseudoAlign {
         Utilities
                 .toElementStream(
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
-                .forEach(u -> annotateSingleUtterance(u));
+                .forEach(this::annotateSingleUtterance);
         Optional<Double> itemLength = relItemLength();
-        if (itemLength.isPresent())
-            applyItemLength(itemLength.get());
+        itemLength.ifPresent(this::applyItemLength);
         // TODO: remove relative lengths after testing
         // USE XSLT!
         DocUtilities.makeChange(doc, "Pseudo-aligned");
@@ -299,12 +298,12 @@ public class PseudoAlign {
     }
 
     private class Distance {
-        public final int rel;
-        public final double abs;
-        public final String from;
-        public final String to;
+        final int rel;
+        final double abs;
+        final String from;
+        final String to;
 
-        public Distance(int rel, double abs, String from, String to) {
+        Distance(int rel, double abs, String from, String to) {
             this.rel = rel;
             this.abs = abs;
             this.from = from;
@@ -320,27 +319,21 @@ public class PseudoAlign {
 
     private List<Distance> distances = new ArrayList<>();
     // private Map<String, Integer> rest = new HashMap<>();
-    List<Element> whenList = new ArrayList<>();
-    List<String> way = new ArrayList<>();
-    Map<Pair<String, String>, Distance> paths = new HashMap<>();
+    private List<Element> whenList = new ArrayList<>();
+    private List<String> way = new ArrayList<>();
+    private Map<Pair<String, String>, Distance> paths = new HashMap<>();
 
-    private void makeDistance(Element u, String from, String to,
+    private void makeDistance(String from, String to,
                               int relDuration,
                               double absDuration) {
-        // Element delta = u.getOwnerDocument().createElement("distance");
-        // delta.setAttribute("from", from);
-        // delta.setAttribute("to", to);
-        // delta.setAttribute("rel", String.valueOf(relDuration));
-        // delta.setAttribute("abs", String.valueOf(absDuration));
-        // u.appendChild(delta);
         distances.add(new Distance(relDuration, absDuration, from, to));
     }
 
 
-    public static Map<String, Integer> getOrder(List<Element> whens) {
+    private static Map<String, Integer> getOrder(List<Element> whens) {
         Map<String, Integer> order = new HashMap<>();
         for (int i = 0; i < whens.size(); i++) {
-            Element el = (Element) whens.get(i);
+            Element el = whens.get(i);
             String elID = getAttXML(el, "id");
             order.put(elID, i);
         }
@@ -407,17 +400,17 @@ public class PseudoAlign {
                     Node now = iNo.next();
                     // set anchor to text length
                     if (now.getNodeType() == Node.ELEMENT_NODE &&
-                            ((Element) now).getLocalName().equals("anchor")) {
+                            now.getLocalName().equals("anchor")) {
                         Element nowEl = ((Element) now);
                         String nowName = DocUtilities.unPoundMark(
                                 getAttTEI(nowEl, "synch"));
                         for (String name : relDuration.keySet()) {
-                            makeDistance(u, name, nowName, relDuration.get(name) + textTillNow, absDuration.get(name));
+                            makeDistance(name, nowName, relDuration.get(name) + textTillNow, absDuration.get(name));
                         }
                         relRest.put(nowName, 0);
                     } else if (now.getNodeType() == Node.TEXT_NODE ||
                             (now.getNodeType() == Node.ELEMENT_NODE
-                                    && ((Element) now).getLocalName().equals("w"))) {
+                                    && now.getLocalName().equals("w"))) {
                         int count = Utilities.removeSpace(
                                 now.getTextContent()).length();
                         textTillNow += count;
@@ -437,7 +430,7 @@ public class PseudoAlign {
             }
         }
         for (String name : relDuration.keySet()) {
-            makeDistance(u, name, endEl, relDuration.get(name), absDuration.get(name));
+            makeDistance(name, endEl, relDuration.get(name), absDuration.get(name));
         }
     }
 
@@ -445,7 +438,7 @@ public class PseudoAlign {
     private Optional<Double> relItemLength() {
         NodeList whens = DocUtilities.getWhens(doc);
         whenList = Utilities.toElementList(whens);
-        NodeList nodes = null;
+        NodeList nodes;
         try {
             nodes = (NodeList) blocky.evaluate(doc, XPathConstants.NODESET);
             Map<String, Integer> order = getOrder(whenList);
@@ -532,12 +525,11 @@ public class PseudoAlign {
 
     private void applyItemLength (Double itemLength) {
         Comment comment = doc.createComment(
-                String.format(" length per item: %.4f ", itemLength));
+                String.format(" length per item: %.4f seconds", itemLength));
         Utilities.getElementByTagNameNS(doc, TEI_NS, "body").appendChild(comment);
         Map<String,Double> position = new HashMap<>();
         String start = getAttXML(whenList.get(0), "id");
         position.put(start, 0d);
-        Map<String, LinkedHashSet<String>> accessible = new HashMap<>();
         // System.err.println(distances);
         System.err.println(way);
         // System.err.println(accessibleRev);
@@ -563,7 +555,7 @@ public class PseudoAlign {
             // uncomment to test for rounding error:
             // pos = position.get(dist.from) + step;
             position.put(ref, pos);
-            event.setAttributeNS(TEI_NS, "interval", String.format("%.4f", pos));
+            event.setAttributeNS(TEI_NS, "interval", String.format("%.4fs", pos));
             event.setAttributeNS(TEI_NS, "since", start);
         }
     }
