@@ -126,6 +126,13 @@ public class CLI implements Runnable {
     private
     double offset = 0d;
 
+    @SuppressWarnings("FieldCanBeLocal")
+    @Option(names = {"-e", "--every"}, description = "insert time anchor " +
+            "every n items"
+            + "(alignment, default: ${DEFAULT-VALUE})")
+    private
+    int every = 20;
+
     @Spec
     private CommandSpec spec; // injected by picocli
 
@@ -325,7 +332,7 @@ public class CLI implements Runnable {
             boolean usePhones = !useGraphs;
             Document doc = builder.parse(inputStream);
             PseudoAlign aligner = new PseudoAlign(doc, language, usePhones,
-                    transcribe, force, timeLength, offset);
+                    transcribe, force, timeLength, offset, every);
             aligner.calculateUtterances();
             Utilities.outputXML(outStream, aligner.getDoc(), indent);
         } catch (IOException | SAXException e) {

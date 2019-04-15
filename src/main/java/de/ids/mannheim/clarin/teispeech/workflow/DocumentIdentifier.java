@@ -1,15 +1,7 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
+import net.sf.saxon.om.NameChecker;
+import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.jdom2.JDOMException;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
@@ -19,9 +11,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
-import net.sf.saxon.om.NameChecker;
-import net.sf.saxon.xpath.XPathFactoryImpl;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
 
 /**
  * provide IDs für Elements that have none – and remove them
@@ -48,27 +47,8 @@ public class DocumentIdentifier {
         this.doc = doc;
     }
 
-    /**
-     * add identifier to an element
-     *
-     * @param el
-     *            DOM Element
-     */
-    private void makeID(Element el) {
-        Supplier<String> make = () -> PREFIX + "_" + (lastId++);
-        String candidate = make.get();
-        while (IDs.contains(candidate)) {
-            candidate = make.get();
-        }
-        IDs.add(candidate);
-        NameChecker.isValidNCName(candidate);
-        Node n = el.getAttributeNode("xml:id");
-        if (n == null || NameSpaces.XML_NS.equals(n.getNamespaceURI())) {
-            el.setAttribute("xml:id", candidate);
-        } else {
-            LOGGER.warn("skipped ID attribute with wrong namespace");
-        }
-    }
+    private final static XPathExpression ID_PATH;
+    private final static XPathExpression NO_ID_PATH;
 
     /**
      * get the document
@@ -77,6 +57,50 @@ public class DocumentIdentifier {
      */
     private Document getDocument() {
         return doc;
+    }
+
+    private static XPath XPATH = new XPathFactoryImpl().newXPath();
+
+    // note that Java is confused about @xml:id
+    static {
+        try {
+            ID_PATH = XPATH
+                    .compile(
+                            "//*[@*[local-name() = 'id' and namespace-uri() = '"
+                                    + XML_NS + "']]");
+            String unindentifiedXPath = "//*[not(@*[local-name() = 'id' and " +
+                    "namespace-uri() = '"
+                    + XML_NS + "'])]";
+            NO_ID_PATH = XPATH.compile(unindentifiedXPath);
+        } catch (XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * add identifier to an element
+     *
+     * @param el
+     *         DOM Element
+     */
+    private void makeID(Element el) {
+        makeID(el, PREFIX);
+    }
+
+    String makeID(Element el, String prefix) {
+        Supplier<String> make = () -> prefix + "_" + (lastId++);
+        String candidate = make.get();
+        while (IDs.contains(candidate)) {
+            candidate = make.get();
+        }
+        IDs.add(candidate);
+        assert NameChecker.isValidNCName(candidate);
+        Node n = el.getAttributeNodeNS(XML_NS, "xml:id");
+        if (n == null) {
+            el.setAttribute("xml:id", candidate);
+            return candidate;
+        }
+        return null;
     }
 
     /**
@@ -88,22 +112,13 @@ public class DocumentIdentifier {
         System.setProperty("javax.xml.transform.TransformerFactory",
                 "net.sf.saxon.TransformerFactoryImpl");
         try {
-            XPath xpf = new XPathFactoryImpl().newXPath();
-            // note that Java is confused about @xml:id
-            NodeList IDNodes = (NodeList) xpf
-                    .compile(
-                            "//*[@*[local-name() = 'id' and namespace-uri() = '"
-                                    + NameSpaces.XML_NS + "']]")
-                    .evaluate(doc, XPathConstants.NODESET);
+            NodeList IDNodes = (NodeList) ID_PATH.evaluate(doc,
+                    XPathConstants.NODESET);
             IDs = Utilities.toElementStream(IDNodes)
-                    .map(e -> e.getAttribute("xml:id"))
+                    .map(e -> e.getAttributeNS(XML_NS, "xml:id"))
                     .collect(Collectors.toSet());
 //            LOGGER.info(IDs.toString());
-            XPath xPath = XPathFactory.newInstance().newXPath();
-            // note that Java is confused about @xml:id
-            String unindentifiedXPath = "//*[not(@*[local-name() = 'id' and namespace-uri() = '"
-                    + NameSpaces.XML_NS + "'])]";
-            NodeList unidentified = (NodeList) xPath.compile(unindentifiedXPath)
+            NodeList unidentified = (NodeList) NO_ID_PATH
                     .evaluate(doc, XPathConstants.NODESET);
             Utilities.toElementStream(unidentified).forEach(this::makeID);
         } catch (XPathExpressionException e) {

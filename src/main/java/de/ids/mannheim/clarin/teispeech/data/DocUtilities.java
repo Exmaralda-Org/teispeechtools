@@ -317,7 +317,7 @@ public class DocUtilities {
      *            e.g. "PT12.2s"
      * @return an optional number, e.g. 12.2d or empty()
      */
-    private static Optional<Double> getDuration(String measurement) {
+    public static Optional<Double> getDuration(String measurement) {
         Matcher matcher = TIME_PATTERN.matcher(measurement);
         if (matcher.matches()) {
             return Optional.of(Double.parseDouble(matcher.group(1)));

@@ -206,26 +206,26 @@ Normalization:
   - Parameters  
     
       - the `language` of the document (if there is language information
-        in the document, it will be preferred).
+        in the document, it will be preferred)
       - whether to `force` tagging, even if a pos tag has already been
-        assigned to `<w>`.
+        assigned to `<w>`
       - whether to `transcribe` using [BAS Web Services](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface).
         See the [BAS documentation](http://clarin.phonetik.uni-muenchen.de/BASWebServices/help)
         ("runG2P") for the supported locales (non-ISO-639 codes like
         `nze` are not supported here).  The service will do some
         adjustment to be able to transcribe (e.g., accept `ltz` and not
         just the full `ltz-LU` for Luxemburgish).  Transcription is only
-        used if phones are used for pseudoalignment, see next option.
+        used if phones are used for pseudoalignment, see next option
       - whether to `usePhones` for pseudoalignment. If transcription
         using BAS' web service is possible and `usePhones` is true, the
         transcription will be used to guess the proportion of utterance
         duration to assign to the `<w>`. If no transcription
         is possible, or transcription is disabled, the number of letters
-        will be used to pseudo-align.
+        will be used to pseudo-align
       - the `time` length of the utterance
       - the `offset` of the utterance, i.e. the time of the first
-        timeline event.
-      - (to be added) a number of items after which to insert anchors
+        timeline event
+      - `every`, a number of items after which to insert anchors
 
 
 # Building and inspecting

@@ -59,11 +59,18 @@ public class PseudoAlign {
     static {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
+            // TODO: Do we want text() nodes?
+            // interesting =
+            //         xPath.compile(String.format(
+            //                 ".//*[(local-name() = 'w' or local-name() " +
+            //                         "='pause') and namespace-uri() =
+            //                         '%s']|" +
+            //                         ".//text()",
+            //                 TEI_NS));
             interesting =
                     xPath.compile(String.format(
                             ".//*[(local-name() = 'w' or local-name() " +
-                                    "='pause') and namespace-uri() = '%s']|" +
-                                    ".//text()",
+                                    "='pause') and namespace-uri() = '%s']",
                             TEI_NS));
             blocky =
                     xPath.compile(String.format(
@@ -81,6 +88,7 @@ public class PseudoAlign {
      */
     private final String language;
     private final double offset;
+    private final int every;
     /**
      * length of audio in seconds
      */
@@ -112,6 +120,10 @@ public class PseudoAlign {
     private final Map<String, LinkedHashSet<String>> accessibleRev =
             new HashMap<>();
     /**
+     * positions of events in time
+     */
+    Map<String, Double> position = new HashMap<>();
+    /**
      * XML DOM document
      */
     private Document doc;
@@ -123,6 +135,11 @@ public class PseudoAlign {
      * path from first to last event
      */
     private List<String> way = new ArrayList<>();
+    private DocumentIdentifier docID;
+    /**
+     * insignificant difference between elements, probably due to rounding
+     */
+    private double EPSILON = 0.005;
 
     /**
      * make new PseudoAlign for
@@ -145,7 +162,7 @@ public class PseudoAlign {
      */
     public PseudoAlign(Document doc, String language, boolean usePhones,
                        boolean phoneticise, boolean force, double timeLength,
-                       double offset) {
+                       double offset, int every) {
         this.language = language;
         this.doc = doc;
         this.phoneticise = phoneticise;
@@ -153,6 +170,7 @@ public class PseudoAlign {
         this.force = force;
         this.timeLength = timeLength;
         this.offset = offset;
+        this.every = every;
         if (!usePhones && phoneticise) {
             LOGGER.warn(
                     "phoneticise but not usePhones is not useful: phoneticise" +
@@ -261,7 +279,7 @@ public class PseudoAlign {
      *         pause element
      * @return duration
      */
-    private double getPausePhoneDuration(Element el) {
+    private double getPauseDuration(Element el) {
         Optional<Double> duration = DocUtilities.getDuration(el);
         if (duration.isPresent()) {
             return duration.get();
@@ -295,6 +313,42 @@ public class PseudoAlign {
             }
             return dur;
         }
+    }
+
+    private void makeDistance(String from, String to,
+                              int relDuration,
+                              double absDuration) {
+        distances.add(new Distance(relDuration, absDuration, from, to));
+    }
+
+    /**
+     * find a way {@code from} from to {@code goal}
+     *
+     * @param from
+     *         start of passage
+     * @param goal
+     *         end of passage (first event)
+     * @return null or passage
+     */
+    private List<String> findPathR(String from, String goal) {
+        LinkedHashSet<String> possible = accessibleRev.getOrDefault(from,
+                new LinkedHashSet<>());
+        if (possible.isEmpty())
+            return null;
+        // System.err.println(possible);
+        for (String next : Seq.seq(possible).toList()) {
+            if (goal.equals(next)) {
+                return Seq.of(next, from).toList();
+            } else {
+                // System.err.format("@%s: %s -> %s\n", from, next, goal);
+                List<String> ret = findPathR(next, goal);
+                if (ret != null) {
+                    ret.add(from);
+                    return ret;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -378,124 +432,14 @@ public class PseudoAlign {
                 .forEach(this::annotateSingleUtterance);
         Optional<Double> itemLength = relItemLength();
         itemLength.ifPresent(this::applyItemLength);
+        itemLength.ifPresent(this::insertAnchorEvery);
         cleanUp();
         // TODO: remove relative lengths after testing
         // USE XSLT!
         DocUtilities.makeChange(doc, "Pseudo-aligned");
     }
 
-    private void makeDistance(String from, String to,
-                              int relDuration,
-                              double absDuration) {
-        distances.add(new Distance(relDuration, absDuration, from, to));
-    }
-
-    /**
-     * find a way {@code from} from to {@code goal}
-     *
-     * @param from
-     *         start of passage
-     * @param goal
-     *         end of passage (first event)
-     * @return null or passage
-     */
-    private List<String> findPathR(String from, String goal) {
-        LinkedHashSet<String> possible = accessibleRev.getOrDefault(from,
-                new LinkedHashSet<>());
-        if (possible.isEmpty())
-            return null;
-        // System.err.println(possible);
-        for (String next : Seq.seq(possible).toList()) {
-            if (goal.equals(next)) {
-                return Seq.of(next, from).toList();
-            } else {
-                // System.err.format("@%s: %s -> %s\n", from, next, goal);
-                List<String> ret = findPathR(next, goal);
-                if (ret != null) {
-                    ret.add(from);
-                    return ret;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * annotate a single utterance
-     *
-     * @param u
-     *         the utterance
-     */
-    private void annotateSingleUtterance(Element u) {
-
-        List<Element> uChildren;
-        try {
-            uChildren = Utilities.toStream(
-                    (NodeList) interesting.evaluate(u, XPathConstants.NODESET))
-                    .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
-                    .map(n -> (Element) n).collect(Collectors.toList());
-        } catch (XPathExpressionException e) {
-            throw new RuntimeException(e);
-        }
-        Map<String, Double> absDuration = new HashMap<>();
-        Element par = (Element) u.getParentNode();
-        String currentEl = DocUtilities.unPoundMark(par.getAttribute("start"));
-        String endEl = DocUtilities.unPoundMark(par.getAttribute("end"));
-        Map<String, Integer> relDuration = new HashMap<>();
-        relDuration.put(currentEl, 0);
-        absDuration.put(currentEl, 0d);
-        // calculate relative durations and time to distribute over them
-        for (Element el : uChildren) {
-            if (DocUtilities.isTEI(el, "w")) {
-                incAllCounters(relDuration, Integer.parseInt(el.getAttribute(
-                        "rel-length")));
-                // count text length in characters for anchors in words
-                int textTillNow = 0;
-                Map<String, Integer> relRest = new HashMap<>();
-                for (Iterator<Node> iNo =
-                     Utilities.toIterator(el.getChildNodes());
-                     iNo.hasNext(); ) {
-                    Node now = iNo.next();
-                    // set anchor to text length
-                    if (now.getNodeType() == Node.ELEMENT_NODE &&
-                            now.getLocalName().equals("anchor")) {
-                        Element nowEl = ((Element) now);
-                        String nowName = DocUtilities.unPoundMark(
-                                nowEl.getAttribute("synch"));
-                        for (String name : relDuration.keySet()) {
-                            makeDistance(name, nowName,
-                                    relDuration.get(name) + textTillNow,
-                                    absDuration.get(name));
-                        }
-                        relRest.put(nowName, 0);
-                    } else if (now.getNodeType() == Node.TEXT_NODE ||
-                            (now.getNodeType() == Node.ELEMENT_NODE
-                                    && now.getLocalName().equals("w"))) {
-                        int count = Utilities.removeSpace(
-                                now.getTextContent()).length();
-                        textTillNow += count;
-                        incAllCounters(relRest, count);
-                    }
-                }
-                // for (String name : relRest.keySet()) {
-                //     Element delta = u.getOwnerDocument().createElement
-                //     ("rel-rest");
-                //     delta.setAttribute("after", name);
-                //     delta.setAttribute("rel", String.valueOf(relRest.get
-                //     (name)));
-                //     u.appendChild(delta);
-                // }
-            } else if (DocUtilities.isTEI(el, "pause")) {
-                incAllCounters(absDuration, getPausePhoneDuration(el));
-            } else {
-                LOGGER.warn("Skipped {}", el.getTagName());
-            }
-        }
-        for (String name : relDuration.keySet()) {
-            makeDistance(name, endEl, relDuration.get(name),
-                    absDuration.get(name));
-        }
-    }
+    // TODO: What about empty incidents?
 
     /**
      * determine the length of a pseudophone
@@ -593,20 +537,97 @@ public class PseudoAlign {
         return Optional.empty();
     }
 
-    // TODO: What about empty incidents?
+    /**
+     * annotate a single utterance
+     *
+     * @param u
+     *         the utterance
+     */
+    private void annotateSingleUtterance(Element u) {
+
+        List<Element> uChildren;
+        try {
+            uChildren = Utilities.toStream(
+                    (NodeList) interesting.evaluate(u, XPathConstants.NODESET))
+                    .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
+                    .map(n -> (Element) n).collect(Collectors.toList());
+        } catch (XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+        Map<String, Double> absDuration = new HashMap<>();
+        Element par = (Element) u.getParentNode();
+        String currentEl = DocUtilities.unPoundMark(par.getAttribute("start"));
+        String endEl = DocUtilities.unPoundMark(par.getAttribute("end"));
+        Map<String, Integer> relDuration = new HashMap<>();
+        relDuration.put(currentEl, 0);
+        absDuration.put(currentEl, 0d);
+        // calculate relative durations and time to distribute over them
+        for (Element el : uChildren) {
+            if (DocUtilities.isTEI(el, "w")) {
+                incAllCounters(relDuration, Integer.parseInt(el.getAttribute(
+                        "rel-length")));
+                // count text length in characters for anchors in words
+                int textTillNow = 0;
+                Map<String, Integer> relRest = new HashMap<>();
+                for (Iterator<Node> iNo =
+                     Utilities.toIterator(el.getChildNodes());
+                     iNo.hasNext(); ) {
+                    Node now = iNo.next();
+                    // set anchor to text length
+                    if (now.getNodeType() == Node.ELEMENT_NODE &&
+                            now.getLocalName().equals("anchor")) {
+                        Element nowEl = ((Element) now);
+                        String nowName = DocUtilities.unPoundMark(
+                                nowEl.getAttribute("synch"));
+                        for (String name : relDuration.keySet()) {
+                            makeDistance(name, nowName,
+                                    relDuration.get(name) + textTillNow,
+                                    absDuration.get(name));
+                        }
+                        relRest.put(nowName, 0);
+                    } else if (// TODO: should we?
+                        // now.getNodeType() == Node.TEXT_NODE ||
+                            (now.getNodeType() == Node.ELEMENT_NODE
+                                    && now.getLocalName().equals("w"))) {
+                        int count = Utilities.removeSpace(
+                                now.getTextContent()).length();
+                        textTillNow += count;
+                        incAllCounters(relRest, count);
+                    }
+                }
+                // for (String name : relRest.keySet()) {
+                //     Element delta = u.getOwnerDocument().createElement
+                //     ("rel-rest");
+                //     delta.setAttribute("after", name);
+                //     delta.setAttribute("rel", String.valueOf(relRest.get
+                //     (name)));
+                //     u.appendChild(delta);
+                // }
+            } else if (DocUtilities.isTEI(el, "pause")) {
+                incAllCounters(absDuration, getPauseDuration(el));
+            } else {
+                LOGGER.warn("Skipped {}", el.getTagName());
+            }
+        }
+        for (String name : relDuration.keySet()) {
+            makeDistance(name, endEl, relDuration.get(name),
+                    absDuration.get(name));
+        }
+    }
 
     /**
-     * determine lenth of annotationBlocks
+     * determine length of annotationBlocks
      *
      * @param itemLength
      *         seconds per item
      */
     private void applyItemLength(Double itemLength) {
-        Comment comment = doc.createComment(
-                String.format(" length per item: %.4f seconds", itemLength));
+        String info = String.format("length per item: %.4f seconds",
+                itemLength);
+        Comment comment = doc.createComment(info);
+        LOGGER.info("applying " + info);
         Utilities.insertAtBeginningOf(comment,
                 Utilities.getElementByTagNameNS(doc, TEI_NS, "body"));
-        Map<String, Double> position = new HashMap<>();
         String start = getAttXML(whenList.get(0), "id");
         position.put(start, 0d);
         // System.err.println(distances);
@@ -643,6 +664,69 @@ public class PseudoAlign {
                     String.format("%.4fs", pos));
             event.setAttribute("since", start);
         }
+    }
+
+    /**
+     * insert an event into the TEI timeline; it will not be added to whenList!
+     *
+     * @param idPrefix
+     *         Prefix to use for an ID of the event
+     * @param pos
+     *         the position in the timeline
+     * @return the event DOM element
+     */
+    private String insertWhen(String idPrefix, Double pos) {
+        Stream<Element> whens =
+                Utilities.toElementStream(DocUtilities.getWhens(doc));
+        @SuppressWarnings("OptionalGetWithoutIsPresent")
+        Optional<Element> successor = Seq.seq(whens).drop(1).findFirst(
+                v -> pos + EPSILON < DocUtilities.getDuration(v.getAttribute(
+                        "interval")).get()
+        );
+        @SuppressWarnings("OptionalGetWithoutIsPresent") Element successorEl =
+                successor.orElseGet(() -> Seq.seq(whens).findLast().get());
+        Element when = doc.createElementNS(TEI_NS, "when");
+        String ID = docID.makeID(when, idPrefix);
+        when.setAttribute("interval", String.format("%.4fs", pos));
+        when.setAttribute("since", successorEl.getAttribute("since"));
+        Utilities.insertBeforeMe(when, successorEl);
+        return ID;
+    }
+
+    /**
+     * insert anchors every every {@link #blocky} elements
+     */
+    private void insertAnchorEvery(double itemLength) {
+        docID = new DocumentIdentifier(doc);
+        Utilities.toElementStream(doc.getElementsByTagNameNS(TEI_NS, "u")).forEach(
+                u -> {
+                    String startID =
+                            ((Element) u.getParentNode()).getAttribute("start");
+                    double pos = position.get(startID);
+                    try {
+                        NodeList interestingEls =
+                                (NodeList) interesting.evaluate(u,
+                                        XPathConstants.NODESET);
+                        for (int i = 0; i < interestingEls.getLength(); i++) {
+                            Element el = (Element) interestingEls.item(i);
+                            if (i > 0 && i % every == 0) {
+                                Element a = doc.createElementNS(TEI_NS,
+                                        "anchor");
+                                String id = insertWhen(startID, pos);
+                                a.setAttribute("sync", id);
+                                Utilities.insertBeforeMe(a, el);
+                            }
+                            if (el.getLocalName().equals("pause")) {
+                                pos += getPauseDuration(el);
+                            } else {
+                                pos = itemLength * Integer.parseInt(el.getAttribute("rel-length"));
+                            }
+                        }
+                    } catch (XPathExpressionException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
     }
 
     /**
