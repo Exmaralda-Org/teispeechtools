@@ -122,7 +122,7 @@ public class PseudoAlign {
     /**
      * positions of events in time
      */
-    Map<String, Double> position = new HashMap<>();
+    final Map<String, Double> position = new HashMap<>();
     /**
      * XML DOM document
      */
@@ -139,7 +139,7 @@ public class PseudoAlign {
     /**
      * insignificant difference between elements, probably due to rounding
      */
-    private double EPSILON = 0.005;
+    private final double EPSILON = 0.005;
 
     /**
      * make new PseudoAlign for
@@ -159,6 +159,8 @@ public class PseudoAlign {
      *         length of audio in seconds
      * @param offset
      *         the time offset of the first timeline event
+     * @param every
+     *         number of items after which to insert an orientation anchor
      */
     public PseudoAlign(Document doc, String language, boolean usePhones,
                        boolean phoneticise, boolean force, double timeLength,

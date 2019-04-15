@@ -59,7 +59,7 @@ public class DocumentIdentifier {
         return doc;
     }
 
-    private static XPath XPATH = new XPathFactoryImpl().newXPath();
+    private final static XPath XPATH = new XPathFactoryImpl().newXPath();
 
     // note that Java is confused about @xml:id
     static {
