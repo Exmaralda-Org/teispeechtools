@@ -172,7 +172,7 @@ public class PseudoAlign {
         this.force = force;
         this.timeLength = timeLength;
         this.offset = offset;
-        this.every = every;
+        this.every = every > 0 ? every : 50;
         if (!usePhones && phoneticise) {
             LOGGER.warn(
                     "phoneticise but not usePhones is not useful: phoneticise" +
