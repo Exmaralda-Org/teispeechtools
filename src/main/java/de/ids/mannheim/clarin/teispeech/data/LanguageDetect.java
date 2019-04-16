@@ -6,6 +6,7 @@ import opennlp.tools.langdetect.LanguageDetectorME;
 import opennlp.tools.langdetect.LanguageDetectorModel;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
+import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,7 +155,8 @@ public class LanguageDetect {
                         .map(Map.Entry::getKey).collect(Collectors.toList());
                 if (candidates.size() == 1) {
                     // majority language:
-                    utter.setAttribute("xml:lang", candidates.get(0));
+                    utter.setAttribute("xml:lang",
+                            LangUtilities.getLanguageString(candidates.get(0)));
                     continue;
                 } else if (candidates.size() > 1
                         && candidates.contains(defaultLanguage)) {
@@ -197,14 +199,14 @@ public class LanguageDetect {
             }
             List<Language> languages = Stream
                     .of(languageDetector.predictLanguages(text))
-                    .filter(l -> expectedLanguages.contains(l.getLang()))
+                    .filter(l -> expectedLanguages.contains(LangUtilities.getLanguageString(l.getLang())))
                     .collect(Collectors.toList());
             Comment com = doc
                     .createComment(
                             Seq.seq(languages)
                                     .filter(l -> l.getConfidence() > 0.005)
                                     .map(l -> String.format("%s: %.02f",
-                                            l.getLang(), l.getConfidence()))
+                                            LangUtilities.getLanguageString(l.getLang()), l.getConfidence()))
                                     .toString("; "));
             utter.getParentNode().insertBefore(com, utter);
             if (languages.size() >= 2 && languages.get(0).getConfidence() > 0
@@ -212,7 +214,8 @@ public class LanguageDetect {
                     && (languages.get(0).getConfidence() / languages.get(1)
                             .getConfidence() > GOOD_RELATION)) {
                 // in clear cases, believe language guess
-                String lang = languages.get(0).getLang();
+                String lang =
+                        LangUtilities.getLanguageString(languages.get(0).getLang());
                 utter.setAttribute("xml:lang", lang);
                 Utilities.incCounter(changed, lang);
                 processed++;

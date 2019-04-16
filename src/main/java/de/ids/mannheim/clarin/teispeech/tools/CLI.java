@@ -13,6 +13,8 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import picocli.CommandLine;
@@ -37,6 +39,8 @@ import java.util.stream.Stream;
         VersionProvider.class)
 public class CLI implements Runnable {
 
+    private final static Logger LOGGER = LoggerFactory
+            .getLogger(CLI.class.getName());
     // @Option(names = {"-v", "--verbose"}, description = "give more info")
     // private boolean verbose = false;
     //
@@ -70,12 +74,12 @@ public class CLI implements Runnable {
             "--language"}, description = "the (default) language "
             + "of the document, an ISO-639 language code "
             + "(default: '${DEFAULT-VALUE}'; normalize, pos)")
-    private String language = "deu";
+    private String language = "de";
 
     @Option(names = "--expected", description = "comma-separated "
             + "list of expected languages besides the main language; "
             + "by default '${DEFAULT-VALUE}' "
-            + "(ONLY guess)", defaultValue = "deu,eng,tur", split = ",")
+            + "(ONLY guess)", defaultValue = "de,en,tr", split = ",")
     private
     String[] expected;
 
@@ -216,6 +220,7 @@ public class CLI implements Runnable {
      * @return normalized language
      */
     private String checkLanguage(String lang) {
+        // String origLang = lang;
         if (!LangUtilities.isLanguage(lang)) {
             throw new ParameterException(spec.commandLine(),
                     String.format("«%s» is not a valid language!", lang));
@@ -223,6 +228,7 @@ public class CLI implements Runnable {
             //noinspection OptionalGetWithoutIsPresent
             lang = LangUtilities.getLanguage(lang).get();
         }
+        // LOGGER.info("In: {}, Out: {}", origLang, lang);
         return lang;
     }
 
