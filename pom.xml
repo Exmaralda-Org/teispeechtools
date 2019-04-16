@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>teispeechtools</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.3</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
   <properties>
