@@ -11,6 +11,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.jooq.lambda.Seq;
+import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -364,8 +365,10 @@ public class PseudoAlign {
         // aggregate by language to minimise calls to web service
         DocUtilities.groupByLanguage("w", doc, language, 1)
                 .forEach((uLanguage, initWords) -> {
+                    LOGGER.info("Tagging {} utterances in '{}'",
+                            initWords.size(), uLanguage);
                     Optional<String> locale = GraphToPhoneme
-                            .correspondsTo(language);
+                            .correspondsTo(uLanguage);
                     String[] transWords;
                     boolean transcribe = usePhones && locale.isPresent();
                     List<Element> words = Seq.seq(initWords)
@@ -379,7 +382,7 @@ public class PseudoAlign {
                                 .map(Node::getTextContent).toString(" ");
                         //noinspection OptionalGetWithoutIsPresent
                         transWords = GraphToPhoneme
-                                .getTranscription(text, uLanguage, true)
+                                .getTranscription(text, locale.get(), true)
                                 .get();
 
                         if (phoneticise) {
@@ -841,6 +844,7 @@ public class PseudoAlign {
         public static Optional<String> correspondsTo(String locale) {
             String[] components = LOCALE_SEPARATOR.split(locale);
             Optional<String> ret = Optional.empty();
+            components[0] = LangUtilities.toThree(components[0]);
             for (int i = components.length; i >= 0; i--) {
                 String loki = String.join("-",
                         Arrays.copyOfRange(components, 0, i));
@@ -883,8 +887,8 @@ public class PseudoAlign {
                                 "oform",
                                 "txt")
                                 .addTextBody("iform", "list") // txt?
-                                .addTextBody("align", "no").addTextBody("lng"
-                                , loc)
+                                .addTextBody("align", "no")
+                                .addTextBody("lng", loc)
                                 .addTextBody("featset",
                                         extendedFeatures ? "extended" :
                                                 "standard")

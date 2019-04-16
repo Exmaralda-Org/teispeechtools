@@ -13,6 +13,6 @@ inc_i
 for step in segmentize guess normalize pos identify unidentify align
 do
     ./spindel.sh ${step} --input=${FILE}-${last_i}-${LAST_STEP}.xml \
-        --indent --output=${FILE}-${i}-${step}.xml --use-graphs --time 43
+        --indent --output=${FILE}-${i}-${step}.xml --time 43
     inc_i
 done

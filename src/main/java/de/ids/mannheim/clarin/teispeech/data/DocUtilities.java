@@ -59,7 +59,7 @@ public class DocUtilities {
             lang = ((Element) parent).getAttribute("xml:lang");
         }
         if (!lang.isEmpty()) {
-            return LangUtilities.getLanguageLocale(lang, maxComponents);
+            return LangUtilities.getLanguageLocale(lang, maxComponents, true);
         } else {
             return Optional.empty();
         }
