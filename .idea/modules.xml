@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/teispeechtools.iml" filepath="$PROJECT_DIR$/teispeechtools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../utilities/utilities.iml" filepath="$PROJECT_DIR$/../utilities/utilities.iml" />
     </modules>
   </component>
 </project>

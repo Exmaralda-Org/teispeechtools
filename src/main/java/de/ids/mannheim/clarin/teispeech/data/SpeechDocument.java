@@ -11,7 +11,7 @@ import java.util.*;
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
 
 /**
- * TEI annotated speech document, mainly for use in {@link TextToTEIConversion.TextToTEI}
+ * TEI annotated speech document, mainly for use in {@link TextToTEIConversion}
  *
  * @author bfi
  */
@@ -22,34 +22,30 @@ public class SpeechDocument {
      * the XML DOM document
      */
     private final Document doc;
-
+    /**
+     * the document language
+     */
+    private final String language;
     /**
      * the current {@code <annotationBlock>}
      */
     private Element currentBlock;
-
     /**
      * the current {@code <u>}
      */
     private Element currentUtterance;
-
     /**
      * the ID of the current speaker
      */
     private String currentSpeaker;
 
     /**
-     * the document language
-     */
-    private final String language;
-
-    /**
      * a speech document has
      *
      * @param doc
-     *            an XML document
+     *         an XML document
      * @param lang
-     *            a document language (preferably a ISO 639-1 three letter code)
+     *         a document language (preferably a ISO 639-1 three letter code)
      */
     public SpeechDocument(Document doc, String lang) {
         language = lang;
@@ -68,11 +64,10 @@ public class SpeechDocument {
      * set the language to code specified by {@code language}
      *
      * @param language
-     *            should be an ISO 639-1 three letter code
+     *         should be an ISO 639-1 three letter code
      */
     private void setLanguage(String language) {
-        Element el = Utilities.getElementByTagNameNS(doc, TEI_NS,
-                "text");
+        Element el = Utilities.getElementByTagNameNS(doc, TEI_NS, "text");
         el.setAttribute("xml:lang", language);
     }
 
@@ -84,18 +79,16 @@ public class SpeechDocument {
      * insert list of parsing errors as comments
      *
      * @param errors
-     *            list of errors
+     *         list of errors
      */
     public void makeErrorList(List<String> errors) {
         if (errors.size() > 0) {
             Element head = (Element) doc
-                    .getElementsByTagNameNS(TEI_NS, "teiHeader")
-                    .item(0);
+                    .getElementsByTagNameNS(TEI_NS, "teiHeader").item(0);
             Element before = (Element) doc
-                    .getElementsByTagNameNS(TEI_NS, "profileDesc")
-                    .item(0);
-            Comment comment = doc.createComment(
-                    "[ There were errors parsing your text. "
+                    .getElementsByTagNameNS(TEI_NS, "profileDesc").item(0);
+            Comment comment = doc
+                    .createComment("[ There were errors parsing your text. "
                             + " Please refer to online documentation "
                             + "on how to correct them. ]");
             head.insertBefore(comment, before);
@@ -112,7 +105,7 @@ public class SpeechDocument {
      * insert list of events
      *
      * @param events
-     *            {@link Deque} of events
+     *         {@link Deque} of events
      */
     public void makeTimeLine(Deque<Event> events) {
         Element timeLine = (Element) doc
@@ -139,7 +132,7 @@ public class SpeechDocument {
      * insert sorted list of speakers
      *
      * @param speakers
-     *            the speakers
+     *         the speakers
      */
     public void makeSpeakerList(Collection<String> speakers) {
         // iterate over speakers
@@ -149,12 +142,10 @@ public class SpeechDocument {
         // </persName>
         // </person>
         Element list = (Element) doc
-                .getElementsByTagNameNS(TEI_NS, "particDesc")
-                .item(0);
+                .getElementsByTagNameNS(TEI_NS, "particDesc").item(0);
         speakers.stream().sorted().forEach(s -> {
             Element person = doc.createElementNS(TEI_NS, "person");
-            Element persName = doc.createElementNS(TEI_NS,
-                    "persName");
+            Element persName = doc.createElementNS(TEI_NS, "persName");
             Element abbr = doc.createElementNS(TEI_NS, "abbr");
             Text tx = doc.createTextNode(s);
             abbr.appendChild(tx);
@@ -167,8 +158,7 @@ public class SpeechDocument {
     }
 
     private Element addAnnotationBlock(Event from, Event to) {
-        Element block = doc.createElementNS(TEI_NS,
-                "annotationBlock");
+        Element block = doc.createElementNS(TEI_NS, "annotationBlock");
         // Element block = doc.createElementNS(NameSpaces.TEI_NS,
         // "annotationBlock");
         block.setAttribute("who", currentSpeaker);
@@ -181,16 +171,16 @@ public class SpeechDocument {
      * adds {@code <u>} with surrounding block and remembers current Utterance
      *
      * @param from
-     *            begin event
+     *         begin event
      * @param to
-     *            end evend
+     *         end evend
      */
     public void addBlockUtterance(Event from, Event to) {
         Element block = addAnnotationBlock(from, to);
         Element utterance = doc.createElementNS(TEI_NS, "u");
         block.appendChild(utterance);
-        Element body = (Element) doc
-                .getElementsByTagNameNS(TEI_NS, "body").item(0);
+        Element body = (Element) doc.getElementsByTagNameNS(TEI_NS, "body")
+                .item(0);
         body.appendChild(block);
         currentBlock = block;
         currentUtterance = utterance;
@@ -202,44 +192,40 @@ public class SpeechDocument {
         changeOthers(original, from, false);
     }
 
-    private void changeOthers(Event original, MarkedEvent from,
-                              boolean isEnd){
+    private void changeOthers(Event original, MarkedEvent from, boolean isEnd) {
         String mark = isEnd ? from.mkTime() : from.mkEndTime();
         Node sib;
         do {
             sib = currentBlock.getPreviousSibling();
-            if (sib.getNodeType() == Node.ELEMENT_NODE &&
-                    sib.getLocalName().equals("incident")) {
+            if (sib.getNodeType() == Node.ELEMENT_NODE
+                    && sib.getLocalName().equals("incident")) {
                 Element elSib = (Element) sib;
                 Seq.of("start", "end").forEach(att -> {
-                    if (elSib.getAttribute(att).equals(original
-                            .mkTimeRef())) {
+                    if (elSib.getAttribute(att).equals(original.mkTimeRef())) {
                         elSib.setAttribute(att, mark);
                     }
                 });
             }
-        } while (sib.getNodeType() != Node.ELEMENT_NODE ||
-                "annotationBlock".equals(sib.getLocalName()));
+        } while (sib.getNodeType() != Node.ELEMENT_NODE
+                || "annotationBlock".equals(sib.getLocalName()));
         Utilities
-                .toElementStream(currentBlock
-                        .getElementsByTagNameNS(TEI_NS, "span"))
+                .toElementStream(
+                        currentBlock.getElementsByTagNameNS(TEI_NS, "span"))
                 .forEach(b -> Seq.of("start", "end").forEach(att -> {
-                    if (b.getAttribute(att).equals(original
-                            .mkTimeRef())) {
+                    if (b.getAttribute(att).equals(original.mkTimeRef())) {
                         b.setAttribute(att, mark);
                     }
                 }));
 
     }
 
-
     /**
      * add anchor for synchronization
      *
      * @param at
-     *            event from timeline
+     *         event from timeline
      * @param parent
-     *            parent node
+     *         parent node
      */
     public void addAnchor(Event at, Element parent) {
         addAnchor(at.mkTimeRef(), parent);
@@ -252,7 +238,7 @@ public class SpeechDocument {
     }
 
     // public void addTurn(Event from) {
-    //     // addAnchor(from, currentUtterance);
+    // // addAnchor(from, currentUtterance);
     // }
 
     /**
@@ -261,9 +247,9 @@ public class SpeechDocument {
      * anchor.
      *
      * @param original
-     *            the original end event, to be potentially removed
+     *         the original end event, to be potentially removed
      * @param to
-     *            the end event.
+     *         the end event.
      * @return whether a replacement was done
      */
     public boolean endTurn(Event original, Optional<MarkedEvent> to) {
@@ -294,9 +280,9 @@ public class SpeechDocument {
      * add text and manage whitespace
      *
      * @param text
-     *            the text
+     *         the text
      * @param space
-     *            whether to prepend whitespace
+     *         whether to prepend whitespace
      */
     public void addText(String text, boolean space) {
         Node lc = currentUtterance.getLastChild();
@@ -318,11 +304,11 @@ public class SpeechDocument {
      * add a comment concerning the span between two events
      *
      * @param from
-     *            the start
+     *         the start
      * @param to
-     *            the end
+     *         the end
      * @param text
-     *            the comment
+     *         the comment
      */
     public void addComment(Event from, Event to, String text) {
         Element comGroup = doc.createElementNS(TEI_NS, "spanGrp");
@@ -342,11 +328,11 @@ public class SpeechDocument {
      * add marked event
      *
      * @param e
-     *            the event in the timeline
+     *         the event in the timeline
      * @param text
-     *            the labelled text
+     *         the labelled text
      * @param startAnchor
-     *            whether a start anchor will be placed
+     *         whether a start anchor will be placed
      */
     public void addMarked(MarkedEvent e, String text, boolean startAnchor) {
         if (startAnchor) {
@@ -361,16 +347,16 @@ public class SpeechDocument {
      * insert incident in annotationBlock before current block
      *
      * @param from
-     *            the start of the current block
+     *         the start of the current block
      * @param to
-     *            the start of the current block
+     *         the start of the current block
      * @param text
-     *            description of the incident
+     *         description of the incident
      * @param extraPose
-     *            whether to embed into utterance or prepose to annotation block
+     *         whether to embed into utterance or prepose to annotation block
      */
     public void addIncident(Event from, Event to, String text,
-            boolean extraPose) {
+                            boolean extraPose) {
         Element incident = doc.createElementNS(TEI_NS, "incident");
         Element desc = doc.createElementNS(TEI_NS, "desc");
         // Element incident = doc.createElementNS(NameSpaces.TEI_NS,
@@ -415,8 +401,8 @@ public class SpeechDocument {
      */
 
     public static class MarkedEvent extends Event {
-        private final String mark;
         private static int lastEvent = 0;
+        private final String mark;
 
         public MarkedEvent(String mark) {
             nr = ++lastEvent;
@@ -454,7 +440,7 @@ public class SpeechDocument {
 
     /**
      * Events in the timeline
-     *
+     * <p>
      * Events are counted, as their only feature is to be distinct.
      *
      * @author bfi

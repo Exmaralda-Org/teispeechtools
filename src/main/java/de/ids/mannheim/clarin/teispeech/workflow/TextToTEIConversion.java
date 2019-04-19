@@ -1,11 +1,22 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
-import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaBaseListener;
-import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaLexer;
-import de.ids.mannheim.clarin.teispeech.utilities.AntlrErrorLister;
-import net.sf.saxon.om.NameChecker;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RuleContext;
@@ -15,13 +26,12 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.stream.Collectors;
+import de.ids.mannheim.clarin.teispeech.data.SpeechDocument;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaralda;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaBaseListener;
+import de.ids.mannheim.clarin.teispeech.tools.SimpleExmaraldaLexer;
+import de.ids.mannheim.clarin.teispeech.utilities.AntlrErrorLister;
+import net.sf.saxon.om.NameChecker;
 
 /**
  * converter from plain text to TEI ISO
@@ -33,9 +43,9 @@ public class TextToTEIConversion {
      * convert a plain text document to TEI ISO
      *
      * @param input
-     *            the input
+     *     the input
      * @param language
-     *            the language of the document
+     *     the language of the document
      * @return the document
      */
     public static Document process(CharStream input, String language) {
@@ -61,7 +71,7 @@ public class TextToTEIConversion {
      *
      */
     @SuppressWarnings("WeakerAccess")
-    public static class TextToTEI extends SimpleExmaraldaBaseListener {
+    private static class TextToTEI extends SimpleExmaraldaBaseListener {
 
         private final Deque<SpeechDocument.Event> events = new ArrayDeque<>();
         private final Set<String> speakers = new HashSet<>();
@@ -72,9 +82,9 @@ public class TextToTEIConversion {
         private Optional<SpeechDocument.MarkedEvent> lastMarked;
 
         /**
-         * This records the first overlap mark in an utterance content. It is set if
-         * the mark occurs for the second or a later time. Begin events of turns are
-         * moved before {@code firstMark} in the timeline later.
+         * This records the first overlap mark in an utterance content. It is
+         * set if the mark occurs for the second or a later time. Begin events
+         * of turns are moved before {@code firstMark} in the timeline later.
          */
         private SpeechDocument spd;
         private final CommonTokenStream tokens;
@@ -86,18 +96,20 @@ public class TextToTEIConversion {
          * prepare XML template.
          *
          * @param tokens
-         *            the token stream of the document
+         *     the token stream of the document
          * @param language
-         *            the language code for the document language
+         *     the language code for the document language
          */
         public TextToTEI(CommonTokenStream tokens, String language) {
             this.tokens = tokens;
             try (InputStream templateSource = TextToTEI.class.getClassLoader()
                     .getResourceAsStream(TEMPLATE_PATH)) {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilderFactory dbf = DocumentBuilderFactory
+                        .newInstance();
                 dbf.setNamespaceAware(true);
                 DocumentBuilder builder = dbf.newDocumentBuilder();
-                Document doc = builder.parse(Objects.requireNonNull(templateSource));
+                Document doc = builder
+                        .parse(Objects.requireNonNull(templateSource));
                 spd = new SpeechDocument(doc, language);
             } catch (IOException e1) {
                 throw new RuntimeException("Template missing!");
@@ -121,7 +133,8 @@ public class TextToTEIConversion {
         /**
          * remember speaker and check that name is a valid XML ID
          *
-         * @param name the potential ID
+         * @param name
+         *     the potential ID
          */
         private void rememberSpeaker(String name) {
             if (NameChecker.isValidNCName(name)) {
@@ -209,7 +222,8 @@ public class TextToTEIConversion {
                     assert events.contains(m);
                     spd.changeBlockStart(currentBegin, m);
                     events.remove(currentBegin);
-                    // System.err.println("Removed " + currentBegin.mkTimeRef());
+                    // System.err.println("Removed " +
+                    // currentBegin.mkTimeRef());
                     currentBegin = m;
 
                 } else {
@@ -274,7 +288,7 @@ public class TextToTEIConversion {
          * prepare list of errors, delegate do {@link SpeechDocument}
          *
          * @param list
-         *            the list of error messages
+         *     the list of error messages
          */
         public void makeErrorList(List<String> list) {
             spd.makeErrorList(list);

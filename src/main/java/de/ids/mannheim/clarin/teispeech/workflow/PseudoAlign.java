@@ -85,6 +85,10 @@ public class PseudoAlign {
     }
 
     /**
+     * positions of events in time
+     */
+    final Map<String, Double> position = new HashMap<>();
+    /**
      * default language
      */
     private final String language;
@@ -121,9 +125,9 @@ public class PseudoAlign {
     private final Map<String, LinkedHashSet<String>> accessibleRev =
             new HashMap<>();
     /**
-     * positions of events in time
+     * insignificant difference between elements, probably due to rounding
      */
-    final Map<String, Double> position = new HashMap<>();
+    private final double EPSILON = 0.005;
     /**
      * XML DOM document
      */
@@ -137,10 +141,6 @@ public class PseudoAlign {
      */
     private List<String> way = new ArrayList<>();
     private DocumentIdentifier docID;
-    /**
-     * insignificant difference between elements, probably due to rounding
-     */
-    private final double EPSILON = 0.005;
 
     /**
      * make new PseudoAlign for
