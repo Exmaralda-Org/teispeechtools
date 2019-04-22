@@ -145,7 +145,7 @@
     <dependency>
       <groupId>org.korpora.useful</groupId>
       <artifactId>utilities</artifactId>
-      <version>0.3</version>
+      <version>0.4</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
