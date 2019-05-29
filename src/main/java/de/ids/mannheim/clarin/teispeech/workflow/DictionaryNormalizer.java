@@ -84,12 +84,11 @@ public class DictionaryNormalizer implements WordNormalizer {
             }
             Utilities
                     .toElementStream(document
-                            .getElementsByTagNameNS(NameSpaces.TEI_NS, "entry"))
+                            .getElementsByTagName("entry"))
                     .forEach(entry -> {
                         String from = entry.getAttribute("form");
                         @SuppressWarnings("OptionalGetWithoutIsPresent") String to = Utilities
-                                .toElementStream(entry.getElementsByTagNameNS(
-                                        NameSpaces.TEI_NS, "n"))
+                                .toElementStream(entry.getElementsByTagName("n"))
                                 .max(Comparator.comparing(e -> Integer
                                         .parseInt(e.getAttribute("freq"))))
                                 .get().getAttribute("corr");
