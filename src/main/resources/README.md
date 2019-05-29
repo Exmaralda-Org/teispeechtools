@@ -7,7 +7,7 @@ title: Resources for TEI services
 - `dereko_capital_only.txt`  – words occurring capitalized-only in
   DeReKo.
 - `FOLK_Normalization_Lexicon.xml` (currently link to
-    `FOLK_Normalization_Lexicon_MAY_2018.xml`) – dictionary of
+    `FOLK_Normalization_Lexicon_MAY_2019.xml`) – dictionary of
     normalizations in the FOLK corpus, containing counts of
     normalizations.
 - `dict.tsv`: dictionary taking majority normalization from the FOLK and
