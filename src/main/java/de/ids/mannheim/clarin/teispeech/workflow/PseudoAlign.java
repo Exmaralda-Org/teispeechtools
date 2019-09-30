@@ -850,6 +850,8 @@ public class PseudoAlign {
                         Arrays.copyOfRange(components, 0, i));
                 if (LOCALES.containsKey(loki))
                     return Optional.of(LOCALES.get(loki));
+                else
+                    LOGGER.warn("Skipped {} [from {}]", loki, locale);
             }
             return ret;
         }

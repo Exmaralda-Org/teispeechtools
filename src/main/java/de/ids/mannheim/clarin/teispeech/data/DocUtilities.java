@@ -245,7 +245,9 @@ public class DocUtilities {
         String message = change + "; "
                 + (processedLanguages.size() > 0
                         ? "processed " + String.join("/", processedLanguages)
-                                + ", "
+                        : "")
+                + (processedLanguages.size() > 0 && skippedLanguages.size() > 0
+                        ? ", "
                         : "")
                 + (skippedLanguages.size() > 0
                         ? "skipped " + String.join("/", skippedLanguages)

@@ -7,6 +7,7 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 import org.korpora.useful.Utilities;
+import org.korpora.useful.LangUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -160,6 +161,7 @@ public class TEIPOS {
             List<String> untagged = new ArrayList<>();
             DocUtilities.groupByLanguage("u", doc, language, 1)
                     .forEach((uLanguage, utters) -> {
+                        uLanguage = LangUtilities.getLanguage(uLanguage, uLanguage);
                         if (modelMap.containsKey(uLanguage)) {
                             try {
                                 tagByLanguage(uLanguage, utters, force);
