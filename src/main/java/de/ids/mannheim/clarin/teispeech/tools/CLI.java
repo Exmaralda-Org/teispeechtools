@@ -112,7 +112,7 @@ public class CLI implements Runnable {
     @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {"-t",
             "--transcribe"}, description = "add phonetic canonical " +
-            "transcription"
+            "transcription "
             + "in pseudoalignment (default: ${DEFAULT-VALUE}, only used "
             + "if not --use-graphs)")
     private
@@ -170,7 +170,7 @@ public class CLI implements Runnable {
             try {
                 outStream = new FileOutputStream(outFile);
             } catch (FileNotFoundException e) {
-                System.err.println(e.getMessage());
+                 System.err.println(e.getMessage());
                 System.err.println("--> continuing to print to STDOUT");
             }
         }
