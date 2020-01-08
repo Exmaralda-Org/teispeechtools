@@ -32,13 +32,13 @@ All functions are also accessible from the command line. Try:
 (after building in root directory)
 
 ``` sh
-java -cp 'target/dependency/*' -jar target/teispeechtools-0.4.jar
+java -cp 'target/dependency/*' -jar target/teispeechtools-0.4.1.jar
 ```
 
 (in the directory containing the jar)
 
 ``` sh
-java -cp 'dependency/*' -jar teispeechtools-0.4.jar
+java -cp 'dependency/*' -jar teispeechtools-0.4.1.jar
 ```
 
 and follow the help. Together with this description, you should get
@@ -46,6 +46,15 @@ along well. If not, contact [Bernhard
 Fisseni](mailto:fisseni@ids-mannheim.de?subect=TEI+Transcription+tools)
 
 A simple [wrapper script](spindel.sh) is available.
+
+The names of CLI commands corresponds to those of the TEILicht web
+services.
+
+The names of the options of the wrapper script correspond to those of
+the parameters used in the Java library.  However, some abbreviations
+are possible and `CamelCase` was converted to
+[`kebab-case`](https://stackoverflow.com/questions/11273282/whats-the-name-for-hyphen-separated-case).
+To see all options, execute the wrapper script once.
 
 
 # Tools
