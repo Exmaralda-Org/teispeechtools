@@ -63,14 +63,14 @@ public class CLI implements Runnable {
     private Step step;
 
     @Option(names = {"-i",
-            "--input"}, description = "input file , by default STDIN")
+            "--input"}, description = "input file, by default STDIN")
     private File inputFile;
 
     @Option(names = {"-o",
             "--output"}, description = "output file, by default STDOUT")
     private File outFile;
 
-    @Option(names = {"-l",
+    @Option(names = {"-l", "--lang",
             "--language"}, description = "the (default) language "
             + "of the document, an ISO-639 language code "
             + "(default: '${DEFAULT-VALUE}'; normalize, pos)")
@@ -96,14 +96,15 @@ public class CLI implements Runnable {
     private ProcessingLevel level = ProcessingLevel.generic;
 
     @SuppressWarnings("FieldCanBeLocal")
-    @Option(names = {
-            "--minimal"}, description = "the `minimal count` of words so "
+    @Option(names = {"--minimal",
+            "--minimal-length"}, description = "the `minimal count` of words so "
             + "that language detection is even "
             + "tried (default: ${DEFAULT-VALUE}, "
             + "which is already pretty low)")
     private int minimalLength = 5;
 
     @Option(names = {"-p",
+            "--use",
             "--use-graphs"}, description = "use graphs instead of (pseudo)" +
             "phones "
             + "for pseudoalignment (default: ${DEFAULT-VALUE})")
@@ -116,7 +117,7 @@ public class CLI implements Runnable {
             + "in pseudoalignment (default: ${DEFAULT-VALUE}, only used "
             + "if not --use-graphs)")
     private
-    boolean transcribe = true;
+    boolean transcribe = false;
 
     @SuppressWarnings("FieldCanBeLocal")
     @Option(names = {"-T", "--time"}, description = "audio length in seconds"
