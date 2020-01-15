@@ -44,11 +44,11 @@ public class CLI implements Runnable {
     // @Option(names = {"-v", "--verbose"}, description = "give more info")
     // private boolean verbose = false;
     //
-    @Option(names = {"--indent"}, description = "indent")
+    @Option(names = {"-I", "--indent"}, description = "indent")
     private boolean indent = false;
     // @Command() static void normalize
 
-    @Option(names = {"--force"}, description = "force STEP even if "
+    @Option(names = {"-f", "--force"}, description = "force STEP even if "
             + "the corresponding annotation exists already "
             + "(NOT for text2iso, segmentize)")
     private boolean force = false;
@@ -76,7 +76,7 @@ public class CLI implements Runnable {
             + "(default: '${DEFAULT-VALUE}'; normalize, pos)")
     private String language = "de";
 
-    @Option(names = "--expected", description = "comma-separated "
+    @Option(names = {"-E", "--expected"}, description = "comma-separated "
             + "list of expected languages besides the main language; "
             + "by default '${DEFAULT-VALUE}' "
             + "(ONLY guess)", defaultValue = "de,en,tr", split = ",")
@@ -96,7 +96,7 @@ public class CLI implements Runnable {
     private ProcessingLevel level = ProcessingLevel.generic;
 
     @SuppressWarnings("FieldCanBeLocal")
-    @Option(names = {"--minimal",
+    @Option(names = {"-m", "--minimal",
             "--minimal-length"}, description = "the `minimal count` of words so "
             + "that language detection is even "
             + "tried (default: ${DEFAULT-VALUE}, "

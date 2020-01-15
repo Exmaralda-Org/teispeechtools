@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>teispeechtools</artifactId>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
   <properties>
@@ -14,10 +14,10 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
-    <apache.version>4.5.8</apache.version>
+    <apache.version>4.5.10</apache.version>
     <jackson.version>2.10.1</jackson.version>
-    <junit.version>5.4.2</junit.version>
-    <junit.aux.version>1.4.2</junit.aux.version>
+    <junit.version>5.5.2</junit.version>
+    <junit.aux.version>1.5.2</junit.aux.version>
   </properties>
   <build>
     <resources>
@@ -177,7 +177,7 @@
     <dependency>
       <groupId>org.korpora.useful</groupId>
       <artifactId>utilities</artifactId>
-      <version>0.4</version>
+      <version>0.4.1</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
@@ -188,14 +188,14 @@
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-maven-plugin</artifactId>
-      <version>4.7.1</version>
+      <version>4.7.2</version>
       <type>maven-plugin</type>
     </dependency>
     <!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>9.9.1-4</version>
+      <version>9.9.1-6</version>
     </dependency>
     <!-- dependency> <groupId>com.codepoetics</groupId> <artifactId>protonpack</artifactId> 
       <version>1.13</version> </dependency -->
