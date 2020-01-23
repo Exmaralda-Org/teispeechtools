@@ -19,7 +19,7 @@ COLON : ':' -> mode(NORMAL);
 NEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
 
 mode HEADER;
-DURATION: 'duration';
+DURATION: 'duration'|'length';
 HCOLON : ':';
 HSPACE : [\t ]+ -> channel(HIDDEN);
 HNEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
