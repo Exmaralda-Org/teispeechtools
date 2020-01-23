@@ -247,7 +247,7 @@ public class TextToTEIConversion {
         }
 
         /**
-         *
+         * found offset declaration
          */
         @Override
         public void enterOffset(SimpleExmaralda.OffsetContext ctx) {
@@ -256,11 +256,23 @@ public class TextToTEIConversion {
             spd.setOffset(time);
         }
 
+        /**
+         * found duration declaration
+         */
         @Override
         public void enterDuration(SimpleExmaralda.DurationContext ctx) {
             String tx = ctx.timeData().getText();
             Double time = Double.parseDouble(tx);
             spd.setDuration(time);
+        }
+
+        /**
+         * found language declaration
+         */
+        @Override
+        public void enterLanguage(SimpleExmaralda.LanguageContext ctx) {
+            String tx = ctx.lang_code().getText();
+            spd.setLanguage(tx);
         }
 
         /**

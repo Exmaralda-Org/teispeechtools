@@ -17,11 +17,14 @@ by this library, and by [EXMARaLDA](http://exmaralda.org/)'s
 ## Optional header
 
 It is possible to have an optional header.  The header can define the 
-**duration** of the conversation (keyword `duration` or `time`), i.e.
+main **language** (optional; as `lang` or `language`), the **duration**
+of the conversation (mandatory if there is a header;
+keyword `duration` or `time`), i.e.
 the time of the last speech event relative to the time origin. Optionally,
 it is also possible to specify the **offset** from the time origin
 (start of the recording) to the first speech event.
-Times are given in seconds.
+Times are given in seconds.  The header sections must occur in the order
+(`language`), `duration`, `offset`. 
 
 Delimiters can be used as in [YAML](http://www.yaml.org), i.e. `---`
 for start of header and `...` or `---` for end of header.
@@ -40,6 +43,13 @@ duration: 122
 ---
 ```
 
+```
+---
+lang: de
+duration: 122s
+offset: 12s
+---
+```
 
 
 ## Main part

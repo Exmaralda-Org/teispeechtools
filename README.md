@@ -79,7 +79,8 @@ To see all options, execute the wrapper script once.
 
   - Parameters  
     
-      - the `language` of the utterance.
+      - the `language` of the utterance.  If the header of the document
+        specifies a language, the header value will take precedence.
 
 
 ## Segmentation according to transcription convention (CLI command `segmentize`)

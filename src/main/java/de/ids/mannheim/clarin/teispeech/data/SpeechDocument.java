@@ -47,7 +47,7 @@ public class SpeechDocument {
     /**
      * the document language
      */
-    private final String language;
+    private String language;
     /**
      * the current {@code <annotationBlock>}
      */
@@ -70,7 +70,8 @@ public class SpeechDocument {
      * @param doc
      *     an XML document
      * @param lang
-     *     a document language (preferably a ISO 639-1 three letter code)
+     *     a document language (preferably a ISO 639-1 three letter code); can
+     *     be overridden from the document header
      */
     public SpeechDocument(Document doc, String lang) {
         language = lang;
@@ -93,7 +94,8 @@ public class SpeechDocument {
      * @param language
      *     should be an ISO 639-1 three letter code
      */
-    private void setLanguage(String language) {
+    public void setLanguage(String language) {
+        this.language = language;
         Element el = Utilities.getElementByTagNameNS(doc, TEI_NS, "text");
         el.setAttribute("xml:lang", language);
     }
