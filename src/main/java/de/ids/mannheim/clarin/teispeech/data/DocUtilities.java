@@ -428,6 +428,10 @@ public class DocUtilities {
             Optional<Double> duration, boolean insert) {
         NodeList whens = getWhens(doc);
         if (duration.isPresent()) {
+            if (duration.get() < 0d) {
+                throw new RuntimeException(String
+                        .format("Negative value not permitted: %g!", duration));
+            }
             if (insert) {
                 Pair<Element, Element> EndLine = makeTimePoint(doc, "T_END",
                         duration.get());
@@ -454,6 +458,10 @@ public class DocUtilities {
             Optional<Double> offset) {
         NodeList whens = getWhens(doc);
         if (offset.isPresent() && whens.getLength() > 2) {
+            if (offset.get() < 0d) {
+                throw new RuntimeException(String
+                        .format("Negative value not permitted: %g!", offset));
+            }
             return applySomeTime(offset, whens, 1);
         } else
             return false;

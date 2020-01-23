@@ -63,7 +63,7 @@ To see all options, execute the wrapper script once.
 
   - Input  
     a [plain text](https://en.wikipedia.org/wiki/Plain_text) file
-    containing a transcription in the [Simple EXMARaLDA
+    containing a transcription in the [Simple EXMARaLD...A
     format](doc/Simple-EXMARaLDA.md). This
     format permits to encode utterances and overlap between them as well
     as incidents occurring independently or simultaneously to an
@@ -205,12 +205,23 @@ Normalization:
     a TEI-conformant XML document 
     - containing `<u>` elements which have
     been analysed into `<w>` (other contents possible) and
-    - containing duration information for the `<u>`.
+    - a timeline that conforms to the following constraints:
+        - if no `--time` parameter is given,
+          it must be specified in the document as follows:
+          the `<tei:timeline>` contains a leading `<tei:when>`
+          that has `@interval` of 0 to itself; there is a last
+          `<tei:when>` element that refers to this element
+          (`@since`) and the `@interval` will be the duration.
+        - if no `--offset` parameter is given, the `@interval`
+          between the first and second `<tei:when>` will be
+          considered the offset.  Offsets are always positive.
 
   - Output  
-    a TEI-conformant XML document where the `<w>` have been assigned a
-    proportion of utterance corresponding to the number of letters or
-    IPA signs in the `<w>`.
+    a TEI-conformant XML document where 
+    - the `<w>` have been assigned a
+      proportion of utterance corresponding to the number of letters or
+      IPA signs in the `<w>`.
+    - duration information for `<u>` will be in the `<tei:timeline>`.
 
   - Parameters  
     
@@ -231,9 +242,11 @@ Normalization:
         duration to assign to the `<w>`. If no transcription
         is possible, or transcription is disabled, the number of letters
         will be used to pseudo-align
-      - the `time` length of the utterance
+      - the `time` duration of the utterance. Setting the time to -1 (default)
+        means that it will be derived from the document as described above.
       - the `offset` of the utterance, i.e. the time of the first
-        timeline event
+        timeline event. Setting the offset to -1 (default) means that it will
+        be derived from the document as described above.
       - `every`, a number of items after which to insert anchors
 
 
