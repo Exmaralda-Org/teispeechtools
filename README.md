@@ -134,6 +134,10 @@ To see all options, execute the wrapper script once.
         languages](http://opennlp.apache.org/models.html), for language
         detection. The more precisely you know which languages are
         expected, the better detection will work.
+
+        The web service variant also  accepts parameters `exspected1`,
+        `exspected2`,… `exspected5` which contain single language codes.
+
       - the `minimal count` of words so that language detection is even
         tried (default: 5, which is already pretty low).
       - whether to `force` language detection, even if a language tag
