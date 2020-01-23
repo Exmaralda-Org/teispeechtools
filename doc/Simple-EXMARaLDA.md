@@ -36,7 +36,7 @@ offset: 2.2s
 
 ```
 ---
-duration: 122s
+duration: 122
 ---
 ```
 
