@@ -21,8 +21,6 @@ import org.w3c.dom.Text;
 
 import de.ids.mannheim.clarin.teispeech.workflow.TextToTEIConversion;
 
-import javax.swing.text.html.Option;
-
 /**
  * TEI annotated speech document, mainly for use in {@link TextToTEIConversion}
  *
@@ -100,34 +98,68 @@ public class SpeechDocument {
         el.setAttribute("xml:lang", language);
     }
 
+    /**
+     * set current speaker to name
+     *
+     * @param name
+     */
     public void setCurrentSpeaker(String name) {
         currentSpeaker = name;
     }
 
+    /**
+     * set offset
+     *
+     * @param offset
+     */
     public void setOffset(Double offset) {
         this.offset = Optional.of(offset);
     }
 
+    /**
+     * set duration
+     *
+     * @param duration
+     */
     public void setDuration(Double duration) {
         this.duration = Optional.of(duration);
     }
 
+    /**
+     * get offset
+     *
+     * @return offset
+     */
     public Optional<Double> getOffset() {
         return offset;
     }
 
+    /**
+     * get duration
+     *
+     * @return duration
+     */
     public Optional<Double> getDuration() {
         return duration;
     }
 
+    /**
+     * insert a time origin T0
+     */
     public void insertTimeRoot() {
         DocUtilities.insertTimeRoot(doc);
     }
 
+    /**
+     * set duration in XML
+     */
     public void applyDuration() {
         DocUtilities.applyDocumentDuration(doc, duration, true);
     }
 
+    /**
+     * set offset in XML
+     */
     public void applyOffset() {
         DocUtilities.applyDocumentOffset(doc, offset);
     }
@@ -243,6 +275,12 @@ public class SpeechDocument {
         currentUtterance = utterance;
     }
 
+    /**
+     * change Blockstart from original to from
+     *
+     * @param original
+     * @param from
+     */
     public void changeBlockStart(Event original, MarkedEvent from) {
         String mark = from.mkTime();
         currentBlock.setAttribute("start", mark);
@@ -350,6 +388,9 @@ public class SpeechDocument {
         currentUtterance.appendChild(tx);
     }
 
+    /**
+     * add space to utterance
+     */
     public void addSpace() {
         String text = " ";
         Text tx = doc.createTextNode(text);
@@ -461,6 +502,11 @@ public class SpeechDocument {
         private static int lastEvent = 0;
         private final String mark;
 
+        /**
+         * create marked event
+         *
+         * @param mark
+         */
         public MarkedEvent(String mark) {
             nr = ++lastEvent;
             this.mark = mark;
@@ -531,6 +577,9 @@ public class SpeechDocument {
      * @author bfi
      */
     public static class BeginEvent extends Event {
+        /**
+         * create begin event
+         */
         public BeginEvent() {
             nr = ++lastEvent;
         }
@@ -547,6 +596,9 @@ public class SpeechDocument {
      * @author bfi
      */
     public static class EndEvent extends Event {
+        /**
+         * create end event
+         */
         public EndEvent() {
             nr = lastEvent;
         }

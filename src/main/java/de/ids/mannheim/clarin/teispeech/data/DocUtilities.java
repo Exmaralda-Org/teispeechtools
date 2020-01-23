@@ -7,7 +7,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,6 +38,12 @@ import org.w3c.dom.NodeList;
 
 import net.sf.saxon.BasicTransformerFactory;
 
+/**
+ * utilities for dealing with TEI/ISO Spoken documents in XML/DOM representation
+ *
+ * @author bfi
+ *
+ */
 public class DocUtilities {
 
     // private final static Logger LOGGER = LoggerFactory
@@ -308,6 +313,15 @@ public class DocUtilities {
         return getAtt(el, TEI_NS, localName);
     }
 
+    /**
+     * try to get a XML-namespaced attribute, and a namespaceless attribute else
+     *
+     * @param el
+     *     the Element supposed to carry the attribute
+     * @param localName
+     *     the local name of the attribute
+     * @return the value of the attribute, or ""
+     */
     public static String getAttXML(Element el, String localName) {
         return getAtt(el, XML_NS, localName);
     }
@@ -339,30 +353,77 @@ public class DocUtilities {
         return getDuration(el.getAttribute("dur"));
     }
 
+    /**
+     * get time of a tei:when element
+     *
+     * @param el
+     * @return the tei:when interval
+     */
     public static Optional<Double> getTime(Element el) {
+        assert el.getTagName().equals("when");
         return DocUtilities.getDuration(DocUtilities.getAttTEI(el, "interval"));
     }
 
+    /**
+     * make a tei:when element to be inserted in the timeline
+     *
+     * @param doc
+     *     XML DOM document
+     * @param pattern
+     *     pattern for ID
+     * @param time
+     *     time as double
+     * @return Pair of created element and timeline element
+     */
     public static Pair<Element, Element> makeTimePoint(Document doc,
             String pattern, Double time) {
         return makeTimePoint(doc, pattern, String.format("%.4fs", time));
     }
 
+    /**
+     * make a tei:when element to be inserted in the timeline
+     *
+     * @param doc
+     *     XML DOM document
+     * @param pattern
+     *     pattern for ID
+     * @param time
+     *     time in string notation
+     * @return Pair of created element and timeline element
+     */
     public static Pair<Element, Element> makeTimePoint(Document doc,
             String pattern, String time) {
         Element line = getTimeLine(doc);
-        Element root = doc.createElementNS(TEI_NS, "when");
-        root.setAttribute("interval", time);
+        Element point = doc.createElementNS(TEI_NS, "when");
+        point.setAttribute("interval", time);
         String id = generateID(doc, pattern, true);
-        root.setAttributeNS(XML_NS, "id", id);
-        return Pair.of(root, line);
+        point.setAttributeNS(XML_NS, "id", id);
+        return Pair.of(point, line);
     }
 
+    /**
+     * insert origin time point T0
+     *
+     * @param doc
+     *     DOM document
+     */
     public static void insertTimeRoot(Document doc) {
         Pair<Element, Element> RootLine = makeTimePoint(doc, "T0", "0.0s");
         Utilities.insertAtBeginningOf(RootLine.getLeft(), RootLine.getRight());
     }
 
+    /**
+     * create new last tei:when element or update last one in timeline and set
+     * interval to time
+     *
+     * @param doc
+     *     XML DOM document
+     * @param duration
+     *     duration of document – interval to time origin T0
+     * @param insert
+     *     whether to insert a new document or update last one
+     * @return whether creation was successful
+     */
     public static Boolean applyDocumentDuration(Document doc,
             Optional<Double> duration, boolean insert) {
         NodeList whens = getWhens(doc);
@@ -379,6 +440,16 @@ public class DocUtilities {
             return false;
     }
 
+    /**
+     * update first tei:when after time origin T0 in timeline and set interval
+     * to time
+     *
+     * @param doc
+     *     XML DOM document
+     * @param offset
+     *     offset of document – interval to time origin T0
+     * @return whether creation was successful
+     */
     public static Boolean applyDocumentOffset(Document doc,
             Optional<Double> offset) {
         NodeList whens = getWhens(doc);
@@ -388,6 +459,17 @@ public class DocUtilities {
             return false;
     }
 
+    /**
+     * convenience method for updating tei:when to time
+     *
+     * @param time
+     *     distance from time origin T0
+     * @param whens
+     *     all tei:when elements
+     * @param i
+     *     number of when
+     * @return
+     */
     private static Boolean applySomeTime(Optional<Double> time, NodeList whens,
             int i) {
         String rootID = getAttXML((Element) whens.item(0), "id");
@@ -417,12 +499,29 @@ public class DocUtilities {
         return timeLine;
     }
 
+    /**
+     * get all tei:when elements on document
+     *
+     * @param doc
+     *     XML DOM document
+     * @return NodeList of tei:whens
+     */
     public static NodeList getWhens(Document doc) {
         Element timeLine = getTimeLine(doc);
         return getWhens(timeLine);
     }
 
-    public static boolean timeReference(Element el, String originID) {
+    /**
+     * whether a (tei:when) element has a {@code @since} reference to the time
+     * origin ID
+     *
+     * @param el
+     *     the element
+     * @param originID
+     *     the potentially referenced ID
+     * @return success or not
+     */
+    public static boolean hasTimeReference(Element el, String originID) {
         boolean ret = false;
         String elID = getAttTEI(el, "since");
         if (elID != null) {
@@ -432,6 +531,14 @@ public class DocUtilities {
         return ret;
     }
 
+    /**
+     * get time duration of a document and offset of first event after time
+     * origin T0
+     *
+     * @param doc
+     *     XML DOM document
+     * @return the Pair of duration (Optional) and offset
+     */
     public static Pair<Optional<Double>, Double> getTimeAndOffset(
             Document doc) {
         Element root = getTimeLine(doc);
@@ -447,7 +554,7 @@ public class DocUtilities {
             String originID = getAttXML(origin, "id");
             if (originID == null) {
                 formatError = Optional.of("Initial Element missing ID!");
-            } else if (!timeReference(origin, originID)) {
+            } else if (!hasTimeReference(origin, originID)) {
                 formatError = Optional
                         .of("Initial Element must reference itself by @since!");
             } else if (!originTime.isPresent() || originTime.get() != 0d) {
@@ -458,8 +565,8 @@ public class DocUtilities {
                 if (whens.size() > 1) {
                     Element first = whens.get(1);
                     Element last = whens.get(whens.size() - 1);
-                    if (timeReference(first, originID)
-                            && timeReference(last, originID)) {
+                    if (hasTimeReference(first, originID)
+                            && hasTimeReference(last, originID)) {
                         Optional<Double> firstTime = getTime(first);
                         lastTime = getTime(last);
                         if (firstTime.isPresent()) {
@@ -523,12 +630,13 @@ public class DocUtilities {
      *     the ID follows
      * @return the ID
      */
-    private static String generateID(Document doc, String pattern, boolean tryBare) {
+    private static String generateID(Document doc, String pattern,
+            boolean tryBare) {
         int i = 0;
         String newId;
         if (tryBare) {
-          if (Utilities.getElementByID(doc, pattern) == null)
-              return pattern;
+            if (Utilities.getElementByID(doc, pattern) == null)
+                return pattern;
         }
         do {
             i++;
@@ -623,6 +731,15 @@ public class DocUtilities {
         }
     }
 
+    /**
+     * transform document with template from path
+     *
+     * @param path
+     *     path to template
+     * @param inDoc
+     *     document
+     * @return new document
+     */
     public static Document transform(String path, Document inDoc) {
         return transform(getTemplate(path), inDoc);
     }

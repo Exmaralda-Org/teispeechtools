@@ -244,6 +244,9 @@ public class PseudoAlign {
         return order;
     }
 
+    /*
+     * return document
+     */
     public Document getDoc() {
         return doc;
     }
@@ -384,7 +387,8 @@ public class PseudoAlign {
         if (timeLength == -1) {
             if (timeLengthAndOffset.getLeft().isPresent()) {
                 timeLength = timeLengthAndOffset.getLeft().get();
-                DocUtilities.applyDocumentDuration(doc, Optional.of(timeLength), false);
+                DocUtilities.applyDocumentDuration(doc, Optional.of(timeLength),
+                        false);
             } else {
                 throw new RuntimeException(
                         "Cannot determine length of recording from timeline or parameters.");
@@ -469,7 +473,6 @@ public class PseudoAlign {
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(this::annotateSingleUtterance);
         Optional<Double> itemLength = relItemLength();
-        itemLength.ifPresent(aDouble -> LOGGER.info("itemLength: %g", aDouble));
         itemLength.ifPresent(this::applyItemLength);
         itemLength.ifPresent(this::insertAnchorEvery);
         cleanUp();
@@ -567,9 +570,8 @@ public class PseudoAlign {
                     abs += d.abs;
                 }
             }
-            System.err.format(">>> (%f - %f) / %d = %f\n", timeLength,
-            abs, rel,
-            ((timeLength - abs) / rel));
+//            System.err.format(">>> (%f - %f) / %d = %f\n", timeLength, abs, rel,
+//                    ((timeLength - abs) / rel));
             return Optional.of((timeLength - abs) / rel);
         }
         return Optional.empty();
@@ -676,6 +678,11 @@ public class PseudoAlign {
         // // TODO: anpassen an inverval mit Selbstreferenz
         // whenList.get(0).setAttribute("absolute",
         // String.format("%.4fs", offset));
+
+        /*
+         * the following loop disregards the first tei:when (time 0) and the
+         * last when (end time of speech – not recording!)
+         */
         for (int i = 2; i < whenList.size() - 1; i++) {
             Element event = whenList.get(i);
             String ref = getAttXML(event, "id");
@@ -770,7 +777,7 @@ public class PseudoAlign {
      * cleanup document, remove temporary annotation
      */
     private void cleanUp() {
-        // doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
+        doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
     }
 
     /**
