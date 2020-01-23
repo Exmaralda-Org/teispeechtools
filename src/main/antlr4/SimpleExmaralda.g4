@@ -8,7 +8,12 @@ options {tokenVocab=SimpleExmaraldaLexer;}
 
 @header{package de.ids.mannheim.clarin.teispeech.tools;}
 
-transcript : line+ ;
+transcript : prolog? line+ ;
+
+prolog: START_PROLOG duration offset? END_PROLOG;
+duration: DURATION HCOLON timeData UNIT? HNEWLINE;
+offset: OFFSET HCOLON timeData UNIT? HNEWLINE;
+timeData: FLOATING;
 
 line : turn | empty_line ;
 

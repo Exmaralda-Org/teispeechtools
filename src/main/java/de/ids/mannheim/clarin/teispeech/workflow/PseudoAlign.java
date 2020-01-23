@@ -1,8 +1,33 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
+import static de.ids.mannheim.clarin.teispeech.data.DocUtilities.getAttXML;
+import static de.ids.mannheim.clarin.teispeech.data.DocUtilities.getTimeAndOffset;
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
 
-import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.fluent.Request;
@@ -15,23 +40,15 @@ import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static de.ids.mannheim.clarin.teispeech.data.DocUtilities.getAttXML;
-import static de.ids.mannheim.clarin.teispeech.data.DocUtilities.getTimeLine;
-import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
+import de.ids.mannheim.clarin.teispeech.data.DocUtilities;
+import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 
 /**
  * Pseudo-align documents in the TEI transcription format with the TreeTagger
@@ -62,23 +79,21 @@ public class PseudoAlign {
             XPath xPath = XPathFactory.newInstance().newXPath();
             // TODO: Do we want text() nodes?
             // interesting =
-            //         xPath.compile(String.format(
-            //                 ".//*[(local-name() = 'w' or local-name() " +
-            //                         "='pause') and namespace-uri() =
-            //                         '%s']|" +
-            //                         ".//text()",
-            //                 TEI_NS));
-            interesting =
-                    xPath.compile(String.format(
-                            ".//*[(local-name() = 'w' or local-name() " +
-                                    "='pause') and namespace-uri() = '%s']",
+            // xPath.compile(String.format(
+            // ".//*[(local-name() = 'w' or local-name() " +
+            // "='pause') and namespace-uri() =
+            // '%s']|" +
+            // ".//text()",
+            // TEI_NS));
+            interesting = xPath
+                    .compile(String.format(
+                            ".//*[(local-name() = 'w' or local-name() "
+                                    + "='pause') and namespace-uri() = '%s']",
                             TEI_NS));
-            blocky =
-                    xPath.compile(String.format(
-                            ".//*[(local-name() = 'annotationBlock' or " +
-                                    "local-name() ='incident') and " +
-                                    "namespace-uri() = '%s']",
-                            TEI_NS));
+            blocky = xPath.compile(
+                    String.format(".//*[(local-name() = 'annotationBlock' or "
+                            + "local-name() ='incident') and "
+                            + "namespace-uri() = '%s']", TEI_NS));
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
         }
@@ -92,12 +107,12 @@ public class PseudoAlign {
      * default language
      */
     private final String language;
-    private final double offset;
+    private double offset;
     private final int every;
     /**
      * length of audio in seconds
      */
-    private final double timeLength;
+    private double timeLength;
     /**
      * whether to store the transcriptions in the document
      */
@@ -119,11 +134,10 @@ public class PseudoAlign {
      */
     private final Map<Pair<String, String>, Distance> paths = new HashMap<>();
     /**
-     * reverse accessibility: Going *backwards*,
-     * there is a path from every Key to the members of its Value.
+     * reverse accessibility: Going *backwards*, there is a path from every Key
+     * to the members of its Value.
      */
-    private final Map<String, LinkedHashSet<String>> accessibleRev =
-            new HashMap<>();
+    private final Map<String, LinkedHashSet<String>> accessibleRev = new HashMap<>();
     /**
      * insignificant difference between elements, probably due to rounding
      */
@@ -146,26 +160,25 @@ public class PseudoAlign {
      * make new PseudoAlign for
      *
      * @param doc
-     *         a DOM XML document
+     *     a DOM XML document
      * @param language
-     *         the default document language
+     *     the default document language
      * @param usePhones
-     *         whether to count relative duration in (pseudo)phones if
-     *         possible
+     *     whether to count relative duration in (pseudo)phones if possible
      * @param phoneticise
-     *         whether to store the transcriptions in the document
+     *     whether to store the transcriptions in the document
      * @param force
-     *         whether to force transcription
+     *     whether to force transcription
      * @param timeLength
-     *         length of audio in seconds
+     *     length of audio in seconds
      * @param offset
-     *         the time offset of the first timeline event
+     *     the time offset of the first timeline event
      * @param every
-     *         number of items after which to insert an orientation anchor
+     *     number of items after which to insert an orientation anchor
      */
     public PseudoAlign(Document doc, String language, boolean usePhones,
-                       boolean phoneticise, boolean force, double timeLength,
-                       double offset, int every) {
+            boolean phoneticise, boolean force, double timeLength,
+            double offset, int every) {
         this.language = language;
         this.doc = doc;
         this.phoneticise = phoneticise;
@@ -176,8 +189,8 @@ public class PseudoAlign {
         this.every = every > 0 ? every : 50;
         if (!usePhones && phoneticise) {
             LOGGER.warn(
-                    "phoneticise but not usePhones is not useful: phoneticise" +
-                            " ignored.");
+                    "phoneticise but not usePhones is not useful: phoneticise"
+                            + " ignored.");
         }
     }
 
@@ -185,11 +198,11 @@ public class PseudoAlign {
      * increase all counters in Map (int version)
      *
      * @param map
-     *         the Map
+     *     the Map
      * @param addendum
-     *         the amount to increase
+     *     the amount to increase
      * @param <T>
-     *         the type of the counters
+     *     the type of the counters
      */
     private static <T> void incAllCounters(Map<T, Integer> map, int addendum) {
         for (Map.Entry<T, Integer> entry : map.entrySet()) {
@@ -201,14 +214,14 @@ public class PseudoAlign {
      * increase all counters in Map (double version)
      *
      * @param map
-     *         the Map
+     *     the Map
      * @param addendum
-     *         the amount to increase
+     *     the amount to increase
      * @param <T>
-     *         the type of the counters
+     *     the type of the counters
      */
     private static <T> void incAllCounters(Map<T, Double> map,
-                                           double addendum) {
+            double addendum) {
         for (Map.Entry<T, Double> entry : map.entrySet()) {
             entry.setValue(entry.getValue() + addendum);
         }
@@ -218,7 +231,7 @@ public class PseudoAlign {
      * make a Hash that gives the position for every event
      *
      * @param whens
-     *         the events
+     *     the events
      * @return the Hash EventName -> Position
      */
     private static Map<String, Integer> getOrder(List<Element> whens) {
@@ -239,7 +252,7 @@ public class PseudoAlign {
      * get duration of element, measured in seconds
      *
      * @param el
-     *         the element
+     *     the element
      * @return the duration
      */
     public Optional<Double> getUtteranceDuration(Element el) {
@@ -279,7 +292,7 @@ public class PseudoAlign {
      * get duration of pause measured in (pseudo)phones
      *
      * @param el
-     *         pause element
+     *     pause element
      * @return duration
      */
     private double getPauseDuration(Element el) {
@@ -297,30 +310,29 @@ public class PseudoAlign {
                     }
                 }
                 switch (type) {
-                    case "long":
-                        dur += 0.9;
-                        break;
-                    case "medium":
-                        dur = 0.65;
-                        break;
-                    case "short":
-                        dur = 0.35;
-                        break;
-                    case "micro":
-                        dur = 0.1;
-                        break;
-                    default:
-                        throw new RuntimeException("unknown pause type: «"
-                                + el.getAttribute("type") + "»!");
+                case "long":
+                    dur += 0.9;
+                    break;
+                case "medium":
+                    dur = 0.65;
+                    break;
+                case "short":
+                    dur = 0.35;
+                    break;
+                case "micro":
+                    dur = 0.1;
+                    break;
+                default:
+                    throw new RuntimeException("unknown pause type: «"
+                            + el.getAttribute("type") + "»!");
                 }
             }
             return dur;
         }
     }
 
-    private void makeDistance(String from, String to,
-                              int relDuration,
-                              double absDuration) {
+    private void makeDistance(String from, String to, int relDuration,
+            double absDuration) {
         distances.add(new Distance(relDuration, absDuration, from, to));
     }
 
@@ -328,9 +340,9 @@ public class PseudoAlign {
      * find a way {@code from} from to {@code goal}
      *
      * @param from
-     *         start of passage
+     *     start of passage
      * @param goal
-     *         end of passage (first event)
+     *     end of passage (first event)
      * @return null or passage
      */
     private List<String> findPathR(String from, String goal) {
@@ -361,6 +373,27 @@ public class PseudoAlign {
     // TODO: Do we need to disallow syllabification?
     // TODO: Allow to use normalized orthography, not CA transcription?
     public void calculateUtterances() {
+        Pair<Optional<Double>, Double> timeLengthAndOffset = getTimeAndOffset(
+                doc);
+
+        if (offset == -1) {
+            offset = timeLengthAndOffset.getRight();
+        } else {
+            DocUtilities.applyDocumentOffset(doc, Optional.of(offset));
+        }
+        if (timeLength == -1) {
+            if (timeLengthAndOffset.getLeft().isPresent()) {
+                timeLength = timeLengthAndOffset.getLeft().get();
+                DocUtilities.applyDocumentDuration(doc, Optional.of(timeLength), false);
+            } else {
+                throw new RuntimeException(
+                        "Cannot determine length of recording from timeline or parameters.");
+            }
+        } else {
+            DocUtilities.applyDocumentDuration(doc, Optional.of(timeLength),
+                    true);
+        }
+        LOGGER.warn(String.format("time: %g, offset: %g", timeLength, offset));
 
         // aggregate by language to minimise calls to web service
         DocUtilities.groupByLanguage("w", doc, language, 1)
@@ -372,15 +405,15 @@ public class PseudoAlign {
                     String[] transWords;
                     boolean transcribe = usePhones && locale.isPresent();
                     List<Element> words = Seq.seq(initWords)
-                            .filter(w -> !("incomprehensible".equals(
-                                    w.getAttribute("type"))))
+                            .filter(w -> !("incomprehensible"
+                                    .equals(w.getAttribute("type"))))
                             .toList();
                     if (transcribe) {
                         // only transcribe "normal" words
                         // work with transcriptions
-                        String text = Seq.seq(words)
-                                .map(Node::getTextContent).toString(" ");
-                        //noinspection OptionalGetWithoutIsPresent
+                        String text = Seq.seq(words).map(Node::getTextContent)
+                                .toString(" ");
+                        // noinspection OptionalGetWithoutIsPresent
                         transWords = GraphToPhoneme
                                 .getTranscription(text, locale.get(), true)
                                 .get();
@@ -391,13 +424,14 @@ public class PseudoAlign {
                                         if (!force || (!tup.v1
                                                 .hasAttributeNS(TEI_NS, "phon")
                                                 && !tup.v1.hasAttribute(
-                                                "phon"))) {
+                                                        "phon"))) {
                                             tup.v1.setAttribute("phon", tup.v2);
                                         }
                                     });
                         }
                         // add transcriptions
-                        @SuppressWarnings("ConstantConditions") int[] transcribedW = GraphToPhoneme
+                        @SuppressWarnings("ConstantConditions")
+                        int[] transcribedW = GraphToPhoneme
                                 .countSigns(transWords, transcribe);
                         for (int i = 0; i < words.size(); i++) {
                             words.get(i).setAttribute("rel-length",
@@ -405,8 +439,7 @@ public class PseudoAlign {
                         }
                     } else {
                         // fall back to counting letters
-                        transWords = Seq.seq(words)
-                                .map(Node::getTextContent)
+                        transWords = Seq.seq(words).map(Node::getTextContent)
                                 .toArray(String[]::new);
                     }
                     int[] lettered = GraphToPhoneme.countSigns(transWords,
@@ -417,12 +450,12 @@ public class PseudoAlign {
                     }
                     // treat incomprehensible words:
                     List<Element> unWords = Seq.seq(initWords)
-                            .filter(w -> ("incomprehensible".equals(
-                                    w.getAttribute("type"))))
+                            .filter(w -> ("incomprehensible"
+                                    .equals(w.getAttribute("type"))))
                             .toList();
-                    String[] unStrings = Seq.seq(unWords).
-                            map(Element::getTextContent).
-                            toArray(String[]::new);
+                    String[] unStrings = Seq.seq(unWords)
+                            .map(Element::getTextContent)
+                            .toArray(String[]::new);
                     int[] unLettered = GraphToPhoneme.countSigns(unStrings,
                             false);
                     for (int i = 0; i < unWords.size(); i++) {
@@ -436,6 +469,7 @@ public class PseudoAlign {
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(this::annotateSingleUtterance);
         Optional<Double> itemLength = relItemLength();
+        itemLength.ifPresent(aDouble -> LOGGER.info("itemLength: %g", aDouble));
         itemLength.ifPresent(this::applyItemLength);
         itemLength.ifPresent(this::insertAnchorEvery);
         cleanUp();
@@ -470,7 +504,7 @@ public class PseudoAlign {
                         Element uNext = (Element) nodes.item(i + 1);
                         String startNext = uNext.getAttribute("start");
                         if (end.equals(startNext) ||
-                                // no overlap:
+                        // no overlap:
                                 order.get(startNext) > order.get(end)) {
                             accessibleRev.putIfAbsent(startNext,
                                     new LinkedHashSet<>());
@@ -489,26 +523,25 @@ public class PseudoAlign {
                 accessibleRev.get(distance.to).add(distance.from);
             }
             // CHECK: Elements that are next to each other should be OK:
-            // [1 <2>  ]
-            //    [2   ]
-            //          [3   ]
+            // [1 <2> ]
+            // [2 ]
+            // [3 ]
             // or
-            // [1 <2>      <3>  ]
-            //    [2   ]
-            //             [3     ]
+            // [1 <2> <3> ]
+            // [2 ]
+            // [3 ]
             // Second do-while loop for the following, which is
             // unfortunately treatable by simple annotation:
-            // [1  <2   > ]
-            //    [<2   >]
-            //             [3   ]
+            // [1 <2 > ]
+            // [<2 >]
+            // [3 ]
             // treat "empty" <incident>s
             Utilities.toElementStream(nodes)
                     .filter(e -> e.getLocalName().equals("incident"))
                     .forEachOrdered(e -> {
                         String from = e.getAttribute("start");
                         String to = e.getAttribute("end");
-                        accessibleRev.putIfAbsent(to,
-                                new LinkedHashSet<>());
+                        accessibleRev.putIfAbsent(to, new LinkedHashSet<>());
                         if (!accessibleRev.get(to).contains(from)) {
                             accessibleRev.get(to).add(from);
                             Distance distance = new Distance(0, 0d, from, to);
@@ -520,8 +553,8 @@ public class PseudoAlign {
         } catch (XPathExpressionException e) {
             throw new RuntimeException(e);
         }
-        String goal = getAttXML(whenList.get(0), "id");
-        way = findPathR(getAttXML(whenList.get(whenList.size() - 1), "id"),
+        String goal = getAttXML(whenList.get(1), "id");
+        way = findPathR(getAttXML(whenList.get(whenList.size() - 2), "id"),
                 goal);
         if (way != null) {
             // System.err.println(way);
@@ -534,9 +567,9 @@ public class PseudoAlign {
                     abs += d.abs;
                 }
             }
-            // System.err.format(">>> (%f - %f) / %d = %f\n", timeLength,
-            // abs, rel,
-            //         ((timeLength - abs) / rel));
+            System.err.format(">>> (%f - %f) / %d = %f\n", timeLength,
+            abs, rel,
+            ((timeLength - abs) / rel));
             return Optional.of((timeLength - abs) / rel);
         }
         return Optional.empty();
@@ -546,14 +579,15 @@ public class PseudoAlign {
      * annotate a single utterance
      *
      * @param u
-     *         the utterance
+     *     the utterance
      */
     private void annotateSingleUtterance(Element u) {
 
         List<Element> uChildren;
         try {
-            uChildren = Utilities.toStream(
-                    (NodeList) interesting.evaluate(u, XPathConstants.NODESET))
+            uChildren = Utilities
+                    .toStream((NodeList) interesting.evaluate(u,
+                            XPathConstants.NODESET))
                     .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
                     .map(n -> (Element) n).collect(Collectors.toList());
         } catch (XPathExpressionException e) {
@@ -569,21 +603,20 @@ public class PseudoAlign {
         // calculate relative durations and time to distribute over them
         for (Element el : uChildren) {
             if (DocUtilities.isTEI(el, "w")) {
-                incAllCounters(relDuration, Integer.parseInt(el.getAttribute(
-                        "rel-length")));
+                incAllCounters(relDuration,
+                        Integer.parseInt(el.getAttribute("rel-length")));
                 // count text length in characters for anchors in words
                 int textTillNow = 0;
                 Map<String, Integer> relRest = new HashMap<>();
-                for (Iterator<Node> iNo =
-                     Utilities.toIterator(el.getChildNodes());
-                     iNo.hasNext(); ) {
+                for (Iterator<Node> iNo = Utilities
+                        .toIterator(el.getChildNodes()); iNo.hasNext();) {
                     Node now = iNo.next();
                     // set anchor to text length
-                    if (now.getNodeType() == Node.ELEMENT_NODE &&
-                            now.getLocalName().equals("anchor")) {
+                    if (now.getNodeType() == Node.ELEMENT_NODE
+                            && now.getLocalName().equals("anchor")) {
                         Element nowEl = ((Element) now);
-                        String nowName = DocUtilities.unPoundMark(
-                                nowEl.getAttribute("synch"));
+                        String nowName = DocUtilities
+                                .unPoundMark(nowEl.getAttribute("synch"));
                         for (String name : relDuration.keySet()) {
                             makeDistance(name, nowName,
                                     relDuration.get(name) + textTillNow,
@@ -591,22 +624,22 @@ public class PseudoAlign {
                         }
                         relRest.put(nowName, 0);
                     } else if (// TODO: should we?
-                        // now.getNodeType() == Node.TEXT_NODE ||
-                            (now.getNodeType() == Node.ELEMENT_NODE
-                                    && now.getLocalName().equals("w"))) {
-                        int count = Utilities.removeSpace(
-                                now.getTextContent()).length();
+                    // now.getNodeType() == Node.TEXT_NODE ||
+                    (now.getNodeType() == Node.ELEMENT_NODE
+                            && now.getLocalName().equals("w"))) {
+                        int count = Utilities.removeSpace(now.getTextContent())
+                                .length();
                         textTillNow += count;
                         incAllCounters(relRest, count);
                     }
                 }
                 // for (String name : relRest.keySet()) {
-                //     Element delta = u.getOwnerDocument().createElement
-                //     ("rel-rest");
-                //     delta.setAttribute("after", name);
-                //     delta.setAttribute("rel", String.valueOf(relRest.get
-                //     (name)));
-                //     u.appendChild(delta);
+                // Element delta = u.getOwnerDocument().createElement
+                // ("rel-rest");
+                // delta.setAttribute("after", name);
+                // delta.setAttribute("rel", String.valueOf(relRest.get
+                // (name)));
+                // u.appendChild(delta);
                 // }
             } else if (DocUtilities.isTEI(el, "pause")) {
                 incAllCounters(absDuration, getPauseDuration(el));
@@ -624,7 +657,7 @@ public class PseudoAlign {
      * determine length of annotationBlocks
      *
      * @param itemLength
-     *         seconds per item
+     *     seconds per item
      */
     private void applyItemLength(Double itemLength) {
         String info = String.format("length per item: %.4f seconds",
@@ -633,16 +666,17 @@ public class PseudoAlign {
         LOGGER.info("applying " + info);
         Utilities.insertAtBeginningOf(comment,
                 Utilities.getElementByTagNameNS(doc, TEI_NS, "body"));
-        String start = getAttXML(whenList.get(0), "id");
+        String start = getAttXML(whenList.get(1), "id");
         position.put(start, 0d);
         // System.err.println(distances);
         // System.err.println(way);
         // System.err.println(accessibleRev);
 
-        getTimeLine(doc).setAttribute("unit", "s");
-        whenList.get(0).setAttribute("absolute", String.format("%.4fs",
-                offset));
-        for (int i = 1; i < whenList.size(); i++) {
+        // getTimeLine(doc).setAttribute("unit", "s");
+        // // TODO: anpassen an inverval mit Selbstreferenz
+        // whenList.get(0).setAttribute("absolute",
+        // String.format("%.4fs", offset));
+        for (int i = 2; i < whenList.size() - 1; i++) {
             Element event = whenList.get(i);
             String ref = getAttXML(event, "id");
             // System.err.println(ref);
@@ -653,10 +687,10 @@ public class PseudoAlign {
                 dist = paths.get(Pair.of(from, ref));
             } else {
                 // elements not on the way, e.g. because of overlap
-                //noinspection OptionalGetWithoutIsPresent
+                // noinspection OptionalGetWithoutIsPresent
                 dist = Seq.seq(distances).filter(
-                        d -> d.to.equals(ref) && position.containsKey(d.from)
-                ).minBy(d -> d.rel).get();
+                        d -> d.to.equals(ref) && position.containsKey(d.from))
+                        .minBy(d -> d.rel).get();
             }
             double step = dist.abs + dist.rel * itemLength;
             // System.err.println(position);
@@ -665,8 +699,7 @@ public class PseudoAlign {
             // uncomment to test for rounding error:
             // pos = position.get(dist.from) + step;
             position.put(ref, pos);
-            event.setAttribute("interval",
-                    String.format("%.4fs", pos));
+            event.setAttribute("interval", String.format("%.4fs", pos));
             event.setAttribute("since", start);
         }
     }
@@ -675,21 +708,21 @@ public class PseudoAlign {
      * insert an event into the TEI timeline; it will not be added to whenList!
      *
      * @param idPrefix
-     *         Prefix to use for an ID of the event
+     *     Prefix to use for an ID of the event
      * @param pos
-     *         the position in the timeline
+     *     the position in the timeline
      * @return the event DOM element
      */
     private String insertWhen(String idPrefix, Double pos) {
-        Stream<Element> whens =
-                Utilities.toElementStream(DocUtilities.getWhens(doc));
+        Stream<Element> whens = Utilities
+                .toElementStream(DocUtilities.getWhens(doc));
         @SuppressWarnings("OptionalGetWithoutIsPresent")
-        Optional<Element> successor = Seq.seq(whens).drop(1).findFirst(
-                v -> pos + EPSILON < DocUtilities.getDuration(v.getAttribute(
-                        "interval")).get()
-        );
-        @SuppressWarnings("OptionalGetWithoutIsPresent") Element successorEl =
-                successor.orElseGet(() -> Seq.seq(whens).findLast().get());
+        Optional<Element> successor = Seq.seq(whens).drop(1)
+                .findFirst(v -> pos + EPSILON < DocUtilities
+                        .getDuration(v.getAttribute("interval")).get());
+        @SuppressWarnings("OptionalGetWithoutIsPresent")
+        Element successorEl = successor
+                .orElseGet(() -> Seq.seq(whens).findLast().get());
         Element when = doc.createElementNS(TEI_NS, "when");
         String ID = docID.makeID(when, idPrefix);
         when.setAttribute("interval", String.format("%.4fs", pos));
@@ -703,15 +736,14 @@ public class PseudoAlign {
      */
     private void insertAnchorEvery(double itemLength) {
         docID = new DocumentIdentifier(doc);
-        Utilities.toElementStream(doc.getElementsByTagNameNS(TEI_NS, "u")).forEach(
-                u -> {
-                    String startID =
-                            ((Element) u.getParentNode()).getAttribute("start");
+        Utilities.toElementStream(doc.getElementsByTagNameNS(TEI_NS, "u"))
+                .forEach(u -> {
+                    String startID = ((Element) u.getParentNode())
+                            .getAttribute("start");
                     double pos = position.get(startID);
                     try {
-                        NodeList interestingEls =
-                                (NodeList) interesting.evaluate(u,
-                                        XPathConstants.NODESET);
+                        NodeList interestingEls = (NodeList) interesting
+                                .evaluate(u, XPathConstants.NODESET);
                         for (int i = 0; i < interestingEls.getLength(); i++) {
                             Element el = (Element) interestingEls.item(i);
                             if (i > 0 && i % every == 0) {
@@ -724,21 +756,21 @@ public class PseudoAlign {
                             if (el.getLocalName().equals("pause")) {
                                 pos += getPauseDuration(el);
                             } else {
-                                pos = itemLength * Integer.parseInt(el.getAttribute("rel-length"));
+                                pos += itemLength * Integer.parseInt(
+                                        el.getAttribute("rel-length"));
                             }
                         }
                     } catch (XPathExpressionException e) {
                         throw new RuntimeException(e);
                     }
-                }
-        );
+                });
     }
 
     /**
      * cleanup document, remove temporary annotation
      */
     private void cleanUp() {
-        doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
+        // doc = DocUtilities.transform("/PseudoAlign.xsl", doc);
     }
 
     /**
@@ -761,8 +793,7 @@ public class PseudoAlign {
      * SIL</a>.
      */
     @SuppressWarnings("SameParameterValue")
-    static
-    class GraphToPhoneme {
+    static class GraphToPhoneme {
 
         /**
          * list of admissible locales from
@@ -770,29 +801,27 @@ public class PseudoAlign {
          */
         // TODO: should we map "est" and "ee" to "ekk"?
         // TODO: better: map codes to canonical 639-1/-2 code if possible
-        private static final String[] PERMITTED_LOCALES_ARRAY = {"aus-AU",
-                "cat",
-                "cat-ES", "deu", "deu-DE", "ekk-EE", "eng", "eng-AU", "eng-GB",
-                "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin", "fin-FI", "fra" +
-                "-FR",
-                "gsw-CH", "gsw-CH-BE", "gsw-CH-BS", "gsw-CH-GR", "gsw-CH-SG",
-                "gsw-CH-ZH", "guf-AU", "gup-AU", "hat", "hat-HT", "hun", "hun" +
-                "-HU",
-                "ita", "ita-IT", "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT",
-                "nld", "nld-NL", "nor-NO", "nze", "pol", "pol-PL", "ron-RO",
-                "rus-RU", "slk-SK", "spa-ES", "sqi-AL", "swe-SE"};
+        private static final String[] PERMITTED_LOCALES_ARRAY = { "aus-AU",
+                "cat", "cat-ES", "deu", "deu-DE", "ekk-EE", "eng", "eng-AU",
+                "eng-GB", "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin",
+                "fin-FI", "fra" + "-FR", "gsw-CH", "gsw-CH-BE", "gsw-CH-BS",
+                "gsw-CH-GR", "gsw-CH-SG", "gsw-CH-ZH", "guf-AU", "gup-AU",
+                "hat", "hat-HT", "hun", "hun" + "-HU", "ita", "ita-IT",
+                "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT", "nld", "nld-NL",
+                "nor-NO", "nze", "pol", "pol-PL", "ron-RO", "rus-RU", "slk-SK",
+                "spa-ES", "sqi-AL", "swe-SE" };
 
         /**
          * base URL for transcription service
          */
-        private final static String BASE_URL = "https://clarin.phonetik" +
-                ".uni-muenchen.de/BASWebServices/services/runG2P";
+        private final static String BASE_URL = "https://clarin.phonetik"
+                + ".uni-muenchen.de/BASWebServices/services/runG2P";
 
         /**
          * locale separator
          */
-        private static final Pattern LOCALE_SEPARATOR = Pattern.compile("[_" +
-                "-]+");
+        private static final Pattern LOCALE_SEPARATOR = Pattern
+                .compile("[_" + "-]+");
         /**
          * word separator for transcriptions (tab)
          */
@@ -804,8 +833,8 @@ public class PseudoAlign {
         private static final Map<String, String> LOCALES = new HashMap<>();
 
         static {
-            List<String> already_permitted =
-                    Arrays.asList(PERMITTED_LOCALES_ARRAY);
+            List<String> already_permitted = Arrays
+                    .asList(PERMITTED_LOCALES_ARRAY);
             for (String loc : PERMITTED_LOCALES_ARRAY) {
                 LOCALES.put(loc, loc);
                 String[] components = LOCALE_SEPARATOR.split(loc);
@@ -831,13 +860,13 @@ public class PseudoAlign {
          * have a text transcribed according to a locale
          *
          * @param text
-         *         the text
+         *     the text
          * @param loc
-         *         the locale
+         *     the locale
          * @return the transcription
          */
         private static Optional<String[]> getTranscription(String text,
-                                                           String loc) {
+                String loc) {
             return getTranscription(text, loc, false);
         }
 
@@ -860,56 +889,50 @@ public class PseudoAlign {
          * get a transcription from the web service
          *
          * @param text
-         *         running text
+         *     running text
          * @param loc
-         *         locale
+         *     locale
          * @param getSyllables
-         *         whether to have the transcription syllabified
+         *     whether to have the transcription syllabified
          * @return an Optional containing the list of transcribed words or
          * emptiness
          */
         public static Optional<String[]> getTranscription(String text,
-                                                          String loc,
-                                                          boolean getSyllables) {
+                String loc, boolean getSyllables) {
             Optional<String[]> ret = Optional.empty();
             try {
                 URIBuilder uriBui = new URIBuilder(BASE_URL);
                 boolean extendedFeatures = false; // extended for eng-GB and
                 // deu?
-                @SuppressWarnings("ConstantConditions") HttpEntity entity =
-                        MultipartEntityBuilder.create()
-                                .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
-                                .setCharset(Charset.forName("UTF-8"))
-                                .addBinaryBody("i", text.getBytes(),
-                                        ContentType.MULTIPART_FORM_DATA,
-                                        "input")
-                                .addTextBody("com", "no")
-                                .addTextBody("syl", getSyllables ? "yes" : "no")
-                                .addTextBody("outsym", "ipa").addTextBody(
-                                "oform",
-                                "txt")
-                                .addTextBody("iform", "list") // txt?
-                                .addTextBody("align", "no")
-                                .addTextBody("lng", loc)
-                                .addTextBody("featset",
-                                        extendedFeatures ? "extended" :
-                                                "standard")
-                                .build();
-                String result =
-                        Request.Post(uriBui.build()).body(entity).execute()
-                                .returnContent().asString();
+                @SuppressWarnings("ConstantConditions")
+                HttpEntity entity = MultipartEntityBuilder.create()
+                        .setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+                        .setCharset(Charset.forName("UTF-8"))
+                        .addBinaryBody("i", text.getBytes(),
+                                ContentType.MULTIPART_FORM_DATA, "input")
+                        .addTextBody("com", "no")
+                        .addTextBody("syl", getSyllables ? "yes" : "no")
+                        .addTextBody("outsym", "ipa")
+                        .addTextBody("oform", "txt")
+                        .addTextBody("iform", "list") // txt?
+                        .addTextBody("align", "no").addTextBody("lng", loc)
+                        .addTextBody("featset",
+                                extendedFeatures ? "extended" : "standard")
+                        .build();
+                String result = Request.Post(uriBui.build()).body(entity)
+                        .execute().returnContent().asString();
                 Document doc = Utilities.parseXML(result);
                 Element link = Utilities.getElementByTagName(doc,
                         "downloadLink");
                 if (link != null && !"".equals(link.getTextContent())) {
-                    String retString =
-                            Request.Get(link.getTextContent()).execute()
-                                    .returnContent().asString(Charset.forName("UTF-8"))
-                                    .replace(" ", "");
+                    String retString = Request.Get(link.getTextContent())
+                            .execute().returnContent()
+                            .asString(Charset.forName("UTF-8"))
+                            .replace(" ", "");
                     ret = Optional.of(WORD_SEPARATOR.split(retString.trim()));
                 }
-            } catch (URISyntaxException | IOException | ParserConfigurationException
-                    | SAXException e) {
+            } catch (URISyntaxException | IOException
+                    | ParserConfigurationException | SAXException e) {
                 throw new RuntimeException(e);
             }
             return ret;
@@ -919,23 +942,23 @@ public class PseudoAlign {
          * count signs in transcription
          *
          * @param words
-         *         an {@link Optional} array of transcribed words
+         *     an {@link Optional} array of transcribed words
          * @param syllabified
-         *         whether syllable separators (full stops) are present and
-         *         should be removed
+         *     whether syllable separators (full stops) are present and should
+         *     be removed
          * @return the word lengths in signs
          */
         private static int[] countSigns(Optional<String[]> words,
-                                        boolean syllabified) {
+                boolean syllabified) {
             if (words.isPresent())
                 return countSigns(words.get(), syllabified);
             else
-                return new int[]{};
+                return new int[] {};
         }
 
         /**
          * @param words
-         *         (not syllabified)
+         *     (not syllabified)
          * @return the word lengths in signs
          * @see #countSigns(Optional, boolean)
          */
@@ -945,9 +968,9 @@ public class PseudoAlign {
 
         /**
          * @param text
-         *         a string to be split in words and transcribed
+         *     a string to be split in words and transcribed
          * @param separator
-         *         the word separator {@link Pattern}
+         *     the word separator {@link Pattern}
          * @return number of characters
          * @see #countSigns(Optional, boolean)
          */
@@ -957,7 +980,7 @@ public class PseudoAlign {
 
         /**
          * @param text
-         *         the text to count word lengths for
+         *     the text to count word lengths for
          * @return number of characters
          * @see #countSigns(String[])
          **/
@@ -969,10 +992,10 @@ public class PseudoAlign {
          * count signs in transcription
          *
          * @param words
-         *         an array of transcribed words
+         *     an array of transcribed words
          * @param syllabified
-         *         whether syllable separators (full stops) are present and
-         *         should be removed
+         *     whether syllable separators (full stops) are present and should
+         *     be removed
          * @return the word lengths in signs
          */
 
@@ -980,15 +1003,15 @@ public class PseudoAlign {
             Stream<String> wordStream = Stream.of(words);
             if (syllabified) // remove syllable limits
                 wordStream = wordStream.map(s -> s.replace(".", ""));
-            wordStream = wordStream.map(s ->
-                    s.replaceAll("[-\\p{javaWhitespace}]", ""));
+            wordStream = wordStream
+                    .map(s -> s.replaceAll("[-\\p{javaWhitespace}]", ""));
 
             return wordStream.mapToInt(String::length).toArray();
         }
 
         /**
          * @param words
-         *         an array of transcribed words
+         *     an array of transcribed words
          * @return lengths of individual words
          * @see #countSigns(Optional, boolean)
          */
@@ -1001,21 +1024,22 @@ public class PseudoAlign {
          * count signs in transcription
          *
          * @param words
-         *         the transcribed words
+         *     the transcribed words
          * @return the number of syllables for each word
          **/
         private static int[] countSyllables(String[] words) {
             Stream<String> wordStream = Stream.of(words);
-            return wordStream.mapToInt(word -> word.split("\\.").length).toArray();
+            return wordStream.mapToInt(word -> word.split("\\.").length)
+                    .toArray();
         }
 
         /**
          * count syllables in transcription
          *
          * @param words
-         *         an array of transcribed words
+         *     an array of transcribed words
          * @param loc
-         *         the locale
+         *     the locale
          * @return the word lengths in signs
          */
         private static int[] countSyllables(String words, String loc) {
@@ -1023,7 +1047,7 @@ public class PseudoAlign {
             if (result.isPresent())
                 return countSyllables(result.get());
             else
-                return new int[]{};
+                return new int[] {};
         }
 
         /**
@@ -1031,7 +1055,7 @@ public class PseudoAlign {
          * {@link #printCounts(int[])}
          *
          * @param text
-         *         text to be transcribed
+         *     text to be transcribed
          * @return string representation of counts
          */
         public static String printCounts(String text) {
@@ -1042,7 +1066,7 @@ public class PseudoAlign {
          * print phone/letter counts in transcription
          *
          * @param counted
-         *         the counted letters/phones
+         *     the counted letters/phones
          * @return string representation of counts
          */
         private static String printCounts(int[] counted) {
@@ -1057,7 +1081,7 @@ public class PseudoAlign {
          * text
          *
          * @param args
-         *         supposedly single words
+         *     supposedly single words
          */
         public static void main(String[] args) {
             String text = "Dies Beispiel ist bezaubernd schön – Strumpf!";
@@ -1091,13 +1115,13 @@ public class PseudoAlign {
          * create a distance between elements
          *
          * @param rel
-         *         distance in characters / pseudophones
+         *     distance in characters / pseudophones
          * @param abs
-         *         distance in time, esp. pauses
+         *     distance in time, esp. pauses
          * @param from
-         *         first element
+         *     first element
          * @param to
-         *         second element
+         *     second element
          */
         Distance(int rel, double abs, String from, String to) {
             this.rel = rel;
@@ -1113,8 +1137,8 @@ public class PseudoAlign {
          */
         @Override
         public String toString() {
-            return String.format("{Δ<%s, %s> == <%d, -%.3f>}",
-                    from, to, rel, abs);
+            return String.format("{Δ<%s, %s> == <%d, -%.3f>}", from, to, rel,
+                    abs);
         }
     }
 }

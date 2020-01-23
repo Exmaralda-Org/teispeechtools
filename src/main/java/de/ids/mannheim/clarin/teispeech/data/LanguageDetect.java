@@ -89,16 +89,23 @@ public class LanguageDetect {
      *            the minimal length of an utterance to attempt language
      *            detection
      */
-    public LanguageDetect(Document doc, String language, String[] expected,
+    public LanguageDetect(Document doc, String language, List<String> expected,
                           int mini) {
         this.doc = doc;
+        // use German as fallback in case nothing else is specified
+        // in the document or the expected languages
         this.language = language != null ? language : "deu";
-        if (expected != null && expected.length > 0) {
+        if (expected != null && expected.size() > 0) {
             expectedLanguages = new HashSet<>();
             expectedLanguages.add(language);
-            expectedLanguages.addAll(Arrays.asList(expected));
+            expectedLanguages.addAll(expected);
         }
         this.minUtteranceSize = mini;
+    }
+
+    public LanguageDetect(Document doc, String language, String[] expected,
+                          int mini) {
+        this(doc, "deu", Arrays.asList(expected), mini);
     }
 
     private LanguageDetect(Document doc) {

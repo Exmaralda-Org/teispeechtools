@@ -154,6 +154,9 @@ public class TextToTEIConversion {
         public void exitTranscript(SimpleExmaralda.TranscriptContext ctx) {
             spd.makeSpeakerList(speakers);
             spd.makeTimeLine(events);
+            spd.insertTimeRoot();
+            spd.applyDuration();
+            spd.applyOffset();
             spd.finish();
         }
 
@@ -241,6 +244,23 @@ public class TextToTEIConversion {
             }
             lastMarked = Optional.of(m);
             spd.addMarked(m, tx, startAnchor);
+        }
+
+        /**
+         *
+         */
+        @Override
+        public void enterOffset(SimpleExmaralda.OffsetContext ctx) {
+            String tx = ctx.timeData().getText();
+            Double time = Double.parseDouble(tx);
+            spd.setOffset(time);
+        }
+
+        @Override
+        public void enterDuration(SimpleExmaralda.DurationContext ctx) {
+            String tx = ctx.timeData().getText();
+            Double time = Double.parseDouble(tx);
+            spd.setDuration(time);
         }
 
         /**

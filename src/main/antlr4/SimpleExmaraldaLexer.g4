@@ -12,16 +12,28 @@ channels {
 
 SPACE : [\t ]+ -> channel(HIDDEN);
 
-HWORD : ~[:\t \n\r]+;
+START_PROLOG: '---' NEWLINE -> mode(HEADER);
+
+HWORD : ~[-:\t \n\r]~[:\t \n\r]+;
 COLON : ':' -> mode(NORMAL);
 NEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
+
+mode HEADER;
+DURATION: 'duration';
+HCOLON : ':';
+HSPACE : [\t ]+ -> channel(HIDDEN);
+HNEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
+OFFSET: 'offset';
+INT: [0-9]+;
+FLOATING: [0-9]+[.][0-9]+([eE][0-9]+)?;
+UNIT: 's'|'sec';
+END_PROLOG: ('---' FNEWLINE | '...' FNEWLINE) -> mode(NORMAL);
+
 
 mode COMMENTED_ACTION;
 RRPAREN: '))' -> mode(NORMAL);
 CAWORD : ~[)\t \n\r]+ | ')';
 CASPACE : [\t ]+ -> channel(HIDDEN);
-
-
 
 mode ACTION;
 AWORD : ~[\t \]\n\r]+;

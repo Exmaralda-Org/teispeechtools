@@ -1,10 +1,20 @@
 package de.ids.mannheim.clarin.teispeech.data;
 
-import net.sf.saxon.BasicTransformerFactory;
-import org.jdom2.Namespace;
-import org.korpora.useful.LangUtilities;
-import org.korpora.useful.Utilities;
-import org.w3c.dom.*;
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
+
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,25 +26,23 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
-import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jdom2.Namespace;
+import org.korpora.useful.LangUtilities;
+import org.korpora.useful.Utilities;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import net.sf.saxon.BasicTransformerFactory;
 
 public class DocUtilities {
 
-   // private final static Logger LOGGER = LoggerFactory
-   //         .getLogger(DocUtilities.class.getName());
+    // private final static Logger LOGGER = LoggerFactory
+    // .getLogger(DocUtilities.class.getName());
 
     // TODO: Allow exponential notation?
     // TODO: What does "PT" etc. mean?
@@ -46,9 +54,9 @@ public class DocUtilities {
      * get language of element, ascending the element tree recursively.
      *
      * @param el
-     *            the DOM XML Element
+     *     the DOM XML Element
      * @param maxComponents
-     *            the maximal number of language + locale components
+     *     the maximal number of language + locale components
      * @return Optional containing the language code, or empty
      */
     private static Optional<String> getLanguage(Element el, int maxComponents) {
@@ -69,15 +77,14 @@ public class DocUtilities {
      * get language of element with default
      *
      * @param el
-     *            the DOM XML Element
+     *     the DOM XML Element
      * @param defaultL
-     *            the default language
+     *     the default language
      * @param maxComponents
-     *            the maximal number of language + locale components
+     *     the maximal number of language + locale components
      * @return the corresponding three letter ISO 639-2 language code
      */
-    static String getLanguage(Element el, String defaultL,
-            int maxComponents) {
+    static String getLanguage(Element el, String defaultL, int maxComponents) {
         Optional<String> ret = getLanguage(el, maxComponents);
         return ret.orElse(defaultL);
     }
@@ -87,20 +94,19 @@ public class DocUtilities {
      * {@code <w>}s or the language of the element.
      *
      * @param el
-     *            the utterance element
+     *     the utterance element
      * @param defaultL
-     *            the default language
+     *     the default language
      * @param maxComponents
-     *            the maximal number of language + locale components
+     *     the maximal number of language + locale components
      * @return the determined language
      */
     private static String getUtteranceLanguage(Element el, String defaultL,
-                                               int maxComponents) {
+            int maxComponents) {
         assert "u".equals(el.getTagName());
         String lang = getLanguage(el, defaultL, maxComponents);
         Map<String, Long> freq = Utilities
-                .toElementStream(
-                        el.getElementsByTagNameNS(TEI_NS, "w"))
+                .toElementStream(el.getElementsByTagNameNS(TEI_NS, "w"))
                 .collect(Collectors.groupingBy(w -> {
                     // words without language tag are counted as having the
                     // language of the {@code <u>}
@@ -121,20 +127,18 @@ public class DocUtilities {
      * select elements from {@code doc} by {@code tagName}
      *
      * @param tagName
-     *            tag name of the elements
+     *     tag name of the elements
      * @param doc
-     *            XML document
+     *     XML document
      * @param defaultL
-     *            default language
+     *     default language
      * @param maxComponents
-     *            the maximal number of language + locale components
+     *     the maximal number of language + locale components
      * @return the elements grouped by language
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL, int maxComponents) {
-        return Utilities
-                .toStream(
-                        doc.getElementsByTagNameNS(TEI_NS, tagName))
+        return Utilities.toStream(doc.getElementsByTagNameNS(TEI_NS, tagName))
                 .map(u -> (Element) u)
                 .collect(Collectors.groupingBy(
                         u -> getUtteranceLanguage(u, defaultL, maxComponents),
@@ -153,9 +157,9 @@ public class DocUtilities {
      * add change to {@code <revisionDesc>} in TEI document
      *
      * @param doc
-     *            the DOM Document
+     *     the DOM Document
      * @param change
-     *            the change message
+     *     the change message
      */
     public static void makeChange(Document doc, String change) {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
@@ -165,16 +169,13 @@ public class DocUtilities {
         if (revDesc == null) {
             revDesc = doc.createElementNS(TEI_NS, "revisionDesc");
             Element eDe = Utilities.getElementByTagNameNS(
-                    doc.getDocumentElement(), TEI_NS,
-                    "encodingDesc");
+                    doc.getDocumentElement(), TEI_NS, "encodingDesc");
             if (eDe == null) {
                 eDe = doc.createElementNS(TEI_NS, "encodingDesc");
                 Element header = Utilities.getElementByTagNameNS(
-                        doc.getDocumentElement(), TEI_NS,
-                        "teiHeader");
+                        doc.getDocumentElement(), TEI_NS, "teiHeader");
                 if (header == null) {
-                    header = doc.createElementNS(TEI_NS,
-                            "teiHeader");
+                    header = doc.createElementNS(TEI_NS, "teiHeader");
                     Utilities.insertAtBeginningOf(header,
                             doc.getDocumentElement());
                 }
@@ -192,12 +193,11 @@ public class DocUtilities {
      * add change to {@code <revisionDesc>} in TEI document
      *
      * @param doc
-     *            the JDOM Document
+     *     the JDOM Document
      * @param change
-     *            the change message
+     *     the change message
      */
-    public static void makeChange(org.jdom2.Document doc,
-                                  String change) {
+    public static void makeChange(org.jdom2.Document doc, String change) {
         Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
@@ -232,16 +232,16 @@ public class DocUtilities {
      * skipped languages
      *
      * @param doc
-     *            the document
+     *     the document
      * @param change
-     *            the change info
+     *     the change info
      * @param processedLanguages
-     *            the languages that could be processed
+     *     the languages that could be processed
      * @param skippedLanguages
-     *            the languages which had to be skipped
+     *     the languages which had to be skipped
      */
     public static void makeChange(Document doc, String change,
-                                  List<String> processedLanguages, List<String> skippedLanguages) {
+            List<String> processedLanguages, List<String> skippedLanguages) {
         String message = change + "; "
                 + (processedLanguages.size() > 0
                         ? "processed " + String.join("/", processedLanguages)
@@ -260,14 +260,13 @@ public class DocUtilities {
      * Add a comment at the beginning of a DOM doc's {@code <body>}
      *
      * @param doc
-     *            the document
+     *     the document
      * @param commentText
-     *            the text of the comment
+     *     the text of the comment
      * @return the document, for chaining
      */
     public static Document addComment(Document doc, String commentText) {
-        Element body = (Element) doc.getElementsByTagNameNS(TEI_NS,
-                "body");
+        Element body = (Element) doc.getElementsByTagNameNS(TEI_NS, "body");
         Comment comment = doc.createComment(commentText);
         body.getParentNode().insertBefore(comment, body);
         return doc;
@@ -277,9 +276,9 @@ public class DocUtilities {
      * test for TEI element, to save typing
      *
      * @param el
-     *            Element
+     *     Element
      * @param localName
-     *            name of the element to test for
+     *     name of the element to test for
      * @return whether el is tei:&lt;localName&gt;
      */
     public static boolean isTEI(Element el, String localName) {
@@ -287,7 +286,8 @@ public class DocUtilities {
                 && el.getLocalName().equals(localName));
     }
 
-    private static String getAtt(Element el, String nameSpace, String localName) {
+    private static String getAtt(Element el, String nameSpace,
+            String localName) {
         assert el != null;
         assert localName != null;
         String attNS = el.getAttributeNS(nameSpace, localName);
@@ -299,9 +299,9 @@ public class DocUtilities {
      * try to get a TEI attribute, and a namespaceless attribute else
      *
      * @param el
-     *            the Element supposed to carry the attribute
+     *     the Element supposed to carry the attribute
      * @param localName
-     *            the local name of the attribute
+     *     the local name of the attribute
      * @return the value of the attribute, or ""
      */
     public static String getAttTEI(Element el, String localName) {
@@ -316,7 +316,7 @@ public class DocUtilities {
      * process time, as floating point number
      *
      * @param measurement
-     *            e.g. "PT12.2s"
+     *     e.g. "PT12.2s"
      * @return an optional number, e.g. 12.2d or empty()
      */
     public static Optional<Double> getDuration(String measurement) {
@@ -332,23 +332,84 @@ public class DocUtilities {
      * get time from XML element, see {@link #getDuration(String)}
      *
      * @param el
-     *            an XML element, potentially with a {@code dur} attribute
+     *     an XML element, potentially with a {@code dur} attribute
      * @return optional number representing duration
      */
     public static Optional<Double> getDuration(Element el) {
         return getDuration(el.getAttribute("dur"));
     }
 
+    public static Optional<Double> getTime(Element el) {
+        return DocUtilities.getDuration(DocUtilities.getAttTEI(el, "interval"));
+    }
+
+    public static Pair<Element, Element> makeTimePoint(Document doc,
+            String pattern, Double time) {
+        return makeTimePoint(doc, pattern, String.format("%.4fs", time));
+    }
+
+    public static Pair<Element, Element> makeTimePoint(Document doc,
+            String pattern, String time) {
+        Element line = getTimeLine(doc);
+        Element root = doc.createElementNS(TEI_NS, "when");
+        root.setAttribute("interval", time);
+        String id = generateID(doc, pattern, true);
+        root.setAttributeNS(XML_NS, "id", id);
+        return Pair.of(root, line);
+    }
+
+    public static void insertTimeRoot(Document doc) {
+        Pair<Element, Element> RootLine = makeTimePoint(doc, "T0", "0.0s");
+        Utilities.insertAtBeginningOf(RootLine.getLeft(), RootLine.getRight());
+    }
+
+    public static Boolean applyDocumentDuration(Document doc,
+            Optional<Double> duration, boolean insert) {
+        NodeList whens = getWhens(doc);
+        if (duration.isPresent()) {
+            if (insert) {
+                Pair<Element, Element> EndLine = makeTimePoint(doc, "T_END",
+                        duration.get());
+                EndLine.getRight().appendChild(EndLine.getLeft());
+            } else if (whens.getLength() > 2) {
+                return applySomeTime(duration, whens, whens.getLength() - 1);
+            }
+            return true;
+        } else
+            return false;
+    }
+
+    public static Boolean applyDocumentOffset(Document doc,
+            Optional<Double> offset) {
+        NodeList whens = getWhens(doc);
+        if (offset.isPresent() && whens.getLength() > 2) {
+            return applySomeTime(offset, whens, 1);
+        } else
+            return false;
+    }
+
+    private static Boolean applySomeTime(Optional<Double> time, NodeList whens,
+            int i) {
+        String rootID = getAttXML((Element) whens.item(0), "id");
+        if (rootID == null || rootID.equals("")) {
+            throw new RuntimeException("Time root missing or without ID!");
+        }
+        Element el = (Element) whens.item(i);
+        el.setAttribute("interval", String.format("%.4fs", time.get()));
+        el.setAttribute("since", rootID);
+        return true;
+    }
+
     /**
      * get the tei:timeline from a document
      *
      * @param doc
-     *            the document
+     *     the document
      * @return the time line
      */
     public static Element getTimeLine(Document doc) {
-        Element timeLine = Utilities.getElementByTagNameNS(doc,
-                TEI_NS, "timeline");
+        Element timeLine = Utilities.getElementByTagNameNS(doc, TEI_NS,
+                "timeline");
         if (timeLine == null) {
             throw new RuntimeException(
                     "Cannot process document with no time line!");
@@ -361,9 +422,64 @@ public class DocUtilities {
         return getWhens(timeLine);
     }
 
+    public static boolean timeReference(Element el, String originID) {
+        boolean ret = false;
+        String elID = getAttTEI(el, "since");
+        if (elID != null) {
+            elID = unPoundMark(elID);
+            ret = originID.equals(originID);
+        }
+        return ret;
+    }
+
+    public static Pair<Optional<Double>, Double> getTimeAndOffset(
+            Document doc) {
+        Element root = getTimeLine(doc);
+        double offset = 0;
+        Optional<Double> lastTime = Optional.empty();
+        Optional<String> formatError = Optional.empty();
+        List<Element> whens = Utilities.toElementList(getWhens(doc));
+        if (whens.size() == 0) {
+            formatError = Optional.of("timeline missing!");
+        } else {
+            Element origin = whens.get(0);
+            Optional<Double> originTime = getTime(origin);
+            String originID = getAttXML(origin, "id");
+            if (originID == null) {
+                formatError = Optional.of("Initial Element missing ID!");
+            } else if (!timeReference(origin, originID)) {
+                formatError = Optional
+                        .of("Initial Element must reference itself by @since!");
+            } else if (!originTime.isPresent() || originTime.get() != 0d) {
+                formatError = Optional
+                        .of("Initial Element must be anchored at 0!");
+            } else {
+                originID = unPoundMark(originID);
+                if (whens.size() > 1) {
+                    Element first = whens.get(1);
+                    Element last = whens.get(whens.size() - 1);
+                    if (timeReference(first, originID)
+                            && timeReference(last, originID)) {
+                        Optional<Double> firstTime = getTime(first);
+                        lastTime = getTime(last);
+                        if (firstTime.isPresent()) {
+                            offset = firstTime.get();
+                        }
+                    }
+                }
+            }
+        }
+        if (formatError.isPresent()) {
+            String errorMessage = String.format("TimeLine format error: %s",
+                    formatError.get());
+            Comment errorComment = doc.createComment(errorMessage);
+            Utilities.insertAtBeginningOf(errorComment, root);
+        }
+        return Pair.of(lastTime, offset);
+    };
+
     private static NodeList getWhens(Element timeLine) {
-        NodeList line = timeLine.getElementsByTagNameNS(TEI_NS,
-                "when");
+        NodeList line = timeLine.getElementsByTagNameNS(TEI_NS, "when");
         if (line == null || line.getLength() == 0) {
             throw new RuntimeException(
                     "Cannot process document with no time line elements!");
@@ -371,12 +487,11 @@ public class DocUtilities {
         return line;
     }
 
-
     /**
      * get the root Element of the time line, i.e. the first event
      *
      * @param doc
-     *            the DOM document
+     *     the DOM document
      * @return the first event
      */
     private static Element getTimeRoot(Document doc) {
@@ -388,7 +503,7 @@ public class DocUtilities {
      * remove pound mark (\#) from beginning of String
      *
      * @param id
-     *            the String potentially starting with a pound mark
+     *     the String potentially starting with a pound mark
      *
      * @return the cleaned-up String
      */
@@ -403,14 +518,18 @@ public class DocUtilities {
      * generate new ID following a pattern by adding a number
      *
      * @param doc
-     *            the document wherein the ID must be unique
+     *     the document wherein the ID must be unique
      * @param pattern
-     *            the ID follows
+     *     the ID follows
      * @return the ID
      */
-    private static String generateID(Document doc, String pattern) {
+    private static String generateID(Document doc, String pattern, boolean tryBare) {
         int i = 0;
         String newId;
+        if (tryBare) {
+          if (Utilities.getElementByID(doc, pattern) == null)
+              return pattern;
+        }
         do {
             i++;
             newId = String.format("%s_%d", pattern, i);
@@ -418,13 +537,17 @@ public class DocUtilities {
         return newId;
     }
 
+    private static String generateID(Document doc, String pattern) {
+        return generateID(doc, pattern, false);
+    }
+
     /**
      * set new ID following a pattern by adding a number
      *
      * @param el
-     *            the element to be identified
+     *     the element to be identified
      * @param pattern
-     *            the pattern
+     *     the pattern
      * @return the new ID
      */
     public static String setNewId(Element el, String pattern) {
@@ -437,7 +560,7 @@ public class DocUtilities {
      * get the time offset of an Element
      *
      * @param el
-     *            the Element
+     *     the Element
      * @return the time offset
      */
     public static Optional<Double> getOffset(Element el) {
@@ -449,9 +572,9 @@ public class DocUtilities {
      * get time offset for an ID referring to a timeLine element
      *
      * @param doc
-     *            the XML document
+     *     the XML document
      * @param id
-     *            the XML ID
+     *     the XML ID
      * @return the time offset
      */
     private static Optional<Double> getOffset(Document doc, String id) {
@@ -480,21 +603,23 @@ public class DocUtilities {
     private static final DocumentBuilderFactory dbf;
     private static final DocumentBuilder db;
     static {
-        dbf = DocumentBuilderFactory.newInstance() ;
+        dbf = DocumentBuilderFactory.newInstance();
         try {
-            db = dbf.newDocumentBuilder() ;
+            db = dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            throw new RuntimeException("No DocumentBuilder – YOUR JAVA IS VERY BROKEN!");
+            throw new RuntimeException(
+                    "No DocumentBuilder – YOUR JAVA IS VERY BROKEN!");
         }
     }
     private static final TransformerFactory stf = new BasicTransformerFactory();
 
-    private static Templates getTemplate(String path){
+    private static Templates getTemplate(String path) {
         try {
-            return stf.newTemplates(
-                    new StreamSource(DocUtilities.class.getResourceAsStream(path)));
+            return stf.newTemplates(new StreamSource(
+                    DocUtilities.class.getResourceAsStream(path)));
         } catch (TransformerConfigurationException e) {
-            throw new RuntimeException(String.format("XSLT broken: «%s»", path));
+            throw new RuntimeException(
+                    String.format("XSLT broken: «%s»", path));
         }
     }
 
@@ -502,9 +627,9 @@ public class DocUtilities {
         return transform(getTemplate(path), inDoc);
     }
 
-    private static Document transform(Templates template, Document inDoc){
+    private static Document transform(Templates template, Document inDoc) {
         try {
-            Document doc = db.newDocument() ;
+            Document doc = db.newDocument();
             DOMResult result = new DOMResult(doc);
             DOMSource source = new DOMSource(inDoc);
             template.newTransformer().transform(source, result);
