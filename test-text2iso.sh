@@ -1,6 +1,6 @@
 #!/bin/sh
 rm -f TEST_LOG.txt
-VERSION=0.6.0
+VERSION=0.6.1
 JAR=target/teispeechtools-$VERSION.jar
 for f in src/test/txt/Input-*.txt ; do
     file=${f##*/}
