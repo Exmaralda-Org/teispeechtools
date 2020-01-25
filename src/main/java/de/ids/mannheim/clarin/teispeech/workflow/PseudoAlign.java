@@ -244,7 +244,7 @@ public class PseudoAlign {
         return order;
     }
 
-    /*
+    /**
      * return document
      */
     public Document getDoc() {

@@ -1,9 +1,20 @@
 package de.ids.mannheim.clarin.teispeech.data;
 
-import opennlp.tools.langdetect.Language;
-import opennlp.tools.langdetect.LanguageDetector;
-import opennlp.tools.langdetect.LanguageDetectorME;
-import opennlp.tools.langdetect.LanguageDetectorModel;
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
 import org.korpora.useful.LangUtilities;
@@ -14,14 +25,10 @@ import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
+import opennlp.tools.langdetect.Language;
+import opennlp.tools.langdetect.LanguageDetector;
+import opennlp.tools.langdetect.LanguageDetectorME;
+import opennlp.tools.langdetect.LanguageDetectorModel;
 
 /**
  * guess language of utterances in TEI transcriptions.
@@ -78,19 +85,18 @@ public class LanguageDetect {
      * make new ;
      *
      * @param doc
-     *            XML DOM document
+     *     XML DOM document
      *
      * @param language
-     *            the default language, an ISO language code
+     *     the default language, an ISO language code
      * @param expected
-     *            the languages that are expected in the document, for
-     *            constraining language identification
+     *     the languages that are expected in the document, for constraining
+     *     language identification
      * @param mini
-     *            the minimal length of an utterance to attempt language
-     *            detection
+     *     the minimal length of an utterance to attempt language detection
      */
     public LanguageDetect(Document doc, String language, List<String> expected,
-                          int mini) {
+            int mini) {
         this.doc = doc;
         // use German as fallback in case nothing else is specified
         // in the document or the expected languages
@@ -103,15 +109,38 @@ public class LanguageDetect {
         this.minUtteranceSize = mini;
     }
 
+    /**
+     * Detect languages in document
+     *
+     * @param doc
+     *     XML DOM document
+     * @param language
+     *     fallback language
+     * @param expected
+     *     expected languages
+     * @param mini
+     *     minimal number of words in utterance for language detection
+     */
     public LanguageDetect(Document doc, String language, String[] expected,
-                          int mini) {
+            int mini) {
         this(doc, "deu", Arrays.asList(expected), mini);
     }
 
+    /**
+     * Detect languages in document
+     *
+     * @param doc
+     *     XML DOM document
+     */
     private LanguageDetect(Document doc) {
         this(doc, "deu", new String[] { "tur", "en" }, 5);
     }
 
+    /**
+     * run detection, do not force
+     *
+     * @return document with language detection run on utterances
+     */
     public Document detect() {
         return detect(false);
     }
@@ -120,10 +149,10 @@ public class LanguageDetect {
      * count language per {@code <u>}
      *
      * @param force
-     *            whether to force language detection, even if a language tag
-     *            has already been assigned to {@code <u>}.
+     *     whether to force language detection, even if a language tag has
+     *     already been assigned to {@code <u>}.
      *
-     * @return the document again
+     * @return document with language detection run on utterances
      */
     public Document detect(boolean force) {
         long processed = 0;
@@ -206,23 +235,24 @@ public class LanguageDetect {
             }
             List<Language> languages = Stream
                     .of(languageDetector.predictLanguages(text))
-                    .filter(l -> expectedLanguages.contains(LangUtilities.getLanguageString(l.getLang())))
+                    .filter(l -> expectedLanguages.contains(
+                            LangUtilities.getLanguageString(l.getLang())))
                     .collect(Collectors.toList());
-            Comment com = doc
-                    .createComment(
-                            Seq.seq(languages)
-                                    .filter(l -> l.getConfidence() > 0.005)
-                                    .map(l -> String.format("%s: %.02f",
-                                            LangUtilities.getLanguageString(l.getLang()), l.getConfidence()))
-                                    .toString("; "));
+            Comment com = doc.createComment(
+                    Seq.seq(languages).filter(l -> l.getConfidence() > 0.005)
+                            .map(l -> String.format("%s: %.02f",
+                                    LangUtilities.getLanguageString(
+                                            l.getLang()),
+                                    l.getConfidence()))
+                            .toString("; "));
             utter.getParentNode().insertBefore(com, utter);
             if (languages.size() >= 2 && languages.get(0).getConfidence() > 0
                     && languages.get(1).getConfidence() > 0
                     && (languages.get(0).getConfidence() / languages.get(1)
                             .getConfidence() > GOOD_RELATION)) {
                 // in clear cases, believe language guess
-                String lang =
-                        LangUtilities.getLanguageString(languages.get(0).getLang());
+                String lang = LangUtilities
+                        .getLanguageString(languages.get(0).getLang());
                 utter.setAttribute("xml:lang", lang);
                 Utilities.incCounter(changed, lang);
                 processed++;

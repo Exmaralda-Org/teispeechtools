@@ -1,15 +1,11 @@
 package de.ids.mannheim.clarin.teispeech.workflow;
 
-import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
-import org.apache.commons.lang3.StringUtils;
-import org.korpora.useful.Utilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.text.Collator;
 import java.util.Comparator;
@@ -21,6 +17,15 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.korpora.useful.Utilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * A normalizer based on the dictionaries from the EXMARaLDA project, namely
@@ -46,7 +51,8 @@ public class DictionaryNormalizer implements WordNormalizer {
     private static final String FOLKS_PATH = "FOLK_Normalization_Lexicon.xml";
     private static final String DEREKO_PATH = "dereko_capital_only.txt";
     private static final String DICT_PATH = "dict.tsv";
-    private static final String DICT_PATH_FILE = "src/main/resources/" + DICT_PATH;
+    private static final String DICT_PATH_FILE = "src/main/resources/"
+            + DICT_PATH;
 
     private static boolean folkLoaded = false;
     private static boolean derekoLoaded = false;
@@ -62,9 +68,9 @@ public class DictionaryNormalizer implements WordNormalizer {
      * load the dictionary generated from the FOLK data
      *
      * @param force
-     *            whether to force loading even if data already loaded
+     *     whether to force loading even if data already loaded
      * @throws IOException
-     *             if file (included) broken/unavailable
+     *     if file (included) broken/unavailable
      */
     private static void loadFolksDict(boolean force) throws IOException {
         if (folkLoaded && !force) {
@@ -82,13 +88,13 @@ public class DictionaryNormalizer implements WordNormalizer {
                 throw new RuntimeException(
                         "XML parsing broken! – " + ex.getMessage());
             }
-            Utilities
-                    .toElementStream(document
-                            .getElementsByTagName("entry"))
+            Utilities.toElementStream(document.getElementsByTagName("entry"))
                     .forEach(entry -> {
                         String from = entry.getAttribute("form");
-                        @SuppressWarnings("OptionalGetWithoutIsPresent") String to = Utilities
-                                .toElementStream(entry.getElementsByTagName("n"))
+                        @SuppressWarnings("OptionalGetWithoutIsPresent")
+                        String to = Utilities
+                                .toElementStream(
+                                        entry.getElementsByTagName("n"))
                                 .max(Comparator.comparing(e -> Integer
                                         .parseInt(e.getAttribute("freq"))))
                                 .get().getAttribute("corr");
@@ -103,15 +109,15 @@ public class DictionaryNormalizer implements WordNormalizer {
      * Do something with the DeReKo file
      *
      * @param con
-     *            a Consumer that uses the {@link BufferedReader} on the DeReKo
-     *            file
+     *     a Consumer that uses the {@link BufferedReader} on the DeReKo file
      */
     private static void withDerekoReader(Consumer<BufferedReader> con) {
         try (InputStream derekoStream = DictionaryNormalizer.class
                 .getClassLoader().getResourceAsStream(DEREKO_PATH);
-             InputStreamReader derekoReader = new InputStreamReader(
-                     Objects.requireNonNull(derekoStream), Charset.forName("windows-1252"));
-             BufferedReader buf = new BufferedReader(derekoReader)) {
+                InputStreamReader derekoReader = new InputStreamReader(
+                        Objects.requireNonNull(derekoStream),
+                        Charset.forName("windows-1252"));
+                BufferedReader buf = new BufferedReader(derekoReader)) {
             con.accept(buf);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -123,7 +129,7 @@ public class DictionaryNormalizer implements WordNormalizer {
      * load the dictionary generated from DeReKo data
      *
      * @param force
-     *            the whether to force loading even if data already loaded
+     *     the whether to force loading even if data already loaded
      */
     private static void loadDerekoDict(boolean force) {
         if (derekoLoaded && !force) {
@@ -156,9 +162,9 @@ public class DictionaryNormalizer implements WordNormalizer {
     private static void loadCompiledDict() {
         try (InputStream dictSource = DictionaryNormalizer.class
                 .getClassLoader().getResourceAsStream(DICT_PATH);
-             InputStreamReader dictReader = new InputStreamReader(
-                     Objects.requireNonNull(dictSource));
-             BufferedReader dictBReader = new BufferedReader(dictReader)) {
+                InputStreamReader dictReader = new InputStreamReader(
+                        Objects.requireNonNull(dictSource));
+                BufferedReader dictBReader = new BufferedReader(dictReader)) {
             dict = dictBReader.lines().parallel().map(l -> l.split("\t"))
                     .collect(Collectors.toMap(l -> l[0], l -> l[1], strCollider,
                             ConcurrentHashMap::new));
@@ -193,8 +199,8 @@ public class DictionaryNormalizer implements WordNormalizer {
      * load the dictionaries
      *
      * @param force
-     *            whether to try loading the compiled dictionary, and whether to
-     *            force loading the DeReKo- and FOLK-derived dictionaries
+     *     whether to try loading the compiled dictionary, and whether to force
+     *     loading the DeReKo- and FOLK-derived dictionaries
      */
     @SuppressWarnings("ConstantConditions")
     public static void loadDictionary(boolean force) {
@@ -227,11 +233,10 @@ public class DictionaryNormalizer implements WordNormalizer {
      * make a {@link DictionaryNormalizer}
      *
      * @param keepCase
-     *            whether to keep upper case letters (and hence leave them
-     *            untouched)
+     *     whether to keep upper case letters (and hence leave them untouched)
      *
      * @param debugging
-     *            whether to give more info
+     *     whether to give more info
      */
     public DictionaryNormalizer(boolean keepCase, boolean debugging) {
         debug = debugging;

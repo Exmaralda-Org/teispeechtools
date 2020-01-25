@@ -171,6 +171,11 @@ public class CLI implements Runnable {
         }
     }
 
+    /**
+     * run CLI
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         CommandLine.run(new CLI(), args);
     }

@@ -7,6 +7,11 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
+			<name>net.certiv.antlrdt.core.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
 			<name>org.python.pydev.PyDevBuilder</name>
 			<arguments>
 			</arguments>
@@ -54,5 +59,6 @@
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
+		<nature>net.certiv.antlrdt.core.nature</nature>
 	</natures>
 </projectDescription>
