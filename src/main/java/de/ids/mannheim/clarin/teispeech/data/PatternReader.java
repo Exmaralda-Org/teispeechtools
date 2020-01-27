@@ -36,11 +36,11 @@ public class PatternReader {
      * read Patterns from file
      *
      * @param input
-     *     the input file
+     *            the input file
      * @throws JDOMException
-     *     XML broken
+     *             XML broken
      * @throws IOException
-     *     file broken
+     *             file broken
      */
     public PatternReader(File input) throws JDOMException, IOException {
         document = Utilities.parseXMLviaJDOM(new FileInputStream(input));
@@ -50,11 +50,11 @@ public class PatternReader {
      * read Patterns from InputStream
      *
      * @param input
-     *     the InputStream
+     *            the InputStream
      * @throws JDOMException
-     *     XML broken
+     *             XML broken
      * @throws IOException
-     *     file broken
+     *             file broken
      */
     public PatternReader(InputStream input) throws JDOMException, IOException {
         document = Utilities.parseXMLviaJDOM(input);
@@ -64,22 +64,21 @@ public class PatternReader {
      * get all Patterns for a level
      *
      * @param level
-     *     the level
+     *            the level
      * @return the patterns as a Map: name → Pattern
      */
     public Map<String, Pattern> getAllPatterns(int level) {
         return getAllPatterns(level, "default");
     }
 
-    // TODO: pattern names changed to terminological ISO 639-2 names; ponder
-    // whether this was a good idea
+    // TODO: pattern names changed to terminological ISO 639-2 names; ponder whether this was a good idea
     /**
      * get all Patterns for a level
      *
      * @param level
-     *     the level
+     *            the level
      * @param languageCode
-     *     the language code
+     *            the language code
      * @return the patterns as a Map: name → Pattern
      */
     public Map<String, Pattern> getAllPatterns(int level, String languageCode) {
@@ -109,9 +108,9 @@ public class PatternReader {
      * get the Pattern by name for a specific level
      *
      * @param level
-     *     the level
+     *            the level
      * @param name
-     *     the Pattern name
+     *            the Pattern name
      * @return the Pattern
      */
     public Pattern getPattern(int level, String name) {
@@ -122,16 +121,16 @@ public class PatternReader {
      * get the Pattern by name for a specific level and language
      *
      * @param level
-     *     the level
+     *            the level
      * @param name
-     *     the Pattern name
+     *            the Pattern name
      * @param languageCode
-     *     the language name
+     *            the language name
      * @return the Pattern
      */
     private Pattern getPattern(int level, String name, String languageCode) {
-        String xp = "//level[@level='" + level + "']/pattern[@name='" + name
-                + "']";
+        String xp = "//level[@level='" + level
+                + "']/pattern[@name='" + name + "']";
         System.out.println(xp);
         Element e = xpf.compile(xp, Filters.element()).evaluateFirst(document);
         Pattern pattern = Pattern.compile(
@@ -159,7 +158,7 @@ public class PatternReader {
      * language
      *
      * @param e
-     *     the element whose links to resolve
+     *            the element whose links to resolve
      * @return the resolved pattern
      */
     public String resolveElement(Element e) {
@@ -170,9 +169,9 @@ public class PatternReader {
      * resolve links to other patterns within element content
      *
      * @param e
-     *     the element whose links to resolve
+     *            the element whose links to resolve
      * @param languageCode
-     *     a language code
+     *            a language code
      * @return the resolved pattern
      */
     private String resolveElement(Element e, String languageCode) {
@@ -202,8 +201,7 @@ public class PatternReader {
                         theRightRegexElement = regexChildOfThisLanguage;
                     }
                 }
-                result.append(
-                        resolveElement(theRightRegexElement, languageCode));
+                result.append(resolveElement(theRightRegexElement, languageCode));
             }
         }
         return result.toString();
