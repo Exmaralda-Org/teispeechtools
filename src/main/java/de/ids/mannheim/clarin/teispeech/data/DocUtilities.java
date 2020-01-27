@@ -175,6 +175,7 @@ public class DocUtilities {
             revDesc = doc.createElementNS(TEI_NS, "revisionDesc");
             Element eDe = Utilities.getElementByTagNameNS(
                     doc.getDocumentElement(), TEI_NS, "encodingDesc");
+            // make sure there is an encodingDesc before the revisionDesc
             if (eDe == null) {
                 eDe = doc.createElementNS(TEI_NS, "encodingDesc");
                 Element header = Utilities.getElementByTagNameNS(
@@ -208,27 +209,28 @@ public class DocUtilities {
                 .format(DateTimeFormatter.ISO_INSTANT);
         org.jdom2.Element revDesc = Utilities.getElementByTagName(
                 doc.getRootElement(), "revisionDesc", TEI_NS);
+        org.jdom2.Element header = Utilities
+                .getElementByTagName(doc.getRootElement(), "teiHeader", TEI_NS);
+        if (header == null) {
+            header = new org.jdom2.Element("teiHeader", TEI_NS);
+            doc.getRootElement().addContent(0, header);
+        }
         if (revDesc == null) {
-            revDesc = new org.jdom2.Element("transcriptionDesc", TEI_NS);
+            revDesc = new org.jdom2.Element("revisionDesc", TEI_NS);
+            // make sure there is an encodingDesc before the revisionDesc
             org.jdom2.Element eDe = Utilities.getElementByTagName(
                     doc.getRootElement(), "encodingDesc", TEI_NS);
             if (eDe == null) {
-                org.jdom2.Element header = Utilities.getElementByTagName(
-                        doc.getRootElement(), "teiHeader", TEI_NS);
-                if (header == null) {
-                    header = new org.jdom2.Element("teiHeader", TEI_NS);
-                    doc.getRootElement().addContent(0, header);
-                } else {
-                    eDe = new org.jdom2.Element("encodingDesc", TEI_NS);
-                    header.addContent(eDe);
-                }
+                eDe = new org.jdom2.Element("encodingDesc", TEI_NS);
+                header.addContent(eDe);
             }
-            org.jdom2.Element changeEl = new org.jdom2.Element("change",
-                    NameSpaces.TEI_NS);
-            changeEl.setAttribute("when", stamp);
-            changeEl.addContent(new org.jdom2.Text(change));
-            revDesc.addContent(changeEl);
+            header.addContent(revDesc);
         }
+        org.jdom2.Element changeEl = new org.jdom2.Element("change",
+                NameSpaces.TEI_NS);
+        changeEl.setAttribute("when", stamp);
+        changeEl.addContent(new org.jdom2.Text(change));
+        revDesc.addContent(0, changeEl);
     }
 
     /**

@@ -116,11 +116,11 @@ public class GATParser extends AbstractParser {
                 Objects.requireNonNull(eDe).addContent(0, transDesc);
             }
         }
-        transDesc.setAttribute("ident", level, TEI_NS);
+        transDesc.setAttribute("ident", level, null);
         if (version == null) {
-            transDesc.removeAttribute("version", TEI_NS);
+            transDesc.removeAttribute("version", null);
         } else {
-            transDesc.setAttribute("version", version, TEI_NS);
+            transDesc.setAttribute("version", version, null);
         }
     }
 
@@ -163,10 +163,10 @@ public class GATParser extends AbstractParser {
                         unparsed.addContent(ev.getText());
                         if (l2.indexOf(o) < l2.size() - 1) {
                             // do not insert a timepoint for the last segment
-                            Element timepoint = new Element("time",
-                                    NameSpaces.TEI_NS);
+                            Element timepoint = new Element("time", TEI_NS);
                             timepoint.setAttribute("timepoint-reference",
-                                    ev.getAttributeValue("end-reference"));
+                                    ev.getAttributeValue("end-reference"),
+                                    null);
                             unparsed.addContent(timepoint);
                         }
                     }
@@ -496,6 +496,7 @@ public class GATParser extends AbstractParser {
                 }
             }
         }
+        System.err.format("FINISH (%d)!\n", parseLevel);
         DocUtilities.makeChange(doc,
                 String.format("parsed for cGAT level %d.", parseLevel));
     }
