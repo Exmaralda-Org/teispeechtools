@@ -255,6 +255,16 @@ Normalization:
       - `every`, a number of items after which to insert anchors
 
 
+## Adding and removing `xml:id` (command `identify` and `unidentify`)
+
+For some operations, it must be possible to address all structural
+elements with an `@xml:id` attribute.  `identify` adds `@xml:id`
+attributes to all TEI elements that do not have one, and `@unidentify`
+removes such attributes whose form suggests they have been added by
+`identify`.
+
+
+
 # Building and inspecting
 
 
