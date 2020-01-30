@@ -1,3 +1,7 @@
+---
+current version: 0.6.1
+...
+
 # Purpose
 
 This documentation describes the tools for processing transcripts of
@@ -34,13 +38,13 @@ All functions are also accessible from the command line. Try:
 (after building in root directory)
 
 ``` sh
-java -cp 'target/dependency/*' -jar target/teispeechtools-0.6.1.jar
+java -cp 'target/dependency/*' -jar target/teispeechtools-VERSION.jar
 ```
 
 (in the directory containing the jar)
 
 ``` sh
-java -cp 'dependency/*' -jar teispeechtools-0.6.1.jar
+java -cp 'dependency/*' -jar teispeechtools-VERSION.jar
 ```
 
 and follow the help. Together with this description, you should get
@@ -305,7 +309,7 @@ dictionary is contained in downloads. From the root directory of the
 project, execute:
 
 ``` sh
-java -cp 'target/teispeechtools-0.4.jar:target/dependency/*' \
+java -cp 'target/teispeechtools-VERSION.jar:target/dependency/*' \
     de.ids.mannheim.clarin.teispeech.tools.DictMaker
 ```
 
@@ -316,14 +320,14 @@ To check the files with regular expressions for transcription
 conventions by running:
 
 ``` sh
-java -cp 'target/dependency/*:target/teispeechtools-0.4.jar' \
+java -cp 'target/dependency/*:target/teispeechtools-VERSION.jar' \
     de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner -h
 ```
 
 to get help. E.g.,
 
 ``` sh
-java -cp 'target/dependency/*:target/teispeechtools-0.4.jar' \
+java -cp 'target/dependency/*:target/teispeechtools-VERSION.jar' \
     de.ids.mannheim.clarin.teispeech.tools.PatternReaderRunner \
     -i src/main/xml/Patterns.xml --language universal --level 2
 ```
