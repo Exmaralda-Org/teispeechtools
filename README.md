@@ -14,10 +14,12 @@ resource management -- Transcription of spoken language’.
 # Availability
 
 This is the library containing the tools. A [companion
-website](https://clarin.ids-mannheim.de/teilicht) describes how the
-functionality can be accessed as
+suite of webservices called
+<b>TEILicht</b>](https://clarin.ids-mannheim.de/teilicht)
+([source](https://github.com/Exmaralda-Org/teilicht)) 
+offers the functionality to be accessed as
 [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)ful
-[web services](https://en.wikipedia.org/wiki/Web_service) where you can
+[web services](https://en.wikipedia.org/wiki/Web_service), i.e. you can
 upload documents and download them in the processed form. The web
 services are also available via
 [WebLicht](https://weblicht.sfs.uni-tuebingen.de/), but by processing
