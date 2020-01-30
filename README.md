@@ -34,13 +34,13 @@ All functions are also accessible from the command line. Try:
 (after building in root directory)
 
 ``` sh
-java -cp 'target/dependency/*' -jar target/teispeechtools-0.4.1.jar
+java -cp 'target/dependency/*' -jar target/teispeechtools-0.6.1.jar
 ```
 
 (in the directory containing the jar)
 
 ``` sh
-java -cp 'dependency/*' -jar teispeechtools-0.4.1.jar
+java -cp 'dependency/*' -jar teispeechtools-0.6.1.jar
 ```
 
 and follow the help. Together with this description, you should get
