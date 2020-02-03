@@ -15,8 +15,8 @@
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
     <apache.version>4.5.10</apache.version>
-    <jackson.version>2.10.1</jackson.version>
-    <junit.version>5.5.2</junit.version>
+    <jackson.version>2.10.2</jackson.version>
+    <junit.version>5.6.0</junit.version>
     <junit.aux.version>1.5.2</junit.aux.version>
   </properties>
   <build>
