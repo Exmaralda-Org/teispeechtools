@@ -214,13 +214,13 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>4.0.4</version>
+      <version>4.1.4</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-distr -->
     <dependency>
       <groupId>org.apache.opennlp</groupId>
       <artifactId>opennlp-distr</artifactId>
-      <version>1.9.1</version>
+      <version>1.9.2</version>
       <type>pom</type>
     </dependency>
     <dependency>
