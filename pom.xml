@@ -98,9 +98,10 @@
         </configuration>
       </plugin>
       <plugin>
+        <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-maven-plugin -->
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.7.2</version>
+        <version>4.8-1</version>
         <executions>
           <execution>
             <id>antlr</id>
@@ -177,11 +178,11 @@
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.7.30</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-runtime -->
     <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4-maven-plugin</artifactId>
-      <version>4.7.2</version>
-      <type>maven-plugin</type>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>4.8-1</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
     <dependency>
