@@ -272,4 +272,8 @@
       </plugin>
     </plugins>
   </reporting>
+  <organization>
+    <name>Leibniz-Institut für Deutsche Sprache</name>
+    <url>http://www.ids-mannheim.de</url>
+  </organization>
 </project>
