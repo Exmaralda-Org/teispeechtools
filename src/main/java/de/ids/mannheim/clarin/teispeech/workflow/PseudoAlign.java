@@ -843,7 +843,7 @@ public class PseudoAlign {
             for (String loc : PERMITTED_LOCALES_ARRAY) {
                 LOCALES.put(loc, loc);
                 String[] components = LOCALE_SEPARATOR.split(loc);
-                for (int i = 0; i < components.length - 1; i++) {
+                for (int i = 1; i <= components.length - 1; i++) {
                     String active = String.join("-",
                             Arrays.copyOfRange(components, 0, i));
                     if (!already_permitted.contains(active)) {
@@ -859,6 +859,7 @@ public class PseudoAlign {
                     }
                 }
             }
+            LOGGER.info("{}", LOCALES);
         }
 
         /**
