@@ -245,7 +245,7 @@ public class PseudoAlign {
     }
 
     /**
-     * return document
+     * @return document
      */
     public Document getDoc() {
         return doc;
@@ -402,12 +402,10 @@ public class PseudoAlign {
         // aggregate by language to minimise calls to web service
         DocUtilities.groupByLanguage("w", doc, language, 1)
                 .forEach((uLanguage, initWords) -> {
-                    LOGGER.info("Tagging {} utterances in '{}'",
-                            initWords.size(), uLanguage);
                     Optional<String> locale = GraphToPhoneme
                             .correspondsTo(uLanguage);
                     String[] transWords;
-                    boolean transcribe = usePhones && locale.isPresent();
+                    boolean transcribe = (usePhones && locale.isPresent());
                     List<Element> words = Seq.seq(initWords)
                             .filter(w -> !("incomprehensible"
                                     .equals(w.getAttribute("type"))))
@@ -417,7 +415,7 @@ public class PseudoAlign {
                         // work with transcriptions
                         String text = Seq.seq(words).map(Node::getTextContent)
                                 .toString(" ");
-                        // noinspection OptionalGetWithoutIsPresent
+                        LOGGER.info("Transcribing {}", locale.get());
                         transWords = GraphToPhoneme
                                 .getTranscription(text, locale.get(), true)
                                 .get();
@@ -813,10 +811,10 @@ public class PseudoAlign {
                 "eng-GB", "eng-NZ", "eng-US", "eus-ES", "eus-FR", "fin",
                 "fin-FI", "fra" + "-FR", "gsw-CH", "gsw-CH-BE", "gsw-CH-BS",
                 "gsw-CH-GR", "gsw-CH-SG", "gsw-CH-ZH", "guf-AU", "gup-AU",
-                "hat", "hat-HT", "hun", "hun" + "-HU", "ita", "ita-IT",
-                "jpn-JP", "kat-GE", "ltz-LU", "mlt", "mlt-MT", "nld", "nld-NL",
-                "nor-NO", "nze", "pol", "pol-PL", "ron-RO", "rus-RU", "slk-SK",
-                "spa-ES", "sqi-AL", "swe-SE" };
+                "hat", "hat-HT", "hun", "hun-HU", "ita", "ita-IT", "jpn-JP",
+                "kat-GE", "ltz-LU", "mlt", "mlt-MT", "nld", "nld-NL", "nor-NO",
+                "nze", "pol", "pol-PL", "ron-RO", "rus-RU", "slk-SK", "spa-ES",
+                "sqi-AL", "swe-SE" };
 
         /**
          * base URL for transcription service
@@ -879,15 +877,17 @@ public class PseudoAlign {
 
         public static Optional<String> correspondsTo(String locale) {
             String[] components = LOCALE_SEPARATOR.split(locale);
-            Optional<String> ret = Optional.empty();
             components[0] = LangUtilities.toThree(components[0]);
-            for (int i = components.length; i >= 0; i--) {
+            Optional<String> ret = Optional.empty();
+            for (int i = components.length; i > 0; i--) {
                 String loki = String.join("-",
                         Arrays.copyOfRange(components, 0, i));
-                if (LOCALES.containsKey(loki))
-                    return Optional.of(LOCALES.get(loki));
-                else
-                    LOGGER.warn("Skipped {} [from {}]", loki, locale);
+                if (LOCALES.containsKey(loki)) {
+                    ret = Optional.of(LOCALES.get(loki));
+                    return ret;
+                } else {
+                    LOGGER.warn("Skipped G2P for {} [from {}]", loki, locale);
+                }
             }
             return ret;
         }
