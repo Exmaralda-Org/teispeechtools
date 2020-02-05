@@ -411,6 +411,8 @@ public class DocUtilities {
      */
     public static void insertTimeRoot(Document doc) {
         Pair<Element, Element> RootLine = makeTimePoint(doc, "T0", "0.0s");
+        String rootID = DocUtilities.getAttXML(RootLine.getLeft(), "id");
+        RootLine.getLeft().setAttribute("since", rootID);
         Utilities.insertAtBeginningOf(RootLine.getLeft(), RootLine.getRight());
     }
 
