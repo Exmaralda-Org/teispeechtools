@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>teispeechtools</artifactId>
-  <version>0.6.1</version>
+  <version>0.6.3</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
   <properties>
@@ -170,7 +170,7 @@
     <dependency>
       <groupId>org.korpora.useful</groupId>
       <artifactId>utilities</artifactId>
-      <version>0.4.1</version>
+      <version>0.4.2</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>

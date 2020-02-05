@@ -14,12 +14,12 @@ SPACE : [\t ]+ -> channel(HIDDEN);
 
 START_PROLOG: '---' NEWLINE -> mode(HEADER);
 
-HWORD : ~[-:\t \n\r]~[:\t \n\r]+;
+HWORD : ~[:\t \n\r\-]~[:\t \n\r]+;
 COLON : ':' -> mode(NORMAL);
 NEWLINE : ('\r\n'|'\n\r'|'\r'|'\n');
 
 mode HEADER;
-DURATION: 'duration'|'length';
+DURATION: 'duration' | 'length' | 'time';
 LANGUAGE: 'lang''uage'? -> mode(LANG);
 HCOLON : ':';
 HSPACE : [\t ]+ -> channel(HIDDEN);
@@ -28,12 +28,12 @@ OFFSET: 'offset';
 INT: [0-9]+;
 FLOATING: [0-9]+[.][0-9]+([eE][0-9]+)?;
 UNIT: 's'|'sec';
-END_PROLOG: ('---' FNEWLINE | '...' FNEWLINE) -> mode(NORMAL);
+END_PROLOG: ('---'|'...') -> mode(NORMAL);
 
 mode LANG;
-LCOLON : ':';
-LSPACE : [\t ]+ -> channel(HIDDEN);
-LANG_CODE : ~[-:\t \n\r]~[:\t \n\r]+ -> mode(HEADER);
+LCOLON: ':';
+LSPACE: [\t ]+ -> channel(HIDDEN);
+LANG_CODE: ~('-'|[:\t \n\r])~[:\t \n\r]+ -> mode(HEADER);
 
 mode COMMENTED_ACTION;
 RRPAREN: '))' -> mode(NORMAL);

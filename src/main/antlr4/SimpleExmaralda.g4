@@ -13,8 +13,8 @@ transcript : prolog? line+ ;
 prolog: START_PROLOG language? duration offset? END_PROLOG;
 language: LANGUAGE LCOLON lang_code HNEWLINE;
 lang_code: LANG_CODE;
-duration: DURATION HCOLON timeData UNIT? HNEWLINE;
-offset: OFFSET HCOLON timeData UNIT? HNEWLINE;
+duration: DURATION HCOLON timeData UNIT? HNEWLINE?;
+offset: OFFSET HCOLON timeData UNIT? HNEWLINE?;
 timeData: FLOATING;
 
 line : turn | empty_line ;

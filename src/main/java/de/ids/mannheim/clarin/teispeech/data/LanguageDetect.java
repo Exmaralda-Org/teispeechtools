@@ -203,8 +203,9 @@ public class LanguageDetect {
             }
             // haven't found language yet:
             if (words.size() > 0 && words.size() < minUtteranceSize) {
-                Comment com = doc.createComment(
-                        "too few words to make a good language prediction");
+                Comment com = doc.createComment(String.format(
+                        "too few words (%d < %d) to make a good language prediction",
+                        words.size(), minUtteranceSize));
                 utter.getParentNode().insertBefore(com, utter);
                 unprocessed++;
                 continue;
@@ -218,8 +219,9 @@ public class LanguageDetect {
                 }
                 text = utter.getTextContent();
                 if (StringUtils.split(text).length < minUtteranceSize) {
-                    Comment com = doc.createComment(
-                            "too few words to make a good language prediction");
+                    Comment com = doc.createComment(String.format(
+                            "too few words (%d < %d) to make a good language prediction",
+                            StringUtils.split(text).length, minUtteranceSize));
                     utter.getParentNode().insertBefore(com, utter);
                     unprocessed++;
                     continue;

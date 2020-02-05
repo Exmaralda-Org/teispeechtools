@@ -144,10 +144,14 @@ public class DocUtilities {
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL, int maxComponents) {
         return Utilities.toStream(doc.getElementsByTagNameNS(TEI_NS, tagName))
-                .map(u -> (Element) u)
-                .collect(Collectors.groupingBy(
-                        u -> getUtteranceLanguage(u, defaultL, maxComponents),
-                        Collectors.toList()));
+                .map(u -> (Element) u).collect(
+                        Collectors
+                                .groupingBy(
+                                        u -> getUtteranceLanguage(u,
+                                                defaultL != null ? defaultL
+                                                        : "unknown",
+                                                maxComponents),
+                                        Collectors.toList()));
     }
 
     static String getTextOrNorm(Element el) {

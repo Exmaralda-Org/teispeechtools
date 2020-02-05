@@ -78,7 +78,8 @@ public class SpeechDocument {
         this.doc = doc;
         this.duration = Optional.empty();
         this.offset = Optional.empty();
-        setLanguage(lang);
+        if (lang != null)
+            setLanguage(lang);
     }
 
     /**
