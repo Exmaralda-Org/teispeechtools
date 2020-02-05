@@ -859,7 +859,6 @@ public class PseudoAlign {
                     }
                 }
             }
-            LOGGER.info("{}", LOCALES);
         }
 
         /**
