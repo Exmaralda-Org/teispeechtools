@@ -482,7 +482,9 @@ public class SpeechDocument {
     public void finish() {
         DocUtilities.makeChange(doc,
                 "created from Simple EXMARaLDA plain text transcript; "
-                        + "language set to «" + language + "»");
+                        + language != null
+                                ? ("language set to «" + language + "»")
+                                : "no document language set");
     }
 
     /**

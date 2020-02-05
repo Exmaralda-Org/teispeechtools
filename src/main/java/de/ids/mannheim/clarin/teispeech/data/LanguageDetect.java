@@ -103,7 +103,8 @@ public class LanguageDetect {
         this.language = language != null ? language : "deu";
         if (expected != null && expected.size() > 0) {
             expectedLanguages = new HashSet<>();
-            expectedLanguages.add(language);
+            if (language != null && !language.isEmpty())
+                expectedLanguages.add(language);
             expectedLanguages.addAll(expected);
         }
         this.minUtteranceSize = mini;
@@ -240,6 +241,8 @@ public class LanguageDetect {
                     .filter(l -> expectedLanguages.contains(
                             LangUtilities.getLanguageString(l.getLang())))
                     .collect(Collectors.toList());
+            LOGGER.info("expected: {}; detected:{}", expectedLanguages,
+                    languages);
             Comment com = doc.createComment(
                     Seq.seq(languages).filter(l -> l.getConfidence() > 0.005)
                             .map(l -> String.format("%s: %.02f",
