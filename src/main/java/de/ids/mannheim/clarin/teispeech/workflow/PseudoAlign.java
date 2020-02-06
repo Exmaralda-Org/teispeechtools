@@ -379,7 +379,7 @@ public class PseudoAlign {
         Pair<Optional<Double>, Double> timeLengthAndOffset = getTimeAndOffset(
                 doc);
 
-        if (offset == -1) {
+        if (timeLengthAndOffset.getRight() > 0) {
             offset = timeLengthAndOffset.getRight();
         } else {
             DocUtilities.applyDocumentOffset(doc, Optional.of(offset));
@@ -398,7 +398,7 @@ public class PseudoAlign {
                     true);
         }
         LOGGER.warn(String.format("time: %g, offset: %g", timeLength, offset));
-
+        timeLength -= offset;
         // aggregate by language to minimise calls to web service
         DocUtilities.groupByLanguage("w", doc, language, 1)
                 .forEach((uLanguage, initWords) -> {
@@ -555,6 +555,7 @@ public class PseudoAlign {
             throw new RuntimeException(e);
         }
         String goal = getAttXML(whenList.get(1), "id");
+        LOGGER.info("GOAL: {}", goal);
         way = findPathR(getAttXML(whenList.get(whenList.size() - 2), "id"),
                 goal);
         if (way != null) {
@@ -666,8 +667,12 @@ public class PseudoAlign {
         LOGGER.info("applying " + info);
         Utilities.insertAtBeginningOf(comment,
                 Utilities.getElementByTagNameNS(doc, TEI_NS, "body"));
+        String root = getAttXML(whenList.get(0), "id");
+        LOGGER.info("START reference: {}", root);
+        position.put(root, 0d);
         String start = getAttXML(whenList.get(1), "id");
-        position.put(start, 0d);
+        LOGGER.info("START of WAY: {}", start);
+        position.put(start, offset);
         // System.err.println(distances);
         // System.err.println(way);
         // System.err.println(accessibleRev);
@@ -705,7 +710,7 @@ public class PseudoAlign {
             // pos = position.get(dist.from) + step;
             position.put(ref, pos);
             event.setAttribute("interval", String.format("%.4fs", pos));
-            event.setAttribute("since", start);
+            event.setAttribute("since", root);
         }
     }
 

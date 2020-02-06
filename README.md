@@ -79,7 +79,7 @@ To see all options, execute the wrapper script once.
 
   - Output  
     a transcription file conforming to the TEI specification which is
-    split intoto utterances: `<annotationBlock>` and `<u>`,
+    split into utterances: `<annotationBlock>` and `<u>`,
     `<incident>` elements together with `<spanGrp>`s containing the
     commentary. A `<timeline>` is derived from the text, and all
     annotation is situated with respect to the `<timeline>`.
