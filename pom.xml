@@ -7,6 +7,14 @@
   <version>0.6.4</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
+  <organization>
+    <name>Leibniz-Institut für Deutsche Sprache</name>
+    <url>http://www.ids-mannheim.de</url>
+  </organization>
+  <contributors>
+    <contributor><name>Bernhard Fisseni</name><email>fisseni@ids-mannheim.de</email><url>https://github.com/teoric</url></contributor>
+    <contributor><name>Thomas Schmidt</name><email>thomas.schmidt@ids-mannheim.de</email><url>https://github.com/berndmoos</url></contributor>
+  </contributors>
   <properties>
     <!-- project settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,7 +25,7 @@
     <apache.version>4.5.11</apache.version>
     <jackson.version>2.10.2</jackson.version>
     <junit.version>5.6.0</junit.version>
-    <junit.aux.version>1.5.2</junit.aux.version>
+    <junit.aux.version>1.6.0</junit.aux.version>
   </properties>
   <build>
     <resources>
@@ -83,7 +91,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.2.0</version>
         <configuration>
           <archive>
             <index>true</index>
@@ -251,29 +259,4 @@
       <version>65.1</version>
     </dependency>
   </dependencies>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.0</version>
-        <configuration>
-          <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
-          <show>public</show>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>javadoc-no-fork</report>
-              <!-- report>test-javadoc-no-fork</report -->
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
-  <organization>
-    <name>Leibniz-Institut für Deutsche Sprache</name>
-    <url>http://www.ids-mannheim.de</url>
-  </organization>
 </project>
