@@ -31,8 +31,8 @@ UNIT: 's'|'sec';
 END_PROLOG: ('---'|'...') -> mode(NORMAL);
 
 mode LANG;
-LCOLON: ':';
 LSPACE: [\t ]+ -> channel(HIDDEN);
+LCOLON: ':';
 LANG_CODE: ~('-'|[:\t \n\r])~[:\t \n\r]+ -> mode(HEADER);
 
 mode COMMENTED_ACTION;

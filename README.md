@@ -57,9 +57,9 @@ A simple [wrapper script](spindel.sh) is available.
 The names of CLI commands corresponds to those of the TEILicht web
 services.
 
-The names of the options of the wrapper script correspond to those of
-the parameters used in the Java library.  However, some abbreviations
-are possible and `CamelCase` was converted to
+The names of the options CLI correspond to those of the parameters
+used in the Java library.  However, some abbreviations are possible
+and `CamelCase` was converted to
 [`kebab-case`](https://stackoverflow.com/questions/11273282/whats-the-name-for-hyphen-separated-case).
 To see all options, execute the wrapper script once.
 
@@ -253,7 +253,7 @@ Normalization:
         transcription will be used to guess the proportion of utterance
         duration to assign to the `<w>`. If no transcription
         is possible, or transcription is disabled, the number of letters
-        will be used to pseudo-align
+        will be used to pseudo-align, and no transcription will be added.
       - the `time` duration of the utterance. Setting the time to -1 (default)
         means that it will be derived from the document as described above.
       - the `offset` of the utterance, i.e. the time of the first
