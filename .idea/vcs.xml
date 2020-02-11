@@ -6,7 +6,8 @@
     </profile>
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../utilities" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../TEILicht" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../../teispeechtools" vcs="Git" />
   </component>
 </project>

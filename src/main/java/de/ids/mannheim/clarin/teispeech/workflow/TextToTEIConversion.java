@@ -116,7 +116,6 @@ public class TextToTEIConversion {
             } catch (SAXException e) {
                 throw new RuntimeException("Template broken!");
             } catch (ParserConfigurationException e) {
-                // TODO Auto-generated catch block
                 throw new RuntimeException(e);
             }
         }

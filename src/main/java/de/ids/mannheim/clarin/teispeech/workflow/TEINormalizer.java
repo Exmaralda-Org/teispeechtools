@@ -50,8 +50,7 @@ public class TEINormalizer {
     }
 
     private TEINormalizer(String language) {
-        normalizer = new DictionaryNormalizer(); // TODO: currently, only
-                                                 // German,
+        normalizer = new DictionaryNormalizer(); // TODO: currently only German
         // anyway!
         this.language = language != null ? language : "deu";
     }
@@ -70,8 +69,8 @@ public class TEINormalizer {
 
         List<String> processed = new ArrayList<>();
         List<String> unprocessed = new ArrayList<>();
-        // TODO: currently, we only support German normalization!
         words.forEach((lang, ws) -> {
+            // currently, we only support German normalization!
             if ("deu".equals(lang)) {
                 ws.forEach(el -> {
                     if (!force
@@ -105,7 +104,7 @@ public class TEINormalizer {
             }
         });
 
-        // TODO: currently, we only support German normalization!
+        // currently, we only support German normalization!
         DocUtilities.makeChange(doc,
                 "normalized words using the OrthoNormal dictionaries",
                 processed, unprocessed);

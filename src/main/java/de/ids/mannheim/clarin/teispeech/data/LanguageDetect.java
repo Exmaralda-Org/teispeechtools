@@ -75,7 +75,6 @@ public class LanguageDetect {
         }
     }
 
-    // TODO: consider threshold for utterance length and confidence
     // private static int MIN_UTTERANCE_SIZE = 5;
     private final int minUtteranceSize;
     // private static double MIN_CONFIDENCE = 0.1;
@@ -212,7 +211,6 @@ public class LanguageDetect {
                 continue;
             }
             String text;
-            // TODO: What to do about mixed content without <w>?
             if (words.isEmpty()) {
                 if (utter.getChildNodes().getLength() == 0) {
                     unprocessed++;

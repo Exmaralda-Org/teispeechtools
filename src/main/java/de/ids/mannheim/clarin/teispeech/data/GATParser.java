@@ -289,8 +289,6 @@ public class GATParser extends AbstractParser {
                 }
             }
         } else if (parseLevel == 3) {
-            // TODO
-            // parseDocument(doc, 2);
             IteratorIterable<Element> unparsedIterator = doc
                     .getDescendants(new ElementFilter("unparsed"));
             List<Element> unparseds = new ArrayList<>();

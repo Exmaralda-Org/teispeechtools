@@ -49,8 +49,6 @@ public class DocUtilities {
     // private final static Logger LOGGER = LoggerFactory
     // .getLogger(DocUtilities.class.getName());
 
-    // TODO: Allow exponential notation?
-    // TODO: What does "PT" etc. mean?
     // TODO: Treat other measurements (ms, min, h)?
     private static final Pattern TIME_PATTERN = Pattern
             .compile("(?i)P?T?([0-9.]+)s?");

@@ -77,14 +77,6 @@ public class PseudoAlign {
     static {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
-            // TODO: Do we want text() nodes?
-            // interesting =
-            // xPath.compile(String.format(
-            // ".//*[(local-name() = 'w' or local-name() " +
-            // "='pause') and namespace-uri() =
-            // '%s']|" +
-            // ".//text()",
-            // TEI_NS));
             interesting = xPath
                     .compile(String.format(
                             ".//*[(local-name() = 'w' or local-name() "
@@ -259,7 +251,6 @@ public class PseudoAlign {
      * @return the duration
      */
     public Optional<Double> getUtteranceDuration(Element el) {
-        // TODO: check for local anchors and do something about it
         Optional<Double> duration = DocUtilities.getDuration(el);
         LOGGER.info("utterance duration: {}", duration);
         if (!duration.isPresent()) {
@@ -372,8 +363,6 @@ public class PseudoAlign {
     /**
      * calculate relative length of utterances the document
      */
-    // TODO: Do we need Boolean force?
-    // TODO: Do we need to disallow syllabification?
     // TODO: Allow to use normalized orthography, not CA transcription?
     public void calculateUtterances() {
         Pair<Optional<Double>, Double> timeLengthAndOffset = getTimeAndOffset(
@@ -465,7 +454,6 @@ public class PseudoAlign {
                                 String.format("%d", unLettered[i]));
                     }
                 });
-        // TODO: calculate!
         Utilities
                 .toElementStream(
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
@@ -474,12 +462,8 @@ public class PseudoAlign {
         itemLength.ifPresent(this::applyItemLength);
         itemLength.ifPresent(this::insertAnchorEvery);
         cleanUp();
-        // TODO: remove relative lengths after testing
-        // USE XSLT!
         DocUtilities.makeChange(doc, "Pseudo-aligned");
     }
-
-    // TODO: What about empty incidents?
 
     /**
      * determine the length of a pseudophone
@@ -673,14 +657,6 @@ public class PseudoAlign {
         String start = getAttXML(whenList.get(1), "id");
         LOGGER.info("START of WAY: {}", start);
         position.put(start, offset);
-        // System.err.println(distances);
-        // System.err.println(way);
-        // System.err.println(accessibleRev);
-
-        // getTimeLine(doc).setAttribute("unit", "s");
-        // // TODO: anpassen an inverval mit Selbstreferenz
-        // whenList.get(0).setAttribute("absolute",
-        // String.format("%.4fs", offset));
 
         /*
          * the following loop disregards the first tei:when (time 0) and the
@@ -788,10 +764,7 @@ public class PseudoAlign {
      * phone[mt]ically
      *
      * <p>
-     * TODO: test whether syllable structure improves
-     *
-     * <p>
-     * TODO: cutoff
+     * TODO: test whether syllable structure improves something
      *
      * <p>
      * TODO: equidistant syllables
