@@ -16,7 +16,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.Text;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 
 /* Big change 04-12-2012
  * allow language codes in order to differentiate between alphabets
@@ -43,7 +43,7 @@ public class PatternReader {
      *             file broken
      */
     public PatternReader(File input) throws JDOMException, IOException {
-        document = Utilities.parseXMLviaJDOM(new FileInputStream(input));
+        document = XMLUtilities.parseXMLviaJDOM(new FileInputStream(input));
     }
 
     /**
@@ -57,7 +57,7 @@ public class PatternReader {
      *             file broken
      */
     public PatternReader(InputStream input) throws JDOMException, IOException {
-        document = Utilities.parseXMLviaJDOM(input);
+        document = XMLUtilities.parseXMLviaJDOM(input);
     }
 
     /**

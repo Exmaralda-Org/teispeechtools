@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -80,7 +80,7 @@ public class DictionaryNormalizer implements WordNormalizer {
                 .getClassLoader().getResourceAsStream(FOLKS_PATH)) {
             Document document;
             try {
-                document = Utilities.parseXML(folkSource);
+                document = XMLUtilities.parseXML(folkSource);
             } catch (SAXException e) {
                 throw new RuntimeException(
                         "Dictionary broken! – " + e.getMessage());
@@ -88,11 +88,11 @@ public class DictionaryNormalizer implements WordNormalizer {
                 throw new RuntimeException(
                         "XML parsing broken! – " + ex.getMessage());
             }
-            Utilities.toElementStream(document.getElementsByTagName("entry"))
+            XMLUtilities.toElementStream(document.getElementsByTagName("entry"))
                     .forEach(entry -> {
                         String from = entry.getAttribute("form");
                         @SuppressWarnings("OptionalGetWithoutIsPresent")
-                        String to = Utilities
+                        String to = XMLUtilities
                                 .toElementStream(
                                         entry.getElementsByTagName("n"))
                                 .max(Comparator.comparing(e -> Integer

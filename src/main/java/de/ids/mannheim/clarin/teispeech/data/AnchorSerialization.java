@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -94,7 +94,7 @@ public class AnchorSerialization {
      *            the document that contains {@code u} and anchors
      */
     public static void serializeAnchors(Document doc) {
-        Utilities.toElementStream(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
+        XMLUtilities.toElementStream(doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(AnchorSerialization::serializeAnchors);
     }
 }

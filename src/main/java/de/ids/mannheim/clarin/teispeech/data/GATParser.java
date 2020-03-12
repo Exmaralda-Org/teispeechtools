@@ -18,7 +18,7 @@ import org.jdom2.filter.ElementFilter;
 import org.jdom2.transform.XSLTransformer;
 import org.jdom2.util.IteratorIterable;
 import org.jdom2.xpath.XPathFactory;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 
 /**
  * Parser for cGAT transcription
@@ -67,11 +67,11 @@ public class GATParser extends AbstractParser {
         basicPatterns = pr.getAllPatterns(3, languageCode);
 
         minimalTransformer = new XSLTransformer(
-                Utilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
+                XMLUtilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
                         .getResourceAsStream(MINIMAL_TRANSFORMER_FILE_PATH)));
 
         basicTransformer = new XSLTransformer(
-                Utilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
+                XMLUtilities.parseXMLviaJDOM(GATParser.class.getClassLoader()
                         .getResourceAsStream(BASIC_TRANSFORMER_FILE_PATH)));
 
     }
@@ -88,22 +88,22 @@ public class GATParser extends AbstractParser {
      */
     private void setLevel(Document doc, String level,
             @SuppressWarnings("SameParameterValue") String version) {
-        Element transDesc = Utilities.getElementByTagName(doc.getRootElement(),
+        Element transDesc = XMLUtilities.getElementByTagName(doc.getRootElement(),
                 "transcriptionDesc", TEI_NS);
         if (transDesc == null) {
             transDesc = new Element("transcriptionDesc", TEI_NS);
             // insert after appInfo
-            Element ai = Utilities.getElementByTagName(doc.getRootElement(),
+            Element ai = XMLUtilities.getElementByTagName(doc.getRootElement(),
                     "appInfo", TEI_NS);
             if (ai != null) {
                 int pos = ai.getParent().indexOf(ai);
                 ai.getParent().addContent(pos + 1, transDesc);
                 // or in encodingDesc
             } else {
-                Element eDe = Utilities.getElementByTagName(
+                Element eDe = XMLUtilities.getElementByTagName(
                         doc.getRootElement(), "encodingDesc", TEI_NS);
                 if (eDe == null) {
-                    Element header = Utilities.getElementByTagName(
+                    Element header = XMLUtilities.getElementByTagName(
                             doc.getRootElement(), "teiHeader", TEI_NS);
                     if (header == null) {
                         header = new Element("teiHeader", TEI_NS);
@@ -235,7 +235,7 @@ public class GATParser extends AbstractParser {
                             "GAT_WORDBOUNDARY", minimalPatterns));
 
                     // Element contribution = unparsed.getParentElement();
-                    Utilities.replaceContentWithParse(unparsed,
+                    XMLUtilities.replaceContentWithParse(unparsed,
                             text.toString());
 
                     List<Element> l = unparsed.getChildren("GAT_UNCERTAIN"); // drin
@@ -257,7 +257,7 @@ public class GATParser extends AbstractParser {
                                                                                  // ISO-<punctuation>
                         ucText = parseText(ucText, "GAT_WORDBOUNDARY", // (egal?)
                                 minimalPatterns);
-                        Utilities.replaceContentWithParse(uc, ucText);
+                        XMLUtilities.replaceContentWithParse(uc, ucText);
                     }
 
                     IteratorIterable<Element> i2 = unparsed.getDescendants(
@@ -272,7 +272,7 @@ public class GATParser extends AbstractParser {
                         alText = parseText(alText, "GAT_WORD", minimalPatterns);
                         alText = parseText(alText, "GAT_WORDBOUNDARY",
                                 minimalPatterns);
-                        Utilities.replaceContentWithParse(al, alText);
+                        XMLUtilities.replaceContentWithParse(al, alText);
                     }
 //                    contribution.setAttribute("parse-level", "2");
                     insertTimeReferences(unparsed, timePositions);
@@ -381,7 +381,7 @@ public class GATParser extends AbstractParser {
                             "GAT_WORDBOUNDARY", basicPatterns));
 
                     Element contribution = unparsed.getParentElement();
-                    Utilities.replaceContentWithParse(contribution,
+                    XMLUtilities.replaceContentWithParse(contribution,
                             text.toString());
 
                     List<Element> l = contribution.getChildren("GAT_UNCERTAIN");
@@ -397,7 +397,7 @@ public class GATParser extends AbstractParser {
                         ucText = parseText(ucText, "GAT_WORD", basicPatterns);
                         ucText = parseText(ucText, "GAT_WORDBOUNDARY",
                                 basicPatterns);
-                        Utilities.replaceContentWithParse(uc, ucText);
+                        XMLUtilities.replaceContentWithParse(uc, ucText);
                     }
 
                     IteratorIterable<Element> i2 = contribution.getDescendants(
@@ -412,7 +412,7 @@ public class GATParser extends AbstractParser {
                         alText = parseText(alText, "GAT_WORD", basicPatterns);
                         alText = parseText(alText, "GAT_WORDBOUNDARY",
                                 basicPatterns);
-                        Utilities.replaceContentWithParse(al, alText);
+                        XMLUtilities.replaceContentWithParse(al, alText);
                     }
 
                     // take care of accent markup and lengthening...
@@ -431,7 +431,7 @@ public class GATParser extends AbstractParser {
                                 basicPatterns);
                         wText = parseText(wText, "GAT_LENGTHENING",
                                 basicPatterns);
-                        Utilities.replaceContentWithParse(w, wText);
+                        XMLUtilities.replaceContentWithParse(w, wText);
                     }
                     // ... and of lengthening inside accent syllables
                     IteratorIterable<? extends Content> i4 = contribution
@@ -448,7 +448,7 @@ public class GATParser extends AbstractParser {
                         String sText = s.getText();
                         sText = parseText(sText, "GAT_LENGTHENING",
                                 basicPatterns);
-                        List<Content> newContent4 = Utilities
+                        List<Content> newContent4 = XMLUtilities
                                 .readJDOMFromString("<X>" + sText + "</X>")
                                 .getRootElement().removeContent();
                         s.removeContent();
@@ -503,11 +503,11 @@ public class GATParser extends AbstractParser {
             Map<String, Pattern> patterns) throws JDOMException, IOException {
         String docString = "<X>" + text + "</X>";
         // System.out.println("=== " + docString);
-        Element e = Utilities.readJDOMFromString(docString).getRootElement();
+        Element e = XMLUtilities.readJDOMFromString(docString).getRootElement();
         StringBuilder returnText = new StringBuilder();
         for (Object o : e.getContent()) {
             if (!(o instanceof Text)) {
-                returnText.append(Utilities.elementToString((Element) o));
+                returnText.append(XMLUtilities.elementToString((Element) o));
                 continue;
             }
             Pattern p = patterns.get(patternName);

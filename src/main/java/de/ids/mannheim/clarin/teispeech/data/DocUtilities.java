@@ -29,7 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jdom2.Namespace;
 import org.korpora.useful.LangUtilities;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -108,7 +108,7 @@ public class DocUtilities {
             int maxComponents) {
         assert "u".equals(el.getTagName());
         String lang = getLanguage(el, defaultL, maxComponents);
-        Map<String, Long> freq = Utilities
+        Map<String, Long> freq = XMLUtilities
                 .toElementStream(el.getElementsByTagNameNS(TEI_NS, "w"))
                 .collect(Collectors.groupingBy(w -> {
                     // words without language tag are counted as having the
@@ -141,7 +141,7 @@ public class DocUtilities {
      */
     public static Map<String, List<Element>> groupByLanguage(String tagName,
             Document doc, String defaultL, int maxComponents) {
-        return Utilities.toStream(doc.getElementsByTagNameNS(TEI_NS, tagName))
+        return XMLUtilities.toStream(doc.getElementsByTagNameNS(TEI_NS, tagName))
                 .map(u -> (Element) u).collect(
                         Collectors
                                 .groupingBy(
@@ -171,30 +171,30 @@ public class DocUtilities {
     public static void makeChange(Document doc, String change) {
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
-        Element revDesc = Utilities.getElementByTagNameNS(
+        Element revDesc = XMLUtilities.getElementByTagNameNS(
                 doc.getDocumentElement(), TEI_NS, "revisionDesc");
         if (revDesc == null) {
             revDesc = doc.createElementNS(TEI_NS, "revisionDesc");
-            Element eDe = Utilities.getElementByTagNameNS(
+            Element eDe = XMLUtilities.getElementByTagNameNS(
                     doc.getDocumentElement(), TEI_NS, "encodingDesc");
             // make sure there is an encodingDesc before the revisionDesc
             if (eDe == null) {
                 eDe = doc.createElementNS(TEI_NS, "encodingDesc");
-                Element header = Utilities.getElementByTagNameNS(
+                Element header = XMLUtilities.getElementByTagNameNS(
                         doc.getDocumentElement(), TEI_NS, "teiHeader");
                 if (header == null) {
                     header = doc.createElementNS(TEI_NS, "teiHeader");
-                    Utilities.insertAtBeginningOf(header,
+                    XMLUtilities.insertAtBeginningOf(header,
                             doc.getDocumentElement());
                 }
-                Utilities.insertAtBeginningOf(eDe, header);
+                XMLUtilities.insertAtBeginningOf(eDe, header);
             }
-            Utilities.insertAtBeginningOf(revDesc, eDe);
+            XMLUtilities.insertAtBeginningOf(revDesc, eDe);
         }
         Element changeEl = doc.createElementNS(TEI_NS, "change");
         changeEl.setAttribute("when", stamp);
         changeEl.appendChild(doc.createTextNode(change));
-        Utilities.insertAtBeginningOf(changeEl, revDesc);
+        XMLUtilities.insertAtBeginningOf(changeEl, revDesc);
     }
 
     /**
@@ -209,9 +209,9 @@ public class DocUtilities {
         Namespace TEI_NS = Namespace.getNamespace(NameSpaces.TEI_NS);
         String stamp = ZonedDateTime.now(ZoneOffset.systemDefault())
                 .format(DateTimeFormatter.ISO_INSTANT);
-        org.jdom2.Element revDesc = Utilities.getElementByTagName(
+        org.jdom2.Element revDesc = XMLUtilities.getElementByTagName(
                 doc.getRootElement(), "revisionDesc", TEI_NS);
-        org.jdom2.Element header = Utilities
+        org.jdom2.Element header = XMLUtilities
                 .getElementByTagName(doc.getRootElement(), "teiHeader", TEI_NS);
         if (header == null) {
             header = new org.jdom2.Element("teiHeader", TEI_NS);
@@ -220,7 +220,7 @@ public class DocUtilities {
         if (revDesc == null) {
             revDesc = new org.jdom2.Element("revisionDesc", TEI_NS);
             // make sure there is an encodingDesc before the revisionDesc
-            org.jdom2.Element eDe = Utilities.getElementByTagName(
+            org.jdom2.Element eDe = XMLUtilities.getElementByTagName(
                     doc.getRootElement(), "encodingDesc", TEI_NS);
             if (eDe == null) {
                 eDe = new org.jdom2.Element("encodingDesc", TEI_NS);
@@ -415,7 +415,7 @@ public class DocUtilities {
         Pair<Element, Element> RootLine = makeTimePoint(doc, "T0", "0.0s");
         String rootID = DocUtilities.getAttXML(RootLine.getLeft(), "id");
         RootLine.getLeft().setAttribute("since", rootID);
-        Utilities.insertAtBeginningOf(RootLine.getLeft(), RootLine.getRight());
+        XMLUtilities.insertAtBeginningOf(RootLine.getLeft(), RootLine.getRight());
     }
 
     /**
@@ -504,7 +504,7 @@ public class DocUtilities {
      * @return the time line
      */
     public static Element getTimeLine(Document doc) {
-        Element timeLine = Utilities.getElementByTagNameNS(doc, TEI_NS,
+        Element timeLine = XMLUtilities.getElementByTagNameNS(doc, TEI_NS,
                 "timeline");
         if (timeLine == null) {
             throw new RuntimeException(
@@ -559,7 +559,7 @@ public class DocUtilities {
         double offset = 0;
         Optional<Double> lastTime = Optional.empty();
         Optional<String> formatError = Optional.empty();
-        List<Element> whens = Utilities.toElementList(getWhens(doc));
+        List<Element> whens = XMLUtilities.toElementList(getWhens(doc));
         if (whens.size() == 0) {
             formatError = Optional.of("timeline missing!");
         } else {
@@ -594,7 +594,7 @@ public class DocUtilities {
             String errorMessage = String.format("TimeLine format error: %s",
                     formatError.get());
             Comment errorComment = doc.createComment(errorMessage);
-            Utilities.insertAtBeginningOf(errorComment, root);
+            XMLUtilities.insertAtBeginningOf(errorComment, root);
         }
         return Pair.of(lastTime, offset);
     };
@@ -649,13 +649,13 @@ public class DocUtilities {
         int i = 0;
         String newId;
         if (tryBare) {
-            if (Utilities.getElementByID(doc, pattern) == null)
+            if (XMLUtilities.getElementByID(doc, pattern) == null)
                 return pattern;
         }
         do {
             i++;
             newId = String.format("%s_%d", pattern, i);
-        } while (Utilities.getElementByID(doc, newId) != null);
+        } while (XMLUtilities.getElementByID(doc, newId) != null);
         return newId;
     }
 
@@ -707,7 +707,7 @@ public class DocUtilities {
         if (id.equals(rootID)) {
             ret = Optional.of(0d);
         } else {
-            Element el = Utilities.getElementByID(doc, id);
+            Element el = XMLUtilities.getElementByID(doc, id);
             Optional<Double> elTime = getDuration(el.getAttribute("interval"));
             String refID = unPoundMark(el.getAttribute("since"));
             Optional<Double> offSet = Optional.empty();

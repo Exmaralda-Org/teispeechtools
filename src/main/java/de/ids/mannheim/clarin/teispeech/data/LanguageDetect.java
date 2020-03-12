@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
@@ -158,7 +159,7 @@ public class LanguageDetect {
         long processed = 0;
         long unprocessed = 0;
         Map<String, Integer> changed = new HashMap<>();
-        List<Element> utterances = Utilities
+        List<Element> utterances = XMLUtilities
                 .toElementList(doc.getElementsByTagNameNS(TEI_NS, "u"));
         for (Element utter : utterances) {
             if (!force && utter.hasAttribute("xml:lang")) {
@@ -168,7 +169,7 @@ public class LanguageDetect {
                     .getLanguage((Element) utter.getParentNode(), language, 1);
 
             // language by words:
-            List<Element> words = Utilities
+            List<Element> words = XMLUtilities
                     .toElementStream(utter.getElementsByTagNameNS(TEI_NS, "w"))
                     .filter(ut -> !"incomprehensible"
                             .equals(ut.getAttribute("type")))

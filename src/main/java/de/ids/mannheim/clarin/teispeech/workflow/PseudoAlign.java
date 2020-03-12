@@ -38,6 +38,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.jooq.lambda.Seq;
 import org.korpora.useful.LangUtilities;
 import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Comment;
@@ -272,9 +273,9 @@ public class PseudoAlign {
                 }
             }
             Optional<Double> startTime = DocUtilities
-                    .getOffset(Utilities.getElementByID(doc, start));
+                    .getOffset(XMLUtilities.getElementByID(doc, start));
             Optional<Double> endTime = DocUtilities
-                    .getOffset(Utilities.getElementByID(doc, end));
+                    .getOffset(XMLUtilities.getElementByID(doc, end));
             LOGGER.info("{} -> {}    {} -> {}", start, startTime, end, endTime);
             if (startTime.isPresent() && endTime.isPresent())
                 duration = Optional.of(endTime.get() - startTime.get());
@@ -454,7 +455,7 @@ public class PseudoAlign {
                                 String.format("%d", unLettered[i]));
                     }
                 });
-        Utilities
+        XMLUtilities
                 .toElementStream(
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(this::annotateSingleUtterance);
@@ -472,7 +473,7 @@ public class PseudoAlign {
      */
     private Optional<Double> relItemLength() {
         NodeList whens = DocUtilities.getWhens(doc);
-        whenList = Utilities.toElementList(whens);
+        whenList = XMLUtilities.toElementList(whens);
         NodeList nodes;
         try {
             nodes = (NodeList) blocky.evaluate(doc, XPathConstants.NODESET);
@@ -521,7 +522,7 @@ public class PseudoAlign {
             // [<2 >]
             // [3 ]
             // treat "empty" <incident>s
-            Utilities.toElementStream(nodes)
+            XMLUtilities.toElementStream(nodes)
                     .filter(e -> e.getLocalName().equals("incident"))
                     .forEachOrdered(e -> {
                         String from = e.getAttribute("start");
@@ -570,7 +571,7 @@ public class PseudoAlign {
 
         List<Element> uChildren;
         try {
-            uChildren = Utilities
+            uChildren = XMLUtilities
                     .toStream((NodeList) interesting.evaluate(u,
                             XPathConstants.NODESET))
                     .filter(n -> n.getNodeType() == Node.ELEMENT_NODE)
@@ -593,7 +594,7 @@ public class PseudoAlign {
                 // count text length in characters for anchors in words
                 int textTillNow = 0;
                 Map<String, Integer> relRest = new HashMap<>();
-                for (Iterator<Node> iNo = Utilities
+                for (Iterator<Node> iNo = XMLUtilities
                         .toIterator(el.getChildNodes()); iNo.hasNext();) {
                     Node now = iNo.next();
                     // set anchor to text length
@@ -649,8 +650,8 @@ public class PseudoAlign {
                 itemLength);
         Comment comment = doc.createComment(info);
         LOGGER.info("applying " + info);
-        Utilities.insertAtBeginningOf(comment,
-                Utilities.getElementByTagNameNS(doc, TEI_NS, "body"));
+        XMLUtilities.insertAtBeginningOf(comment,
+                XMLUtilities.getElementByTagNameNS(doc, TEI_NS, "body"));
         String root = getAttXML(whenList.get(0), "id");
         LOGGER.info("START reference: {}", root);
         position.put(root, 0d);
@@ -700,7 +701,7 @@ public class PseudoAlign {
      * @return the event DOM element
      */
     private String insertWhen(String idPrefix, Double pos) {
-        Stream<Element> whens = Utilities
+        Stream<Element> whens = XMLUtilities
                 .toElementStream(DocUtilities.getWhens(doc));
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         Optional<Element> successor = Seq.seq(whens).drop(1)
@@ -713,7 +714,7 @@ public class PseudoAlign {
         String ID = docID.makeID(when, idPrefix);
         when.setAttribute("interval", String.format("%.4fs", pos));
         when.setAttribute("since", successorEl.getAttribute("since"));
-        Utilities.insertBeforeMe(when, successorEl);
+        XMLUtilities.insertBeforeMe(when, successorEl);
         return ID;
     }
 
@@ -722,7 +723,7 @@ public class PseudoAlign {
      */
     private void insertAnchorEvery(double itemLength) {
         docID = new DocumentIdentifier(doc);
-        Utilities.toElementStream(doc.getElementsByTagNameNS(TEI_NS, "u"))
+        XMLUtilities.toElementStream(doc.getElementsByTagNameNS(TEI_NS, "u"))
                 .forEach(u -> {
                     String startID = ((Element) u.getParentNode())
                             .getAttribute("start");
@@ -737,7 +738,7 @@ public class PseudoAlign {
                                         "anchor");
                                 String id = insertWhen(startID, pos);
                                 a.setAttribute("sync", id);
-                                Utilities.insertBeforeMe(a, el);
+                                XMLUtilities.insertBeforeMe(a, el);
                             }
                             if (el.getLocalName().equals("pause")) {
                                 pos += getPauseDuration(el);
@@ -906,8 +907,8 @@ public class PseudoAlign {
                         .build();
                 String result = Request.Post(uriBui.build()).body(entity)
                         .execute().returnContent().asString();
-                Document doc = Utilities.parseXML(result);
-                Element link = Utilities.getElementByTagName(doc,
+                Document doc = XMLUtilities.parseXML(result);
+                Element link = XMLUtilities.getElementByTagName(doc,
                         "downloadLink");
                 if (link != null && !"".equals(link.getTextContent())) {
                     String retString = Request.Get(link.getTextContent())

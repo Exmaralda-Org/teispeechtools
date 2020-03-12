@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,7 +20,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.korpora.useful.LangUtilities;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -58,16 +59,12 @@ import picocli.CommandLine.Spec;
 @Command(description = "process documents of speech annotated "
         + "according to TEI/ISO", sortOptions = false, name = "spindel"
                 + "", mixinStandardHelpOptions = true, versionProvider = VersionProvider.class)
-public class CLI implements Runnable {
+public class CLI implements Callable<Integer> {
 
     private final static Logger LOGGER = LoggerFactory
             .getLogger(CLI.class.getName());
-    // @Option(names = {"-v", "--verbose"}, description = "give more info")
-    // private boolean verbose = false;
-    //
     @Option(names = { "-I", "--indent" }, description = "indent")
     private boolean indent = false;
-    // @Command() static void normalize
 
     @Option(names = { "-f", "--force" }, description = "force STEP even if "
             + "the corresponding annotation exists already "
@@ -173,18 +170,15 @@ public class CLI implements Runnable {
 
     /**
      * run CLI
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
-        CommandLine.run(new CLI(), args);
+        System.exit(new CommandLine(new CLI()).execute(args));
     }
 
     @Override
-    public void run() {
-        // System.err.println(String.format("STEP is %s with %s and language
-        // %s",
-        // step, inputFile, language));
+    public Integer call() {
         if (outFile != null) {
             try {
                 outStream = new FileOutputStream(outFile);
@@ -229,6 +223,7 @@ public class CLI implements Runnable {
             pseudoAlign();
             break;
         }
+        return 0;
     }
 
     /**
@@ -262,7 +257,7 @@ public class CLI implements Runnable {
             throw new RuntimeException(e);
         }
         Document doc = TextToTEIConversion.process(inputCS, language);
-        Utilities.outputXML(outStream, doc, indent);
+        XMLUtilities.outputXML(outStream, doc, indent);
 
     }
 
@@ -274,7 +269,7 @@ public class CLI implements Runnable {
             Document doc = builder.parse(inputStream);
             TEIPOS teipo = new TEIPOS(doc, language);
             teipo.posTag(force);
-            Utilities.outputXML(outStream, doc, indent);
+            XMLUtilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
@@ -293,7 +288,7 @@ public class CLI implements Runnable {
                     doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "w")
                             .getLength());
             tn.normalize(doc, force);
-            Utilities.outputXML(outStream, doc, indent);
+            XMLUtilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
@@ -309,7 +304,7 @@ public class CLI implements Runnable {
             LanguageDetect ld = new LanguageDetect(doc, language, expected,
                     minimalLength);
             ld.detect(force);
-            Utilities.outputXML(outStream, doc, indent);
+            XMLUtilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
@@ -323,14 +318,15 @@ public class CLI implements Runnable {
             try {
                 Document doc = builder.parse(inputStream);
                 GenericParsing.process(doc);
-                Utilities.outputXML(outStream, doc, indent);
+                XMLUtilities.outputXML(outStream, doc, indent);
             } catch (SAXException | IOException e) {
                 throw new RuntimeException(e);
             }
 
         } else {
             try {
-                org.jdom2.Document doc = Utilities.parseXMLviaJDOM(inputStream);
+                org.jdom2.Document doc = XMLUtilities
+                        .parseXMLviaJDOM(inputStream);
                 GATParser parser = new GATParser();
                 parser.parseDocument(doc, level.ordinal() + 1);
                 DocUtilities.makeChange(doc, String.format(
@@ -358,7 +354,7 @@ public class CLI implements Runnable {
             PseudoAlign aligner = new PseudoAlign(doc, language, usePhones,
                     transcribe, force, timeLength, offset, every);
             aligner.calculateUtterances();
-            Utilities.outputXML(outStream, aligner.getDoc(), indent);
+            XMLUtilities.outputXML(outStream, aligner.getDoc(), indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
@@ -371,7 +367,7 @@ public class CLI implements Runnable {
         try {
             Document doc = builder.parse(inputStream);
             DocumentIdentifier.makeIDs(doc);
-            Utilities.outputXML(outStream, doc, indent);
+            XMLUtilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }
@@ -384,7 +380,7 @@ public class CLI implements Runnable {
         try {
             Document doc = builder.parse(inputStream);
             DocumentIdentifier.removeIDs(doc);
-            Utilities.outputXML(outStream, doc, indent);
+            XMLUtilities.outputXML(outStream, doc, indent);
         } catch (IOException | SAXException e) {
             throw new RuntimeException(e);
         }

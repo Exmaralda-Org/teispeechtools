@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>teispeechtools</artifactId>
-  <version>0.6.4</version>
+  <version>0.7.0</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
   <organization>
@@ -30,8 +30,8 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
-    <apache.version>4.5.11</apache.version>
-    <jackson.version>2.10.2</jackson.version>
+    <apache.version>4.5.12</apache.version>
+    <jackson.version>2.10.3</jackson.version>
     <junit.version>5.6.0</junit.version>
     <junit.aux.version>1.6.0</junit.aux.version>
   </properties>
@@ -186,7 +186,7 @@
     <dependency>
       <groupId>org.korpora.useful</groupId>
       <artifactId>utilities</artifactId>
-      <version>0.4.2</version>
+      <version>0.5.0</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
@@ -204,7 +204,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>9.9.1-6</version>
+      <version>9.9.1-7</version>
     </dependency>
     <!-- dependency> <groupId>com.codepoetics</groupId> <artifactId>protonpack</artifactId> 
       <version>1.13</version> </dependency -->
@@ -264,7 +264,7 @@
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
-      <version>65.1</version>
+      <version>66.1</version>
     </dependency>
   </dependencies>
 </project>

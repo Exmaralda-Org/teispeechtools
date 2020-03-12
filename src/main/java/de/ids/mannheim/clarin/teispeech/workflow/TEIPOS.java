@@ -7,6 +7,7 @@ import de.ids.mannheim.clarin.teispeech.data.NameSpaces;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.korpora.useful.LangUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,7 +120,7 @@ public class TEIPOS {
         LOGGER.info("model file is: {}", modelFName);
         treeTagger.setModel(modelFName);
         for (Element u : utterances) {
-            List<Element> words = Utilities
+            List<Element> words = XMLUtilities
                     .toElementStream(
                             u.getElementsByTagNameNS(NameSpaces.TEI_NS, "w"))
                     .filter(ut -> !ut.getAttributeNS(NameSpaces.TEI_NS, "type")

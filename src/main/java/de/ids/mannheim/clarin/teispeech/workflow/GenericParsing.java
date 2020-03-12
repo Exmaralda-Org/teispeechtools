@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
@@ -47,9 +47,9 @@ public class GenericParsing {
             for (String error : errors) {
                 LOGGER.error(error);
                 Comment comment = doc.createComment("original input: " + tx);
-                Utilities.insertAtBeginningOf(comment, el);
+                XMLUtilities.insertAtBeginningOf(comment, el);
                 comment = doc.createComment(" " + error + " ");
-                Utilities.insertAtBeginningOf(comment, el);
+                XMLUtilities.insertAtBeginningOf(comment, el);
             }
         }
     }
@@ -66,10 +66,10 @@ public class GenericParsing {
             return;
         }
         Deque<String> anchors = AnchorSerialization.serializeAnchors(el);
-        if (Utilities.toStream(el.getChildNodes())
+        if (XMLUtilities.toStream(el.getChildNodes())
                 .anyMatch(n -> n.getNodeType() == Node.ELEMENT_NODE
                         && !((Element) n).getTagName().equals("incident"))
-                || (Utilities.toStream(el.getChildNodes())
+                || (XMLUtilities.toStream(el.getChildNodes())
                         .anyMatch(n -> n.getNodeType() == Node.ELEMENT_NODE
                                 && ((Element) n).getTagName()
                                         .equals("incident"))
@@ -105,7 +105,7 @@ public class GenericParsing {
      *            the TEI document
      */
     public static void process(Document doc) {
-        Utilities
+        XMLUtilities
                 .toElementStream(
                         doc.getElementsByTagNameNS(NameSpaces.TEI_NS, "u"))
                 .forEach(GenericParsing::process);

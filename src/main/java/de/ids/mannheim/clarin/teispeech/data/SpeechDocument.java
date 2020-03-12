@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.lambda.Seq;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -97,7 +97,7 @@ public class SpeechDocument {
      */
     public void setLanguage(String language) {
         this.language = language;
-        Element el = Utilities.getElementByTagNameNS(doc, TEI_NS, "text");
+        Element el = XMLUtilities.getElementByTagNameNS(doc, TEI_NS, "text");
         el.setAttribute("xml:lang", language);
     }
 
@@ -306,7 +306,7 @@ public class SpeechDocument {
             }
         } while (sib.getNodeType() != Node.ELEMENT_NODE
                 || "annotationBlock".equals(sib.getLocalName()));
-        Utilities
+        XMLUtilities
                 .toElementStream(
                         currentBlock.getElementsByTagNameNS(TEI_NS, "span"))
                 .forEach(b -> Seq.of("start", "end").forEach(att -> {
@@ -472,7 +472,7 @@ public class SpeechDocument {
             currentUtterance.getParentNode().getParentNode()
                     .insertBefore(incident, currentUtterance.getParentNode());
         } else {
-            Utilities.insertAtBeginningOf(incident, currentUtterance);
+            XMLUtilities.insertAtBeginningOf(incident, currentUtterance);
         }
     }
 

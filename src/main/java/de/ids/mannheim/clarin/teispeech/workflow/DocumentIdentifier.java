@@ -3,7 +3,7 @@ package de.ids.mannheim.clarin.teispeech.workflow;
 import net.sf.saxon.om.NameChecker;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 import org.jdom2.JDOMException;
-import org.korpora.useful.Utilities;
+import org.korpora.useful.XMLUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -85,7 +85,7 @@ public class DocumentIdentifier {
     private static Document makeIDs(org.jdom2.Document jdoc) {
         try {
             DocumentIdentifier di = new DocumentIdentifier(
-                    Utilities.convertJDOMToDOM(jdoc));
+                    XMLUtilities.convertJDOMToDOM(jdoc));
             return di.makeIDs().getDocument();
         } catch (JDOMException e) {
             throw new RuntimeException(e);
@@ -100,7 +100,7 @@ public class DocumentIdentifier {
      * @return doc with identifiers jDOM
      */
     public static org.jdom2.Document jmakeIDs(org.jdom2.Document jdoc) {
-        return Utilities.convertDOMtoJDOM(makeIDs(jdoc));
+        return XMLUtilities.convertDOMtoJDOM(makeIDs(jdoc));
     }
 
     /**
@@ -118,7 +118,7 @@ public class DocumentIdentifier {
                     .compile(
                             "//*[./@xml:id[starts-with(., '" + PREFIX + "')] ]")
                     .evaluate(doc, XPathConstants.NODESET);
-            Utilities.toElementStream(identified)
+            XMLUtilities.toElementStream(identified)
                     .forEach(e -> e.removeAttribute("xml:id"));
             LOGGER.info("took the identity of {} elements",
                     identified.getLength());
@@ -173,13 +173,13 @@ public class DocumentIdentifier {
         try {
             NodeList IDNodes = (NodeList) ID_PATH.evaluate(doc,
                     XPathConstants.NODESET);
-            IDs = Utilities.toElementStream(IDNodes)
+            IDs = XMLUtilities.toElementStream(IDNodes)
                     .map(e -> e.getAttributeNS(XML_NS, "xml:id"))
                     .collect(Collectors.toSet());
 //            LOGGER.info(IDs.toString());
             NodeList unidentified = (NodeList) NO_ID_PATH.evaluate(doc,
                     XPathConstants.NODESET);
-            Utilities.toElementStream(unidentified).forEach(this::makeID);
+            XMLUtilities.toElementStream(unidentified).forEach(this::makeID);
             LOGGER.info("gave an identity to {} elements",
                     unidentified.getLength());
         } catch (XPathExpressionException e) {
