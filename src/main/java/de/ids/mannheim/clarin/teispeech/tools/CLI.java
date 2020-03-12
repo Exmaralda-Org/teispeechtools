@@ -52,8 +52,6 @@ import picocli.CommandLine.Spec;
  *
  * @author bfi
  *
- * TODO: port to new picoCLI execute API?
- * https://github.com/remkop/picocli/blob/master/RELEASE-NOTES.md#4.0.0-execute
  */
 @SuppressWarnings({ "CanBeFinal", "unused" })
 @Command(description = "process documents of speech annotated "
