@@ -32,8 +32,9 @@
     <dependency.locations.enabled>false</dependency.locations.enabled>
     <apache.version>4.5.12</apache.version>
     <jackson.version>2.10.3</jackson.version>
-    <junit.version>5.6.0</junit.version>
-    <junit.aux.version>1.6.0</junit.aux.version>
+    <junit.subversion>6.1</junit.subversion>
+    <junit.version>5.${junit.subversion}</junit.version>
+    <junit.aux.version>1.${junit.subversion}</junit.aux.version>
   </properties>
   <build>
     <resources>
@@ -82,6 +83,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.1.1</version>
+        <configuration>
+          <failOnError>false</failOnError>
+          <source>${maven.compiler.source}</source>
+          <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -91,7 +97,6 @@
             </goals>
             <configuration>
               <failOnError>false</failOnError>
-              <source>${maven.compiler.source}</source>
             </configuration>
           </execution>
         </executions>
@@ -181,12 +186,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.9</version>
+      <version>3.10</version>
     </dependency>
     <dependency>
       <groupId>org.korpora.useful</groupId>
       <artifactId>utilities</artifactId>
-      <version>0.5.0</version>
+      <version>0.5.1</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
@@ -204,7 +209,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>9.9.1-7</version>
+      <version>10.0</version>
     </dependency>
     <!-- dependency> <groupId>com.codepoetics</groupId> <artifactId>protonpack</artifactId> 
       <version>1.13</version> </dependency -->
