@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>teispeechtools</artifactId>
-  <version>0.7.1</version>
+  <version>0.7.2</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
   <organization>
@@ -30,9 +30,9 @@
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
-    <apache.version>4.5.12</apache.version>
+    <apache.version>4.5.13</apache.version>
     <jackson.version>2.11.0</jackson.version>
-    <junit.subversion>6.1</junit.subversion>
+    <junit.subversion>7.0</junit.subversion>
     <junit.version>5.${junit.subversion}</junit.version>
     <junit.aux.version>1.${junit.subversion}</junit.aux.version>
   </properties>
@@ -186,7 +186,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.10</version>
+      <version>3.11</version>
     </dependency>
     <dependency>
       <groupId>org.korpora.useful</groupId>
@@ -209,7 +209,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>10.1</version>
+      <version>10.3</version>
     </dependency>
     <!-- dependency> <groupId>com.codepoetics</groupId> <artifactId>protonpack</artifactId> 
       <version>1.13</version> </dependency -->
@@ -235,13 +235,13 @@
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>4.3.2</version>
+      <version>4.5.2</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-distr -->
     <dependency>
       <groupId>org.apache.opennlp</groupId>
       <artifactId>opennlp-distr</artifactId>
-      <version>1.9.2</version>
+      <version>1.9.3</version>
       <type>pom</type>
     </dependency>
     <dependency>
@@ -269,7 +269,7 @@
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
-      <version>67.1</version>
+      <version>68.1</version>
     </dependency>
   </dependencies>
 </project>
