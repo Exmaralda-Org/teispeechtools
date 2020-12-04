@@ -31,7 +31,7 @@
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
     <apache.version>4.5.13</apache.version>
-    <jackson.version>2.11.0</jackson.version>
+    <jackson.version>2.12.0</jackson.version>
     <junit.subversion>7.0</junit.subversion>
     <junit.version>5.${junit.subversion}</junit.version>
     <junit.aux.version>1.${junit.subversion}</junit.aux.version>
@@ -122,7 +122,7 @@
         <!-- https://mvnrepository.com/artifact/org.antlr/antlr4-maven-plugin -->
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.8-1</version>
+        <version>4.9</version>
         <executions>
           <execution>
             <id>antlr</id>
@@ -203,7 +203,7 @@
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-runtime</artifactId>
-      <version>4.8-1</version>
+      <version>4.9</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
     <dependency>
