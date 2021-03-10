@@ -50,7 +50,7 @@ java -cp 'dependency/*' -jar teispeechtools-VERSION.jar
 
 and follow the help. Together with this description, you should get
 along well. If not, contact [Bernhard
-Fisseni](mailto:fisseni@ids-mannheim.de?subect=TEI+Transcription+tools)
+Fisseni](mailto:bernhard.fisseni@uni-due.de?subect=TEI+Transcription+tools)
 
 A simple [wrapper script](spindel.sh) is available.
 
