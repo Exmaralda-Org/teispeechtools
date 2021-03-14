@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ids-mannheim.clarin</groupId>
   <artifactId>teispeechtools</artifactId>
-  <version>0.7.2</version>
+  <version>0.7.3</version>
   <name>teispeechtools</name>
   <description>Tools for processing TEI speech transcripts</description>
   <organization>
@@ -16,14 +16,27 @@
       <name>Bernhard Fisseni</name>
       <email>bernhard.fisseni@uni-due.de</email>
       <url>https://github.com/teoric</url>
+        <roles>
+          <role>developer</role>
+        </roles>
     </contributor>
     <contributor>
       <name>Thomas Schmidt</name>
       <email>thomas.schmidt@ids-mannheim.de</email>
       <url>https://github.com/berndmoos</url>
+        <roles>
+          <role>developer</role>
+        </roles>
+    </contributor>
+    <contributor>
+      <name>Eliza Margaretha Illig</name>
+      <email>margaretha@ids-mannheim.de</email>
+      <roles>
+        <role>maintainer</role>
+      </roles>
     </contributor>
   </contributors>
-  <properties>
+    <properties>
     <!-- project settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- plug-in settings -->
@@ -32,7 +45,7 @@
     <dependency.locations.enabled>false</dependency.locations.enabled>
     <apache.version>4.5.13</apache.version>
     <jackson.version>2.12.0</jackson.version>
-    <junit.subversion>7.0</junit.subversion>
+    <junit.subversion>7.1</junit.subversion>
     <junit.version>5.${junit.subversion}</junit.version>
     <junit.aux.version>1.${junit.subversion}</junit.aux.version>
   </properties>
