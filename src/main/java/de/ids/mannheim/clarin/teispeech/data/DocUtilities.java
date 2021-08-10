@@ -401,7 +401,7 @@ public class DocUtilities {
         Element point = doc.createElementNS(TEI_NS, "when");
         point.setAttribute("interval", time);
         String id = generateID(doc, pattern, true);
-        point.setAttributeNS(XML_NS, "id", id);
+        point.setAttributeNS(XML_NS, "xml:id", id);
         return Pair.of(point, line);
     }
 
@@ -412,7 +412,7 @@ public class DocUtilities {
      *     DOM document
      */
     public static void insertTimeRoot(Document doc) {
-        Pair<Element, Element> RootLine = makeTimePoint(doc, "T0", "0.0s");
+        Pair<Element, Element> RootLine = makeTimePoint(doc, "T0", 0.0);
         String rootID = DocUtilities.getAttXML(RootLine.getLeft(), "id");
         RootLine.getLeft().setAttribute("since", rootID);
         XMLUtilities.insertAtBeginningOf(RootLine.getLeft(), RootLine.getRight());
@@ -674,7 +674,7 @@ public class DocUtilities {
      */
     public static String setNewId(Element el, String pattern) {
         String newId = generateID(el.getOwnerDocument(), pattern);
-        el.setAttribute("xml:id", newId);
+        el.setAttributeNS(XML_NS, "xml:id", newId);
         return newId;
     }
 

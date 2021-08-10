@@ -1,6 +1,7 @@
 package de.ids.mannheim.clarin.teispeech.data;
 
 import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.TEI_NS;
+import static de.ids.mannheim.clarin.teispeech.data.NameSpaces.XML_NS;
 
 import java.text.NumberFormat;
 import java.util.Collection;
@@ -207,14 +208,14 @@ public class SpeechDocument {
             Event e = iter.next();
             // <when xml:id="TLI_1" interval="6.1" since="TLI_0"/>
             Element el = doc.createElementNS(TEI_NS, "when");
-            el.setAttribute("xml:id", e.mkTime());
+            el.setAttributeNS(XML_NS, "xml:id", e.mkTime());
             timeLine.appendChild(el);
             if (e instanceof MarkedEvent) {
                 Comment explainMark = doc.createComment("marked as ‹"
                         + ((MarkedEvent) e).getMark() + "› in the input.");
                 timeLine.insertBefore(explainMark, el);
                 el = doc.createElementNS(TEI_NS, "when");
-                el.setAttribute("xml:id", ((MarkedEvent) e).mkEndTime());
+                el.setAttributeNS(XML_NS, "xml:id", ((MarkedEvent) e).mkEndTime());
                 timeLine.appendChild(el);
             }
         }
