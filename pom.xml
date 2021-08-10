@@ -44,8 +44,8 @@
     <maven.compiler.target>8</maven.compiler.target>
     <dependency.locations.enabled>false</dependency.locations.enabled>
     <apache.version>4.5.13</apache.version>
-    <jackson.version>2.12.0</jackson.version>
-    <junit.subversion>7.1</junit.subversion>
+    <jackson.version>2.12.4</jackson.version>
+    <junit.subversion>7.2</junit.subversion>
     <junit.version>5.${junit.subversion}</junit.version>
     <junit.aux.version>1.${junit.subversion}</junit.aux.version>
   </properties>
@@ -199,7 +199,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.11</version>
+      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>org.korpora.useful</groupId>
@@ -222,7 +222,7 @@
     <dependency>
       <groupId>net.sf.saxon</groupId>
       <artifactId>Saxon-HE</artifactId>
-      <version>10.3</version>
+      <version>10.5</version>
     </dependency>
     <!-- dependency> <groupId>com.codepoetics</groupId> <artifactId>protonpack</artifactId> 
       <version>1.13</version> </dependency -->
@@ -282,7 +282,7 @@
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
-      <version>68.1</version>
+      <version>69.1</version>
     </dependency>
   </dependencies>
 </project>
